@@ -67,6 +67,9 @@
 #include "SimpleMath.h"
 #include "GraphicsMemory.h"
 #include "GamePad.h"
+#include <DirectXHelpers.h>
+#include <DDSTextureLoader.h>
+#include <GeometricPrimitive.h>
 
 #ifdef _DEBUG
 #include <dxgidebug.h>

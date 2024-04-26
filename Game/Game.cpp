@@ -26,6 +26,8 @@ Game::Game() noexcept(false)
 // Initialize the Direct3D resources required to run.
 void Game::Initialize(HWND window, int width, int height)
 {
+    using namespace DirectX::SimpleMath;
+
     m_hWnd = window;
     m_deviceResources->SetWindow(m_hWnd, width, height);
 
@@ -41,10 +43,25 @@ void Game::Initialize(HWND window, int width, int height)
 
 
     m_model = std::make_unique<DirectX::Model>();
-
+    m_model = DirectX::Model::CreateFromCMO(m_deviceResources->GetD3DDevice(), L"Resources/Models/dice.cmo", *m_graphics->GetFX());
 
     m_timer.SetFixedTimeStep(true);
     m_timer.SetTargetElapsedSeconds(1.0 / 60);
+
+    // ビュー行列を作成
+    Vector3 eye = Vector3(0, 5, 10);
+    Vector3 target = Vector3::Zero;
+    Matrix view = Matrix::CreateLookAt(eye, target, Vector3::UnitY);
+    m_graphics->SetViewMatrix(view);
+
+    // 射影行列を作成する
+    Matrix projection = SimpleMath::Matrix::CreatePerspectiveFieldOfView(
+        XMConvertToRadians(45.0f),
+        static_cast<float>(width) / static_cast<float>(height),
+        0.1f, 100.0f
+    );
+    m_graphics->SetProjectionMatrix(projection);
+
 }
 
 #pragma region Frame Update
@@ -74,6 +91,8 @@ void Game::Update(DX::StepTimer const& timer)
 // Draws the scene.
 void Game::Render()
 {
+    using namespace DirectX::SimpleMath;
+
     // Don't try to render anything before the first Update.
     if (m_timer.GetFrameCount() == 0)
     {
@@ -92,7 +111,9 @@ void Game::Render()
 
     m_graphics->DrawPrimitiveBegin(m_graphics->GetViewMatrix(), m_graphics->GetProjectionMatrix());
 
-    
+    Matrix world = Matrix::CreateTranslation(Vector3::Zero);
+
+    m_model->Draw(context, *m_graphics->GetCommonStates(), world, m_graphics->GetViewMatrix(), m_graphics->GetProjectionMatrix());
 
     m_graphics->DrawPrimitiveEnd();
     // Show the new frame.

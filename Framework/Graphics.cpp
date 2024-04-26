@@ -81,6 +81,7 @@ void Graphics::Initialize()
 	m_device->CreateRasterizerState(&rasterizerStateDesc, m_rasterrizerState.ReleaseAndGetAddressOf());
 	// エフェクトファクトリを生成する
 	m_effectFactory = std::make_unique<DirectX::EffectFactory>(m_device);
+	m_effectFactory->SetDirectory(L"Resources/Models");
 }
 
 // 描画プリミティブを開始する
