@@ -17,6 +17,10 @@ InputManager* const InputManager::GetInstance()
 }
 
 InputManager::InputManager()
+	:
+	m_mouseState{},
+	m_keyboardState{},
+	m_gamepadState{}
 {
 
 }
@@ -26,7 +30,6 @@ InputManager::InputManager()
 //---------------------------------------------------------
 void InputManager::Initialize(const HWND& window)
 {
-
 	// マウスを使用できる状態にする
 	m_mouse = std::make_unique<DirectX::Mouse>();
 	m_mouse->SetWindow(window);

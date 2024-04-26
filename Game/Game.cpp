@@ -17,6 +17,7 @@ Game::Game() noexcept(false)
 {
     m_graphics = Graphics::GetInstance();
     m_deviceResources = m_graphics->GetDeviceResources();
+    m_inputManager = InputManager::GetInstance();
     // TODO: Provide parameters for swapchain format, depth/stencil format, and backbuffer count.
     //   Add DX::DeviceResources::c_AllowTearing to opt-in to variable rate displays.
     //   Add DX::DeviceResources::c_EnableHDR for HDR10 display.
@@ -37,7 +38,7 @@ void Game::Initialize(HWND window, int width, int height)
     m_deviceResources->CreateWindowSizeDependentResources();
     CreateWindowSizeDependentResources();
 
-
+    m_inputManager->Initialize(window);
     // TODO: Change the timer settings if you want something other than the default variable timestep mode.
     // e.g. for 60 FPS fixed timestep update logic, call:
 
@@ -62,6 +63,9 @@ void Game::Initialize(HWND window, int width, int height)
     );
     m_graphics->SetProjectionMatrix(projection);
 
+    m_angle = 0;
+    m_position = Vector3::Zero;
+
 }
 
 #pragma region Frame Update
@@ -70,6 +74,7 @@ void Game::Tick()
 {
     m_timer.Tick([&]()
         {
+            m_inputManager->Update();
             Update(m_timer);
         });
 
@@ -79,9 +84,31 @@ void Game::Tick()
 // Updates the world.
 void Game::Update(DX::StepTimer const& timer)
 {
+    using namespace DirectX::SimpleMath;
     float elapsedTime = float(timer.GetElapsedSeconds());
 
+    const auto& kbState = m_inputManager->GetKeyboardState();
+    const auto& kb      = m_inputManager->GetKeyboardTracker();
+    const auto& gp      = m_inputManager->GetGamePadTracker();
+
+
+
     // TODO: Add your game logic here.
+    // u–C“ƒ‰º•”v‚Ì‰ñ“]s—ñ‚ð¶¬‚·‚é
+    //turretRotation = Matrix::CreateRotationY(GetInitialAngleRL() + GetAngle());
+    Matrix rotation = Matrix::CreateRotationY(m_angle);
+    // u–C“ƒ‰º•”v‚Ì‘¬“x‚ðŒvŽZ‚·‚é
+    //turretVelocity = SPEED.z * turretRotation.Forward();
+    Vector3 velocity = 0.05f * rotation.Forward();
+    // Ž©–C“ƒ‚ð‘Oi‚·‚é
+    //m_currentPosition -= turretVelocity;
+
+    //if (kbState.W)
+    //{
+
+        m_position += velocity;
+    //}
+
     elapsedTime;
 
 }
@@ -111,7 +138,9 @@ void Game::Render()
 
     m_graphics->DrawPrimitiveBegin(m_graphics->GetViewMatrix(), m_graphics->GetProjectionMatrix());
 
-    Matrix world = Matrix::CreateTranslation(Vector3::Zero);
+    Matrix world = Matrix::Identity;
+    world = Matrix::CreateTranslation(m_position);
+
 
     m_model->Draw(context, *m_graphics->GetCommonStates(), world, m_graphics->GetViewMatrix(), m_graphics->GetProjectionMatrix());
 

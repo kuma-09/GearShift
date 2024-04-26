@@ -69,4 +69,8 @@ private:
 
     std::unique_ptr<DirectX::Model> m_model;
 
+    float m_angle;
+
+    DirectX::SimpleMath::Vector3 m_position;
+
 };

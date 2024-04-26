@@ -1,2 +1,5 @@
 ﻿  Game.cpp
+C:\Users\it232100\Documents\GitHub\Alice_DirectX\Game\Game.cpp(90,17): warning C4189: 'kbState': ローカル変数が初期化されましたが、参照されていません
+C:\Users\it232100\Documents\GitHub\Alice_DirectX\Game\Game.cpp(91,17): warning C4189: 'kb': ローカル変数が初期化されましたが、参照されていません
+C:\Users\it232100\Documents\GitHub\Alice_DirectX\Game\Game.cpp(92,17): warning C4189: 'gp': ローカル変数が初期化されましたが、参照されていません
   TestProject.vcxproj -> C:\Users\it232100\Documents\GitHub\Alice_DirectX\x64\Debug\TestProject.exe
