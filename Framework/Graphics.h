@@ -14,7 +14,7 @@ public:
 	// スクリーンサイズを設定する
 	void SetScreenSize(const int& width, const int& height) { m_screenW = width; m_screenH = height; }
 	// PrimitiveBatchクラスのインスタンスを取得する
-	DirectX::PrimitiveBatch<DirectX::VertexPositionColor>* GetPrimitiveBatch() const { return m_primitiveBatch.get(); }
+	DirectX::PrimitiveBatch<DirectX::VertexPositionColorTexture>* GetPrimitiveBatch() const { return m_primitiveBatch.get(); }
 	// InputLayoutクラスのインスタンスを取得する
 	ID3D11InputLayout* GetInputLayout() const { return m_inputLayout.Get(); }
 	// BasicEffectクラスのインスタンス取得する
@@ -75,7 +75,7 @@ private:
 	// ベーシックエフェクト
 	std::unique_ptr<DirectX::BasicEffect> m_basicEffect;
 	// プリミティブバッチ
-	std::unique_ptr<DirectX::PrimitiveBatch<DirectX::VertexPositionColor>> m_primitiveBatch;
+	std::unique_ptr<DirectX::PrimitiveBatch<DirectX::VertexPositionColorTexture>> m_primitiveBatch;
 	// エフェクトファクトリー
 	std::unique_ptr<DirectX::EffectFactory> m_effectFactory;
 	// ラスタライザーステート

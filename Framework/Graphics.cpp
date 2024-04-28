@@ -52,9 +52,9 @@ void Graphics::Initialize()
 	// ベーシックエフェクトを生成する
 	m_basicEffect = std::make_unique<DirectX::BasicEffect>(m_device);
 	// スプライトフォントを生成する
-	m_spriteFont = std::make_unique<DirectX::SpriteFont>(m_device, L"resources\\font\\SegoeUI_18.spritefont");
+	m_spriteFont = std::make_unique<DirectX::SpriteFont>(m_device, L"Resources\\Fonts\\SegoeUI_18.spritefont");
 	// プリミティブバッチを生成する
-	m_primitiveBatch = std::make_unique<DirectX::PrimitiveBatch<DirectX::VertexPositionColor>>(m_context);
+	m_primitiveBatch = std::make_unique<DirectX::PrimitiveBatch<DirectX::VertexPositionColorTexture>>(m_context);
 	// 入力レイアウトを生成する
 	m_basicEffect->SetVertexColorEnabled(true);
 	// テクスチャを無効にする
@@ -66,8 +66,8 @@ void Graphics::Initialize()
 	m_basicEffect->GetVertexShaderBytecode(&shaderByteCode, &byteCodeLength);
 	// 入力レイアウトを生成する
 	m_device->CreateInputLayout(
-		DirectX::VertexPositionColor::InputElements,
-		DirectX::VertexPositionColor::InputElementCount,
+		DirectX::VertexPositionColorTexture::InputElements,
+		DirectX::VertexPositionColorTexture::InputElementCount,
 		shaderByteCode, byteCodeLength,
 		m_inputLayout.ReleaseAndGetAddressOf()
 	);
