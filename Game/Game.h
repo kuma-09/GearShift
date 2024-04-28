@@ -6,6 +6,7 @@
 
 #include "Framework/DeviceResources.h"
 #include "Framework/StepTimer.h"
+#include "Game/IScene.h"
 
 class Graphics;
 class InputManager;
@@ -67,10 +68,7 @@ private:
     DX::DeviceResources* m_deviceResources;
     InputManager* m_inputManager;
 
-    std::unique_ptr<DirectX::Model> m_model;
 
-    float m_angle;
-
-    DirectX::SimpleMath::Vector3 m_position;
+    std::unique_ptr<IScene> m_scene;
 
 };

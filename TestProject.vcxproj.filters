@@ -32,6 +32,12 @@
     <ClInclude Include="Framework\InputManager.h">
       <Filter>Framework</Filter>
     </ClInclude>
+    <ClInclude Include="Game\IScene.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\PlayScene.h">
+      <Filter>Game</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -50,6 +56,9 @@
     </ClCompile>
     <ClCompile Include="Framework\InputManager.cpp">
       <Filter>Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\PlayScene.cpp">
+      <Filter>Game</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

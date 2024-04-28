@@ -1,5 +1,23 @@
-﻿  Game.cpp
-C:\Users\it232100\Documents\GitHub\Alice_DirectX\Game\Game.cpp(90,17): warning C4189: 'kbState': ローカル変数が初期化されましたが、参照されていません
-C:\Users\it232100\Documents\GitHub\Alice_DirectX\Game\Game.cpp(91,17): warning C4189: 'kb': ローカル変数が初期化されましたが、参照されていません
-C:\Users\it232100\Documents\GitHub\Alice_DirectX\Game\Game.cpp(92,17): warning C4189: 'gp': ローカル変数が初期化されましたが、参照されていません
-  TestProject.vcxproj -> C:\Users\it232100\Documents\GitHub\Alice_DirectX\x64\Debug\TestProject.exe
+﻿  pch.cpp
+  DeviceResources.cpp
+  Graphics.cpp
+  InputManager.cpp
+  Resources.cpp
+  Game.cpp
+  PlayScene.cpp
+  Main.cpp
+  コードを生成中...
+D:\Users\PC_User\Documents\GitHub\Alice_DirectX\Game\Game.cpp(99,10): warning C4189: 'context': ローカル変数が初期化されましたが、参照されていません
+  (ソース ファイル '/Game/Game.cpp' をコンパイルしています)
+  
+D:\Users\PC_User\Documents\GitHub\Alice_DirectX\Game\PlayScene.cpp(36,30): warning C4100: 'elapsedTime': 引数は関数の本体部で 1 度も参照されません。
+  (ソース ファイル '/Game/PlayScene.cpp' をコンパイルしています)
+  
+D:\Users\PC_User\Documents\GitHub\Alice_DirectX\Game\PlayScene.cpp(40,17): warning C4189: 'kbState': ローカル変数が初期化されましたが、参照されていません
+  (ソース ファイル '/Game/PlayScene.cpp' をコンパイルしています)
+  
+D:\Users\PC_User\Documents\GitHub\Alice_DirectX\Game\PlayScene.cpp(41,17): warning C4189: 'kb': ローカル変数が初期化されましたが、参照されていません
+  (ソース ファイル '/Game/PlayScene.cpp' をコンパイルしています)
+  
+     ライブラリ D:\Users\PC_User\Documents\GitHub\Alice_DirectX\x64\Debug\TestProject.lib とオブジェクト D:\Users\PC_User\Documents\GitHub\Alice_DirectX\x64\Debug\TestProject.exp を作成中
+  TestProject.vcxproj -> D:\Users\PC_User\Documents\GitHub\Alice_DirectX\x64\Debug\TestProject.exe
