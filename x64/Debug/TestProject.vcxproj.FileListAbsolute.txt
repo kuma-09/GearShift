@@ -1,5 +1,0 @@
-D:\Users\PC_User\Documents\GitHub\Alice_DirectX\x64\Debug\TestProject.vcxproj.CopyComplete
-D:\Users\PC_User\Documents\GitHub\Alice_DirectX\x64\Debug\TestProject.exe
-D:\Users\PC_User\Documents\GitHub\Alice_DirectX\x64\Debug\xapobaseredist.pdb
-D:\Users\PC_User\Documents\GitHub\Alice_DirectX\x64\Debug\xaudio2_9redist.pdb
-D:\Users\PC_User\Documents\GitHub\Alice_DirectX\x64\Debug\xaudio2_9redist.dll
