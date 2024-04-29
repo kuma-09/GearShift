@@ -27,13 +27,16 @@ private:
 	std::unique_ptr<DirectX::Model> m_model;
 
 	float m_angle;
-	DirectX::SimpleMath::Quaternion m_quaternion;
 
 	DirectX::SimpleMath::Vector3 m_position;
 	DirectX::SimpleMath::Vector3 m_center;
 
+	const float SPEED_FB = 0.1f;
+	const float SPEED_RL = 0.05f; 
+
+
 	DirectX::VertexPositionColorTexture	m_vertices[4];				// 頂点バッファ
-	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_texture; // テクスチャ
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_texture;		// テクスチャ
 	
 };
 

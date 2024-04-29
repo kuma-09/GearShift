@@ -32,8 +32,8 @@ void PlayScene::Initialize()
     m_graphics->SetProjectionMatrix(projection);
 
     m_angle = 0;
-    m_position = Vector3(0,0,0);
-    m_center = Vector3::Zero;
+    m_position = Vector3(0,0,5);
+    m_center = Vector3(-3,0,20);
 
     // 四角形の頂点座標を定義する…左下基準のコの字、頂点順の指定でDrawQuadが使える
     m_vertices[0] = { Vector3(-5.0f ,5.0f , 5.0f),Vector4(1,1,1,1), Vector2(0.0f, 0.0f) };	//左上
@@ -59,43 +59,54 @@ void PlayScene::Update(float elapsedTime)
     const auto& gp = m_inputManager->GetGamePadTracker();
 
     Vector3 dot = m_position - m_center;
-    float radian = atan2f(dot.z, dot.x);
+    float radian = atan2f(dot.x, dot.z);
 
     // 回転行列を生成する
-    Matrix rotation = Matrix::CreateRotationY(m_angle);
+    Matrix rotation = Matrix::CreateRotationY(radian);
     Vector3 velocity = Vector3::Zero;
 
-    
+
 
 
 
     if (gp->dpadUp)
     {
-        velocity = 0.05f * -rotation.Forward();
-        m_position += velocity;
+        velocity += SPEED_FB * rotation.Forward();
+
+
     }
     if (gp->dpadDown)
     {
-        velocity = 0.05f * rotation.Forward();
-        m_position += velocity;
+        velocity += SPEED_FB * -rotation.Forward();
+
+
     }
     if (gp->dpadRight)
     {
-        m_angle += 0.05f;
+        velocity += SPEED_RL * dot.Length() * rotation.Right();
+
+        m_angle -= 0.05f;
     }
     if (gp->dpadLeft)
     {
-        m_angle -= 0.05f;
+        velocity += SPEED_RL * dot.Length() * -rotation.Right();
+        
+        m_angle += 0.05f;
     }
+    m_position += velocity;
+
     
-    
+    dot = m_position - m_center;
+    radian = atan2f(dot.x, dot.z);
+
+    // 回転行列を生成する
+    rotation = Matrix::CreateRotationY(radian);
 
     // ビュー行列を作成
-    Vector3 eye =  m_position + 10 * rotation.Forward() +  5 * rotation.Up();
-    Vector3 target = m_position;
+    Vector3 eye = m_position + 10 * -rotation.Forward() + 5 * rotation.Up();
+    Vector3 target = m_center;
     Matrix view = Matrix::CreateLookAt(eye, target, Vector3::UnitY);
     m_graphics->SetViewMatrix(view);
-    
 }
 
 void PlayScene::Render()
@@ -112,8 +123,10 @@ void PlayScene::Render()
 
     Matrix world = Matrix::Identity;
     
+    Vector3 dot = m_position - m_center;
+    float radian = atan2f(dot.x, dot.z);
     
-    world = Matrix::CreateRotationY(m_quaternion.y);
+    world = Matrix::CreateRotationY(radian);
     world *= Matrix::CreateTranslation(m_position);
 
     // エフェクトを変更する→座標系を設定する
