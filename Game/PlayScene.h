@@ -4,6 +4,8 @@
 #include "Framework/InputManager.h"
 #include "Framework/DeviceResources.h"
 
+class Player;
+class Enemy;
 
 class PlayScene final: public IScene
 {
@@ -24,17 +26,14 @@ private:
 	DirectX::BasicEffect* m_basicEffect;
 	DirectX::PrimitiveBatch<DirectX::VertexPositionColorTexture>* m_primitiveBatch;
 
-	std::unique_ptr<DirectX::Model> m_model;
 
-	float m_angle;
+	std::unique_ptr<DirectX::BoundingBox> m_enemyBox;
 
-	DirectX::SimpleMath::Vector3 m_position;
-	DirectX::SimpleMath::Vector3 m_center;
+	Player* m_player;
 
-	const float SPEED_FB = 0.1f;
-	const float SPEED_RL = 0.05f; 
-
-
+	std::vector<Enemy*> m_enemy;
+	int m_enemyNum;
+	
 	DirectX::VertexPositionColorTexture	m_vertices[4];				// 頂点バッファ
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_texture;		// テクスチャ
 	

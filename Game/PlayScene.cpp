@@ -1,6 +1,9 @@
 #include "pch.h"
 #include "PlayScene.h"
 #include "cmath"
+#include "Framework/Microsoft/DebugDraw.h"
+#include "Player/Player.h"
+#include "Enemy/Enemy.h"
 
 void PlayScene::Initialize()
 {
@@ -11,8 +14,7 @@ void PlayScene::Initialize()
     m_deviceResources = m_graphics->GetDeviceResources();
     m_inputManager = InputManager::GetInstance();
 
-    m_model = std::make_unique<DirectX::Model>();
-    m_model = DirectX::Model::CreateFromCMO(m_graphics->GetDeviceResources()->GetD3DDevice(), L"Resources/Models/dice.cmo", *m_graphics->GetFX());
+
 
     m_basicEffect = m_graphics->GetBasicEffect();
     m_primitiveBatch = m_graphics->GetPrimitiveBatch();
@@ -31,9 +33,27 @@ void PlayScene::Initialize()
     );
     m_graphics->SetProjectionMatrix(projection);
 
-    m_angle = 0;
-    m_position = Vector3(0,0,5);
-    m_center = Vector3(-3,0,20);
+
+    m_player = new Player();
+    m_player->Initialize();
+
+    m_enemy.push_back(new Enemy());
+    m_enemy.back()->Initialize();
+
+    m_enemy.push_back(new Enemy());
+    m_enemy.back()->Initialize();
+    m_enemy.back()->SetPosition(Vector3(5, 0, 5));
+
+    m_enemy.push_back(new Enemy());
+    m_enemy.back()->Initialize();
+    m_enemy.back()->SetPosition(Vector3(10, 0, -5));
+    
+    m_player->SetTarget(m_enemy.front());
+
+    m_enemyNum = 0;
+
+    m_enemyBox = std::make_unique<BoundingBox>();
+    m_enemyBox->Extents = Vector3(0.5f, 0.5f, 0.5f);
 
     // 四角形の頂点座標を定義する…左下基準のコの字、頂点順の指定でDrawQuadが使える
     m_vertices[0] = { Vector3(-5.0f ,5.0f , 5.0f),Vector4(1,1,1,1), Vector2(0.0f, 0.0f) };	//左上
@@ -58,55 +78,18 @@ void PlayScene::Update(float elapsedTime)
 
     const auto& gp = m_inputManager->GetGamePadTracker();
 
-    Vector3 dot = m_position - m_center;
-    float radian = atan2f(dot.x, dot.z);
+    m_player->Update();
 
-    // 回転行列を生成する
-    Matrix rotation = Matrix::CreateRotationY(radian);
-    Vector3 velocity = Vector3::Zero;
-
-
-
-
-
-    if (gp->dpadUp)
+    if (gp->a == gp->PRESSED)
     {
-        velocity += SPEED_FB * rotation.Forward();
-
-
+        m_enemyNum++;
+        if (m_enemyNum >= m_enemy.size())
+        {
+            m_enemyNum = 0;
+        }
+        m_player->SetTarget(m_enemy.at(m_enemyNum));
     }
-    if (gp->dpadDown)
-    {
-        velocity += SPEED_FB * -rotation.Forward();
 
-
-    }
-    if (gp->dpadRight)
-    {
-        velocity += SPEED_RL * dot.Length() * rotation.Right();
-
-        m_angle -= 0.05f;
-    }
-    if (gp->dpadLeft)
-    {
-        velocity += SPEED_RL * dot.Length() * -rotation.Right();
-        
-        m_angle += 0.05f;
-    }
-    m_position += velocity;
-
-    
-    dot = m_position - m_center;
-    radian = atan2f(dot.x, dot.z);
-
-    // 回転行列を生成する
-    rotation = Matrix::CreateRotationY(radian);
-
-    // ビュー行列を作成
-    Vector3 eye = m_position + 10 * -rotation.Forward() + 5 * rotation.Up();
-    Vector3 target = m_center;
-    Matrix view = Matrix::CreateLookAt(eye, target, Vector3::UnitY);
-    m_graphics->SetViewMatrix(view);
 }
 
 void PlayScene::Render()
@@ -119,31 +102,12 @@ void PlayScene::Render()
     auto context = m_deviceResources->GetD3DDeviceContext();
 
 
-    m_graphics->DrawPrimitiveBegin(m_graphics->GetViewMatrix(), m_graphics->GetProjectionMatrix());
+    m_player->Render();
 
-    Matrix world = Matrix::Identity;
-    
-    Vector3 dot = m_position - m_center;
-    float radian = atan2f(dot.x, dot.z);
-    
-    world = Matrix::CreateRotationY(radian);
-    world *= Matrix::CreateTranslation(m_position);
-
-    // エフェクトを変更する→座標系を設定する
-    m_basicEffect->SetWorld(world);				// ワールド行列
-    m_basicEffect->SetView(view);				// ビュー行列
-    m_basicEffect->SetProjection(projection);	// 射影行列
-    m_basicEffect->SetTexture(m_texture.Get());	// テクスチャ
-    m_basicEffect->Apply(context);				// ベーシックエフェクトを更新する
-
-
-    m_model->Draw(context, *m_graphics->GetCommonStates(), world, m_graphics->GetViewMatrix(), m_graphics->GetProjectionMatrix());
-    m_model->Draw(context, *m_graphics->GetCommonStates(), Matrix::CreateTranslation(m_center), m_graphics->GetViewMatrix(), m_graphics->GetProjectionMatrix());
-    m_model->Draw(context, *m_graphics->GetCommonStates(), Matrix::CreateTranslation(m_center + Vector3(0,0,5)), m_graphics->GetViewMatrix(), m_graphics->GetProjectionMatrix());
-
-
-    m_graphics->DrawPrimitiveEnd();
-
+    for (auto& enemy: m_enemy)
+    {
+        enemy->Render();
+    }
 
 
     // プリミティブバッチで描画する
@@ -155,5 +119,13 @@ void PlayScene::Render()
 
 void PlayScene::Finalize()
 {
-
+    m_player->Finalize();
+    delete m_player;
+    m_player = nullptr;
+    delete m_graphics;
+    m_graphics = nullptr;
+    delete m_deviceResources;
+    m_deviceResources = nullptr;
+    delete m_inputManager;
+    m_inputManager = nullptr;
 }
