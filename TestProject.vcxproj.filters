@@ -50,6 +50,9 @@
     <ClInclude Include="Game\Enemy\Enemy.h">
       <Filter>Game\Enemy</Filter>
     </ClInclude>
+    <ClInclude Include="Game\Enemy\Gage.h">
+      <Filter>Game\Enemy</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -76,6 +79,9 @@
       <Filter>Game\Player</Filter>
     </ClCompile>
     <ClCompile Include="Game\Enemy\Enemy.cpp">
+      <Filter>Game\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Enemy\Gage.cpp">
       <Filter>Game\Enemy</Filter>
     </ClCompile>
   </ItemGroup>

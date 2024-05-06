@@ -41,7 +41,7 @@ void Player::Update()
 
 
 
-    if (gp->dpadUp)
+    if (gp->dpadUp || true)
     {
         velocity += SPEED_FB * rotation.Forward();
 

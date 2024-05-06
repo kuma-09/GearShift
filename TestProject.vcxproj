@@ -184,6 +184,7 @@
     <ClInclude Include="Framework\Resources.h" />
     <ClInclude Include="Framework\StepTimer.h" />
     <ClInclude Include="Game\Enemy\Enemy.h" />
+    <ClInclude Include="Game\Enemy\Gage.h" />
     <ClInclude Include="Game\Game.h" />
     <ClInclude Include="Game\IScene.h" />
     <ClInclude Include="Game\Player\Player.h" />
@@ -196,6 +197,7 @@
     <ClCompile Include="Framework\InputManager.cpp" />
     <ClCompile Include="Framework\Resources.cpp" />
     <ClCompile Include="Game\Enemy\Enemy.cpp" />
+    <ClCompile Include="Game\Enemy\Gage.cpp" />
     <ClCompile Include="Game\Game.cpp" />
     <ClCompile Include="Game\Player\Player.cpp" />
     <ClCompile Include="Game\PlayScene.cpp" />
