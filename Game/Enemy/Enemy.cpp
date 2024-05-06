@@ -9,8 +9,7 @@ void Enemy::Initialize()
 	m_graphics = Graphics::GetInstance();
 	m_deviceResources = m_graphics->GetDeviceResources();
 
-	m_model = std::make_unique<DirectX::Model>();
-	m_model = DirectX::Model::CreateFromCMO(m_graphics->GetDeviceResources()->GetD3DDevice(), L"Resources/Models/dice.cmo", *m_graphics->GetFX());
+    m_resources = Resources::GetInstance();
 
 	m_position = Vector3(0, 0, 0);
 
@@ -38,7 +37,7 @@ void Enemy::Render()
     world = Matrix::CreateRotationY(0);
     world *= Matrix::CreateTranslation(m_position);
 
-    m_model->Draw(context, *m_graphics->GetCommonStates(), world, m_graphics->GetViewMatrix(), m_graphics->GetProjectionMatrix());
+    m_resources->GetModel()->Draw(context, *m_graphics->GetCommonStates(), world, m_graphics->GetViewMatrix(), m_graphics->GetProjectionMatrix());
 
     m_graphics->DrawPrimitiveEnd();
 }

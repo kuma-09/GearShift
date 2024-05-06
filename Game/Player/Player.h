@@ -1,8 +1,10 @@
 #include "Framework/Graphics.h"
 #include "Framework/InputManager.h"
 #include "Framework/DeviceResources.h"
+#include "Framework/Resources.h"
 
 class Enemy;
+
 
 class Player
 {
@@ -21,8 +23,9 @@ private:
 	Graphics* m_graphics;
 	DX::DeviceResources* m_deviceResources;
 	InputManager* m_inputManager;
+	Resources* m_resources;
+	
 
-	std::unique_ptr<DirectX::Model> m_model;
 
 	std::unique_ptr<DirectX::BoundingBox> m_boundingBox;
 

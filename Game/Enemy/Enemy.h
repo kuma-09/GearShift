@@ -1,6 +1,7 @@
 #pragma once
 #include "Framework/Graphics.h"
 #include "Framework/DeviceResources.h"
+#include "Framework/Resources.h"
 
 class Player;
 
@@ -22,10 +23,10 @@ public:
 private:
 	Graphics* m_graphics;
 	DX::DeviceResources* m_deviceResources;
+	Resources* m_resources;
 
 	Player* m_player;
 
-	std::unique_ptr<DirectX::Model> m_model;
 
 	std::unique_ptr<DirectX::BoundingBox> m_boundingBox;
 

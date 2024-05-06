@@ -10,6 +10,7 @@
 
 class Graphics;
 class InputManager;
+class Resources;
 
 
 // A basic game implementation that creates a D3D11 device and
@@ -67,6 +68,7 @@ private:
     Graphics* m_graphics;
     DX::DeviceResources* m_deviceResources;
     InputManager* m_inputManager;
+    Resources* m_resources;
 
 
     std::unique_ptr<IScene> m_scene;

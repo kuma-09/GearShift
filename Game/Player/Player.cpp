@@ -12,8 +12,8 @@ void Player::Initialize()
 	m_deviceResources = m_graphics->GetDeviceResources();
 	m_inputManager = InputManager::GetInstance();
 
-	m_model = std::make_unique<DirectX::Model>();
-	m_model = DirectX::Model::CreateFromCMO(m_graphics->GetDeviceResources()->GetD3DDevice(), L"Resources/Models/dice.cmo", *m_graphics->GetFX());
+    m_resources = Resources::GetInstance();
+
 
 	m_angle = 0;
 	m_position = Vector3(5, 0, 5);
@@ -107,7 +107,7 @@ void Player::Render()
 
     m_boundingBox->Center = tmp;
 
-    m_model->Draw(context, *m_graphics->GetCommonStates(), world, m_graphics->GetViewMatrix(), m_graphics->GetProjectionMatrix());
+    m_resources->GetModel()->Draw(context, *m_graphics->GetCommonStates(), world, m_graphics->GetViewMatrix(), m_graphics->GetProjectionMatrix());
 
     m_graphics->DrawPrimitiveEnd();
 }

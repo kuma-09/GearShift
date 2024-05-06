@@ -6,6 +6,7 @@
 #include "Game.h"
 #include "Framework/Graphics.h"
 #include "Framework/InputManager.h"
+#include "Framework/Resources.h"
 #include "Game/PlayScene.h"
 
 extern void ExitGame() noexcept;
@@ -19,6 +20,7 @@ Game::Game() noexcept(false)
     m_graphics = Graphics::GetInstance();
     m_deviceResources = m_graphics->GetDeviceResources();
     m_inputManager = InputManager::GetInstance();
+    m_resources = Resources::GetInstance();
     // TODO: Provide parameters for swapchain format, depth/stencil format, and backbuffer count.
     //   Add DX::DeviceResources::c_AllowTearing to opt-in to variable rate displays.
     //   Add DX::DeviceResources::c_EnableHDR for HDR10 display.
@@ -42,6 +44,8 @@ void Game::Initialize(HWND window, int width, int height)
     CreateWindowSizeDependentResources();
 
     m_inputManager->Initialize(window);
+    m_resources->Initalize(m_graphics);
+    m_resources->LoadResource();
     // TODO: Change the timer settings if you want something other than the default variable timestep mode.
     // e.g. for 60 FPS fixed timestep update logic, call:
     m_timer.SetFixedTimeStep(true);
