@@ -28,20 +28,20 @@ void Player::Update()
 {
     using namespace DirectX::SimpleMath;
 
+    const auto& kb = m_inputManager->GetKeyboardTracker();
     const auto& gp = m_inputManager->GetGamePadTracker();
 
     Vector3 dot = m_position - m_targetEnemy->GetPosition();
     float radian = atan2f(dot.x, dot.z);
 
-    // 回転行列を生成する
-    Matrix rotation = Matrix::CreateRotationY(radian);
     Vector3 velocity = Vector3::Zero;
 
+    Quaternion q = Quaternion::CreateFromYawPitchRoll(Vector3(0, radian, 0));
+    Matrix rotation = Matrix::CreateFromQuaternion(q);
 
 
 
-
-    if (gp->dpadUp || true)
+    if (gp->dpadUp)
     {
         velocity += SPEED_FB * rotation.Forward();
 
@@ -53,7 +53,7 @@ void Player::Update()
 
 
     }
-    if (gp->dpadRight)
+    if (gp->dpadRight || true)
     {
         velocity += SPEED_RL * dot.Length() * rotation.Right();
 
@@ -72,7 +72,8 @@ void Player::Update()
     radian = atan2f(dot.x, dot.z);
 
     // 回転行列を生成する
-    rotation = Matrix::CreateRotationY(radian);
+    q = Quaternion::CreateFromYawPitchRoll(Vector3(0, radian, 0));
+    rotation = Matrix::CreateFromQuaternion(q);
 
     // ビュー行列を作成
     Vector3 eye = m_position + 10 * -rotation.Forward() + 5 * rotation.Up();
@@ -99,7 +100,8 @@ void Player::Render()
     Vector3 dot = m_position - m_targetEnemy->GetPosition();
     float radian = atan2f(dot.x, dot.z);
 
-    world = Matrix::CreateRotationY(radian);
+    Quaternion q = Quaternion::CreateFromYawPitchRoll(Vector3(0, radian, 0));
+    world = Matrix::CreateFromQuaternion(q);
     world *= Matrix::CreateTranslation(m_position);
 
 

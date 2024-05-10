@@ -4,7 +4,7 @@
 #include "Framework/Resources.h"
 
 
-class Enemy
+class Gage
 {
 public:
 

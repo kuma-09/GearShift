@@ -29,8 +29,8 @@ private:
 
 	std::unique_ptr<DirectX::BoundingBox> m_boundingBox;
 
-	const float SPEED_FB = 0.1f;
-	const float SPEED_RL = 0.05f;
+	const float SPEED_FB = 0.001f;
+	const float SPEED_RL = 0.01f;
 
 	float m_angle;
 
