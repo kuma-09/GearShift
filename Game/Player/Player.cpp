@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Player.h"
 #include "Game/Enemy/Enemy.h"
+#include "Framework/Microsoft/DebugDraw.h"
 #include "cmath"
 
 void Player::Initialize()
@@ -14,17 +15,17 @@ void Player::Initialize()
 
     m_resources = Resources::GetInstance();
 
-
-	m_angle = 0;
 	m_position = Vector3(5, 0, 5);
+    m_quaternion = Quaternion::Identity;
 
-    m_center = Vector3(-3, 0, 20);
 
 	m_boundingBox = std::make_unique<BoundingBox>();
 	m_boundingBox->Extents = Vector3(0.5f, 0.5f, 0.5f);
+
+    m_batch = std::make_unique<DirectX::PrimitiveBatch<DirectX::DX11::VertexPositionColor>>(m_deviceResources->GetD3DDeviceContext());
 }
 
-void Player::Update()
+void Player::Update(float elapseTime)
 {
     using namespace DirectX::SimpleMath;
 
@@ -34,49 +35,38 @@ void Player::Update()
     Vector3 dot = m_position - m_targetEnemy->GetPosition();
     float radian = atan2f(dot.x, dot.z);
 
+
+    m_quaternion = Quaternion::CreateFromYawPitchRoll(Vector3(0, radian, 0));
+
+    const auto& gpstate = m_inputManager->GetGamePadState();
+
+    
+
     Vector3 velocity = Vector3::Zero;
 
-    Quaternion q = Quaternion::CreateFromYawPitchRoll(Vector3(0, radian, 0));
-    Matrix rotation = Matrix::CreateFromQuaternion(q);
+    
 
-
-
-    if (gp->dpadUp)
+    if (gpstate.thumbSticks.leftY != 0)
     {
-        velocity += SPEED_FB * rotation.Forward();
-
-
+        velocity += SPEED_FB * Matrix::CreateFromQuaternion(m_quaternion).Forward() * elapseTime * gpstate.thumbSticks.leftY;
     }
-    if (gp->dpadDown)
+    if (gpstate.thumbSticks.leftX != 0)
     {
-        velocity += SPEED_FB * -rotation.Forward();
-
-
+        velocity += SPEED_RL * Matrix::CreateFromQuaternion(m_quaternion).Right() * elapseTime * gpstate.thumbSticks.leftX;
     }
-    if (gp->dpadRight || true)
-    {
-        velocity += SPEED_RL * dot.Length() * rotation.Right();
-
-        //m_angle -= 0.05f;
-    }
-    if (gp->dpadLeft)
-    {
-        velocity += SPEED_RL * dot.Length() * -rotation.Right();
-
-        //m_angle += 0.05f;
-    }
-    m_position += velocity;
+    velocity.Normalize();
+    m_position += velocity / 5;
 
 
     dot = m_position - m_targetEnemy->GetPosition();
     radian = atan2f(dot.x, dot.z);
 
     // 回転行列を生成する
-    q = Quaternion::CreateFromYawPitchRoll(Vector3(0, radian, 0));
-    rotation = Matrix::CreateFromQuaternion(q);
+    m_quaternion = Quaternion::CreateFromYawPitchRoll(Vector3(0, radian, 0));
+
 
     // ビュー行列を作成
-    Vector3 eye = m_position + 10 * -rotation.Forward() + 5 * rotation.Up();
+    Vector3 eye = m_position + 15 * -Matrix::CreateFromQuaternion(m_quaternion).Forward() + 5 * Matrix::CreateFromQuaternion(m_quaternion).Up();
     Vector3 target = m_targetEnemy->GetPosition();
     Matrix view = Matrix::CreateLookAt(eye, target, Vector3::UnitY);
     m_graphics->SetViewMatrix(view);
@@ -105,13 +95,17 @@ void Player::Render()
     world *= Matrix::CreateTranslation(m_position);
 
 
-    Vector3 tmp(world._41, 0, world._43);
-
+    Vector3 tmp(world._41, world._42, world._43);
     m_boundingBox->Center = tmp;
 
     m_resources->GetModel()->Draw(context, *m_graphics->GetCommonStates(), world, m_graphics->GetViewMatrix(), m_graphics->GetProjectionMatrix());
 
     m_graphics->DrawPrimitiveEnd();
+
+    m_graphics->DrawPrimitivePositionColorBegin(view, projection);
+    DX::Draw(m_graphics->GetPrimitiveBatchPositionColor(), *m_boundingBox.get());
+    m_graphics->DrawPrimitivePositionColorEnd();
+
 }
 
 void Player::Finalize()

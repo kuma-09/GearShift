@@ -100,7 +100,7 @@ void Game::Render()
     Clear();
 
     m_deviceResources->PIXBeginEvent(L"Render");
-    auto context = m_deviceResources->GetD3DDeviceContext();
+   
 
     // TODO: Add your rendering code here.
     m_scene->Render();
@@ -183,8 +183,8 @@ void Game::OnWindowSizeChanged(int width, int height)
 void Game::GetDefaultSize(int& width, int& height) const noexcept
 {
     // TODO: Change to desired default window size (note minimum size is 320x200).
-    width = 800;
-    height = 600;
+    width = 1200;
+    height = 720;
 }
 #pragma endregion
 

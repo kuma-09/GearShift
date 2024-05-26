@@ -55,10 +55,12 @@ void Graphics::Initialize()
 	m_spriteFont = std::make_unique<DirectX::SpriteFont>(m_device, L"Resources\\Fonts\\SegoeUI_18.spritefont");
 	// プリミティブバッチを生成する
 	m_primitiveBatch = std::make_unique<DirectX::PrimitiveBatch<DirectX::VertexPositionColorTexture>>(m_context);
+	m_primitiveBatchPositionColor = std::make_unique<DirectX::PrimitiveBatch<DirectX::VertexPositionColor>>(m_context);
 	// 入力レイアウトを生成する
 	m_basicEffect->SetVertexColorEnabled(true);
 	// テクスチャを無効にする
-	m_basicEffect->SetTextureEnabled(false);
+	m_basicEffect->SetTextureEnabled(true);
+	m_basicEffect->SetLightingEnabled(false);
 
 
 	void const* shaderByteCode;
@@ -102,7 +104,7 @@ void Graphics::DrawPrimitiveBegin(const DirectX::SimpleMath::Matrix& view, const
 	// 頂点カラーを有効にする
 	m_basicEffect->SetVertexColorEnabled(true);
 	// テクスチャを有効にする
-	m_basicEffect->SetTextureEnabled(false);
+	m_basicEffect->SetTextureEnabled(true);
 	// 入力レイアウトを設定する
 	m_basicEffect->Apply(m_context);
 	// 入力レイアウトを設定する
@@ -116,4 +118,36 @@ void Graphics::DrawPrimitiveEnd()
 {
 	// プリミティブバッチを終了する
 	m_primitiveBatch->End();
+}
+
+// 描画プリミティブを開始する
+void Graphics::DrawPrimitivePositionColorBegin(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& projection)
+{
+	m_context->OMSetBlendState(m_commonStates->Opaque(), nullptr, 0xFFFFFFFF);
+	m_context->OMSetDepthStencilState(m_commonStates->DepthNone(), 0);
+	m_context->RSSetState(m_commonStates->CullNone());
+	//m_context->RSSetState(m_rasterrizeState.Get());
+
+	// ビュー行列を設定する
+	m_basicEffect->SetView(view);
+	// プロジェクション行列を設定する
+	m_basicEffect->SetProjection(projection);
+	// ワールド行列を設定する
+	m_basicEffect->SetWorld(DirectX::SimpleMath::Matrix::Identity);
+
+	// 頂点カラーを有効にする
+	m_basicEffect->SetVertexColorEnabled(true);
+	// 入力レイアウトを設定する
+	m_basicEffect->Apply(m_context);
+	// 入力レイアウトを設定する
+	m_context->IASetInputLayout(m_inputLayout.Get());
+	// プリミティブバッチを開始する
+	m_primitiveBatchPositionColor->Begin();
+}
+
+// 描画プリミティブを終了する
+void Graphics::DrawPrimitivePositionColorEnd()
+{
+	// プリミティブバッチを終了する
+	m_primitiveBatchPositionColor->End();
 }

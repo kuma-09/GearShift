@@ -12,7 +12,7 @@ public:
 
 	void Initialize();
 
-	void Update();
+	void Update(float elapsedTime);
 
 	void Render();
 
@@ -24,18 +24,18 @@ private:
 	DX::DeviceResources* m_deviceResources;
 	InputManager* m_inputManager;
 	Resources* m_resources;
-	
+
+	std::unique_ptr<DirectX::PrimitiveBatch<DirectX::VertexPositionColor>> m_batch;
 
 
 	std::unique_ptr<DirectX::BoundingBox> m_boundingBox;
 
-	const float SPEED_FB = 0.001f;
-	const float SPEED_RL = 0.01f;
+	const float SPEED_FB = 5.0f;
+	const float SPEED_RL = 5.0f;
 
-	float m_angle;
 
-	DirectX::SimpleMath::Vector3 m_position;
-	DirectX::SimpleMath::Vector3 m_center;
+	DirectX::SimpleMath::Vector3	m_position;
+	DirectX::SimpleMath::Quaternion m_quaternion;
 
 	Enemy* m_targetEnemy;
 };

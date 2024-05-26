@@ -15,6 +15,8 @@ public:
 	void SetScreenSize(const int& width, const int& height) { m_screenW = width; m_screenH = height; }
 	// PrimitiveBatchクラスのインスタンスを取得する
 	DirectX::PrimitiveBatch<DirectX::VertexPositionColorTexture>* GetPrimitiveBatch() const { return m_primitiveBatch.get(); }
+	// PrimitiveBatchクラスのインスタンスを取得する
+	DirectX::PrimitiveBatch<DirectX::VertexPositionColor>* GetPrimitiveBatchPositionColor() const { return m_primitiveBatchPositionColor.get(); }
 	// InputLayoutクラスのインスタンスを取得する
 	ID3D11InputLayout* GetInputLayout() const { return m_inputLayout.Get(); }
 	// BasicEffectクラスのインスタンス取得する
@@ -61,6 +63,11 @@ public:
 	// プリミティブ描画を終了する
 	void DrawPrimitiveEnd();
 
+	// プリミティブ描画を開始する
+	void DrawPrimitivePositionColorBegin(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& projection);
+	// プリミティブ描画を終了する
+	void DrawPrimitivePositionColorEnd();
+
 private:
 	// グラフィックス
 	static std::unique_ptr<Graphics> m_graphics;
@@ -76,6 +83,7 @@ private:
 	std::unique_ptr<DirectX::BasicEffect> m_basicEffect;
 	// プリミティブバッチ
 	std::unique_ptr<DirectX::PrimitiveBatch<DirectX::VertexPositionColorTexture>> m_primitiveBatch;
+	std::unique_ptr<DirectX::PrimitiveBatch<DirectX::VertexPositionColor>> m_primitiveBatchPositionColor;
 	// エフェクトファクトリー
 	std::unique_ptr<DirectX::EffectFactory> m_effectFactory;
 	// ラスタライザーステート

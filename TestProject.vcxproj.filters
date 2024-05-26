@@ -53,6 +53,9 @@
     <ClInclude Include="Game\Enemy\Gage.h">
       <Filter>Game\Enemy</Filter>
     </ClInclude>
+    <ClInclude Include="Framework\Microsoft\DebugDraw.h">
+      <Filter>Framework</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -83,6 +86,9 @@
     </ClCompile>
     <ClCompile Include="Game\Enemy\Gage.cpp">
       <Filter>Game\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\Microsoft\DebugDraw.cpp">
+      <Filter>Framework</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -181,6 +181,7 @@
     <ClInclude Include="Framework\DeviceResources.h" />
     <ClInclude Include="Framework\Graphics.h" />
     <ClInclude Include="Framework\InputManager.h" />
+    <ClInclude Include="Framework\Microsoft\DebugDraw.h" />
     <ClInclude Include="Framework\Resources.h" />
     <ClInclude Include="Framework\StepTimer.h" />
     <ClInclude Include="Game\Enemy\Enemy.h" />
@@ -195,6 +196,7 @@
     <ClCompile Include="Framework\DeviceResources.cpp" />
     <ClCompile Include="Framework\Graphics.cpp" />
     <ClCompile Include="Framework\InputManager.cpp" />
+    <ClCompile Include="Framework\Microsoft\DebugDraw.cpp" />
     <ClCompile Include="Framework\Resources.cpp" />
     <ClCompile Include="Game\Enemy\Enemy.cpp" />
     <ClCompile Include="Game\Enemy\Gage.cpp" />

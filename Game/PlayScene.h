@@ -23,8 +23,6 @@ private:
 	Graphics* m_graphics;
 	DX::DeviceResources* m_deviceResources;
 	InputManager* m_inputManager;
-	DirectX::BasicEffect* m_basicEffect;
-	DirectX::PrimitiveBatch<DirectX::VertexPositionColorTexture>* m_primitiveBatch;
 
 
 	std::unique_ptr<DirectX::BoundingBox> m_enemyBox;
