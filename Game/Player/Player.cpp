@@ -128,10 +128,11 @@ void Player::SetTarget(Enemy* enemy)
     float radian = atan2f(dot.x, dot.z);
 
     // 回転行列を生成する
-    Matrix rotation = Matrix::CreateRotationY(radian);
+    m_quaternion = Quaternion::CreateFromYawPitchRoll(Vector3(0, radian, 0));
+
 
     // ビュー行列を作成
-    Vector3 eye = m_position + 10 * -rotation.Forward() + 5 * rotation.Up();
+    Vector3 eye = m_position + 15 * -Matrix::CreateFromQuaternion(m_quaternion).Forward() + 5 * Matrix::CreateFromQuaternion(m_quaternion).Up();
     Vector3 target = m_targetEnemy->GetPosition();
     Matrix view = Matrix::CreateLookAt(eye, target, Vector3::UnitY);
     m_graphics->SetViewMatrix(view);
