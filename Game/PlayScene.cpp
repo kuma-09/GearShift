@@ -61,7 +61,7 @@ void PlayScene::Initialize()
 
     DirectX::CreateWICTextureFromFile(
         m_deviceResources->GetD3DDevice(),		// デバイスコンテキスト
-        L"Resources/Textures/white.png",	// 画像ファイルのパス
+        L"Resources/Textures/white.png",	    // 画像ファイルのパス
         nullptr,								// 内部的なテクスチャ
         m_texture.ReleaseAndGetAddressOf()		// シェーダリソースビュー(表示用)
     );
@@ -97,7 +97,7 @@ void PlayScene::Render()
     m_graphics->GetBasicEffect()->SetTexture(m_texture.Get());
 
     m_graphics->DrawPrimitiveBegin(m_graphics->GetViewMatrix(), m_graphics->GetProjectionMatrix());
-    m_graphics->GetPrimitiveBatch()->DrawQuad(m_vertices[0], m_vertices[1], m_vertices[3], m_vertices[2]);
+    //m_graphics->GetPrimitiveBatch()->DrawQuad(m_vertices[0], m_vertices[1], m_vertices[3], m_vertices[2]);
     m_graphics->DrawPrimitiveEnd();
 
     m_player->Render();

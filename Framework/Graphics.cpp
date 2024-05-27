@@ -113,6 +113,64 @@ void Graphics::DrawPrimitiveBegin(const DirectX::SimpleMath::Matrix& view, const
 	m_primitiveBatch->Begin();
 }
 
+// 描画プリミティブを開始する
+void Graphics::DrawPrimitiveBegin(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& projection, const DirectX::SimpleMath::Matrix& world)
+{
+	m_context->OMSetBlendState(m_commonStates->NonPremultiplied(), nullptr, 0xFFFFFFFF);
+	m_context->OMSetDepthStencilState(m_commonStates->DepthNone(), 0);
+	m_context->RSSetState(m_commonStates->CullNone());
+	//m_context->RSSetState(m_rasterrizeState.Get());
+
+	// ビュー行列を設定する
+	m_basicEffect->SetView(view);
+	// プロジェクション行列を設定する
+	m_basicEffect->SetProjection(projection);
+	// ワールド行列を設定する
+	m_basicEffect->SetWorld(world);
+
+	// 頂点カラーを有効にする
+	m_basicEffect->SetVertexColorEnabled(true);
+	// テクスチャを有効にする
+	m_basicEffect->SetTextureEnabled(true);
+	// 入力レイアウトを設定する
+	m_basicEffect->Apply(m_context);
+	// 入力レイアウトを設定する
+	m_context->IASetInputLayout(m_inputLayout.Get());
+	// プリミティブバッチを開始する
+	m_primitiveBatch->Begin();
+}
+
+
+// 描画プリミティブを開始する
+void Graphics::DrawPrimitiveBegin(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& projection, const DirectX::SimpleMath::Matrix& world, const DirectX::SimpleMath::Vector4 color)
+{
+	m_context->OMSetBlendState(m_commonStates->NonPremultiplied(), nullptr, 0xFFFFFFFF);
+	m_context->OMSetDepthStencilState(m_commonStates->DepthNone(), 0);
+	m_context->RSSetState(m_commonStates->CullNone());
+	//m_context->RSSetState(m_rasterrizeState.Get());
+
+	// ビュー行列を設定する
+	m_basicEffect->SetView(view);
+	// プロジェクション行列を設定する
+	m_basicEffect->SetProjection(projection);
+	// ワールド行列を設定する
+	m_basicEffect->SetWorld(world);
+
+	// 頂点カラーを有効にする
+	m_basicEffect->SetVertexColorEnabled(true);
+	// テクスチャを有効にする
+	m_basicEffect->SetTextureEnabled(true);
+
+	m_basicEffect->SetColorAndAlpha(color);
+
+	// 入力レイアウトを設定する
+	m_basicEffect->Apply(m_context);
+	// 入力レイアウトを設定する
+	m_context->IASetInputLayout(m_inputLayout.Get());
+	// プリミティブバッチを開始する
+	m_primitiveBatch->Begin();
+}
+
 // 描画プリミティブを終了する
 void Graphics::DrawPrimitiveEnd()
 {

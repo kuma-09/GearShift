@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Player.h"
 #include "Game/Enemy/Enemy.h"
+#include "Particle.h"
 #include "Framework/Microsoft/DebugDraw.h"
 #include "cmath"
 
@@ -22,6 +23,9 @@ void Player::Initialize()
 	m_boundingBox = std::make_unique<BoundingBox>();
 	m_boundingBox->Extents = Vector3(0.5f, 0.5f, 0.5f);
 
+    m_particle = new Particle();
+    m_particle->Initialize();
+
     m_batch = std::make_unique<DirectX::PrimitiveBatch<DirectX::DX11::VertexPositionColor>>(m_deviceResources->GetD3DDeviceContext());
 }
 
@@ -29,8 +33,9 @@ void Player::Update(float elapseTime)
 {
     using namespace DirectX::SimpleMath;
 
-    const auto& kb = m_inputManager->GetKeyboardTracker();
+    const auto& kb = m_inputManager->GetKeyboardState();
     const auto& gp = m_inputManager->GetGamePadTracker();
+
 
     Vector3 dot = m_position - m_targetEnemy->GetPosition();
     float radian = atan2f(dot.x, dot.z);
@@ -54,9 +59,17 @@ void Player::Update(float elapseTime)
     {
         velocity += SPEED_RL * Matrix::CreateFromQuaternion(m_quaternion).Right() * elapseTime * gpstate.thumbSticks.leftX;
     }
+
+    if (kb.Right)
+    {
+        velocity += SPEED_RL * dot.Length() * Matrix::CreateFromQuaternion(m_quaternion).Right();
+
+    }
+
     velocity.Normalize();
     m_position += velocity / 5;
 
+    m_particle->Update(elapseTime);
 
     dot = m_position - m_targetEnemy->GetPosition();
     radian = atan2f(dot.x, dot.z);
@@ -82,9 +95,6 @@ void Player::Render()
 
     auto context = m_deviceResources->GetD3DDeviceContext();
 
-
-    m_graphics->DrawPrimitiveBegin(m_graphics->GetViewMatrix(), m_graphics->GetProjectionMatrix());
-
     Matrix world = Matrix::Identity;
 
     Vector3 dot = m_position - m_targetEnemy->GetPosition();
@@ -93,6 +103,13 @@ void Player::Render()
     Quaternion q = Quaternion::CreateFromYawPitchRoll(Vector3(0, radian, 0));
     world = Matrix::CreateFromQuaternion(q);
     world *= Matrix::CreateTranslation(m_position);
+
+
+    m_particle->Render(world);
+
+    m_graphics->DrawPrimitiveBegin(m_graphics->GetViewMatrix(), m_graphics->GetProjectionMatrix());
+
+
 
 
     Vector3 tmp(world._41, world._42, world._43);
@@ -105,6 +122,8 @@ void Player::Render()
     m_graphics->DrawPrimitivePositionColorBegin(view, projection);
     DX::Draw(m_graphics->GetPrimitiveBatchPositionColor(), *m_boundingBox.get());
     m_graphics->DrawPrimitivePositionColorEnd();
+
+
 
 }
 

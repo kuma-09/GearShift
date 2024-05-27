@@ -4,6 +4,7 @@
 #include "Framework/Resources.h"
 
 class Enemy;
+class Particle;
 
 
 class Player
@@ -38,4 +39,5 @@ private:
 	DirectX::SimpleMath::Quaternion m_quaternion;
 
 	Enemy* m_targetEnemy;
+	Particle* m_particle;
 };
