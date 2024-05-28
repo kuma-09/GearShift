@@ -67,6 +67,7 @@ public:
 
 	// プリミティブ描画を開始する
 	void DrawPrimitivePositionColorBegin(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& projection);
+	void DrawPrimitivePositionColorBegin(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& projection, const DirectX::SimpleMath::Matrix& world);
 	// プリミティブ描画を終了する
 	void DrawPrimitivePositionColorEnd();
 

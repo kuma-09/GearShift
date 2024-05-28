@@ -4,6 +4,7 @@
 #include "Framework/Microsoft/DebugDraw.h"
 #include "Player/Player.h"
 #include "Enemy/Enemy.h"
+#include "Game/Camera.h"
 
 void PlayScene::Initialize()
 {
@@ -16,11 +17,9 @@ void PlayScene::Initialize()
 
 
 
-    // ビュー行列を作成
-    Vector3 eye = Vector3(0, 5, 10);
-    Vector3 target = Vector3::Zero;
-    Matrix view = Matrix::CreateLookAt(eye, target, Vector3::UnitY);
-    m_graphics->SetViewMatrix(view);
+    m_camera = new Camera();
+    m_camera->Initialize();
+    
 
     // 射影行列を作成する
     Matrix projection = Matrix::CreatePerspectiveFieldOfView(
@@ -45,7 +44,7 @@ void PlayScene::Initialize()
     m_enemy.back()->Initialize();
     m_enemy.back()->SetPosition(Vector3(10, 0, -5));
     
-    m_player->SetTarget(m_enemy.front());
+    //m_player->SetTarget(m_enemy.front());
 
     m_enemyNum = 0;
 
@@ -76,17 +75,20 @@ void PlayScene::Update(float elapsedTime)
     
     const auto& gp = m_inputManager->GetGamePadTracker();
 
-    m_player->Update(elapsedTime);
+    UNREFERENCED_PARAMETER(gp);
 
-    if (gp->a == gp->PRESSED)
-    {
-        m_enemyNum++;
-        if (m_enemyNum >= m_enemy.size())
-        {
-            m_enemyNum = 0;
-        }
-        m_player->SetTarget(m_enemy.at(m_enemyNum));
-    }
+    m_player->Update(elapsedTime);
+    m_camera->Update(elapsedTime, m_player);
+
+    //if (gp->a == gp->PRESSED)
+    //{
+    //    m_enemyNum++;
+    //    if (m_enemyNum >= m_enemy.size())
+    //    {
+    //        m_enemyNum = 0;
+    //    }
+    //    m_player->SetTarget(m_enemy.at(m_enemyNum));
+    //}
 
 }
 

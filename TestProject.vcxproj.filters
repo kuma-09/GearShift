@@ -17,6 +17,12 @@
     <Filter Include="Game\Enemy">
       <UniqueIdentifier>{6964a28d-e724-42d1-9545-ee06145b8dcd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game\Parts">
+      <UniqueIdentifier>{096d1b1e-5132-405d-b4b3-5d72ef3aa6b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Components">
+      <UniqueIdentifier>{8b397bf3-e873-4a1b-9356-1c4fae7b482c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -44,9 +50,6 @@
     <ClInclude Include="Game\PlayScene.h">
       <Filter>Game</Filter>
     </ClInclude>
-    <ClInclude Include="Game\Player\Player.h">
-      <Filter>Game\Player</Filter>
-    </ClInclude>
     <ClInclude Include="Game\Enemy\Enemy.h">
       <Filter>Game\Enemy</Filter>
     </ClInclude>
@@ -56,8 +59,32 @@
     <ClInclude Include="Framework\Microsoft\DebugDraw.h">
       <Filter>Framework</Filter>
     </ClInclude>
-    <ClInclude Include="Game\Player\Particle.h">
+    <ClInclude Include="Game\Camera.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\GameObject.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Player\Player.h">
       <Filter>Game\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Parts\Head.h">
+      <Filter>Game\Parts</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Parts\IPart.h">
+      <Filter>Game\Parts</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Components\BoxCollider.h">
+      <Filter>Game\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Components\IComponent.h">
+      <Filter>Game\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Components\ModelDraw.h">
+      <Filter>Game\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Components\Move.h">
+      <Filter>Game\Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -81,9 +108,6 @@
     <ClCompile Include="Game\PlayScene.cpp">
       <Filter>Game</Filter>
     </ClCompile>
-    <ClCompile Include="Game\Player\Player.cpp">
-      <Filter>Game\Player</Filter>
-    </ClCompile>
     <ClCompile Include="Game\Enemy\Enemy.cpp">
       <Filter>Game\Enemy</Filter>
     </ClCompile>
@@ -93,8 +117,23 @@
     <ClCompile Include="Framework\Microsoft\DebugDraw.cpp">
       <Filter>Framework</Filter>
     </ClCompile>
-    <ClCompile Include="Game\Player\Particle.cpp">
+    <ClCompile Include="Game\Camera.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Player\Player.cpp">
       <Filter>Game\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Parts\Head.cpp">
+      <Filter>Game\Parts</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Components\BoxCollider.cpp">
+      <Filter>Game\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Components\ModelDraw.cpp">
+      <Filter>Game\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Components\Move.cpp">
+      <Filter>Game\Components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -6,6 +6,7 @@
 
 class Player;
 class Enemy;
+class Camera;
 
 class PlayScene final: public IScene
 {
@@ -28,6 +29,8 @@ private:
 	std::unique_ptr<DirectX::BoundingBox> m_enemyBox;
 
 	Player* m_player;
+
+	Camera* m_camera;
 
 	std::vector<Enemy*> m_enemy;
 	int m_enemyNum;
