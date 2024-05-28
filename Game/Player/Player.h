@@ -40,9 +40,13 @@ public:
 		}
 	}
 
+
+
 private:
 
 	InputManager* m_inputManager;
+	
+	GameObject* m_target;
 
 	std::unordered_map<std::type_index, std::shared_ptr<IPart>> m_umPart;
 };

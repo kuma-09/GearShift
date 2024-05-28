@@ -3,6 +3,7 @@
 #include "Game/Components/ModelDraw.h"
 #include "Game/Components/BoxCollider.h"
 #include "Game/Components/Move.h"
+#include "Game/Camera.h"
 #include "Game/Parts/Head.h"
 
 Player::Player()

@@ -15,26 +15,15 @@ void PlayScene::Initialize()
     m_deviceResources = m_graphics->GetDeviceResources();
     m_inputManager = InputManager::GetInstance();
 
-
-
-    m_camera = new Camera();
-    m_camera->Initialize();
-    
-
-    // Ë‰es—ñ‚ğì¬‚·‚é
-    Matrix projection = Matrix::CreatePerspectiveFieldOfView(
-        XMConvertToRadians(45.0f),
-        static_cast<float>(m_graphics->GetDeviceResources()->GetOutputSize().right) / static_cast<float>(m_graphics->GetDeviceResources()->GetOutputSize().bottom),
-        0.1f, 1000.0f
-    );
-    m_graphics->SetProjectionMatrix(projection);
-
-
     m_player = new Player();
     m_player->Initialize();
 
+    m_camera = new Camera();
+    m_camera->Initialize();
+
     m_enemy.push_back(new Enemy());
     m_enemy.back()->Initialize();
+    m_enemy.back()->SetPosition(Vector3(0, 0, 0));
 
     m_enemy.push_back(new Enemy());
     m_enemy.back()->Initialize();
@@ -78,7 +67,12 @@ void PlayScene::Update(float elapsedTime)
     UNREFERENCED_PARAMETER(gp);
 
     m_player->Update(elapsedTime);
-    m_camera->Update(elapsedTime, m_player);
+    m_camera->Update(elapsedTime, m_player, m_enemy.front());
+
+    for (auto& enemy : m_enemy)
+    {
+        enemy->Update(elapsedTime);
+    }
 
     //if (gp->a == gp->PRESSED)
     //{

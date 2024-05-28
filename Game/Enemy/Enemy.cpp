@@ -1,45 +1,39 @@
 #include "pch.h"
 #include "Enemy.h"
+#include "Game/Components/ModelDraw.h"
 
-void Enemy::Initialize()
+Enemy::Enemy()
 {
-	using namespace DirectX::SimpleMath;
-	using namespace DirectX;
+	AddComponent<ModelDraw>();
+}
 
-	m_graphics = Graphics::GetInstance();
-	m_deviceResources = m_graphics->GetDeviceResources();
-
-    m_resources = Resources::GetInstance();
-
-	m_position = Vector3(0, 0, 0);
+Enemy::~Enemy()
+{
 
 }
 
-void Enemy::Update()
+void Enemy::Initialize()
 {
 
+}
+
+void Enemy::Update(float elapsedTime)
+{
+	using namespace DirectX::SimpleMath;
+
+	ComponentsUpdate(elapsedTime);
+
+	Matrix world = Matrix::Identity;
+	world = Matrix::CreateScale(GetScale());
+	world *= Matrix::CreateFromQuaternion(GetQuaternion());
+	world *= Matrix::CreateTranslation(GetPosition());
+
+	SetWorld(world);
 }
 
 void Enemy::Render()
 {
-    using namespace DirectX::SimpleMath;
-
-    auto view = m_graphics->GetViewMatrix();
-    auto projection = m_graphics->GetProjectionMatrix();
-
-    auto context = m_deviceResources->GetD3DDeviceContext();
-
-
-    m_graphics->DrawPrimitiveBegin(m_graphics->GetViewMatrix(), m_graphics->GetProjectionMatrix());
-
-    Matrix world = Matrix::Identity;
-
-    world = Matrix::CreateRotationY(0);
-    world *= Matrix::CreateTranslation(m_position);
-
-    m_resources->GetModel()->Draw(context, *m_graphics->GetCommonStates(), world, m_graphics->GetViewMatrix(), m_graphics->GetProjectionMatrix());
-
-    m_graphics->DrawPrimitiveEnd();
+	GetComponent<ModelDraw>().lock().get()->Render(GetWorld());
 }
 
 void Enemy::Finalize()

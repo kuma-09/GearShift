@@ -9,8 +9,8 @@ Camera::Camera()
     m_graphics = Graphics::GetInstance();
 
     // ビュー行列を作成
-    Vector3 eye = Vector3(0, 5, 10);
-    Vector3 target = Vector3::Zero;
+    Vector3 eye = Vector3::Zero;
+    Vector3 target = Vector3(0,0,5);
     Matrix view = Matrix::CreateLookAt(eye, target, Vector3::UnitY);
     m_graphics->SetViewMatrix(view);
 
@@ -38,7 +38,7 @@ void Camera::Update(float elapsedTime)
 }
 
 
-void Camera::Update(float elapsedTime, GameObject* player)
+void Camera::Update(float elapsedTime, GameObject* player, GameObject* enemy)
 {
     using namespace DirectX::SimpleMath;
 
@@ -48,7 +48,7 @@ void Camera::Update(float elapsedTime, GameObject* player)
 
     // ビュー行列を作成
     Vector3 eye = player->GetPosition() + 15 * -Matrix::CreateFromQuaternion(quaternion).Forward() + 5 * Matrix::CreateFromQuaternion(quaternion).Up();
-    Vector3 target = Vector3(0,0,-5);
+    Vector3 target = enemy->GetPosition();
     Matrix view = Matrix::CreateLookAt(eye, target, Vector3::UnitY);
     m_graphics->SetViewMatrix(view);
 }

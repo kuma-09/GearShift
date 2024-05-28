@@ -1,5 +1,6 @@
 #pragma once
-#include "GameObject.h"
+#include "Components/IComponent.h"
+#include "Game/GameObject.h"
 #include "Framework/Graphics.h"
 #include "Player/Player.h"
 
@@ -11,12 +12,11 @@ public:
 
 	void Initialize();
 	void Update(float elapsedTime);
-	void Update(float elapsedTime, GameObject* player);
+	void Update(float elapsedTime, GameObject* player, GameObject* enemy);
 	void Render();
 	void Finalize();
 
 private:
 	Graphics* m_graphics;
-	Player* m_player;
 };
 

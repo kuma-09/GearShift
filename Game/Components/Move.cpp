@@ -28,7 +28,7 @@ void Move::Update(float elapsedTime)
     const auto& gpTracker = m_inputManager->GetGamePadTracker();
 
 
-    Vector3 dot = GetOwner()->GetPosition() - Vector3(0, 0, -5);
+    Vector3 dot = GetOwner()->GetPosition() - Vector3(0, 0, 0);
     float radian = atan2f(dot.x, dot.z);
 
     Quaternion quaternion = Quaternion::CreateFromYawPitchRoll(Vector3(0, radian, 0));
