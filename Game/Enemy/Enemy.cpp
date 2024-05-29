@@ -1,10 +1,12 @@
 #include "pch.h"
 #include "Enemy.h"
 #include "Game/Components/ModelDraw.h"
+#include "Game/Components/BoxCollider.h"
 
 Enemy::Enemy()
 {
 	AddComponent<ModelDraw>();
+	AddComponent<BoxCollider>();
 }
 
 Enemy::~Enemy()
@@ -34,6 +36,7 @@ void Enemy::Update(float elapsedTime)
 void Enemy::Render()
 {
 	GetComponent<ModelDraw>().lock().get()->Render(GetWorld());
+	GetComponent<BoxCollider>().lock().get()->Render();
 }
 
 void Enemy::Finalize()

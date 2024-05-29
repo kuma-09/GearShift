@@ -7,6 +7,7 @@
 class Player;
 class Enemy;
 class Camera;
+class Wall;
 
 class PlayScene final: public IScene
 {
@@ -34,6 +35,8 @@ private:
 
 	std::vector<Enemy*> m_enemy;
 	int m_enemyNum;
+
+	std::vector<Wall*> m_wall;
 	
 	DirectX::VertexPositionColorTexture	m_vertices[4];				// 頂点バッファ
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_texture;		// テクスチャ

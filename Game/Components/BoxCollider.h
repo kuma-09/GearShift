@@ -14,6 +14,8 @@ public:
 	void Render();
 	void Finalize();
 
+	DirectX::BoundingBox* GetBoundingBox() { return m_boudingBox.get(); }
+
 private:
 	Graphics* m_graphics;
 	std::unique_ptr<DirectX::BoundingBox> m_boudingBox;

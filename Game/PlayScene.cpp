@@ -5,6 +5,8 @@
 #include "Player/Player.h"
 #include "Enemy/Enemy.h"
 #include "Game/Camera.h"
+#include "Game/Components/BoxCollider.h"
+#include "Game/Object/Wall.h"
 
 void PlayScene::Initialize()
 {
@@ -32,13 +34,14 @@ void PlayScene::Initialize()
     m_enemy.push_back(new Enemy());
     m_enemy.back()->Initialize();
     m_enemy.back()->SetPosition(Vector3(10, 0, -5));
-    
+
     //m_player->SetTarget(m_enemy.front());
 
     m_enemyNum = 0;
 
-    m_enemyBox = std::make_unique<BoundingBox>();
-    m_enemyBox->Extents = Vector3(0.5f, 0.5f, 0.5f);
+    m_wall.push_back(new Wall());
+    m_wall.back()->SetPosition(Vector3(0, 0, 10));
+
 
     // 四角形の頂点座標を定義する…左下基準のコの字、頂点順の指定でDrawQuadが使える
     m_vertices[0] = { Vector3(-50.0f ,-0.5f, 50.0f),Vector4(0,0.8f,0,1), Vector2(0.0f, 0.0f) };	//左上
@@ -69,11 +72,23 @@ void PlayScene::Update(float elapsedTime)
     m_player->Update(elapsedTime);
     m_camera->Update(elapsedTime, m_player, m_enemy.front());
 
+
     for (auto& enemy : m_enemy)
     {
         enemy->Update(elapsedTime);
     }
 
+    for (auto& wall : m_wall)
+    {
+        wall->Update(elapsedTime);
+        if (m_player->GetComponent<BoxCollider>().lock().get()->GetBoundingBox()->Intersects(*wall->GetComponent<BoxCollider>().lock().get()->GetBoundingBox()))
+        {
+            int i = 1;
+        }
+    }
+
+
+    
     //if (gp->a == gp->PRESSED)
     //{
     //    m_enemyNum++;
@@ -101,6 +116,11 @@ void PlayScene::Render()
     for (auto& enemy: m_enemy)
     {
         enemy->Render();
+    }
+
+    for (auto& wall: m_wall)
+    {
+        wall->Render();
     }
 
 

@@ -23,6 +23,9 @@
     <Filter Include="Game\Components">
       <UniqueIdentifier>{8b397bf3-e873-4a1b-9356-1c4fae7b482c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game\Object">
+      <UniqueIdentifier>{6c110454-b525-4ea5-8fa0-90e71f9a431c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -51,9 +54,6 @@
       <Filter>Game</Filter>
     </ClInclude>
     <ClInclude Include="Game\Enemy\Enemy.h">
-      <Filter>Game\Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="Game\Enemy\Gage.h">
       <Filter>Game\Enemy</Filter>
     </ClInclude>
     <ClInclude Include="Framework\Microsoft\DebugDraw.h">
@@ -86,6 +86,7 @@
     <ClInclude Include="Game\Components\Move.h">
       <Filter>Game\Components</Filter>
     </ClInclude>
+    <ClInclude Include="Game\Object\Wall.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -111,9 +112,6 @@
     <ClCompile Include="Game\Enemy\Enemy.cpp">
       <Filter>Game\Enemy</Filter>
     </ClCompile>
-    <ClCompile Include="Game\Enemy\Gage.cpp">
-      <Filter>Game\Enemy</Filter>
-    </ClCompile>
     <ClCompile Include="Framework\Microsoft\DebugDraw.cpp">
       <Filter>Framework</Filter>
     </ClCompile>
@@ -135,6 +133,7 @@
     <ClCompile Include="Game\Components\Move.cpp">
       <Filter>Game\Components</Filter>
     </ClCompile>
+    <ClCompile Include="Game\Object\Wall.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />

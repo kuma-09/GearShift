@@ -190,10 +190,10 @@
     <ClInclude Include="Game\Components\ModelDraw.h" />
     <ClInclude Include="Game\Components\Move.h" />
     <ClInclude Include="Game\Enemy\Enemy.h" />
-    <ClInclude Include="Game\Enemy\Gage.h" />
     <ClInclude Include="Game\Game.h" />
     <ClInclude Include="Game\GameObject.h" />
     <ClInclude Include="Game\IScene.h" />
+    <ClInclude Include="Game\Object\Wall.h" />
     <ClInclude Include="Game\Parts\Head.h" />
     <ClInclude Include="Game\Parts\IPart.h" />
     <ClInclude Include="Game\Player\Player.h" />
@@ -211,8 +211,8 @@
     <ClCompile Include="Game\Components\ModelDraw.cpp" />
     <ClCompile Include="Game\Components\Move.cpp" />
     <ClCompile Include="Game\Enemy\Enemy.cpp" />
-    <ClCompile Include="Game\Enemy\Gage.cpp" />
     <ClCompile Include="Game\Game.cpp" />
+    <ClCompile Include="Game\Object\Wall.cpp" />
     <ClCompile Include="Game\Parts\Head.cpp" />
     <ClCompile Include="Game\Player\Player.cpp" />
     <ClCompile Include="Game\PlayScene.cpp" />
