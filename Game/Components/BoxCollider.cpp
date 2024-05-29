@@ -43,3 +43,8 @@ void BoxCollider::Finalize()
 {
 
 }
+
+void BoxCollider::SetSize(DirectX::SimpleMath::Vector3 size)
+{
+	m_boudingBox->Extents = size;
+}

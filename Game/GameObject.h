@@ -5,6 +5,7 @@
 #include <typeindex>
 #include <array>
 #include "Components/IComponent.h"
+#include "IScene.h"
 
 class GameObject
 {

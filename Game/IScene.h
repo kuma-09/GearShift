@@ -4,7 +4,6 @@
 */
 #pragma once
 
-
 class IScene
 {
 
@@ -18,4 +17,7 @@ public:
 	virtual void Render() = 0;
 
 	virtual void Finalize() = 0;
+
+
+
 };

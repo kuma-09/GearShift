@@ -8,9 +8,10 @@
 
 Player::Player()
 {
+	AddComponent<Move>();
+	AddComponent<Camera>();
 	AddComponent<ModelDraw>();
 	AddComponent<BoxCollider>();
-    AddComponent<Move>();
 	AddPart<Head>();
 }
 
@@ -21,6 +22,8 @@ Player::~Player()
 
 void Player::Initialize()
 {
+	GetComponent<Camera>().lock().get()->SetTarget(this, m_target);
+	GetComponent<BoxCollider>().lock().get()->SetTypeID(BoxCollider::TypeID::Player);
 }
 
 void Player::Update(float elapsedTime)
@@ -48,4 +51,10 @@ void Player::Render()
 void Player::Finalize()
 {
 	
+}
+
+void Player::SetTarget(GameObject* target)
+{
+	m_target = target;
+	GetComponent<Camera>().lock().get()->SetTarget(this, m_target);
 }

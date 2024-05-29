@@ -5,6 +5,7 @@
 Wall::Wall()
 {
 	AddComponent<BoxCollider>();
+	GetComponent<BoxCollider>().lock().get()->SetTypeID(BoxCollider::TypeID::Wall);
 }
 
 Wall::~Wall()

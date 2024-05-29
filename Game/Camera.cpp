@@ -18,7 +18,7 @@ Camera::Camera()
     Matrix projection = Matrix::CreatePerspectiveFieldOfView(
         XMConvertToRadians(45.0f),
         static_cast<float>(m_graphics->GetDeviceResources()->GetOutputSize().right) / static_cast<float>(m_graphics->GetDeviceResources()->GetOutputSize().bottom),
-        0.1f, 100.0f);
+        0.1f, 1000.0f);
     m_graphics->SetProjectionMatrix(projection);
 }
 
@@ -34,21 +34,20 @@ void Camera::Initialize()
 
 void Camera::Update(float elapsedTime)
 {
-	UNREFERENCED_PARAMETER(elapsedTime);
-}
-
-
-void Camera::Update(float elapsedTime, GameObject* player, GameObject* enemy)
-{
     using namespace DirectX::SimpleMath;
 
     UNREFERENCED_PARAMETER(elapsedTime);
     
-    Quaternion quaternion = player->GetQuaternion();
+    Vector3 dot = GetOwner()->GetPosition() - m_enemy->GetPosition();
+    float radian = atan2f(dot.x, dot.z);
+
+    Quaternion quaternion = Quaternion::CreateFromYawPitchRoll(Vector3(0, radian, 0));
+
+    GetOwner()->SetQuaternion(quaternion);
 
     // ƒrƒ…[s—ñ‚ðì¬
-    Vector3 eye = player->GetPosition() + 15 * -Matrix::CreateFromQuaternion(quaternion).Forward() + 5 * Matrix::CreateFromQuaternion(quaternion).Up();
-    Vector3 target = enemy->GetPosition();
+    Vector3 eye = m_player->GetPosition() + 15 * -Matrix::CreateFromQuaternion(quaternion).Forward() + 5 * Matrix::CreateFromQuaternion(quaternion).Up();
+    Vector3 target = m_enemy->GetPosition();
     Matrix view = Matrix::CreateLookAt(eye, target, Vector3::UnitY);
     m_graphics->SetViewMatrix(view);
 }
@@ -61,4 +60,10 @@ void Camera::Render()
 void Camera::Finalize()
 {
 
+}
+
+void Camera::SetTarget(GameObject* player, GameObject* enemy)
+{
+    m_player = player;
+    m_enemy  = enemy;
 }

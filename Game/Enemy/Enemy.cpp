@@ -7,6 +7,7 @@ Enemy::Enemy()
 {
 	AddComponent<ModelDraw>();
 	AddComponent<BoxCollider>();
+	GetComponent<BoxCollider>().lock().get()->SetTypeID(BoxCollider::TypeID::Enemy);
 }
 
 Enemy::~Enemy()

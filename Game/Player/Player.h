@@ -40,7 +40,7 @@ public:
 		}
 	}
 
-
+	void SetTarget(GameObject* target);
 
 private:
 

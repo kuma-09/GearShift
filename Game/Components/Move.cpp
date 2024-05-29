@@ -28,12 +28,6 @@ void Move::Update(float elapsedTime)
     const auto& gpTracker = m_inputManager->GetGamePadTracker();
 
 
-    Vector3 dot = GetOwner()->GetPosition() - Vector3(0, 0, 0);
-    float radian = atan2f(dot.x, dot.z);
-
-    Quaternion quaternion = Quaternion::CreateFromYawPitchRoll(Vector3(0, radian, 0));
-
-    GetOwner()->SetQuaternion(quaternion);
 
     Vector3 velocity = Vector3::Zero;
 
@@ -44,12 +38,6 @@ void Move::Update(float elapsedTime)
     if (gpState.thumbSticks.leftX != 0)
     {
         velocity += 5.0f * Matrix::CreateFromQuaternion(GetOwner()->GetQuaternion()).Right() * elapsedTime * gpState.thumbSticks.leftX;
-    }
-
-    if (kb.Right)
-    {
-        velocity += 5.0f * dot.Length() * Matrix::CreateFromQuaternion(GetOwner()->GetQuaternion()).Right();
-
     }
 
     velocity.Normalize();
