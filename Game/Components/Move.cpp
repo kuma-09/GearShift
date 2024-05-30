@@ -28,7 +28,6 @@ void Move::Update(float elapsedTime)
     const auto& gpTracker = m_inputManager->GetGamePadTracker();
 
 
-
     Vector3 velocity = Vector3::Zero;
 
     if (gpState.thumbSticks.leftY != 0)
@@ -38,6 +37,23 @@ void Move::Update(float elapsedTime)
     if (gpState.thumbSticks.leftX != 0)
     {
         velocity += 5.0f * Matrix::CreateFromQuaternion(GetOwner()->GetQuaternion()).Right() * elapsedTime * gpState.thumbSticks.leftX;
+    }
+
+    if (kb.Up)
+    {
+        velocity += 5.0f * Matrix::CreateFromQuaternion(GetOwner()->GetQuaternion()).Forward() * elapsedTime * 1;
+    }
+    if (kb.Down)
+    {
+        velocity += 5.0f * Matrix::CreateFromQuaternion(GetOwner()->GetQuaternion()).Forward() * elapsedTime * -1;
+    }
+    if (kb.Left)
+    {
+        velocity += 5.0f * Matrix::CreateFromQuaternion(GetOwner()->GetQuaternion()).Right() * elapsedTime * -1;
+    }
+    if (kb.Right)
+    {
+        velocity += 5.0f * Matrix::CreateFromQuaternion(GetOwner()->GetQuaternion()).Right() * elapsedTime * 1;
     }
 
     velocity.Normalize();

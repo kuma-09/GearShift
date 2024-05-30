@@ -36,6 +36,10 @@ void Particle::Update(float elapseTime)
     for (auto& position: m_positionLife)
     {
         position.lifeTime -= elapseTime;
+        if (position.lifeTime <= 0)
+        {
+            m_positionLife.erase(m_positionLife.begin());
+        }
     }
 
 }
@@ -64,19 +68,21 @@ void Particle::Render(DirectX::SimpleMath::Matrix world)
         billboard._12 = 0;
         billboard._13 = 0;
 
-        //billboard._21 = 0;
-        //billboard._22 = 1;
-        //billboard._23 = 0;
+        billboard._21 = 0;
+        billboard._22 = 1;
+        billboard._23 = 0;
 
-        billboard._31 = 0;
-        billboard._32 = 0;
-        billboard._33 = 1;
+        //billboard._31 = 0;
+        //billboard._32 = 0;
+        //billboard._33 = 1;
 
         billboard._41 = 0;
         billboard._42 = 0;
         billboard._43 = 0;
 
-        m_graphics->DrawPrimitiveBegin(m_graphics->GetViewMatrix(), m_graphics->GetProjectionMatrix(), position.world * billboard, {1,1,1,position.lifeTime});
+        billboard *= position.world;
+
+        m_graphics->DrawPrimitiveBegin(m_graphics->GetViewMatrix(), m_graphics->GetProjectionMatrix(), billboard, {1,1,1,position.lifeTime});
         m_graphics->GetPrimitiveBatch()->DrawQuad(m_vertices[0], m_vertices[1], m_vertices[3], m_vertices[2]);
         m_graphics->DrawPrimitiveEnd();
     }

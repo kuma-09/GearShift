@@ -3,6 +3,8 @@
 #include "Framework/Graphics.h"
 #include "Framework/InputManager.h"
 #include "Framework/DeviceResources.h"
+#include "Game/Player/Particle.h"
+
 
 class Player;
 class Enemy;
@@ -39,6 +41,7 @@ private:
 	int m_enemyNum;
 
 	std::vector<Wall*> m_wall;
+	std::unique_ptr<Particle> m_particle;
 	
 	DirectX::VertexPositionColorTexture	m_vertices[4];				// 頂点バッファ
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_texture;		// テクスチャ
