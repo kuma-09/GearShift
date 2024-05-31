@@ -122,7 +122,7 @@ void PlayScene::Render()
 
 
     //m_particle->Render(m_player->GetWorld());
-    m_emitter->Render(m_player->GetWorld());
+    m_emitter->Render(m_player->GetPosition());
     m_player->Render();
 
 

@@ -8,7 +8,7 @@ class Particle
 {
 public:
 
-	void Initialize(DirectX::SimpleMath::Matrix world);
+	void Initialize(DirectX::SimpleMath::Vector3 pos);
 
 	void Update(float elapsedTime);
 
@@ -29,6 +29,7 @@ private:
 
 
 	DirectX::SimpleMath::Matrix m_world;
+	DirectX::SimpleMath::Vector3 m_pos;
 	float m_lifeTime;
 
 };

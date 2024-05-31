@@ -2,7 +2,7 @@
 #include "Particle.h"
 #include "cmath"
 
-void Particle::Initialize(DirectX::SimpleMath::Matrix world)
+void Particle::Initialize(DirectX::SimpleMath::Vector3 pos)
 {
 	using namespace DirectX::SimpleMath;
 	using namespace DirectX;
@@ -13,7 +13,9 @@ void Particle::Initialize(DirectX::SimpleMath::Matrix world)
 
     m_resources = Resources::GetInstance();
 
-    m_world = world;
+    //m_world = world;
+    m_pos = pos;
+
     m_lifeTime = 1;
 }
 
@@ -49,7 +51,7 @@ void Particle::Render(
     billboard._42 = 0;
     billboard._43 = 0;
 
-    billboard *= m_world;
+    billboard *= Matrix::CreateTranslation(m_pos);
 
     m_graphics->DrawPrimitiveBegin(m_graphics->GetViewMatrix(), m_graphics->GetProjectionMatrix(),billboard, {1,1,1,m_lifeTime});
     m_graphics->GetPrimitiveBatch()->DrawQuad(*v1, *v2, *v4,*v3);

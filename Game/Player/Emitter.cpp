@@ -57,22 +57,16 @@ void Emitter::Render(DirectX::SimpleMath::Matrix world)
     {
         m_totalTime = 0;
         m_particles.push_back(std::make_unique<Particle>());
-        m_particles.back()->Initialize(world);
+        //m_particles.back()->Initialize(world);
     }
 
 
     m_graphics->GetBasicEffect()->SetTexture(m_texture.Get());
 
-
-
-
-
- 
     for (auto& particle : m_particles)
     {
         particle->Render(&m_vertices[0], &m_vertices[1], &m_vertices[2], &m_vertices[3], m_texture);
     }
-
 }
 
 void Emitter::Render(DirectX::SimpleMath::Vector3 pos)
@@ -84,28 +78,20 @@ void Emitter::Render(DirectX::SimpleMath::Vector3 pos)
 
     auto context = m_deviceResources->GetD3DDeviceContext();
 
-    Matrix world = Matrix::CreateTranslation(pos);
+    if (m_totalTime >= m_interval)
+    {
+        m_totalTime = 0;
+        m_particles.push_back(std::make_unique<Particle>());
+        m_particles.back()->Initialize(pos);
+    }
 
-    //m_positionLife.push_back({ world,1.0f });
 
     m_graphics->GetBasicEffect()->SetTexture(m_texture.Get());
 
-
-
-    //for (auto& position : m_positionLife)
-    //{
-    //    Matrix billboard = view.Invert();
-    //    billboard._41 = 0;
-    //    billboard._42 = 0;
-    //    billboard._43 = 0;
-
-    //    billboard *= position.world;
-
-    //    m_graphics->DrawPrimitiveBegin(m_graphics->GetViewMatrix(), m_graphics->GetProjectionMatrix(), billboard, { 1,1,1,position.lifeTime });
-    //    m_graphics->GetPrimitiveBatch()->DrawQuad(m_vertices[0], m_vertices[1], m_vertices[3], m_vertices[2]);
-    //    m_graphics->DrawPrimitiveEnd();
-    //}
-
+    for (auto& particle : m_particles)
+    {
+        particle->Render(&m_vertices[0], &m_vertices[1], &m_vertices[2], &m_vertices[3], m_texture);
+    }
 }
 
 void Emitter::Finalize()
