@@ -196,6 +196,7 @@
     <ClInclude Include="Game\Object\Wall.h" />
     <ClInclude Include="Game\Parts\Head.h" />
     <ClInclude Include="Game\Parts\IPart.h" />
+    <ClInclude Include="Game\Player\Emitter.h" />
     <ClInclude Include="Game\Player\Particle.h" />
     <ClInclude Include="Game\Player\Player.h" />
     <ClInclude Include="Game\PlayScene.h" />
@@ -215,6 +216,7 @@
     <ClCompile Include="Game\Game.cpp" />
     <ClCompile Include="Game\Object\Wall.cpp" />
     <ClCompile Include="Game\Parts\Head.cpp" />
+    <ClCompile Include="Game\Player\Emitter.cpp" />
     <ClCompile Include="Game\Player\Particle.cpp" />
     <ClCompile Include="Game\Player\Player.cpp" />
     <ClCompile Include="Game\PlayScene.cpp" />

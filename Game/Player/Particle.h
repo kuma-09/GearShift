@@ -8,12 +8,17 @@ class Particle
 {
 public:
 
-	void Initialize();
+	void Initialize(DirectX::SimpleMath::Matrix world);
 
 	void Update(float elapsedTime);
 
-	void Render(DirectX::SimpleMath::Matrix wolrd);
-	void Render(DirectX::SimpleMath::Vector3 pos);
+	void Render(
+		DirectX::VertexPositionColorTexture* v1,
+		DirectX::VertexPositionColorTexture* v2,
+		DirectX::VertexPositionColorTexture* v3,
+		DirectX::VertexPositionColorTexture* v4,
+		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> texture
+	);
 
 	void Finalize();
 private:
@@ -22,15 +27,8 @@ private:
 	InputManager* m_inputManager;
 	Resources* m_resources;
 
-	DirectX::VertexPositionColorTexture m_vertices[4];
-	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_texture;		// テクスチャ
 
-	struct positionLife
-	{
-		DirectX::SimpleMath::Matrix world;
-		float lifeTime;
-	};
-
-	std::vector<positionLife> m_positionLife;
+	DirectX::SimpleMath::Matrix m_world;
+	float m_lifeTime;
 
 };

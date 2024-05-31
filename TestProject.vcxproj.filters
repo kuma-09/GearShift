@@ -88,6 +88,7 @@
     </ClInclude>
     <ClInclude Include="Game\Object\Wall.h" />
     <ClInclude Include="Game\Player\Particle.h" />
+    <ClInclude Include="Game\Player\Emitter.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -136,6 +137,7 @@
     </ClCompile>
     <ClCompile Include="Game\Object\Wall.cpp" />
     <ClCompile Include="Game\Player\Particle.cpp" />
+    <ClCompile Include="Game\Player\Emitter.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />
