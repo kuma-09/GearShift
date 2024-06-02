@@ -57,7 +57,6 @@ void Emitter::Render(DirectX::SimpleMath::Matrix world)
     {
         m_totalTime = 0;
         m_particles.push_back(std::make_unique<Particle>());
-        //m_particles.back()->Initialize(world);
     }
 
 

@@ -27,7 +27,7 @@ void Head::Update(float elapsedTime)
 
 	ComponentsUpdate(elapsedTime);
 
-	SetPosition(GetOwner()->GetPosition() + Vector3{ 0, 2, 0 });
+	SetPosition(GetOwner()->GetPosition() + Vector3{ 0, 7, 0 });
 
 	Matrix world = Matrix::Identity;
 	world = Matrix::CreateScale(GetScale());
@@ -49,7 +49,7 @@ void Head::Render(DirectX::SimpleMath::Matrix world)
 
 
 
-	m_resources->GetModel()->Draw(context, *state, GetWorld(), view, projection);
+	m_resources->GetHeadModel()->Draw(context, *state, GetWorld(), view, projection);
 	GetComponent<BoxCollider>().lock().get()->Render();
 }
 

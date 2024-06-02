@@ -10,7 +10,14 @@ class Resources
 {
 public:
 	// モデルを取得する
-	DirectX::Model* GetModel() { return m_model.get(); }
+	DirectX::Model* GetPlayerModel() { return m_player.get(); }
+	DirectX::Model* GetHeadModel() { return m_head.get(); }
+	DirectX::Model* GetBodyModel() { return m_body.get(); }
+	DirectX::Model* GetlArmModel() { return m_lArm.get(); }
+	DirectX::Model* GetrArmModel() { return m_rArm.get(); }
+	DirectX::Model* GetlLegModel() { return m_lLeg.get(); }
+	DirectX::Model* GetrLegModel() { return m_rLeg.get(); }
+	DirectX::Model* GetDiceModel() { return m_dice.get(); }
 	// テクスチャを取得
 	ID3D11ShaderResourceView* GetTexture() { return m_texture.Get(); }
 public:
@@ -33,7 +40,8 @@ private:
 		:
 		m_graphics{},										// グラフィックス
 		m_device{},											// デバイス
-		m_model{},											// モデル
+		m_player{},											// モデル
+		m_dice{},
 		m_texture{}											// テクスチャ
 
 	{
@@ -48,7 +56,14 @@ private:
 	ID3D11Device* m_device;
 
 	// モデル
-	std::unique_ptr<DirectX::Model> m_model;
+	std::unique_ptr<DirectX::Model> m_player;
+	std::unique_ptr<DirectX::Model> m_head;
+	std::unique_ptr<DirectX::Model> m_body;
+	std::unique_ptr<DirectX::Model> m_lArm;
+	std::unique_ptr<DirectX::Model> m_rArm;
+	std::unique_ptr<DirectX::Model> m_lLeg;
+	std::unique_ptr<DirectX::Model> m_rLeg;
+	std::unique_ptr<DirectX::Model> m_dice;
 
 	// テクスチャ
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_texture;

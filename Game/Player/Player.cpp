@@ -43,9 +43,9 @@ void Player::Update(float elapsedTime)
 
 void Player::Render()
 {
-	GetComponent<ModelDraw>().lock().get()->Render(GetWorld());
-	GetComponent<BoxCollider>().lock().get()->Render();
-	GetPart<Head>().lock().get()->Render(GetWorld());
+	GetComponent<ModelDraw>().lock().get()->Render(ModelDraw::Dice,GetWorld());
+	//GetComponent<BoxCollider>().lock().get()->Render();
+	//GetPart<Head>().lock().get()->Render(GetWorld());
 }
 
 void Player::Finalize()

@@ -9,9 +9,20 @@ public:
 	ModelDraw();
 	~ModelDraw();
 
+	enum ModelType
+	{
+		Head,
+		Body,
+		LArm,
+		RArm,
+		LLeg,
+		RLeg,
+		Dice
+	};
+
 	void Initialize();
 	void Update(float elapsedTime);
-	void Render(DirectX::SimpleMath::Matrix world);
+	void Render(ModelType type,DirectX::SimpleMath::Matrix world);
 	void Finalize();
 
 private:

@@ -22,7 +22,7 @@ void ModelDraw::Update(float elapsedTime)
 	UNREFERENCED_PARAMETER(elapsedTime);
 }
 
-void ModelDraw::Render(DirectX::SimpleMath::Matrix world)
+void ModelDraw::Render(ModelType type, DirectX::SimpleMath::Matrix world)
 {
 
 	auto context    = m_graphics->GetDeviceResources()->GetD3DDeviceContext();
@@ -30,7 +30,33 @@ void ModelDraw::Render(DirectX::SimpleMath::Matrix world)
 	auto view       = m_graphics->GetViewMatrix();
 	auto projection = m_graphics->GetProjectionMatrix();
 
-	m_resources->GetModel()->Draw(context, *state, world, view, projection);
+	switch (type)
+	{
+	case ModelDraw::Head:
+		m_resources->GetHeadModel()->Draw(context, *state, world, view, projection);
+		break;
+	case ModelDraw::Body:
+		m_resources->GetBodyModel()->Draw(context, *state, world, view, projection);
+		break;
+	case ModelDraw::LArm:
+		m_resources->GetlArmModel()->Draw(context, *state, world, view, projection);
+		break;
+	case ModelDraw::RArm:
+		m_resources->GetrArmModel()->Draw(context, *state, world, view, projection);
+		break;
+	case ModelDraw::LLeg:
+		m_resources->GetlLegModel()->Draw(context, *state, world, view, projection);
+		break;
+	case ModelDraw::RLeg:
+		m_resources->GetrLegModel()->Draw(context, *state, world, view, projection);
+		break;
+	case ModelDraw::Dice:
+		m_resources->GetDiceModel()->Draw(context, *state, world, view, projection);
+		break;
+	default:
+		break;
+	}
+
 }
 
 void ModelDraw::Finalize()
