@@ -1,31 +1,30 @@
 #include "pch.h"
-#include "Head.h"
+#include "Body.h"
 #include "Game/Components/ModelDraw.h"
 #include "Game/Components/BoxCollider.h"
 
-Head::Head()
+Body::Body()
 {
 	AddComponent<ModelDraw>();
 	AddComponent<BoxCollider>();
 }
 
-Head::~Head()
+Body::~Body()
 {
 
 }
 
-void Head::Initialize()
+void Body::Initialize()
 {
 }
 
-void Head::Update(float elapsedTime)
+void Body::Update(float elapsedTime)
 {
 	using namespace DirectX::SimpleMath;
 
 	ComponentsUpdate(elapsedTime);
 
-	SetPosition(GetOwner()->GetPosition() 
-		+ Matrix::CreateFromQuaternion(GetQuaternion()).Up() * 2.0f);
+	SetPosition(GetOwner()->GetPosition());
 
 	Matrix world = Matrix::Identity;
 	world = Matrix::CreateScale(GetScale());
@@ -35,15 +34,16 @@ void Head::Update(float elapsedTime)
 	SetWorld(world);
 }
 
-void Head::Render(DirectX::SimpleMath::Matrix world)
+void Body::Render(DirectX::SimpleMath::Matrix world)
 {
 	UNREFERENCED_PARAMETER(world);
 
-	GetComponent<ModelDraw>().lock().get()->Render(ModelDraw::Dice, GetWorld());
+
+	GetComponent<ModelDraw>().lock().get()->Render(ModelDraw::Dice, GetWorld());;
 	//GetComponent<BoxCollider>().lock().get()->Render();
 }
 
-void Head::Finalize()
+void Body::Finalize()
 {
 
 }

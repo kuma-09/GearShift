@@ -50,11 +50,6 @@ void Emitter::Render(DirectX::SimpleMath::Vector3 pos)
 {
     using namespace DirectX::SimpleMath;
 
-    auto view = m_graphics->GetViewMatrix();
-    auto projection = m_graphics->GetProjectionMatrix();
-
-    auto context = m_deviceResources->GetD3DDeviceContext();
-
     if (m_totalTime >= m_interval)
     {
         m_totalTime = 0;

@@ -5,14 +5,24 @@
 #include "Game/Components/Move.h"
 #include "Game/Camera.h"
 #include "Game/Parts/Head.h"
+#include "Game/Parts/Body.h"
+#include "Game/Parts/LeftArm.h"
+#include "Game/Parts/LeftLeg.h"
+#include "Game/Parts/RightArm.h"
+#include "Game/Parts/RightLeg.h"
+
 
 Player::Player()
 {
 	AddComponent<Move>();
 	AddComponent<Camera>();
-	AddComponent<ModelDraw>();
 	AddComponent<BoxCollider>();
 	AddPart<Head>();
+	AddPart<Body>();
+	AddPart<LeftArm>();
+	AddPart<RightArm>();
+	AddPart<LeftLeg>();
+	AddPart<RightLeg>();
 }
 
 Player::~Player()
@@ -43,9 +53,15 @@ void Player::Update(float elapsedTime)
 
 void Player::Render()
 {
-	GetComponent<ModelDraw>().lock().get()->Render(ModelDraw::Dice,GetWorld());
+
+	GetPart<Head>().lock().get()->Render(GetWorld());
+	GetPart<Body>().lock().get()->Render(GetWorld());
+	GetPart<LeftArm>().lock().get()->Render(GetWorld());
+	GetPart<RightArm>().lock().get()->Render(GetWorld());
+	GetPart<LeftLeg>().lock().get()->Render(GetWorld());
+	GetPart<RightLeg>().lock().get()->Render(GetWorld());
 	//GetComponent<BoxCollider>().lock().get()->Render();
-	//GetPart<Head>().lock().get()->Render(GetWorld());
+	
 }
 
 void Player::Finalize()

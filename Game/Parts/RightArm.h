@@ -3,11 +3,11 @@
 #include "Framework/Graphics.h"
 #include "Framework/Resources.h"
 
-class Head : public IPart
+class RightArm : public IPart
 {
 public:
-	Head();
-	~Head();
+	RightArm();
+	~RightArm();
 
 	void Initialize();
 	void Update(float elapsedTime) override;
