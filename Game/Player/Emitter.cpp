@@ -9,8 +9,6 @@ void Emitter::Initialize()
 
     m_graphics = Graphics::GetInstance();
     m_deviceResources = m_graphics->GetDeviceResources();
-    m_inputManager = InputManager::GetInstance();
-
     m_resources = Resources::GetInstance();
 
     // 四角形の頂点座標を定義する…左下基準のコの字、頂点順の指定でDrawQuadが使える
@@ -36,35 +34,15 @@ void Emitter::Update(float elapseTime)
     using namespace DirectX::SimpleMath;
 
     m_totalTime += elapseTime;
-    for (auto& particle : m_particles)
+
+    for (auto it = m_particles.begin(); it != m_particles.end(); it++)
     {
-        particle->Update(elapseTime);
-    }
-
-
-}
-
-void Emitter::Render(DirectX::SimpleMath::Matrix world)
-{
-    using namespace DirectX::SimpleMath;
-
-    auto view = m_graphics->GetViewMatrix();
-    auto projection = m_graphics->GetProjectionMatrix();
-
-    auto context = m_deviceResources->GetD3DDeviceContext();
-
-    if (m_totalTime >= m_interval)
-    {
-        m_totalTime = 0;
-        m_particles.push_back(std::make_unique<Particle>());
-    }
-
-
-    m_graphics->GetBasicEffect()->SetTexture(m_texture.Get());
-
-    for (auto& particle : m_particles)
-    {
-        particle->Render(&m_vertices[0], &m_vertices[1], &m_vertices[2], &m_vertices[3], m_texture);
+        it->get()->Update(elapseTime);
+        if (it->get()->GetLifeTime() <= 0)
+        {
+            m_particles.erase(it);
+            break;
+        }
     }
 }
 
@@ -95,10 +73,5 @@ void Emitter::Render(DirectX::SimpleMath::Vector3 pos)
 
 void Emitter::Finalize()
 {
-    delete m_graphics;
-    m_graphics = nullptr;
-    delete m_deviceResources;
-    m_deviceResources = nullptr;
-    delete m_inputManager;
-    m_inputManager = nullptr;
+
 }

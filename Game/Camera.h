@@ -21,5 +21,7 @@ private:
 
 	GameObject* m_player;
 	GameObject* m_enemy;
+
+	DirectX::SimpleMath::Vector3 m_targetpos;
 };
 

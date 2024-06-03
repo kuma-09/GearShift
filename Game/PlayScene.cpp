@@ -69,8 +69,7 @@ void PlayScene::Update(float elapsedTime)
 
     
     const auto& gp = m_inputManager->GetGamePadTracker();
-
-    UNREFERENCED_PARAMETER(gp);
+    const auto& kb = m_inputManager->GetKeyboardTracker();
 
 
     m_player->Update(elapsedTime);
@@ -98,7 +97,7 @@ void PlayScene::Update(float elapsedTime)
     }
 
     
-    if (gp->a == gp->PRESSED)
+    if (gp->a == gp->PRESSED || kb->IsKeyPressed(DirectX::Keyboard::Z))
     {
         m_enemyNum++;
         if (m_enemyNum >= m_enemy.size())

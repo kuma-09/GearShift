@@ -21,6 +21,8 @@ public:
 	);
 
 	void Finalize();
+
+	float GetLifeTime() { return m_lifeTime; }
 private:
 	Graphics* m_graphics;
 	DX::DeviceResources* m_deviceResources;

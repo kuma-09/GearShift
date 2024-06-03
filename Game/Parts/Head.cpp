@@ -50,7 +50,7 @@ void Head::Render(DirectX::SimpleMath::Matrix world)
 
 
 	m_resources->GetHeadModel()->Draw(context, *state, GetWorld(), view, projection);
-	GetComponent<BoxCollider>().lock().get()->Render();
+	//GetComponent<BoxCollider>().lock().get()->Render();
 }
 
 void Head::Finalize()

@@ -13,7 +13,6 @@ public:
 
 	void Update(float elapsedTime);
 
-	void Render(DirectX::SimpleMath::Matrix wolrd);
 	void Render(DirectX::SimpleMath::Vector3 pos);
 
 	void Finalize();

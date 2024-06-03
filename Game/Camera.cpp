@@ -20,6 +20,7 @@ Camera::Camera()
         static_cast<float>(m_graphics->GetDeviceResources()->GetOutputSize().right) / static_cast<float>(m_graphics->GetDeviceResources()->GetOutputSize().bottom),
         0.1f, 1000.0f);
     m_graphics->SetProjectionMatrix(projection);
+
 }
 
 Camera::~Camera()
@@ -38,17 +39,20 @@ void Camera::Update(float elapsedTime)
 
     UNREFERENCED_PARAMETER(elapsedTime);
     
-    Vector3 dot = GetOwner()->GetPosition() - m_enemy->GetPosition();
+    // ターゲットの座標に向かって視点を移動する
+    m_targetpos = Vector3::Lerp(m_targetpos, m_enemy->GetPosition(), 0.1f);
+
+    // プレイヤーの向いている方向を計算
+    Vector3 dot = GetOwner()->GetPosition() - m_targetpos;
     float radian = atan2f(dot.x, dot.z);
 
+    // プレイヤーの向いている方向を設定
     Quaternion quaternion = Quaternion::CreateFromYawPitchRoll(Vector3(0, radian, 0));
-
     GetOwner()->SetQuaternion(quaternion);
 
-    // ビュー行列を作成
+    // View行列の更新
     Vector3 eye = m_player->GetPosition() + 15 * -Matrix::CreateFromQuaternion(quaternion).Forward() + 5 * Matrix::CreateFromQuaternion(quaternion).Up();
-    Vector3 target = m_enemy->GetPosition();
-    Matrix view = Matrix::CreateLookAt(eye, target, Vector3::UnitY);
+    Matrix view = Matrix::CreateLookAt(eye, m_targetpos, Vector3::UnitY);
     m_graphics->SetViewMatrix(view);
 }
 

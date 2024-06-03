@@ -13,7 +13,6 @@ void Particle::Initialize(DirectX::SimpleMath::Vector3 pos)
 
     m_resources = Resources::GetInstance();
 
-    //m_world = world;
     m_pos = pos;
 
     m_lifeTime = 1;
@@ -42,7 +41,6 @@ void Particle::Render(
 
     auto view = m_graphics->GetViewMatrix();
     auto projection = m_graphics->GetProjectionMatrix();
-    auto context = m_deviceResources->GetD3DDeviceContext();
 
     m_graphics->GetBasicEffect()->SetTexture(texture.Get());
 

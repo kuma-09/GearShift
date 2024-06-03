@@ -178,6 +178,7 @@
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Framework\BinaryFile.h" />
     <ClInclude Include="Framework\DeviceResources.h" />
     <ClInclude Include="Framework\Graphics.h" />
     <ClInclude Include="Framework\InputManager.h" />
@@ -203,6 +204,7 @@
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Framework\BinaryFile.cpp" />
     <ClCompile Include="Framework\DeviceResources.cpp" />
     <ClCompile Include="Framework\Graphics.cpp" />
     <ClCompile Include="Framework\InputManager.cpp" />
