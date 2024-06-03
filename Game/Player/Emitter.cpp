@@ -50,7 +50,12 @@ void Emitter::Render(DirectX::SimpleMath::Vector3 pos)
 {
     using namespace DirectX::SimpleMath;
 
-    if (m_totalTime >= m_interval)
+    auto kbState = InputManager::GetInstance()->GetKeyboardState();
+    auto gpState = InputManager::GetInstance()->GetGamePadState();
+
+    if (m_totalTime >= m_interval && 
+        ((gpState.thumbSticks.leftY != 0 || gpState.thumbSticks.leftX != 0) ||
+        (kbState.Left || kbState.Right || kbState.Up || kbState.Down)))
     {
         m_totalTime = 0;
         m_particles.push_back(std::make_unique<Particle>());

@@ -25,7 +25,7 @@ void Head::Update(float elapsedTime)
 	ComponentsUpdate(elapsedTime);
 
 	SetPosition(GetOwner()->GetPosition() 
-		+ Matrix::CreateFromQuaternion(GetQuaternion()).Up() * 2.0f);
+		+ Matrix::CreateFromQuaternion(GetQuaternion()).Up() * 2.6f);
 
 	Matrix world = Matrix::Identity;
 	world = Matrix::CreateScale(GetScale());
@@ -39,7 +39,7 @@ void Head::Render(DirectX::SimpleMath::Matrix world)
 {
 	UNREFERENCED_PARAMETER(world);
 
-	GetComponent<ModelDraw>().lock().get()->Render(ModelDraw::Dice, GetWorld());
+	GetComponent<ModelDraw>().lock().get()->Render(ModelDraw::Head, GetWorld());
 	//GetComponent<BoxCollider>().lock().get()->Render();
 }
 

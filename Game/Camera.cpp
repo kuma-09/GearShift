@@ -38,7 +38,7 @@ void Camera::Update(float elapsedTime)
     using namespace DirectX::SimpleMath;
 
     UNREFERENCED_PARAMETER(elapsedTime);
-    
+
     // ターゲットの座標に向かって視点を移動する
     m_targetpos = Vector3::Lerp(m_targetpos, m_enemy->GetPosition(), 0.1f);
 
