@@ -35,8 +35,11 @@ void ModelDraw::Render(ModelType type, DirectX::SimpleMath::Matrix world)
 	case ModelDraw::Head:
 		m_resources->GetHeadModel()->Draw(context, *state, world, view, projection);
 		break;
-	case ModelDraw::Body:
-		m_resources->GetBodyModel()->Draw(context, *state, world, view, projection);
+	case ModelDraw::BodyTop:
+		m_resources->GetBodyTopModel()->Draw(context, *state, world, view, projection);
+		break;
+	case ModelDraw::BodyBottom:
+		m_resources->GetBodyBottomModel()->Draw(context, *state, world, view, projection);
 		break;
 	case ModelDraw::LArm:
 		m_resources->GetlArmModel()->Draw(context, *state, world, view, projection);

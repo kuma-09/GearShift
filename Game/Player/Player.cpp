@@ -5,7 +5,8 @@
 #include "Game/Components/Move.h"
 #include "Game/Camera.h"
 #include "Game/Parts/Head.h"
-#include "Game/Parts/Body.h"
+#include "Game/Parts/BodyTop.h"
+#include "Game/Parts/BodyBottom.h"
 #include "Game/Parts/LeftArm.h"
 #include "Game/Parts/LeftLeg.h"
 #include "Game/Parts/RightArm.h"
@@ -18,7 +19,8 @@ Player::Player()
 	AddComponent<Camera>();
 	AddComponent<BoxCollider>();
 	AddPart<Head>();
-	AddPart<Body>();
+	AddPart<BodyTop>();
+	AddPart<BodyBottom>();
 	AddPart<LeftArm>();
 	AddPart<RightArm>();
 	AddPart<LeftLeg>();
@@ -55,7 +57,8 @@ void Player::Render()
 {
 
 	GetPart<Head>().lock().get()->Render(GetWorld());
-	GetPart<Body>().lock().get()->Render(GetWorld());
+	GetPart<BodyTop>().lock().get()->Render(GetWorld());
+	GetPart<BodyBottom>().lock().get()->Render(GetWorld());
 	GetPart<LeftArm>().lock().get()->Render(GetWorld());
 	GetPart<RightArm>().lock().get()->Render(GetWorld());
 	GetPart<LeftLeg>().lock().get()->Render(GetWorld());

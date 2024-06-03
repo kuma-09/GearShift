@@ -12,7 +12,8 @@ public:
 	enum ModelType
 	{
 		Head,
-		Body,
+		BodyTop,
+		BodyBottom,
 		LArm,
 		RArm,
 		LLeg,

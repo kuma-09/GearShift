@@ -10,14 +10,15 @@ class Resources
 {
 public:
 	// モデルを取得する
-	DirectX::Model* GetPlayerModel() { return m_player.get(); }
-	DirectX::Model* GetHeadModel() { return m_head.get(); }
-	DirectX::Model* GetBodyModel() { return m_body.get(); }
-	DirectX::Model* GetlArmModel() { return m_lArm.get(); }
-	DirectX::Model* GetrArmModel() { return m_rArm.get(); }
-	DirectX::Model* GetlLegModel() { return m_lLeg.get(); }
-	DirectX::Model* GetrLegModel() { return m_rLeg.get(); }
-	DirectX::Model* GetDiceModel() { return m_dice.get(); }
+	DirectX::Model* GetPlayerModel()	 { return m_player.get(); }
+	DirectX::Model* GetHeadModel()		 { return m_head.get(); }
+	DirectX::Model* GetBodyTopModel()	 { return m_bodyTop.get(); }
+	DirectX::Model* GetBodyBottomModel() { return m_bodyBottom.get(); }
+	DirectX::Model* GetlArmModel()		 { return m_lArm.get(); }
+	DirectX::Model* GetrArmModel()		 { return m_rArm.get(); }
+	DirectX::Model* GetlLegModel()		 { return m_lLeg.get(); }
+	DirectX::Model* GetrLegModel()		 { return m_rLeg.get(); }
+	DirectX::Model* GetDiceModel()		 { return m_dice.get(); }
 	// テクスチャを取得
 	ID3D11ShaderResourceView* GetTexture() { return m_texture.Get(); }
 public:
@@ -58,7 +59,8 @@ private:
 	// モデル
 	std::unique_ptr<DirectX::Model> m_player;
 	std::unique_ptr<DirectX::Model> m_head;
-	std::unique_ptr<DirectX::Model> m_body;
+	std::unique_ptr<DirectX::Model> m_bodyTop;
+	std::unique_ptr<DirectX::Model> m_bodyBottom;
 	std::unique_ptr<DirectX::Model> m_lArm;
 	std::unique_ptr<DirectX::Model> m_rArm;
 	std::unique_ptr<DirectX::Model> m_lLeg;

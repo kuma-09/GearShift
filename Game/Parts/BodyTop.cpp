@@ -1,24 +1,24 @@
 #include "pch.h"
-#include "Body.h"
+#include "BodyTop.h"
 #include "Game/Components/ModelDraw.h"
 #include "Game/Components/BoxCollider.h"
 
-Body::Body()
+BodyTop::BodyTop()
 {
 	AddComponent<ModelDraw>();
 	AddComponent<BoxCollider>();
 }
 
-Body::~Body()
+BodyTop::~BodyTop()
 {
 
 }
 
-void Body::Initialize()
+void BodyTop::Initialize()
 {
 }
 
-void Body::Update(float elapsedTime)
+void BodyTop::Update(float elapsedTime)
 {
 	using namespace DirectX::SimpleMath;
 
@@ -35,16 +35,16 @@ void Body::Update(float elapsedTime)
 	SetWorld(world);
 }
 
-void Body::Render(DirectX::SimpleMath::Matrix world)
+void BodyTop::Render(DirectX::SimpleMath::Matrix world)
 {
 	UNREFERENCED_PARAMETER(world);
 
 
-	GetComponent<ModelDraw>().lock().get()->Render(ModelDraw::Body, GetWorld());;
+	GetComponent<ModelDraw>().lock().get()->Render(ModelDraw::BodyTop, GetWorld());;
 	//GetComponent<BoxCollider>().lock().get()->Render();
 }
 
-void Body::Finalize()
+void BodyTop::Finalize()
 {
 
 }

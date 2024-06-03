@@ -3,11 +3,11 @@
 #include "Framework/Graphics.h"
 #include "Framework/Resources.h"
 
-class Body : public IPart
+class BodyBottom : public IPart
 {
 public:
-	Body();
-	~Body();
+	BodyBottom();
+	~BodyBottom();
 
 	void Initialize();
 	void Update(float elapsedTime) override;

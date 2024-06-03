@@ -195,7 +195,8 @@
     <ClInclude Include="Game\GameObject.h" />
     <ClInclude Include="Game\IScene.h" />
     <ClInclude Include="Game\Object\Wall.h" />
-    <ClInclude Include="Game\Parts\Body.h" />
+    <ClInclude Include="Game\Parts\BodyBottom.h" />
+    <ClInclude Include="Game\Parts\BodyTop.h" />
     <ClInclude Include="Game\Parts\Head.h" />
     <ClInclude Include="Game\Parts\IPart.h" />
     <ClInclude Include="Game\Parts\LeftArm.h" />
@@ -222,7 +223,8 @@
     <ClCompile Include="Game\Enemy\Enemy.cpp" />
     <ClCompile Include="Game\Game.cpp" />
     <ClCompile Include="Game\Object\Wall.cpp" />
-    <ClCompile Include="Game\Parts\Body.cpp" />
+    <ClCompile Include="Game\Parts\BodyBottom.cpp" />
+    <ClCompile Include="Game\Parts\BodyTop.cpp" />
     <ClCompile Include="Game\Parts\Head.cpp" />
     <ClCompile Include="Game\Parts\LeftArm.cpp" />
     <ClCompile Include="Game\Parts\LeftLeg.cpp" />

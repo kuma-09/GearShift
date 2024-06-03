@@ -26,14 +26,15 @@ void Resources::LoadResource()
 	// リソースディレクトリを設定する
 	m_graphics->GetFX()->SetDirectory(L"Resources\\Models");
 	// モデルをロードする
-	m_player = DirectX::Model::CreateFromSDKMESH(m_device, L"Resources\\Models\\robot.sdkmesh", *m_graphics->GetFX());
-	m_head = DirectX::Model::CreateFromSDKMESH(m_device, L"Resources\\Models\\head.sdkmesh", *m_graphics->GetFX());
-	m_body = DirectX::Model::CreateFromSDKMESH(m_device, L"Resources\\Models\\body.sdkmesh", *m_graphics->GetFX());
-	m_lArm = DirectX::Model::CreateFromSDKMESH(m_device, L"Resources\\Models\\lArm.sdkmesh", *m_graphics->GetFX());
-	m_rArm = DirectX::Model::CreateFromSDKMESH(m_device, L"Resources\\Models\\rArm.sdkmesh", *m_graphics->GetFX());
-	m_lLeg = DirectX::Model::CreateFromSDKMESH(m_device, L"Resources\\Models\\lLeg.sdkmesh", *m_graphics->GetFX());
-	m_rLeg = DirectX::Model::CreateFromSDKMESH(m_device, L"Resources\\Models\\rLeg.sdkmesh", *m_graphics->GetFX());
-	m_dice = DirectX::Model::CreateFromCMO(m_device, L"Resources\\Models\\dice.cmo", *m_graphics->GetFX());
+	m_player	 = DirectX::Model::CreateFromSDKMESH(m_device, L"Resources\\Models\\robot.sdkmesh", *m_graphics->GetFX());
+	m_head		 = DirectX::Model::CreateFromSDKMESH(m_device, L"Resources\\Models\\head.sdkmesh", *m_graphics->GetFX());
+	m_bodyTop	 = DirectX::Model::CreateFromSDKMESH(m_device, L"Resources\\Models\\bodyTop.sdkmesh", *m_graphics->GetFX());
+	m_bodyBottom = DirectX::Model::CreateFromSDKMESH(m_device, L"Resources\\Models\\bodyBottom.sdkmesh", *m_graphics->GetFX());
+	m_lArm		 = DirectX::Model::CreateFromSDKMESH(m_device, L"Resources\\Models\\lArm.sdkmesh", *m_graphics->GetFX());
+	m_rArm		 = DirectX::Model::CreateFromSDKMESH(m_device, L"Resources\\Models\\rArm.sdkmesh", *m_graphics->GetFX());
+	m_lLeg		 = DirectX::Model::CreateFromSDKMESH(m_device, L"Resources\\Models\\lLeg.sdkmesh", *m_graphics->GetFX());
+	m_rLeg		 = DirectX::Model::CreateFromSDKMESH(m_device, L"Resources\\Models\\rLeg.sdkmesh", *m_graphics->GetFX());
+	m_dice		 = DirectX::Model::CreateFromCMO(m_device, L"Resources\\Models\\dice.cmo", *m_graphics->GetFX());
 	// テクスチャをロードする
 	DirectX::CreateWICTextureFromFile(
 		m_device,
