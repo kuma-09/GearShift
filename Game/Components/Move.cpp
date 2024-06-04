@@ -57,7 +57,7 @@ void Move::Update(float elapsedTime)
     }
 
     velocity.Normalize();
-    GetOwner()->SetPosition(GetOwner()->GetPosition() + velocity / 5);
+    GetOwner()->SetVelocity(velocity / 5);
 }
 
 

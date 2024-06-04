@@ -3,6 +3,7 @@
 #include "Game/Components/ModelDraw.h"
 #include "Game/Components/BoxCollider.h"
 #include "Game/Components/Move.h"
+#include "Game/Components/MoveRotation.h"
 #include "Game/Camera.h"
 #include "Game/Parts/Head.h"
 #include "Game/Parts/BodyTop.h"
@@ -18,6 +19,7 @@ Player::Player()
 	AddComponent<Move>();
 	AddComponent<Camera>();
 	AddComponent<BoxCollider>();
+	AddComponent<MoveRotation>();
 	AddPart<Head>();
 	AddPart<BodyTop>();
 	AddPart<BodyBottom>();
@@ -44,6 +46,8 @@ void Player::Update(float elapsedTime)
 
 	ComponentsUpdate(elapsedTime);
 	PartUpdate(elapsedTime);
+
+	SetPosition(GetPosition() + GetVelocity());
 
 	Matrix world = Matrix::Identity;
 	world =  Matrix::CreateScale(GetScale());

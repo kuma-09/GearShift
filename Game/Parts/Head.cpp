@@ -25,7 +25,7 @@ void Head::Update(float elapsedTime)
 	ComponentsUpdate(elapsedTime);
 
 	SetPosition(GetOwner()->GetPosition() 
-		+ Matrix::CreateFromQuaternion(GetQuaternion()).Up() * 2.6f);
+		+ Matrix::CreateFromQuaternion(GetOwner()->GetQuaternion()).Up() * 2.6f);
 
 	Matrix world = Matrix::Identity;
 	world = Matrix::CreateScale(GetScale());

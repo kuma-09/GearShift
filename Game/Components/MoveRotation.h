@@ -3,11 +3,11 @@
 #include "Framework/InputManager.h"
 
 
-class Move : public IComponent
+class MoveRotation : public IComponent
 {
 public:
-	Move();
-	~Move();
+	MoveRotation();
+	~MoveRotation();
 
 	void Initialize();
 	void Update(float elapsedTime);

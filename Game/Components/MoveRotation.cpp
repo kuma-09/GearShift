@@ -1,23 +1,23 @@
 #include "pch.h"
-#include "Move.h"
+#include "MoveRotation.h"
 #include "Game/GameObject.h"
 
-Move::Move()
+MoveRotation::MoveRotation()
 {
 	m_inputManager = InputManager::GetInstance();
 }
 
-Move::~Move()
+MoveRotation::~MoveRotation()
 {
 
 }
 
-void Move::Initialize()
+void MoveRotation::Initialize()
 {
 
 }
 
-void Move::Update(float elapsedTime)
+void MoveRotation::Update(float elapsedTime)
 {
     using namespace DirectX::SimpleMath;
 
@@ -27,41 +27,35 @@ void Move::Update(float elapsedTime)
     const auto& gpState = m_inputManager->GetGamePadState();
     const auto& gpTracker = m_inputManager->GetGamePadTracker();
 
-
-    Vector3 velocity = Vector3::Zero;
-
     if (gpState.thumbSticks.leftY != 0)
     {
-        velocity += 5.0f * Matrix::CreateFromQuaternion(GetOwner()->GetQuaternion()).Forward() * elapsedTime * gpState.thumbSticks.leftY;
+
     }
     if (gpState.thumbSticks.leftX != 0)
     {
-        velocity += 5.0f * Matrix::CreateFromQuaternion(GetOwner()->GetQuaternion()).Right() * elapsedTime * gpState.thumbSticks.leftX;
+
     }
 
     if (kb.Up)
     {
-        velocity += 5.0f * Matrix::CreateFromQuaternion(GetOwner()->GetQuaternion()).Forward() * elapsedTime * 1;
+
     }
     if (kb.Down)
     {
-        velocity += 5.0f * Matrix::CreateFromQuaternion(GetOwner()->GetQuaternion()).Forward() * elapsedTime * -1;
+
     }
     if (kb.Left)
     {
-        velocity += 5.0f * Matrix::CreateFromQuaternion(GetOwner()->GetQuaternion()).Right() * elapsedTime * -1;
+
     }
     if (kb.Right)
     {
-        velocity += 5.0f * Matrix::CreateFromQuaternion(GetOwner()->GetQuaternion()).Right() * elapsedTime * 1;
-    }
 
-    velocity.Normalize();
-    GetOwner()->SetPosition(GetOwner()->GetPosition() + velocity / 5);
+    }
 }
 
 
-void Move::Finalize()
+void MoveRotation::Finalize()
 {
 
 }

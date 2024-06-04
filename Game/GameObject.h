@@ -17,6 +17,10 @@ public:
 	void SetPosition(DirectX::SimpleMath::Vector3 pos) { m_position = pos; }
 	DirectX::SimpleMath::Vector3 GetPosition() { return m_position; }
 
+	// ベクトル
+	void SetVelocity(DirectX::SimpleMath::Vector3 vel) { m_velocity = vel; }
+	DirectX::SimpleMath::Vector3 GetVelocity() { return m_velocity; }
+
 	// 角度
 	void SetRotation(DirectX::SimpleMath::Vector3 rot) { m_rotation = rot; }
 	DirectX::SimpleMath::Vector3 GetRotation() { return m_rotation; }
@@ -67,6 +71,7 @@ public:
 private:
 	DirectX::SimpleMath::Vector3	m_position = DirectX::SimpleMath::Vector3::Zero;
 	DirectX::SimpleMath::Vector3	m_rotation = DirectX::SimpleMath::Vector3::Zero;
+	DirectX::SimpleMath::Vector3    m_velocity = DirectX::SimpleMath::Vector3::Zero;
 	DirectX::SimpleMath::Quaternion m_quaternion = DirectX::SimpleMath::Quaternion::Identity;
 	DirectX::SimpleMath::Vector3	m_scale = DirectX::SimpleMath::Vector3::One;
 	DirectX::SimpleMath::Matrix     m_world = DirectX::SimpleMath::Matrix::Identity;

@@ -96,6 +96,7 @@
     <ClInclude Include="Game\Parts\RightLeg.h" />
     <ClInclude Include="Game\Parts\BodyBottom.h" />
     <ClInclude Include="Game\Parts\BodyTop.h" />
+    <ClInclude Include="Game\Components\MoveRotation.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -152,6 +153,7 @@
     <ClCompile Include="Game\Parts\RightLeg.cpp" />
     <ClCompile Include="Game\Parts\BodyBottom.cpp" />
     <ClCompile Include="Game\Parts\BodyTop.cpp" />
+    <ClCompile Include="Game\Components\MoveRotation.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />
