@@ -97,6 +97,8 @@
     <ClInclude Include="Game\Parts\BodyBottom.h" />
     <ClInclude Include="Game\Parts\BodyTop.h" />
     <ClInclude Include="Game\Components\MoveRotation.h" />
+    <ClInclude Include="Game\Particle\ShaderParticle.h" />
+    <ClInclude Include="Game\Particle\Shader.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -154,6 +156,7 @@
     <ClCompile Include="Game\Parts\BodyBottom.cpp" />
     <ClCompile Include="Game\Parts\BodyTop.cpp" />
     <ClCompile Include="Game\Components\MoveRotation.cpp" />
+    <ClCompile Include="Game\Particle\Shader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />
@@ -171,5 +174,9 @@
   <ItemGroup>
     <None Include="packages.config" />
     <None Include="Resources\Models\robot.sdkmesh" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="Resources\Shaders\PS.hlsl" />
+    <FxCompile Include="Resources\Shaders\VS.hlsl" />
   </ItemGroup>
 </Project>

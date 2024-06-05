@@ -12,6 +12,8 @@
 #include "Game/Parts/LeftLeg.h"
 #include "Game/Parts/RightArm.h"
 #include "Game/Parts/RightLeg.h"
+#include "Game/Particle/Shader.h"
+
 
 
 Player::Player()
@@ -38,6 +40,9 @@ void Player::Initialize()
 {
 	GetComponent<Camera>().lock().get()->SetTarget(this, m_target);
 	GetComponent<BoxCollider>().lock().get()->SetTypeID(BoxCollider::TypeID::Player);
+
+	m_shader = std::make_unique<Shader>();
+	m_shader->CreateShader();
 }
 
 void Player::Update(float elapsedTime)

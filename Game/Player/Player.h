@@ -3,6 +3,8 @@
 #include "Game/Parts/IPart.h"
 #include "Framework/InputManager.h"
 
+class Shader;
+
 class Player : public GameObject
 {
 public:
@@ -47,6 +49,8 @@ private:
 	InputManager* m_inputManager;
 	
 	GameObject* m_target;
+
+	std::unique_ptr<Shader> m_shader;
 
 	std::unordered_map<std::type_index, std::shared_ptr<IPart>> m_umPart;
 };

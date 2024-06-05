@@ -196,6 +196,11 @@
     <ClInclude Include="Game\GameObject.h" />
     <ClInclude Include="Game\IScene.h" />
     <ClInclude Include="Game\Object\Wall.h" />
+    <ClInclude Include="Game\Particle\Shader.h" />
+    <ClInclude Include="Game\Particle\ShaderParticle.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="Game\Parts\BodyBottom.h" />
     <ClInclude Include="Game\Parts\BodyTop.h" />
     <ClInclude Include="Game\Parts\Head.h" />
@@ -225,6 +230,10 @@
     <ClCompile Include="Game\Enemy\Enemy.cpp" />
     <ClCompile Include="Game\Game.cpp" />
     <ClCompile Include="Game\Object\Wall.cpp" />
+    <ClCompile Include="Game\Particle\Shader.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="Game\Parts\BodyBottom.cpp" />
     <ClCompile Include="Game\Parts\BodyTop.cpp" />
     <ClCompile Include="Game\Parts\Head.cpp" />
@@ -256,6 +265,16 @@
   <ItemGroup>
     <None Include="packages.config" />
     <None Include="Resources\Models\robot.sdkmesh" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="Resources\Shaders\PS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\VS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+    </FxCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
