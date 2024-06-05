@@ -28,6 +28,6 @@ float4 main(PS_INPUT input) : SV_TARGET
 	//	^‚Á”’‚È”Âƒ|ƒŠƒSƒ“
 	float4 outputw = float4(1, 0, 0, 1);
 	
-	return output2 * outputw;
+	return outputw;
 
 }

@@ -18,9 +18,10 @@ using namespace DirectX;
 const std::vector<D3D11_INPUT_ELEMENT_DESC> Shader::INPUT_LAYOUT =
 {
 	{ "POSITION",    0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-	{ "NORMAL",      0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-	{ "TEXCOORD",    0, DXGI_FORMAT_R32G32_FLOAT, 0, 24, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+	{ "TEXCOORD",    0, DXGI_FORMAT_R32G32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 };
+
+Microsoft::WRL::ComPtr<ID3D11Buffer> Shader::m_CBuffer;
 
 /// <summary>
 /// コンストラクタ
@@ -34,18 +35,6 @@ Shader::Shader()
 /// </summary>
 Shader::~Shader()
 {
-}
-
-/// <summary>
-/// テクスチャリソース読み込み関数
-/// </summary>
-/// <param name="path">相対パス(Resources/Textures/・・・.pngなど）</param>
-void Shader::LoadTexture(const wchar_t* path)
-{
-	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> texture;
-	DirectX::CreateWICTextureFromFile(m_pDR->GetD3DDevice(), path, nullptr, texture.ReleaseAndGetAddressOf());
-	
-	m_texture.push_back(texture);
 }
 
 /// <summary>
@@ -89,44 +78,28 @@ void Shader::CreateShader()
 	bd.CPUAccessFlags = 0;
 	device->CreateBuffer(&bd, nullptr, &m_CBuffer);
 
-	//	シェーダーに渡す追加のバッファを作成する。(ConstBuffer）
-	ConstBuffer cbuff;
-
 	//	シェーダーにバッファを渡す
 	ID3D11Buffer* cb[1] = { m_CBuffer.Get() };
 	//	頂点シェーダもピクセルシェーダも、同じ値を渡す
 	context->VSSetConstantBuffers(0, 1, cb);
 	context->PSSetConstantBuffers(0, 1, cb);
 
-	//	画像用サンプラーの登録
-	ID3D11SamplerState* sampler[1] = { m_states->LinearWrap() };
-	context->PSSetSamplers(0, 1, sampler);
+	////	半透明描画指定
+	//ID3D11BlendState* blendstate = states->NonPremultiplied();
 
-	//	半透明描画指定
-	ID3D11BlendState* blendstate = m_states->NonPremultiplied();
+	////	透明判定処理
+	//context->OMSetBlendState(blendstate, nullptr, 0xFFFFFFFF);
 
-	//	透明判定処理
-	context->OMSetBlendState(blendstate, nullptr, 0xFFFFFFFF);
+	////	深度バッファに書き込み参照する
+	//context->OMSetDepthStencilState(states->DepthDefault(), 0);
 
-	//	深度バッファに書き込み参照する
-	context->OMSetDepthStencilState(m_states->DepthDefault(), 0);
-
-	//	カリングはなし
-	context->RSSetState(m_states->CullNone());
+	////	カリングはなし
+	//context->RSSetState(states->CullNone());
 
 	//	シェーダをセットする
 	context->VSSetShader(m_vertexShader.Get(), nullptr, 0);
 	context->PSSetShader(m_pixelShader.Get(), nullptr, 0);
 
-	//	Create関数で読み込んだ画像をピクセルシェーダに登録する。
-	//	バラバラに読込コードを書く場合は以下
-	//context->PSSetShaderResources(0, 1, m_texture[0].GetAddressOf());
-	//context->PSSetShaderResources(1, 1, m_texture[1].GetAddressOf());
-	for (int i = 0; i < m_texture.size(); i++)
-	{
-		//	for文で一気に設定する
-		context->PSSetShaderResources(i, 1, m_texture[i].GetAddressOf());
-	}
 
 	//	インプットレイアウトの登録
 	context->IASetInputLayout(m_inputLayout.Get());

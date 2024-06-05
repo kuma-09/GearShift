@@ -23,7 +23,7 @@ private:
 	//	変数
 	DX::DeviceResources* m_pDR;
 
-	Microsoft::WRL::ComPtr<ID3D11Buffer>	m_CBuffer;
+	static Microsoft::WRL::ComPtr<ID3D11Buffer>	m_CBuffer;
 
 	//	入力レイアウト
 	Microsoft::WRL::ComPtr<ID3D11InputLayout> m_inputLayout;
@@ -45,12 +45,15 @@ public:
 	//	関数
 	static const std::vector<D3D11_INPUT_ELEMENT_DESC> INPUT_LAYOUT;
 
+	
+
 	Shader();
 	~Shader();
-
-	void LoadTexture(const wchar_t* path);
 
 	void CreateShader();
 
 	void Render();
+
+	static Microsoft::WRL::ComPtr<ID3D11Buffer> GetBuffer() { return m_CBuffer; }
+
 };
