@@ -84,9 +84,14 @@ void Player::Render()
 
 	Resources::GetInstance()->GetDiceModel()->Draw(context, *states, DirectX::SimpleMath::Matrix::Identity, graphics->GetViewMatrix(), graphics->GetProjectionMatrix(), false, [&]()
 		{
+			DirectX::SimpleMath::Matrix mat = DirectX::SimpleMath::Matrix::CreateScale(1.2f);
+			mat *= GetWorld();
+
 			m_shader->RenderStart(GetWorld(), graphics->GetViewMatrix(), graphics->GetProjectionMatrix());
 		}
 	);
+
+	//Resources::GetInstance()->GetDiceModel()->Draw(context, *states, GetWorld(), graphics->GetViewMatrix(), graphics->GetProjectionMatrix());
 
 	//Resources::GetInstance()->GetDiceModel()->Draw(context, *states, GetWorld(), graphics->GetViewMatrix(), graphics->GetProjectionMatrix());	Resources::GetInstance()->GetDiceModel()->Draw(context, *states, DirectX::SimpleMath::Matrix::Identity, graphics->GetViewMatrix(), graphics->GetProjectionMatrix(), false, [&]()
 	//	{

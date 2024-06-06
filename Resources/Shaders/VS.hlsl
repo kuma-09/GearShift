@@ -31,9 +31,12 @@ PS_INPUT main(VS_INPUT input)
     PS_INPUT output;
 
 
-    // 頂点座標の変換
-    input.Pos += input.Normal;
-    output.Pos = mul(float4(input.Pos, 1), matWorld);
+    //// 頂点座標の変換
+    
+    float3 pos = input.Pos;
+    
+    
+    output.Pos = mul(float4(pos , 1.0f), matWorld);
     
     output.Pos = mul(output.Pos, matView);
     output.Pos = mul(output.Pos, matProj);
