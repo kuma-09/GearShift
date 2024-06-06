@@ -8,6 +8,7 @@
 #include "pch.h"
 #include "Shader.h"
 #include "Framework/Graphics.h"
+#include "Framework/Resources.h"
 #include "Framework/BinaryFile.h"
 
 using namespace DirectX;
@@ -17,8 +18,11 @@ using namespace DirectX;
 /// </summary>
 const std::vector<D3D11_INPUT_ELEMENT_DESC> Shader::INPUT_LAYOUT =
 {
-	{ "POSITION",    0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-	{ "TEXCOORD",    0, DXGI_FORMAT_R32G32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+	{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0,  0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+	{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT,    0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+	{ "NORMAL"  , 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 20, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+	{ "TANGENT" , 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 32, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+	{ "BINORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 44, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 };
 
 Microsoft::WRL::ComPtr<ID3D11Buffer> Shader::m_CBuffer;
@@ -77,6 +81,26 @@ void Shader::CreateShader()
 	bd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
 	bd.CPUAccessFlags = 0;
 	device->CreateBuffer(&bd, nullptr, &m_CBuffer);
+}
+
+
+void Shader::RenderStart(DirectX::SimpleMath::Matrix world, DirectX::SimpleMath::Matrix view, DirectX::SimpleMath::Matrix projection)
+{
+	auto states = Graphics::GetInstance()->GetCommonStates();
+	auto context = Graphics::GetInstance()->GetDeviceResources()->GetD3DDeviceContext();
+
+	// コンストバッファを作成
+	ConstBuffer cbuff;
+	//	ビュー設定
+	cbuff.matView = view.Transpose();
+	//	プロジェクション設定
+	cbuff.matProj = projection.Transpose();
+	//	ワールド設定
+	cbuff.matWorld = world.Transpose();
+	cbuff.Diffuse = SimpleMath::Vector4(1, 1, 1, 1);
+
+	//	受け渡し用バッファの内容更新(ConstBufferからID3D11Bufferへの変換）
+	context->UpdateSubresource(m_CBuffer.Get(), 0, NULL, &cbuff, 0, 0);
 
 	//	シェーダーにバッファを渡す
 	ID3D11Buffer* cb[1] = { m_CBuffer.Get() };
@@ -84,52 +108,28 @@ void Shader::CreateShader()
 	context->VSSetConstantBuffers(0, 1, cb);
 	context->PSSetConstantBuffers(0, 1, cb);
 
-	////	半透明描画指定
-	//ID3D11BlendState* blendstate = states->NonPremultiplied();
 
-	////	透明判定処理
-	//context->OMSetBlendState(blendstate, nullptr, 0xFFFFFFFF);
+	ID3D11SamplerState* sampler = states->LinearWrap();
+	context->PSSetSamplers(0, 1, &sampler);
 
-	////	深度バッファに書き込み参照する
-	//context->OMSetDepthStencilState(states->DepthDefault(), 0);
-
-	////	カリングはなし
-	//context->RSSetState(states->CullNone());
+	ID3D11BlendState* blendState = states->NonPremultiplied();
+	context->OMSetBlendState(blendState, nullptr, 0xFFFFFFFF);
+	context->OMSetDepthStencilState(states->DepthDefault(), 0);
+	context->RSSetState(states->CullNone());
 
 	//	シェーダをセットする
 	context->VSSetShader(m_vertexShader.Get(), nullptr, 0);
 	context->PSSetShader(m_pixelShader.Get(), nullptr, 0);
 
-
 	//	インプットレイアウトの登録
 	context->IASetInputLayout(m_inputLayout.Get());
 }
 
-
-void Shader::Render()
+void Shader::RenderEnd()
 {
+	auto context = Graphics::GetInstance()->GetDeviceResources()->GetD3DDeviceContext();
 
-
-
-		//	板ポリゴンを描画
-		m_batch->Begin();
-		//m_batch->DrawQuad(vertex[0], vertex[1], vertex[2], vertex[3]);
-		m_batch->End();
-
-		////	シェーダの登録を解除しておく
-		//context->VSSetShader(nullptr, nullptr, 0);
-		//context->PSSetShader(nullptr, nullptr, 0);
+	//	シェーダの登録を解除しておく
+	context->VSSetShader(nullptr, nullptr, 0);
+	context->PSSetShader(nullptr, nullptr, 0);
 }
-
-
-// Updateで更新するべき情報
-////	ビュー設定
-//cbuff.matView = view.Transpose();
-////	プロジェクション設定
-//cbuff.matProj = proj.Transpose();
-////	ワールド設定
-//cbuff.matWorld = m_world.Transpose();
-//cbuff.Diffuse = SimpleMath::Vector4(1, 1, 1, 1);
-//
-////	受け渡し用バッファの内容更新(ConstBufferからID3D11Bufferへの変換）
-//context->UpdateSubresource(m_CBuffer.Get(), 0, NULL, &cbuff, 0, 0);

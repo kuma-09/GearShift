@@ -64,6 +64,12 @@ void Player::Update(float elapsedTime)
 
 void Player::Render()
 {
+	auto graphics = Graphics::GetInstance();
+	auto states = graphics->GetCommonStates();
+	auto context = graphics->GetDeviceResources()->GetD3DDeviceContext();
+
+
+
 
 	GetPart<Head>().lock().get()->Render(GetWorld());
 	GetPart<BodyTop>().lock().get()->Render(GetWorld());
@@ -73,6 +79,20 @@ void Player::Render()
 	GetPart<LeftLeg>().lock().get()->Render(GetWorld());
 	GetPart<RightLeg>().lock().get()->Render(GetWorld());
 	//GetComponent<BoxCollider>().lock().get()->Render();
+
+
+
+	Resources::GetInstance()->GetDiceModel()->Draw(context, *states, DirectX::SimpleMath::Matrix::Identity, graphics->GetViewMatrix(), graphics->GetProjectionMatrix(), false, [&]()
+		{
+			m_shader->RenderStart(GetWorld(), graphics->GetViewMatrix(), graphics->GetProjectionMatrix());
+		}
+	);
+
+	//Resources::GetInstance()->GetDiceModel()->Draw(context, *states, GetWorld(), graphics->GetViewMatrix(), graphics->GetProjectionMatrix());	Resources::GetInstance()->GetDiceModel()->Draw(context, *states, DirectX::SimpleMath::Matrix::Identity, graphics->GetViewMatrix(), graphics->GetProjectionMatrix(), false, [&]()
+	//	{
+	//		m_shader->RenderStart(GetWorld(), graphics->GetViewMatrix(), graphics->GetProjectionMatrix());
+	//	}
+	//);
 	
 }
 

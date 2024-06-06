@@ -52,8 +52,7 @@ public:
 
 	void CreateShader();
 
-	void Render();
-
-	static Microsoft::WRL::ComPtr<ID3D11Buffer> GetBuffer() { return m_CBuffer; }
+	void RenderStart(DirectX::SimpleMath::Matrix world, DirectX::SimpleMath::Matrix view, DirectX::SimpleMath::Matrix projection);
+	void RenderEnd();
 
 };

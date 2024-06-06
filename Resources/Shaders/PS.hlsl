@@ -26,7 +26,7 @@ float4 main(PS_INPUT input) : SV_TARGET
 	float4 output2 = tex2.Sample(samLinear, input.Tex);
 
 	//	^‚Á”’‚È”Âƒ|ƒŠƒSƒ“
-	float4 outputw = float4(1, 0, 0, 1);
+	float4 outputw = float4(1, 0, 1, 0.5f);
 	
 	return outputw;
 

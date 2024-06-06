@@ -11,8 +11,11 @@ cbuffer ConstBuffer	: register(b0)
 //	このシェーダが受け取る引数の内容
 struct VS_INPUT
 {
-	float3 Pos : POSITION;
+    float3 Pos : POSITION;
 	float2 Tex : TEXCOORD;
+    float3 Normal: NORMAL;
+    float3 Tangent: TANGENT;
+    float3 BiNormal: BINORMAL;
 };
 
 //	ピクセルシェーダへ渡す引数の内容。returnする値となる
@@ -22,17 +25,25 @@ struct PS_INPUT
 	float2 Tex : TEXCOORD;
 };
 
+// 頂点シェーダー
 PS_INPUT main(VS_INPUT input)
 {
-	PS_INPUT output = (PS_INPUT)0;
-	
-	//	渡された座標に、渡されたWorld、View、Projをクロス積していく。
-	//	もし、C++側で既に計算された結果を使いたい場合、以下は邪魔となるため注意する
-	output.Pos = mul(float4(input.Pos,1),matWorld);
-	output.Pos = mul(output.Pos, matView);
-	output.Pos = mul(output.Pos, matProj);
+    PS_INPUT output;
 
-	//	UV座標はそのまま渡す
-	output.Tex = input.Tex;
-	return output;
+
+    // 頂点座標の変換
+    input.Pos += input.Normal;
+    output.Pos = mul(float4(input.Pos, 1), matWorld);
+    
+    output.Pos = mul(output.Pos, matView);
+    output.Pos = mul(output.Pos, matProj);
+
+    
+
+
+    // テクスチャ座標の渡し方は変更がないため、そのままコピー
+    output.Tex = input.Tex;
+
+
+    return output;
 }

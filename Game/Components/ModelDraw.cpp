@@ -31,19 +31,6 @@ void ModelDraw::Render(ModelType type, DirectX::SimpleMath::Matrix world)
 	auto view       = m_graphics->GetViewMatrix();
 	auto projection = m_graphics->GetProjectionMatrix();
 
-	//	シェーダーに渡す追加のバッファを作成する。(ConstBuffer）
-	Shader::ConstBuffer cbuff;
-	//	ビュー設定
-	cbuff.matView = view.Transpose();
-	//	プロジェクション設定
-	cbuff.matProj = projection.Transpose();
-	//	ワールド設定
-	cbuff.matWorld = world.Transpose();
-	cbuff.Diffuse = DirectX::SimpleMath::Vector4(1, 1, 1, 1);
-
-	//	受け渡し用バッファの内容更新(ConstBufferからID3D11Bufferへの変換）
-	context->UpdateSubresource(Shader::GetBuffer().Get(), 0, NULL, &cbuff, 0, 0);
-
 	switch (type)
 	{
 	case ModelDraw::Head:
