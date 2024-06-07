@@ -33,7 +33,7 @@ PS_INPUT main(VS_INPUT input)
 
     //// 頂点座標の変換
     
-    float3 pos = input.Pos;
+    float3 pos = input.Pos + input.Normal;
     
     
     output.Pos = mul(float4(pos , 1.0f), matWorld);

@@ -82,7 +82,7 @@ void Player::Render()
 
 
 
-	Resources::GetInstance()->GetDiceModel()->Draw(context, *states, DirectX::SimpleMath::Matrix::Identity, graphics->GetViewMatrix(), graphics->GetProjectionMatrix(), false, [&]()
+	Resources::GetInstance()->GetCubeModel()->Draw(context, *states, DirectX::SimpleMath::Matrix::Identity, graphics->GetViewMatrix(), graphics->GetProjectionMatrix(), false, [&]()
 		{
 			DirectX::SimpleMath::Matrix mat = DirectX::SimpleMath::Matrix::CreateScale(1.2f);
 			mat *= GetWorld();

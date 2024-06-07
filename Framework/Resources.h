@@ -19,6 +19,7 @@ public:
 	DirectX::Model* GetlLegModel()		 { return m_lLeg.get(); }
 	DirectX::Model* GetrLegModel()		 { return m_rLeg.get(); }
 	DirectX::Model* GetDiceModel()		 { return m_dice.get(); }
+	DirectX::Model* GetCubeModel()		 { return m_cube.get(); }
 	// テクスチャを取得
 	ID3D11ShaderResourceView* GetTexture() { return m_texture.Get(); }
 public:
@@ -66,6 +67,7 @@ private:
 	std::unique_ptr<DirectX::Model> m_lLeg;
 	std::unique_ptr<DirectX::Model> m_rLeg;
 	std::unique_ptr<DirectX::Model> m_dice;
+	std::unique_ptr<DirectX::Model> m_cube;
 
 	// テクスチャ
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_texture;
