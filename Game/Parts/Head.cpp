@@ -22,8 +22,6 @@ void Head::Update(float elapsedTime)
 {
 	using namespace DirectX::SimpleMath;
 
-	ComponentsUpdate(elapsedTime);
-
 	SetPosition(GetOwner()->GetPosition() 
 		+ Matrix::CreateFromQuaternion(GetOwner()->GetQuaternion()).Up() * 2.6f);
 
@@ -33,6 +31,8 @@ void Head::Update(float elapsedTime)
 	world *= Matrix::CreateTranslation(GetPosition());
 
 	SetWorld(world);
+
+	ComponentsUpdate(elapsedTime);
 }
 
 void Head::Render(DirectX::SimpleMath::Matrix world)

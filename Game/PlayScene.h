@@ -41,7 +41,7 @@ private:
 	int m_enemyNum;
 
 	std::vector<Wall*> m_wall;
-	std::unique_ptr<Emitter> m_emitter;
+
 	
 	DirectX::VertexPositionColorTexture	m_vertices[4];				// 頂点バッファ
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_texture;		// テクスチャ

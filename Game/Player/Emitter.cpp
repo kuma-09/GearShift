@@ -2,7 +2,8 @@
 #include "Emitter.h"
 #include <cmath>
 
-void Emitter::Initialize()
+
+Emitter::Emitter()
 {
     using namespace DirectX::SimpleMath;
     using namespace DirectX;
@@ -27,6 +28,16 @@ void Emitter::Initialize()
     );
 
     m_totalTime = 0;
+}
+
+Emitter::~Emitter()
+{
+
+}
+
+void Emitter::Initialize()
+{
+
 }
 
 void Emitter::Update(float elapseTime)

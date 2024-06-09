@@ -3,17 +3,17 @@
 #include "Framework/InputManager.h"
 
 
-class MoveRotation : public IComponent
+class Gravity : public IComponent
 {
 public:
-	MoveRotation();
-	~MoveRotation();
+	Gravity();
+	~Gravity();
 
 	void Initialize();
 	void Update(float elapsedTime);
 	void Finalize();
 
 private:
-	InputManager* m_inputManager;
+	float m_velocity;
 };
 

@@ -10,6 +10,9 @@ class Emitter: public IComponent
 {
 public:
 
+	Emitter();
+	~Emitter();
+
 	void Initialize();
 
 	void Update(float elapsedTime);

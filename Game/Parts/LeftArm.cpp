@@ -22,8 +22,6 @@ void LeftArm::Update(float elapsedTime)
 {
 	using namespace DirectX::SimpleMath;
 
-	ComponentsUpdate(elapsedTime);
-
 	SetPosition(GetOwner()->GetPosition() 
 		+ Matrix::CreateFromQuaternion(GetOwner()->GetQuaternion()).Right() * -0.6f
 		+ Matrix::CreateFromQuaternion(GetOwner()->GetQuaternion()).Up()    *  2.2f);
@@ -34,6 +32,8 @@ void LeftArm::Update(float elapsedTime)
 	world *= Matrix::CreateTranslation(GetPosition());
 
 	SetWorld(world);
+
+	ComponentsUpdate(elapsedTime);
 }
 
 void LeftArm::Render(DirectX::SimpleMath::Matrix world)

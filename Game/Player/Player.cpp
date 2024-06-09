@@ -3,8 +3,9 @@
 #include "Game/Components/ModelDraw.h"
 #include "Game/Components/BoxCollider.h"
 #include "Game/Components/Move.h"
-#include "Game/Components/MoveRotation.h"
+#include "Game/Components/Gravity.h"
 #include "Game/Camera.h"
+#include "Game/Player/Emitter.h"
 #include "Game/Parts/Head.h"
 #include "Game/Parts/BodyTop.h"
 #include "Game/Parts/BodyBottom.h"
@@ -21,7 +22,8 @@ Player::Player()
 	AddComponent<Move>();
 	AddComponent<Camera>();
 	AddComponent<BoxCollider>();
-	AddComponent<MoveRotation>();
+	AddComponent<Gravity>();
+	AddComponent<Emitter>();
 	AddPart<Head>();
 	AddPart<BodyTop>();
 	AddPart<BodyBottom>();
@@ -70,7 +72,7 @@ void Player::Render()
 
 
 
-
+	GetComponent<Emitter>().lock().get()->Render(GetPosition());
 	GetPart<Head>().lock().get()->Render(GetWorld());
 	GetPart<BodyTop>().lock().get()->Render(GetWorld());
 	GetPart<BodyBottom>().lock().get()->Render(GetWorld());
@@ -79,25 +81,6 @@ void Player::Render()
 	GetPart<LeftLeg>().lock().get()->Render(GetWorld());
 	GetPart<RightLeg>().lock().get()->Render(GetWorld());
 	//GetComponent<BoxCollider>().lock().get()->Render();
-
-
-
-	Resources::GetInstance()->GetCubeModel()->Draw(context, *states, DirectX::SimpleMath::Matrix::Identity, graphics->GetViewMatrix(), graphics->GetProjectionMatrix(), false, [&]()
-		{
-			DirectX::SimpleMath::Matrix mat = DirectX::SimpleMath::Matrix::CreateScale(1.2f);
-			mat *= GetWorld();
-
-			m_shader->RenderStart(GetWorld(), graphics->GetViewMatrix(), graphics->GetProjectionMatrix());
-		}
-	);
-
-	//Resources::GetInstance()->GetDiceModel()->Draw(context, *states, GetWorld(), graphics->GetViewMatrix(), graphics->GetProjectionMatrix());
-
-	//Resources::GetInstance()->GetDiceModel()->Draw(context, *states, GetWorld(), graphics->GetViewMatrix(), graphics->GetProjectionMatrix());	Resources::GetInstance()->GetDiceModel()->Draw(context, *states, DirectX::SimpleMath::Matrix::Identity, graphics->GetViewMatrix(), graphics->GetProjectionMatrix(), false, [&]()
-	//	{
-	//		m_shader->RenderStart(GetWorld(), graphics->GetViewMatrix(), graphics->GetProjectionMatrix());
-	//	}
-	//);
 	
 }
 

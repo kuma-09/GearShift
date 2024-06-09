@@ -20,7 +20,7 @@ void PlayScene::Initialize()
 
     m_player = new Player();
     m_player->Initialize();
-    m_player->SetPosition(Vector3(3, 0, 3));
+    m_player->SetPosition(Vector3(3, 3, 3));
 
     m_enemy.push_back(new Enemy());
     m_enemy.back()->Initialize();
@@ -42,8 +42,6 @@ void PlayScene::Initialize()
     m_wall.back()->SetPosition(Vector3(0, 0, 20));
     m_wall.back()->GetComponent<BoxCollider>().lock().get()->SetSize({ 50,10,1 });
 
-    m_emitter = std::make_unique<Emitter>();
-    m_emitter->Initialize();
 
     // 四角形の頂点座標を定義する…左下基準のコの字、頂点順の指定でDrawQuadが使える
     m_vertices[0] = { Vector3(-50.0f ,-0.5f, 50.0f),Vector4(0,0.8f,0,1), Vector2(0.0f, 0.0f) };	//左上
@@ -73,8 +71,6 @@ void PlayScene::Update(float elapsedTime)
 
 
     m_player->Update(elapsedTime);
-    //m_particle->Update(elapsedTime);
-    m_emitter->Update(elapsedTime);
 
     for (auto& enemy : m_enemy)
     {
@@ -107,6 +103,8 @@ void PlayScene::Update(float elapsedTime)
         m_player->SetTarget(m_enemy[m_enemyNum]);
     }
 
+
+
 }
 
 void PlayScene::Render()
@@ -115,13 +113,10 @@ void PlayScene::Render()
 
     m_graphics->GetBasicEffect()->SetTexture(m_texture.Get());
 
-    m_graphics->DrawPrimitiveBegin(m_graphics->GetViewMatrix(), m_graphics->GetProjectionMatrix());
+    //m_graphics->DrawPrimitiveBegin(m_graphics->GetViewMatrix(), m_graphics->GetProjectionMatrix());
     //m_graphics->GetPrimitiveBatch()->DrawQuad(m_vertices[0], m_vertices[1], m_vertices[3], m_vertices[2]);
-    m_graphics->DrawPrimitiveEnd();
+    //m_graphics->DrawPrimitiveEnd();
 
-
-    //m_particle->Render(m_player->GetWorld());
-    m_emitter->Render(m_player->GetPosition());
     m_player->Render();
 
 

@@ -22,7 +22,6 @@ void BodyTop::Update(float elapsedTime)
 {
 	using namespace DirectX::SimpleMath;
 
-	ComponentsUpdate(elapsedTime);
 
 	SetPosition(GetOwner()->GetPosition()
 		+ Matrix::CreateFromQuaternion(GetOwner()->GetQuaternion()).Up() * 1.25f);
@@ -33,6 +32,8 @@ void BodyTop::Update(float elapsedTime)
 	world *= Matrix::CreateTranslation(GetPosition());
 
 	SetWorld(world);
+
+	ComponentsUpdate(elapsedTime);
 }
 
 void BodyTop::Render(DirectX::SimpleMath::Matrix world)
