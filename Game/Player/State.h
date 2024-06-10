@@ -14,6 +14,4 @@ public:
 	virtual void Finalize() = 0;
 
 	virtual void SetTarget(GameObject* gameobject) = 0;
-
-	virtual void ChageState(State* state) = 0;
 };

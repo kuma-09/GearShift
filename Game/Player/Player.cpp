@@ -20,7 +20,7 @@ Player::~Player()
 
 void Player::Initialize()
 {
-	m_state->Initialize();
+	m_state->Initialize(this);
 }
 
 void Player::Update(float elapsedTime)
