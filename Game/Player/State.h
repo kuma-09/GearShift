@@ -5,11 +5,15 @@ class State : public GameObject
 {
 public:
 
-	void Initialize();
+	virtual void Initialize(GameObject* gameobject) = 0;
 
-	void Update(float elapsedTime);
+	virtual void Update(float elapsedTime) = 0;
 
-	void Render();
+	virtual void Render() = 0;
 
-	void Finalize();
+	virtual void Finalize() = 0;
+
+	virtual void SetTarget(GameObject* gameobject) = 0;
+
+	virtual void ChageState(State* state) = 0;
 };

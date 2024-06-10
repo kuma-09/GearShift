@@ -1,18 +1,15 @@
 #pragma once 
-#include "Game/GameObject.h"
+#include "Game/Player/State.h"
 #include "Game/Parts/IPart.h"
 #include "Framework/InputManager.h"
-#include "Game/Player/State.h"
 
-class Idol;
-
-class Player : public GameObject
+class Idol : public State
 {
 public:
-	Player();
-	~Player();
+	Idol();
+	~Idol();
 
-	void Initialize();
+	void Initialize(GameObject* gameobject);
 	void Update(float elapsedTime);
 	void Render();
 	void Finalize();
@@ -48,11 +45,8 @@ public:
 private:
 
 	InputManager* m_inputManager;
-	
+
 	GameObject* m_target;
 
 	std::unordered_map<std::type_index, std::shared_ptr<IPart>> m_umPart;
-
-	State* m_state;
-	std::unique_ptr<Idol> m_idol;
 };

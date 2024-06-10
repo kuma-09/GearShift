@@ -82,15 +82,15 @@ void PlayScene::Update(float elapsedTime)
         wall->Update(elapsedTime);
     }
 
-    for (auto& enemy : m_enemy)
-    {
-        CheckHit(*m_player->GetComponent<BoxCollider>().lock().get()->GetBoundingBox(), *enemy->GetComponent<BoxCollider>().lock().get()->GetBoundingBox());
-    }
+    //for (auto& enemy : m_enemy)
+    //{
+    //    CheckHit(*m_player->GetComponent<BoxCollider>().lock().get()->GetBoundingBox(), *enemy->GetComponent<BoxCollider>().lock().get()->GetBoundingBox());
+    //}
 
-    for (auto& wall : m_wall)
-    {
-        CheckHit(*m_player->GetComponent<BoxCollider>().lock().get()->GetBoundingBox(), *wall->GetComponent<BoxCollider>().lock().get()->GetBoundingBox());
-    }
+    //for (auto& wall : m_wall)
+    //{
+    //    CheckHit(*m_player->GetComponent<BoxCollider>().lock().get()->GetBoundingBox(), *wall->GetComponent<BoxCollider>().lock().get()->GetBoundingBox());
+    //}
 
     
     if (gp->a == gp->PRESSED || kb->IsKeyPressed(DirectX::Keyboard::Z))

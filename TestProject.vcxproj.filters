@@ -96,9 +96,11 @@
     <ClInclude Include="Game\Parts\RightLeg.h" />
     <ClInclude Include="Game\Parts\BodyBottom.h" />
     <ClInclude Include="Game\Parts\BodyTop.h" />
-    <ClInclude Include="Game\Components\MoveRotation.h" />
     <ClInclude Include="Game\Particle\ShaderParticle.h" />
     <ClInclude Include="Game\Particle\Shader.h" />
+    <ClInclude Include="Game\Components\Gravity.h" />
+    <ClInclude Include="Game\Player\State.h" />
+    <ClInclude Include="Game\Player\Idol.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -155,8 +157,9 @@
     <ClCompile Include="Game\Parts\RightLeg.cpp" />
     <ClCompile Include="Game\Parts\BodyBottom.cpp" />
     <ClCompile Include="Game\Parts\BodyTop.cpp" />
-    <ClCompile Include="Game\Components\MoveRotation.cpp" />
     <ClCompile Include="Game\Particle\Shader.cpp" />
+    <ClCompile Include="Game\Components\Gravity.cpp" />
+    <ClCompile Include="Game\Player\Idol.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />
