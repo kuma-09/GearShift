@@ -26,11 +26,16 @@ void Gravity::Update(float elapsedTime)
 	if (GetOwner()->GetPosition().y > 0)
 	{
 		m_velocity += elapsedTime;
-		GetOwner()->SetPosition(position - Vector3(0, m_velocity, 0));
+		if (m_velocity > MAX_GRAVITY)
+		{
+			m_velocity = MAX_GRAVITY;
+		}
+		GetOwner()->SetVelocity(GetOwner()->GetVelocity() - Vector3(0, m_velocity, 0));
 	}
 	else
 	{
 		m_velocity = 0;
+		GetOwner()->SetVelocity(GetOwner()->GetVelocity() - Vector3(0, m_velocity, 0));
 	}
 }
 

@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Emitter.h"
 #include <cmath>
+#include "Game/GameObject.h"
 
 
 Emitter::Emitter()
@@ -64,9 +65,7 @@ void Emitter::Render(DirectX::SimpleMath::Vector3 pos)
     auto kbState = InputManager::GetInstance()->GetKeyboardState();
     auto gpState = InputManager::GetInstance()->GetGamePadState();
 
-    if (m_totalTime >= m_interval && 
-        ((gpState.thumbSticks.leftY != 0 || gpState.thumbSticks.leftX != 0) ||
-        (kbState.Left || kbState.Right || kbState.Up || kbState.Down)))
+    if (m_totalTime >= m_interval && GetOwner()->GetVelocity() != Vector3::Zero)
     {
         m_totalTime = 0;
         m_particles.push_back(std::make_unique<Particle>());

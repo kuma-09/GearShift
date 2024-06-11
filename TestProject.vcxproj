@@ -211,6 +211,7 @@
     <ClInclude Include="Game\Parts\RightLeg.h" />
     <ClInclude Include="Game\Player\Emitter.h" />
     <ClInclude Include="Game\Player\Idol.h" />
+    <ClInclude Include="Game\Player\Jump.h" />
     <ClInclude Include="Game\Player\State.h" />
     <ClInclude Include="Game\Player\Particle.h" />
     <ClInclude Include="Game\Player\Player.h" />
@@ -245,6 +246,7 @@
     <ClCompile Include="Game\Parts\RightLeg.cpp" />
     <ClCompile Include="Game\Player\Emitter.cpp" />
     <ClCompile Include="Game\Player\Idol.cpp" />
+    <ClCompile Include="Game\Player\Jump.cpp" />
     <ClCompile Include="Game\Player\Particle.cpp" />
     <ClCompile Include="Game\Player\Player.cpp" />
     <ClCompile Include="Game\PlayScene.cpp" />

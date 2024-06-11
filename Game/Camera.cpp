@@ -45,7 +45,6 @@ void Camera::Update(float elapsedTime)
     // プレイヤーの向いている方向を計算
     Vector3 dot = GetOwner()->GetPosition() - m_targetpos;
     float radianY = atan2f(dot.x, dot.z);
-    float radianX = atan2f(dot.y, dot.z);
 
     // プレイヤーの向いている方向を設定
     Quaternion quaternion = Quaternion::CreateFromYawPitchRoll(Vector3(0, radianY, 0));

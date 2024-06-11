@@ -20,7 +20,7 @@ void PlayScene::Initialize()
 
     m_player = new Player();
     m_player->Initialize();
-    m_player->SetPosition(Vector3(3, 3, 3));
+    m_player->SetPosition(Vector3(3, 10, 3));
 
     m_enemy.push_back(new Enemy());
     m_enemy.back()->Initialize();

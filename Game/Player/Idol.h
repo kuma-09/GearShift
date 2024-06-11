@@ -2,6 +2,7 @@
 #include "Game/Player/State.h"
 #include "Game/Parts/IPart.h"
 #include "Framework/InputManager.h"
+#include "Game/Player/Player.h"
 
 class Idol : public State
 {
@@ -9,7 +10,7 @@ public:
 	Idol();
 	~Idol();
 
-	void Initialize(GameObject* gameobject);
+	void Initialize(Player* player);
 	void Update(float elapsedTime);
 	void Render();
 	void Finalize();
@@ -43,6 +44,7 @@ public:
 	void SetTarget(GameObject* target);
 
 private:
+	Player* m_player;
 
 	InputManager* m_inputManager;
 
