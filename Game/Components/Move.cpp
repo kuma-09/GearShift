@@ -30,31 +30,33 @@ void Move::Update(float elapsedTime)
 
     Vector3 velocity = Vector3::Zero;
 
+    Matrix rotate = Matrix::CreateFromQuaternion(GetOwner()->GetQuaternion());
+
     if (gpState.thumbSticks.leftY != 0)
     {
-        velocity +=  Matrix::CreateFromQuaternion(GetOwner()->GetQuaternion()).Forward() * elapsedTime * gpState.thumbSticks.leftY;
+        velocity +=  rotate.Forward() * elapsedTime * gpState.thumbSticks.leftY;
     }
     if (gpState.thumbSticks.leftX != 0)
     {
 
-        velocity +=  Matrix::CreateFromQuaternion(GetOwner()->GetQuaternion()).Right() * elapsedTime * gpState.thumbSticks.leftX;
+        velocity +=  rotate.Right() * elapsedTime * gpState.thumbSticks.leftX;
     }
 
     if (kb.Up)
     {
-        velocity += Matrix::CreateFromQuaternion(GetOwner()->GetQuaternion()).Forward() * elapsedTime ;
+        velocity += rotate.Forward() * elapsedTime ;
     }
     if (kb.Down)
     {
-        velocity +=  -Matrix::CreateFromQuaternion(GetOwner()->GetQuaternion()).Forward() * elapsedTime ;
+        velocity +=  -rotate.Forward() * elapsedTime ;
     }
     if (kb.Left)
     {
-        velocity +=  -Matrix::CreateFromQuaternion(GetOwner()->GetQuaternion()).Right() * elapsedTime ;
+        velocity +=  -rotate.Right() * elapsedTime ;
     }
     if (kb.Right)
     {
-        velocity +=  Matrix::CreateFromQuaternion(GetOwner()->GetQuaternion()).Right() * elapsedTime ;
+        velocity +=  rotate.Right() * elapsedTime ;
     }
 
     velocity.Normalize();

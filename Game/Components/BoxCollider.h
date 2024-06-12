@@ -11,7 +11,8 @@ public:
 		Player,
 		Enemy,
 		Bullet,
-		Wall
+		Wall,
+		DropItem
 	};
 
 	BoxCollider();
@@ -28,6 +29,8 @@ public:
 
 	TypeID GetTypeID() { return m_typeID; }
 	void SetTypeID(TypeID id) { m_typeID = id; }
+
+	static void CheckHit(GameObject* object1, GameObject* object2);
 
 private:
 	Graphics* m_graphics;

@@ -4,12 +4,12 @@
 #include "Framework/InputManager.h"
 #include "Framework/DeviceResources.h"
 #include "Game/Player/Emitter.h"
+#include "Player/Player.h"
+#include "Enemy/Enemy.h"
+#include "Game/Object/Wall.h"
+#include "Game/Object/DropItem.h"
 
-
-class Player;
-class Enemy;
 class Camera;
-class Wall;
 
 class PlayScene final: public IScene
 {
@@ -33,14 +33,15 @@ private:
 
 	std::unique_ptr<DirectX::BoundingBox> m_enemyBox;
 
-	Player* m_player;
+	std::unique_ptr<Player> m_player;
 
 	Camera* m_camera;
 
-	std::vector<Enemy*> m_enemy;
+	std::vector<std::unique_ptr<Enemy>> m_enemy;
 	int m_enemyNum;
 
-	std::vector<Wall*> m_wall;
+	std::vector<std::unique_ptr<Wall>> m_wall;
+	std::vector<std::unique_ptr<DropItem>> m_dropItem;
 
 	
 	DirectX::VertexPositionColorTexture	m_vertices[4];				// 頂点バッファ

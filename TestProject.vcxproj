@@ -196,6 +196,7 @@
     <ClInclude Include="Game\Game.h" />
     <ClInclude Include="Game\GameObject.h" />
     <ClInclude Include="Game\IScene.h" />
+    <ClInclude Include="Game\Object\DropItem.h" />
     <ClInclude Include="Game\Object\Wall.h" />
     <ClInclude Include="Game\Particle\Shader.h" />
     <ClInclude Include="Game\Particle\ShaderParticle.h">
@@ -234,6 +235,7 @@
     <ClCompile Include="Game\Components\Move.cpp" />
     <ClCompile Include="Game\Enemy\Enemy.cpp" />
     <ClCompile Include="Game\Game.cpp" />
+    <ClCompile Include="Game\Object\DropItem.cpp" />
     <ClCompile Include="Game\Object\Wall.cpp" />
     <ClCompile Include="Game\Particle\Shader.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
