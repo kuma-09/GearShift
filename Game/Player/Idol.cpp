@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Idol.h"
 #include "Jump.h"
+#include "Boost.h"
 
 
 
@@ -30,6 +31,10 @@ void Idol::Update(float elapsedTime)
 	if (kb->IsKeyPressed(DirectX::Keyboard::C))
 	{
 		m_player->ChangeState(m_player->GetJump());
+	}
+	if (kb->IsKeyPressed(DirectX::Keyboard::V))
+	{
+		m_player->ChangeState(m_player->GetBoost());
 	}
 }
 

@@ -17,7 +17,7 @@
 #include "Game/Parts/RightLeg.h"
 #include "Game/Particle/Shader.h"
 #include "Game/Player/Jump.h"
-
+#include "Game/Player/Boost.h"
 
 Player::Player()
 {
@@ -36,6 +36,7 @@ Player::Player()
 
 	m_idol = std::make_unique<Idol>();
 	m_jump = std::make_unique<Jump>();
+	m_boost = std::make_unique<Boost>();
 	m_state = m_idol.get();
 
 
@@ -50,6 +51,7 @@ void Player::Initialize()
 {
 	m_idol->Initialize(this);
 	m_jump->Initialize(this);
+	m_boost->Initialize(this);
 
 	GetComponent<BoxCollider>().lock().get()->SetTypeID(BoxCollider::TypeID::Player);
 }
