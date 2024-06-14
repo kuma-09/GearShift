@@ -34,8 +34,9 @@ void Resources::LoadResource()
 	m_rArm		 = DirectX::Model::CreateFromSDKMESH(m_device, L"Resources\\Models\\rArm.sdkmesh", *m_graphics->GetFX());
 	m_lLeg		 = DirectX::Model::CreateFromSDKMESH(m_device, L"Resources\\Models\\lLeg.sdkmesh", *m_graphics->GetFX());
 	m_rLeg		 = DirectX::Model::CreateFromSDKMESH(m_device, L"Resources\\Models\\rLeg.sdkmesh", *m_graphics->GetFX());
-	m_dice		 = DirectX::Model::CreateFromCMO(m_device, L"Resources\\Models\\dice.cmo", *m_graphics->GetFX());
+	m_dice		 = DirectX::Model::CreateFromCMO	(m_device, L"Resources\\Models\\dice.cmo", *m_graphics->GetFX());
 	m_cube		 = DirectX::Model::CreateFromSDKMESH(m_device, L"Resources\\Models\\cube.sdkmesh", *m_graphics->GetFX());
+	m_skydome    = DirectX::Model::CreateFromSDKMESH(m_device, L"Resources\\Models\\skydome.sdkmesh", *m_graphics->GetFX());
 	// テクスチャをロードする
 	DirectX::CreateWICTextureFromFile(
 		m_device,

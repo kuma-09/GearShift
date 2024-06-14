@@ -9,8 +9,9 @@ public:
 	enum TypeID
 	{
 		Player,
+		PlayerBullet,
 		Enemy,
-		Bullet,
+		EnemyBullet,
 		Wall,
 		DropItem
 	};

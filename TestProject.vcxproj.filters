@@ -59,9 +59,6 @@
     <ClInclude Include="Framework\Microsoft\DebugDraw.h">
       <Filter>Framework</Filter>
     </ClInclude>
-    <ClInclude Include="Game\Camera.h">
-      <Filter>Game</Filter>
-    </ClInclude>
     <ClInclude Include="Game\GameObject.h">
       <Filter>Game</Filter>
     </ClInclude>
@@ -87,8 +84,6 @@
       <Filter>Game\Components</Filter>
     </ClInclude>
     <ClInclude Include="Game\Object\Wall.h" />
-    <ClInclude Include="Game\Player\Particle.h" />
-    <ClInclude Include="Game\Player\Emitter.h" />
     <ClInclude Include="Framework\BinaryFile.h" />
     <ClInclude Include="Game\Parts\LeftArm.h" />
     <ClInclude Include="Game\Parts\LeftLeg.h" />
@@ -99,10 +94,17 @@
     <ClInclude Include="Game\Particle\ShaderParticle.h" />
     <ClInclude Include="Game\Particle\Shader.h" />
     <ClInclude Include="Game\Components\Gravity.h" />
-    <ClInclude Include="Game\Player\State.h" />
-    <ClInclude Include="Game\Player\Idol.h" />
-    <ClInclude Include="Game\Player\Jump.h" />
     <ClInclude Include="Framework\DebugString.h" />
+    <ClInclude Include="Game\Object\DropItem.h" />
+    <ClInclude Include="Game\Player\State\Boost.h" />
+    <ClInclude Include="Game\Player\State\Idol.h" />
+    <ClInclude Include="Game\Player\State\Jump.h" />
+    <ClInclude Include="Game\Player\State\State.h" />
+    <ClInclude Include="Game\Particle\Particle.h" />
+    <ClInclude Include="Game\Particle\Emitter.h" />
+    <ClInclude Include="Game\Components\Camera.h" />
+    <ClInclude Include="Game\Object\Bullet.h" />
+    <ClInclude Include="Game\Object\SkyDome.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -131,9 +133,6 @@
     <ClCompile Include="Framework\Microsoft\DebugDraw.cpp">
       <Filter>Framework</Filter>
     </ClCompile>
-    <ClCompile Include="Game\Camera.cpp">
-      <Filter>Game</Filter>
-    </ClCompile>
     <ClCompile Include="Game\Player\Player.cpp">
       <Filter>Game\Player</Filter>
     </ClCompile>
@@ -150,8 +149,6 @@
       <Filter>Game\Components</Filter>
     </ClCompile>
     <ClCompile Include="Game\Object\Wall.cpp" />
-    <ClCompile Include="Game\Player\Particle.cpp" />
-    <ClCompile Include="Game\Player\Emitter.cpp" />
     <ClCompile Include="Framework\BinaryFile.cpp" />
     <ClCompile Include="Game\Parts\LeftArm.cpp" />
     <ClCompile Include="Game\Parts\LeftLeg.cpp" />
@@ -161,9 +158,16 @@
     <ClCompile Include="Game\Parts\BodyTop.cpp" />
     <ClCompile Include="Game\Particle\Shader.cpp" />
     <ClCompile Include="Game\Components\Gravity.cpp" />
-    <ClCompile Include="Game\Player\Idol.cpp" />
-    <ClCompile Include="Game\Player\Jump.cpp" />
     <ClCompile Include="Framework\DebugString.cpp" />
+    <ClCompile Include="Game\Object\DropItem.cpp" />
+    <ClCompile Include="Game\Player\State\Boost.cpp" />
+    <ClCompile Include="Game\Player\State\Idol.cpp" />
+    <ClCompile Include="Game\Player\State\Jump.cpp" />
+    <ClCompile Include="Game\Particle\Emitter.cpp" />
+    <ClCompile Include="Game\Particle\Particle.cpp" />
+    <ClCompile Include="Game\Components\Camera.cpp" />
+    <ClCompile Include="Game\Object\Bullet.cpp" />
+    <ClCompile Include="Game\Object\SkyDome.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />

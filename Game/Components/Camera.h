@@ -1,7 +1,7 @@
 #pragma once
-#include "Components/IComponent.h"
+#include "Game/Components/IComponent.h"
 #include "Framework/Graphics.h"
-#include "Player/Player.h"
+#include "Game/GameObject.h"
 
 class Camera : public IComponent
 {

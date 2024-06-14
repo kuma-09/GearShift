@@ -2,7 +2,7 @@
 #include "PlayScene.h"
 #include "cmath"
 #include "Framework/Microsoft/DebugDraw.h"
-#include "Game/Camera.h"
+#include "Game/Components/Camera.h"
 #include "Game/Components/BoxCollider.h"
 
 
@@ -35,6 +35,8 @@ void PlayScene::Initialize()
     m_enemyNum = 0;
 
     m_player->SetTarget(m_enemy[m_enemyNum].get());
+
+    m_skyDome = std::make_unique<SkyDome>();
 
     m_wall.push_back(std::make_unique<Wall>());
     m_wall.back()->SetPosition(Vector3(0, 0, 20));
@@ -70,6 +72,7 @@ void PlayScene::Update(float elapsedTime)
     const auto& gp = m_inputManager->GetGamePadTracker();
     const auto& kb = m_inputManager->GetKeyboardTracker();
 
+    m_skyDome->Update(elapsedTime);
 
     m_player->Update(elapsedTime);
 
@@ -132,6 +135,8 @@ void PlayScene::Render()
     //m_graphics->DrawPrimitiveBegin(m_graphics->GetViewMatrix(), m_graphics->GetProjectionMatrix());
     //m_graphics->GetPrimitiveBatch()->DrawQuad(m_vertices[0], m_vertices[1], m_vertices[3], m_vertices[2]);
     //m_graphics->DrawPrimitiveEnd();
+
+    m_skyDome->Render();
 
     m_player->Render();
 

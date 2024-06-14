@@ -1,14 +1,14 @@
 #pragma once 
-#include "Game/Player/State.h"
+#include "State.h"
 #include "Game/Parts/IPart.h"
 #include "Framework/InputManager.h"
 #include "Game/Player/Player.h"
 
-class Boost : public State
+class Idol : public State
 {
 public:
-	Boost();
-	~Boost();
+	Idol();
+	~Idol();
 
 	void Initialize(Player* player);
 	void Update(float elapsedTime);
@@ -51,10 +51,4 @@ private:
 	GameObject* m_target;
 
 	std::unordered_map<std::type_index, std::shared_ptr<IPart>> m_umPart;
-
-	// ƒWƒƒƒ“ƒv—Í
-	const float BOOSTPOWER = 25.0f;
-
-	// ˆÚ“®‚·‚é‹——£
-	float m_velocity;
 };

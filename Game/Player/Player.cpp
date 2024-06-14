@@ -1,13 +1,13 @@
 #include "pch.h"
 #include "Player.h"
-#include "Game/Player/Idol.h"
-#include "Game/Player/Jump.h"
+#include "Game/Player/State/Idol.h"
+#include "Game/Player/State/Jump.h"
 #include "Game/Components/ModelDraw.h"
 #include "Game/Components/BoxCollider.h"
 #include "Game/Components/Move.h"
 #include "Game/Components/Gravity.h"
-#include "Game/Camera.h"
-#include "Game/Player/Emitter.h"
+#include "Game/Components/Camera.h"
+#include "Game/Particle/Emitter.h"
 #include "Game/Parts/Head.h"
 #include "Game/Parts/BodyTop.h"
 #include "Game/Parts/BodyBottom.h"
@@ -16,8 +16,8 @@
 #include "Game/Parts/RightArm.h"
 #include "Game/Parts/RightLeg.h"
 #include "Game/Particle/Shader.h"
-#include "Game/Player/Jump.h"
-#include "Game/Player/Boost.h"
+#include "Game/Player/State/Jump.h"
+#include "Game/Player/State/Boost.h"
 
 Player::Player()
 {

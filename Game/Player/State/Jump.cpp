@@ -1,32 +1,33 @@
 #include "pch.h"
-#include "Boost.h"
+#include "Jump.h"
 #include "Idol.h"
+#include "Boost.h"
 #include "Game/Components/Gravity.h"
 
 
-Boost::Boost()
+Jump::Jump()
 {
 
 }
 
-Boost::~Boost()
+Jump::~Jump()
 {
 
 }
 
-void Boost::Initialize(Player* player)
+void Jump::Initialize(Player* player)
 {
 	m_player = player;
 }
 
-void Boost::Update(float elapsedTime)
+void Jump::Update(float elapsedTime)
 {
 	using namespace DirectX::SimpleMath;
 
 	ComponentsUpdate(elapsedTime);
 	PartUpdate(elapsedTime);
 
-	m_player->SetVelocity(m_player->GetVelocity() + Vector3(BOOSTPOWER * elapsedTime,0, 0));
+	m_player->SetVelocity(m_player->GetVelocity() + Vector3(0, JUMPPOWER * elapsedTime, 0));
 
 	const auto& kbState = InputManager::GetInstance()->GetKeyboardState();
 	const auto& kbTracker = InputManager::GetInstance()->GetKeyboardTracker();
@@ -34,23 +35,27 @@ void Boost::Update(float elapsedTime)
 	{
 		m_player->GetComponent<Gravity>().lock().get()->Reset();
 	}
+	if (kbState.V)
+	{
+		m_player->ChangeState(m_player->GetBoost());
+	}
 	if ( m_player->GetPosition().y + m_player->GetVelocity().y < 0)
 	{
-		//m_player->ChangeState(m_player->GetIdol());
+		m_player->ChangeState(m_player->GetIdol());
 	}
 }
 
-void Boost::Render()
+void Jump::Render()
 {
 	
 }
 
-void Boost::Finalize()
+void Jump::Finalize()
 {
 	
 }
 
-void Boost::SetTarget(GameObject* target)
+void Jump::SetTarget(GameObject* target)
 {
 	m_target = target;
 }

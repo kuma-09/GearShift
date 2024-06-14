@@ -3,11 +3,12 @@
 #include "Framework/Graphics.h"
 #include "Framework/InputManager.h"
 #include "Framework/DeviceResources.h"
-#include "Game/Player/Emitter.h"
+#include "Game/Particle/Emitter.h"
 #include "Player/Player.h"
 #include "Enemy/Enemy.h"
 #include "Game/Object/Wall.h"
 #include "Game/Object/DropItem.h"
+#include "Game/Object/SkyDome.h"
 
 class Camera;
 
@@ -42,7 +43,7 @@ private:
 
 	std::vector<std::unique_ptr<Wall>> m_wall;
 	std::vector<std::unique_ptr<DropItem>> m_dropItem;
-
+	std::unique_ptr<SkyDome> m_skyDome;
 	
 	DirectX::VertexPositionColorTexture	m_vertices[4];				// 頂点バッファ
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_texture;		// テクスチャ

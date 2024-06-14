@@ -2,7 +2,7 @@
 #include "Game/GameObject.h"
 #include "Game/Parts/IPart.h"
 #include "Framework/InputManager.h"
-#include "Game/Player/State.h"
+#include "Game/Player/State/State.h"
 
 class Idol;
 class Jump;
