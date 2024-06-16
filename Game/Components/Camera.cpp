@@ -44,12 +44,14 @@ void Camera::Update(float elapsedTime)
 
     // プレイヤーの向いている方向を計算
     Vector3 dot = GetOwner()->GetPosition() - m_targetpos;
+    dot.Normalize();
     float radianY = atan2f(dot.x, dot.z);
-
+    float degree = DirectX::XMConvertToDegrees(radianY);
+    
     // プレイヤーの向いている方向を設定
     Quaternion quaternion = Quaternion::CreateFromYawPitchRoll(Vector3(0, radianY, 0));
     GetOwner()->SetQuaternion(quaternion);
-
+    
     // View行列の更新
     Vector3 eye = m_player->GetPosition() + 15 * -Matrix::CreateFromQuaternion(quaternion).Forward() + 5 * Matrix::CreateFromQuaternion(quaternion).Up();
     Matrix view = Matrix::CreateLookAt(eye, m_targetpos, Vector3::UnitY);

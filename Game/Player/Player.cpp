@@ -18,6 +18,7 @@
 #include "Game/Particle/Shader.h"
 #include "Game/Player/State/Jump.h"
 #include "Game/Player/State/Boost.h"
+#include "Game/Object/Bullet.h"
 
 Player::Player()
 {
@@ -37,6 +38,7 @@ Player::Player()
 	m_idol = std::make_unique<Idol>();
 	m_jump = std::make_unique<Jump>();
 	m_boost = std::make_unique<Boost>();
+	m_bullet = std::make_unique<Bullet>();
 	m_state = m_idol.get();
 
 
@@ -52,6 +54,7 @@ void Player::Initialize()
 	m_idol->Initialize(this);
 	m_jump->Initialize(this);
 	m_boost->Initialize(this);
+	m_bullet->Initalize(this);
 
 	GetComponent<BoxCollider>().lock().get()->SetTypeID(BoxCollider::TypeID::Player);
 }
@@ -59,11 +62,18 @@ void Player::Initialize()
 void Player::Update(float elapsedTime)
 {
 	using namespace DirectX::SimpleMath;
+	auto& kb = InputManager::GetInstance()->GetKeyboardTracker();
+
+	if (kb->IsKeyPressed(DirectX::Keyboard::B))
+	{
+		m_bullet->Initalize(this);
+	}
 
 	ComponentsUpdate(elapsedTime);
 	PartUpdate(elapsedTime);
 
 	m_state->Update(elapsedTime);
+	m_bullet->Update(elapsedTime);
 
 	SetPosition(GetPosition() + GetVelocity());
 
@@ -78,7 +88,7 @@ void Player::Update(float elapsedTime)
 void Player::Render()
 {
 	m_state->Render();
-
+	m_bullet->Render();
 
 	GetComponent<Emitter>().lock().get()->Render(GetPosition());
 	GetPart<Head>().lock().get()->Render(GetWorld());

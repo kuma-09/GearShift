@@ -13,11 +13,25 @@ Bullet::~Bullet()
 
 }
 
+void Bullet::Initalize(GameObject* object)
+{
+	using namespace DirectX::SimpleMath;
+
+	Vector3 velocity = Vector3::Zero;
+	SetPosition(object->GetPosition());
+	SetQuaternion(object->GetQuaternion());
+
+	Matrix rotate = Matrix::CreateFromQuaternion(GetQuaternion());
+
+	velocity += rotate.Forward() * 1.0f;
+	SetVelocity(velocity);
+}
+
 void Bullet::Update(float elapsedTime)
 {
 	ComponentsUpdate(elapsedTime);
 
-	SetPosition(GameObject::GetPosition() + GetVelocity());
+	SetPosition(GetPosition() + GetVelocity());
 }
 
 void Bullet::Render()

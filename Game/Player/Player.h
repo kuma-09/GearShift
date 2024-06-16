@@ -7,6 +7,7 @@
 class Idol;
 class Jump;
 class Boost;
+class Bullet;
 
 class Player : public GameObject
 {
@@ -65,5 +66,6 @@ private:
 	std::unique_ptr<Idol> m_idol;
 	std::unique_ptr<Jump> m_jump;
 	std::unique_ptr<Boost> m_boost;
+	std::unique_ptr<Bullet> m_bullet;
 
 };
