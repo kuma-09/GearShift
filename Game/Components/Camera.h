@@ -18,10 +18,23 @@ public:
 
 private:
 	Graphics* m_graphics;
+	
+	// カメラの高さ
+	const float CAMERA_HEIGHT	    =  5.0f;
+
+	// カメラの距離
+	const float CAMERA_DISTANCE     = 15.0f;
+
+	// カメラの追従係数
+	const float CAMERA_EYE_RATE     = 0.05f;
+
+	// ターゲットに対しての係数
+	const float CAMERA_TARGET_RATE  =  0.1f;
 
 	GameObject* m_player;
 	GameObject* m_enemy;
 
-	DirectX::SimpleMath::Vector3 m_targetpos;
+	DirectX::SimpleMath::Vector3 m_eyePosition;
+	DirectX::SimpleMath::Vector3 m_targetPosition;
 };
 
