@@ -190,6 +190,7 @@
     <ClInclude Include="Game\Components\Camera.h" />
     <ClInclude Include="Game\Components\Gravity.h" />
     <ClInclude Include="Game\Components\IComponent.h" />
+    <ClInclude Include="Game\Components\Look.h" />
     <ClInclude Include="Game\Components\ModelDraw.h" />
     <ClInclude Include="Game\Components\Move.h" />
     <ClInclude Include="Game\Enemy\Enemy.h" />
@@ -234,6 +235,7 @@
     <ClCompile Include="Game\Components\BoxCollider.cpp" />
     <ClCompile Include="Game\Components\Camera.cpp" />
     <ClCompile Include="Game\Components\Gravity.cpp" />
+    <ClCompile Include="Game\Components\Look.cpp" />
     <ClCompile Include="Game\Components\ModelDraw.cpp" />
     <ClCompile Include="Game\Components\Move.cpp" />
     <ClCompile Include="Game\Enemy\Enemy.cpp" />

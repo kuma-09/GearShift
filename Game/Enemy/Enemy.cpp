@@ -1,13 +1,20 @@
 #include "pch.h"
 #include "Enemy.h"
+#include "Game/Components/Look.h"
 #include "Game/Components/ModelDraw.h"
 #include "Game/Components/BoxCollider.h"
+#include "Game/Object/Bullet.h"
+#include <iostream>
+#include <algorithm>
 
 Enemy::Enemy()
+	:m_totalTime{0}
 {
+	AddComponent<Look>();
 	AddComponent<ModelDraw>();
 	AddComponent<BoxCollider>();
 	GetComponent<BoxCollider>().lock().get()->SetTypeID(BoxCollider::TypeID::Enemy);
+	
 }
 
 Enemy::~Enemy()
@@ -15,9 +22,10 @@ Enemy::~Enemy()
 
 }
 
-void Enemy::Initialize()
+void Enemy::Initialize(GameObject* target)
 {
-
+	m_bullet = std::make_unique<Bullet>();
+	GetComponent<Look>().lock().get()->SetTarget(this, target);
 }
 
 void Enemy::Update(float elapsedTime)
@@ -25,6 +33,15 @@ void Enemy::Update(float elapsedTime)
 	using namespace DirectX::SimpleMath;
 
 	ComponentsUpdate(elapsedTime);
+
+	m_totalTime += elapsedTime;
+	if (m_totalTime >= SHOT_INTERVAL)
+	{
+		m_bullet->Initalize(this);
+		m_totalTime = 0;
+	}
+
+	m_bullet->Update(elapsedTime);
 
 	Matrix world = Matrix::Identity;
 	world = Matrix::CreateScale(GetScale());
@@ -36,6 +53,7 @@ void Enemy::Update(float elapsedTime)
 
 void Enemy::Render()
 {
+	m_bullet->Render();
 	GetComponent<ModelDraw>().lock().get()->Render(ModelDraw::Dice,GetWorld());
 	//GetComponent<BoxCollider>().lock().get()->Render();
 }

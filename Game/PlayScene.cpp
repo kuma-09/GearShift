@@ -21,15 +21,15 @@ void PlayScene::Initialize()
     m_player->SetPosition(Vector3(3, 10, 3));
 
     m_enemy.push_back(std::make_unique<Enemy>());
-    m_enemy.back()->Initialize();
+    m_enemy.back()->Initialize(m_player.get());
     m_enemy.back()->SetPosition(Vector3(0, 0, 0));
 
     m_enemy.push_back(std::make_unique<Enemy>());
-    m_enemy.back()->Initialize();
+    m_enemy.back()->Initialize(m_player.get());
     m_enemy.back()->SetPosition(Vector3(5, 0, 5));
 
     m_enemy.push_back(std::make_unique<Enemy>());
-    m_enemy.back()->Initialize();
+    m_enemy.back()->Initialize(m_player.get());
     m_enemy.back()->SetPosition(Vector3(10, 0, -5));
 
     m_enemyNum = 0;
@@ -132,14 +132,13 @@ void PlayScene::Render()
 
     m_graphics->GetBasicEffect()->SetTexture(m_texture.Get());
 
+    m_skyDome->Render();
+
     //m_graphics->DrawPrimitiveBegin(m_graphics->GetViewMatrix(), m_graphics->GetProjectionMatrix());
     //m_graphics->GetPrimitiveBatch()->DrawQuad(m_vertices[0], m_vertices[1], m_vertices[3], m_vertices[2]);
     //m_graphics->DrawPrimitiveEnd();
 
-    m_skyDome->Render();
-
     m_player->Render();
-
 
     for (auto& enemy: m_enemy)
     {

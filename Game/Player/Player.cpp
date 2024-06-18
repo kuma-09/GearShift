@@ -7,6 +7,7 @@
 #include "Game/Components/Move.h"
 #include "Game/Components/Gravity.h"
 #include "Game/Components/Camera.h"
+#include "Game/Components/Look.h"
 #include "Game/Particle/Emitter.h"
 #include "Game/Parts/Head.h"
 #include "Game/Parts/BodyTop.h"
@@ -20,8 +21,11 @@
 #include "Game/Player/State/Boost.h"
 #include "Game/Object/Bullet.h"
 
+
+
 Player::Player()
 {
+	AddComponent<Look>();
 	AddComponent<Move>();
 	AddComponent<Camera>();
 	AddComponent<BoxCollider>();
@@ -109,6 +113,7 @@ void Player::Finalize()
 void Player::SetTarget(GameObject* target)
 {
 	m_target = target;
+	GetComponent<Look>().lock().get()->SetTarget(this, target);
 	GetComponent<Camera>().lock().get()->SetTarget(this, target);
 }
 

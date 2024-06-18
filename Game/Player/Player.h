@@ -68,4 +68,5 @@ private:
 	std::unique_ptr<Boost> m_boost;
 	std::unique_ptr<Bullet> m_bullet;
 
+
 };
