@@ -62,6 +62,8 @@ public:
 		}
 	}
 
+	void SetScene(IScene* scene) { m_scene = scene; }
+	IScene* GetScene() { return m_scene; }
 
 public:
 	
@@ -69,6 +71,8 @@ public:
 
 
 private:
+	IScene* m_scene = nullptr;
+
 	DirectX::SimpleMath::Vector3	m_position = DirectX::SimpleMath::Vector3::Zero;
 	DirectX::SimpleMath::Vector3	m_rotation = DirectX::SimpleMath::Vector3::Zero;
 	DirectX::SimpleMath::Vector3    m_velocity = DirectX::SimpleMath::Vector3::Zero;

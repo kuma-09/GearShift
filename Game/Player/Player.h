@@ -12,7 +12,7 @@ class Bullet;
 class Player : public GameObject
 {
 public:
-	Player();
+	Player(IScene* scene);
 	~Player();
 
 	void Initialize();

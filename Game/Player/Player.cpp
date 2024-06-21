@@ -23,8 +23,10 @@
 
 
 
-Player::Player()
+Player::Player(IScene* scene)
 {
+	SetScene(scene);
+
 	AddComponent<Look>();
 	AddComponent<Move>();
 	AddComponent<Camera>();
@@ -39,10 +41,12 @@ Player::Player()
 	AddPart<LeftLeg>();
 	AddPart<RightLeg>();
 
+
+
 	m_idol = std::make_unique<Idol>();
 	m_jump = std::make_unique<Jump>();
 	m_boost = std::make_unique<Boost>();
-	m_bullet = std::make_unique<Bullet>();
+	m_bullet = std::make_unique<Bullet>(GetScene(),BoxCollider::TypeID::PlayerBullet);
 	m_state = m_idol.get();
 
 
@@ -59,6 +63,14 @@ void Player::Initialize()
 	m_jump->Initialize(this);
 	m_boost->Initialize(this);
 	m_bullet->Initalize(this);
+
+	GetPart<Head>().lock().get()->Initialize();
+	GetPart<BodyTop>().lock().get()->Initialize();
+	GetPart<BodyBottom>().lock().get()->Initialize();
+	GetPart<LeftArm>().lock().get()->Initialize();
+	GetPart<RightArm>().lock().get()->Initialize();
+	GetPart<LeftLeg>().lock().get()->Initialize();
+	GetPart<RightLeg>().lock().get()->Initialize();
 
 	GetComponent<BoxCollider>().lock().get()->SetTypeID(BoxCollider::TypeID::Player);
 }

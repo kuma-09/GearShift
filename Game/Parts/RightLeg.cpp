@@ -16,6 +16,8 @@ RightLeg::~RightLeg()
 
 void RightLeg::Initialize()
 {
+	SetScene(GetOwner()->GetScene());
+	GetComponent<BoxCollider>().lock().get()->SetTypeID(BoxCollider::TypeID::Player);
 }
 
 void RightLeg::Update(float elapsedTime)

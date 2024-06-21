@@ -7,13 +7,16 @@
 #include <iostream>
 #include <algorithm>
 
-Enemy::Enemy()
+Enemy::Enemy(IScene* scene)
 	:m_totalTime{0}
 {
+	SetScene(scene);
+
 	AddComponent<Look>();
 	AddComponent<ModelDraw>();
 	AddComponent<BoxCollider>();
-	GetComponent<BoxCollider>().lock().get()->SetTypeID(BoxCollider::TypeID::Enemy);
+
+	
 	
 }
 
@@ -24,8 +27,9 @@ Enemy::~Enemy()
 
 void Enemy::Initialize(GameObject* target)
 {
-	m_bullet = std::make_unique<Bullet>();
+	m_bullet = std::make_unique<Bullet>(GetScene(),BoxCollider::TypeID::EnemyBullet);
 	GetComponent<Look>().lock().get()->SetTarget(this, target);
+	GetComponent<BoxCollider>().lock().get()->SetTypeID(BoxCollider::TypeID::Enemy);
 }
 
 void Enemy::Update(float elapsedTime)

@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "BoxCollider.h"
+#include "Game/IScene.h"
 #include "Game/GameObject.h"
 #include "Framework/Microsoft/DebugDraw.h"
 
@@ -47,6 +48,12 @@ void BoxCollider::Finalize()
 void BoxCollider::SetSize(DirectX::SimpleMath::Vector3 size)
 {
 	m_boudingBox->Extents = size;
+}
+
+void BoxCollider::SetTypeID(TypeID id)
+{
+    m_typeID = id;
+    GetOwner()->GetScene()->AddCollider(this);
 }
 
 void BoxCollider::CheckHit(GameObject* object1, GameObject* object2)

@@ -3,6 +3,7 @@
 	@brief	シーンのインターフェイスクラス
 */
 #pragma once
+#include "Game/Components/BoxCollider.h"
 
 class IScene
 {
@@ -18,6 +19,15 @@ public:
 
 	virtual void Finalize() = 0;
 
+	// コンポーネントを追加
+	void AddCollider(BoxCollider* collider)
+	{
+		m_pBoxCollider.push_back(collider);
+	}
 
+	std::vector<BoxCollider*> GetColliders() { return m_pBoxCollider; }
+
+private:
+	std::vector<BoxCollider*> m_pBoxCollider;
 
 };

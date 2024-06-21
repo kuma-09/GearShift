@@ -2,8 +2,9 @@
 #include "DropItem.h"
 #include "Game/Components/BoxCollider.h"
 
-DropItem::DropItem()
+DropItem::DropItem(IScene* scene)
 {
+	SetScene(scene);
 	AddComponent<BoxCollider>();
 	GetComponent<BoxCollider>().lock().get()->SetTypeID(BoxCollider::TypeID::DropItem);
 }

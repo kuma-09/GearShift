@@ -16,6 +16,8 @@ LeftLeg::~LeftLeg()
 
 void LeftLeg::Initialize()
 {
+	SetScene(GetOwner()->GetScene());
+	GetComponent<BoxCollider>().lock().get()->SetTypeID(BoxCollider::TypeID::Player);
 }
 
 void LeftLeg::Update(float elapsedTime)

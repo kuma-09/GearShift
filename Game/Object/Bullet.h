@@ -4,7 +4,7 @@
 class Bullet :public GameObject
 {
 public:
-	Bullet();
+	Bullet(IScene* scene, BoxCollider::TypeID id);
 	~Bullet();
 	void Initalize(GameObject* object);
 	void Update(float elapsedTime);

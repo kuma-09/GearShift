@@ -4,7 +4,7 @@
 class Wall :public GameObject
 {
 public:
-	Wall();
+	Wall(IScene* scene);
 	~Wall();
 
 	void Update(float elapsedTime);

@@ -16,6 +16,8 @@ RightArm::~RightArm()
 
 void RightArm::Initialize()
 {
+	SetScene(GetOwner()->GetScene());
+	GetComponent<BoxCollider>().lock().get()->SetTypeID(BoxCollider::TypeID::Player);
 }
 
 void RightArm::Update(float elapsedTime)

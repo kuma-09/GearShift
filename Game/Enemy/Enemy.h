@@ -10,7 +10,7 @@ class Enemy : public GameObject
 {
 public:
 
-	Enemy();
+	Enemy(IScene* scene);
 	~Enemy();
 
 	void Initialize(GameObject* target);

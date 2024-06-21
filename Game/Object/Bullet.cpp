@@ -2,10 +2,11 @@
 #include "Bullet.h"
 #include "Game/Components/BoxCollider.h"
 
-Bullet::Bullet()
+Bullet::Bullet(IScene* scene , BoxCollider::TypeID id)
 {
+	SetScene(scene);
 	AddComponent<BoxCollider>();
-	GetComponent<BoxCollider>().lock().get()->SetTypeID(BoxCollider::TypeID::PlayerBullet);
+	GetComponent<BoxCollider>().lock().get()->SetTypeID(id);
 }
 
 Bullet::~Bullet()

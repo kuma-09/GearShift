@@ -16,6 +16,8 @@ Head::~Head()
 
 void Head::Initialize()
 {
+	SetScene(GetOwner()->GetScene());
+	GetComponent<BoxCollider>().lock().get()->SetTypeID(BoxCollider::TypeID::Player);
 }
 
 void Head::Update(float elapsedTime)

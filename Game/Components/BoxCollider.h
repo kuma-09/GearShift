@@ -29,7 +29,7 @@ public:
 	DirectX::BoundingBox* GetBoundingBox() { return m_boudingBox.get(); }
 
 	TypeID GetTypeID() { return m_typeID; }
-	void SetTypeID(TypeID id) { m_typeID = id; }
+	void SetTypeID(TypeID id);
 
 	static void CheckHit(GameObject* object1, GameObject* object2);
 

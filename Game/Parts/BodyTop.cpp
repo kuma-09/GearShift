@@ -16,6 +16,8 @@ BodyTop::~BodyTop()
 
 void BodyTop::Initialize()
 {
+	SetScene(GetOwner()->GetScene());
+	GetComponent<BoxCollider>().lock().get()->SetTypeID(BoxCollider::TypeID::Player);
 }
 
 void BodyTop::Update(float elapsedTime)

@@ -16,19 +16,19 @@ void PlayScene::Initialize()
     m_deviceResources = m_graphics->GetDeviceResources();
     m_inputManager = InputManager::GetInstance();
 
-    m_player = std::make_unique<Player>();
+    m_player = std::make_unique<Player>(this);
     m_player->Initialize();
     m_player->SetPosition(Vector3(3, 10, 3));
 
-    m_enemy.push_back(std::make_unique<Enemy>());
+    m_enemy.push_back(std::make_unique<Enemy>(this));
     m_enemy.back()->Initialize(m_player.get());
     m_enemy.back()->SetPosition(Vector3(0, 0, 0));
 
-    m_enemy.push_back(std::make_unique<Enemy>());
+    m_enemy.push_back(std::make_unique<Enemy>(this));
     m_enemy.back()->Initialize(m_player.get());
     m_enemy.back()->SetPosition(Vector3(5, 0, 5));
 
-    m_enemy.push_back(std::make_unique<Enemy>());
+    m_enemy.push_back(std::make_unique<Enemy>(this));
     m_enemy.back()->Initialize(m_player.get());
     m_enemy.back()->SetPosition(Vector3(10, 0, -5));
 
@@ -38,11 +38,11 @@ void PlayScene::Initialize()
 
     m_skyDome = std::make_unique<SkyDome>();
 
-    m_wall.push_back(std::make_unique<Wall>());
+    m_wall.push_back(std::make_unique<Wall>(this));
     m_wall.back()->SetPosition(Vector3(0, 0, 20));
     m_wall.back()->GetComponent<BoxCollider>().lock().get()->SetSize({ 50,10,1 });
 
-    m_dropItem.push_back(std::make_unique<DropItem>());
+    m_dropItem.push_back(std::make_unique<DropItem>(this));
     m_dropItem.back()->SetPosition(Vector3(3, 0, 7));
 
 
@@ -98,7 +98,24 @@ void PlayScene::Update(float elapsedTime)
 
     for (auto& wall : m_wall)
     {
-             BoxCollider::CheckHit(m_player.get(), wall.get());
+         BoxCollider::CheckHit(m_player.get(), wall.get());
+    }
+
+
+    for (auto& collider: GetColliders())
+    {
+        if (collider->GetTypeID() == BoxCollider::TypeID::EnemyBullet)
+        {
+            for (auto& playerCollider: GetColliders())
+            {
+                if (playerCollider->GetTypeID() == BoxCollider::TypeID::Player &&
+                    collider->GetBoundingBox()->Intersects(*playerCollider->GetBoundingBox()))
+                {
+                    int a = 0;
+                    break;
+                }
+            }
+        }
     }
 
     for (auto& dropItem : m_dropItem)
@@ -107,7 +124,7 @@ void PlayScene::Update(float elapsedTime)
             GetBoundingBox()->Intersects(
                 *dropItem.get()->GetComponent<BoxCollider>().lock().get()->GetBoundingBox()))
         {
-
+            int i = 111;
         }
     }
 

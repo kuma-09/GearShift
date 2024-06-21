@@ -4,7 +4,7 @@
 class DropItem :public GameObject
 {
 public:
-	DropItem();
+	DropItem(IScene* scene);
 	~DropItem();
 	
 	void Update(float elapsedTime);
