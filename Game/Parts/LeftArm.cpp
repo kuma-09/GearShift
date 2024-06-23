@@ -27,7 +27,7 @@ void LeftArm::Update(float elapsedTime)
 
 	SetPosition(GetOwner()->GetPosition() 
 		+ Matrix::CreateFromQuaternion(GetOwner()->GetQuaternion()).Right() * -0.6f
-		+ Matrix::CreateFromQuaternion(GetOwner()->GetQuaternion()).Up()    *  2.2f);
+		+ Matrix::CreateFromQuaternion(GetOwner()->GetQuaternion()).Up()    *  0.9f);
 
 	Matrix world = Matrix::Identity;
 	world = Matrix::CreateScale(GetScale());
@@ -42,9 +42,16 @@ void LeftArm::Update(float elapsedTime)
 void LeftArm::Render(DirectX::SimpleMath::Matrix world)
 {
 	UNREFERENCED_PARAMETER(world);
-
-	GetComponent<ModelDraw>().lock().get()->Render(ModelDraw::LArm, GetWorld());
-	//GetComponent<BoxCollider>().lock().get()->Render();
+	if (GetHP() >= 0)
+	{
+		GetComponent<ModelDraw>().lock().get()->Render(ModelDraw::LArm, GetWorld(),false);
+	}
+	else
+	{
+		GetComponent<ModelDraw>().lock().get()->Render(ModelDraw::LArm, GetWorld(),true);
+	}
+	
+	GetComponent<BoxCollider>().lock().get()->Render();
 }
 
 void LeftArm::Finalize()

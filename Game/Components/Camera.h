@@ -20,7 +20,7 @@ private:
 	Graphics* m_graphics;
 	
 	// ƒJƒƒ‰‚Ì‚‚³
-	const float CAMERA_HEIGHT	    =  5.0f;
+	const float CAMERA_HEIGHT	    =  2.5f;
 
 	// ƒJƒƒ‰‚Ì‹——£
 	const float CAMERA_DISTANCE     = 15.0f;

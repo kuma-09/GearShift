@@ -27,8 +27,8 @@ void BodyTop::Update(float elapsedTime)
 	using namespace DirectX::SimpleMath;
 
 
-	SetPosition(GetOwner()->GetPosition()
-		+ Matrix::CreateFromQuaternion(GetOwner()->GetQuaternion()).Up() * 1.25f);
+	SetPosition(GetOwner()->GetPosition());/*
+		+ Matrix::CreateFromQuaternion(GetOwner()->GetQuaternion()).Up() * 0.5f);*/
 
 	Matrix world = Matrix::Identity;
 	world = Matrix::CreateScale(GetScale());
@@ -43,10 +43,18 @@ void BodyTop::Update(float elapsedTime)
 void BodyTop::Render(DirectX::SimpleMath::Matrix world)
 {
 	UNREFERENCED_PARAMETER(world);
+	if (GetHP() >= 0)
+	{
+		GetComponent<ModelDraw>().lock().get()->Render(ModelDraw::BodyTop, GetWorld(),false);
+	}
+	else
+	{
+		GetComponent<ModelDraw>().lock().get()->Render(ModelDraw::BodyTop, GetWorld(),true);
+	}
 
 
-	GetComponent<ModelDraw>().lock().get()->Render(ModelDraw::BodyTop, GetWorld());;
-	//GetComponent<BoxCollider>().lock().get()->Render();
+	GetComponent<BoxCollider>().lock().get()->Render();
+	
 }
 
 void BodyTop::Finalize()

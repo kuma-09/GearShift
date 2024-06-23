@@ -7,6 +7,7 @@ Bullet::Bullet(IScene* scene , BoxCollider::TypeID id)
 	SetScene(scene);
 	AddComponent<BoxCollider>();
 	GetComponent<BoxCollider>().lock().get()->SetTypeID(id);
+	GetComponent<BoxCollider>().lock().get()->SetSize({ 0.25f,0.25f,0.25f });
 }
 
 Bullet::~Bullet()

@@ -32,12 +32,6 @@ void PlayScene::Initialize()
     m_enemy.back()->Initialize(m_player.get());
     m_enemy.back()->SetPosition(Vector3(10, 0, -5));
 
-    m_enemyNum = 0;
-
-    m_player->SetTarget(m_enemy[m_enemyNum].get());
-
-    m_skyDome = std::make_unique<SkyDome>();
-
     m_wall.push_back(std::make_unique<Wall>(this));
     m_wall.back()->SetPosition(Vector3(0, 0, 20));
     m_wall.back()->GetComponent<BoxCollider>().lock().get()->SetSize({ 50,10,1 });
@@ -45,22 +39,10 @@ void PlayScene::Initialize()
     m_dropItem.push_back(std::make_unique<DropItem>(this));
     m_dropItem.back()->SetPosition(Vector3(3, 0, 7));
 
+    m_skyDome = std::make_unique<SkyDome>();
 
-    // 四角形の頂点座標を定義する…左下基準のコの字、頂点順の指定でDrawQuadが使える
-    m_vertices[0] = { Vector3(-50.0f ,-0.5f, 50.0f),Vector4(0,0.8f,0,1), Vector2(0.0f, 0.0f) };	//左上
-    m_vertices[1] = { Vector3( 50.0f ,-0.5f, 50.0f),Vector4(0,0.8f,0,1), Vector2(1.0f, 0.0f)};	//右上
-    m_vertices[2] = { Vector3(-50.0f ,-0.5f,-50.0f),Vector4(0,0.8f,0,1), Vector2(0.0f, 1.0f) };	//左下
-    m_vertices[3] = { Vector3( 50.0f ,-0.5f,-50.0f),Vector4(0,0.8f,0,1), Vector2(1.0f, 1.0f) };	//右下
+    m_player->SetTarget(m_enemy[0].get());
 
-
-    DirectX::CreateWICTextureFromFile(
-        m_deviceResources->GetD3DDevice(),		// デバイスコンテキスト
-        L"Resources/Textures/white.png",	    // 画像ファイルのパス
-        nullptr,								// 内部的なテクスチャ
-        m_texture.ReleaseAndGetAddressOf()		// シェーダリソースビュー(表示用)
-    );
-
-    
 }
 
 
@@ -137,9 +119,6 @@ void PlayScene::Update(float elapsedTime)
         }
         m_player->SetTarget(m_enemy[m_enemyNum].get());
     }
-
-
-
 }
 
 void PlayScene::Render()
@@ -149,10 +128,6 @@ void PlayScene::Render()
     m_graphics->GetBasicEffect()->SetTexture(m_texture.Get());
 
     m_skyDome->Render();
-
-    //m_graphics->DrawPrimitiveBegin(m_graphics->GetViewMatrix(), m_graphics->GetProjectionMatrix());
-    //m_graphics->GetPrimitiveBatch()->DrawQuad(m_vertices[0], m_vertices[1], m_vertices[3], m_vertices[2]);
-    //m_graphics->DrawPrimitiveEnd();
 
     m_player->Render();
 

@@ -27,9 +27,14 @@ void LeftLeg::Update(float elapsedTime)
 
 	ComponentsUpdate(elapsedTime);
 
+	Vector3 pos{ 0,-0.4f,1.0f };
+	//SetPosition(GetPosition() + Vector3::Transform(pos, GetOwner()->GetQuaternion()));
+
+	
+
 	SetPosition(GetOwner()->GetPosition()
 		+ Matrix::CreateFromQuaternion(GetOwner()->GetQuaternion()).Right() * -0.4f
-		+ Matrix::CreateFromQuaternion(GetOwner()->GetQuaternion()).Up()    *  1.0f);
+		+ Matrix::CreateFromQuaternion(GetOwner()->GetQuaternion()).Down()  *  0.1f);
 
 	Matrix world = Matrix::Identity;
 	world = Matrix::CreateScale(GetScale());
@@ -42,9 +47,16 @@ void LeftLeg::Update(float elapsedTime)
 void LeftLeg::Render(DirectX::SimpleMath::Matrix world)
 {
 	UNREFERENCED_PARAMETER(world);
-
-	GetComponent<ModelDraw>().lock().get()->Render(ModelDraw::LLeg, GetWorld());
-	//GetComponent<BoxCollider>().lock().get()->Render();
+	if (GetHP() >= 0)
+	{
+		GetComponent<ModelDraw>().lock().get()->Render(ModelDraw::LLeg, GetWorld(),false);
+	}
+	else
+	{
+		GetComponent<ModelDraw>().lock().get()->Render(ModelDraw::LLeg, GetWorld(),true);
+	}
+	
+	GetComponent<BoxCollider>().lock().get()->Render();
 }
 
 void LeftLeg::Finalize()

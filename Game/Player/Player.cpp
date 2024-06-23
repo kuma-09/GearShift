@@ -71,6 +71,7 @@ void Player::Initialize()
 	GetPart<RightLeg>().lock().get()->	Initialize(10);
 
 	GetComponent<BoxCollider>().lock().get()->SetTypeID(BoxCollider::TypeID::Player);
+
 }
 
 void Player::Update(float elapsedTime)
@@ -104,42 +105,23 @@ void Player::Render()
 	m_state->Render();
 	m_bullet->Render();
 
+
 	GetComponent<Emitter>().lock().get()->Render(GetPosition());
 
-	if (GetPart<Head>().lock().get()->GetHP() >= 0)
-	{
 		GetPart<Head>().lock().get()->Render(GetWorld());
-	}
 
-	if (GetPart<BodyTop>().lock().get()->GetHP() >= 0)
-	{
 		GetPart<BodyTop>().lock().get()->Render(GetWorld());
-	}
 
-
-	if (GetPart<BodyBottom>().lock().get()->GetHP() >= 0)
-	{
 		GetPart<BodyBottom>().lock().get()->Render(GetWorld());
-	}
 
-	if (GetPart<LeftArm>().lock().get()->GetHP() >= 0)
-	{
 		GetPart<LeftArm>().lock().get()->Render(GetWorld());
-	}
 
-	if (GetPart<RightArm>().lock().get()->GetHP() >= 0)
-	{
 		GetPart<RightArm>().lock().get()->Render(GetWorld());
-	}
 
-	if (GetPart<LeftLeg>().lock().get()->GetHP() >= 0)
-	{
 		GetPart<LeftLeg>().lock().get()->Render(GetWorld());
-	}
-	if (GetPart<RightLeg>().lock().get()->GetHP() >= 0)
-	{
+
 		GetPart<RightLeg>().lock().get()->Render(GetWorld());
-	}
+
 	//GetComponent<BoxCollider>().lock().get()->Render();
 
 

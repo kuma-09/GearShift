@@ -11,6 +11,7 @@ public:
 
 	enum ModelType
 	{
+		Player,
 		Head,
 		BodyTop,
 		BodyBottom,
@@ -23,9 +24,11 @@ public:
 
 	void Initialize();
 	void Update(float elapsedTime);
-	void Render(ModelType type,DirectX::SimpleMath::Matrix world);
+	void Render(ModelType type,DirectX::SimpleMath::Matrix world,bool black);
 	void Finalize();
 
+private:
+	void SetBlack();
 private:
 	Graphics* m_graphics;
 	Resources* m_resources;

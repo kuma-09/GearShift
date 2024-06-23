@@ -26,7 +26,7 @@ void Head::Update(float elapsedTime)
 	using namespace DirectX::SimpleMath;
 
 	SetPosition(GetOwner()->GetPosition() 
-		+ Matrix::CreateFromQuaternion(GetOwner()->GetQuaternion()).Up() * 2.6f);
+		+ Matrix::CreateFromQuaternion(GetOwner()->GetQuaternion()).Up() * 1.3f);
 
 	Matrix world = Matrix::Identity;
 	world = Matrix::CreateScale(GetScale());
@@ -41,9 +41,16 @@ void Head::Update(float elapsedTime)
 void Head::Render(DirectX::SimpleMath::Matrix world)
 {
 	UNREFERENCED_PARAMETER(world);
-
-	GetComponent<ModelDraw>().lock().get()->Render(ModelDraw::Head, GetWorld());
-	//GetComponent<BoxCollider>().lock().get()->Render();
+	if (GetHP() >= 0)
+	{
+		GetComponent<ModelDraw>().lock().get()->Render(ModelDraw::Head, GetWorld(),false);
+	}
+	else
+	{
+		GetComponent<ModelDraw>().lock().get()->Render(ModelDraw::Head, GetWorld(),true);
+	}
+	
+	GetComponent<BoxCollider>().lock().get()->Render();
 }
 
 void Head::Finalize()
