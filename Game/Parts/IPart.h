@@ -7,6 +7,7 @@ public:
 	IPart() {};
 	virtual ~IPart() = default;
 
+	virtual void Initialize(int hp) = 0;
 	virtual void Update(float elapsedTime) = 0;
 
 	// e‚ğw’è
@@ -16,6 +17,8 @@ public:
 	}
 
 	GameObject* GetOwner() { return m_pOwner; }
+
+
 
 private:
 

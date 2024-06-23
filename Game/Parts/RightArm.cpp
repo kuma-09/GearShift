@@ -14,9 +14,10 @@ RightArm::~RightArm()
 
 }
 
-void RightArm::Initialize()
+void RightArm::Initialize(int hp)
 {
 	SetScene(GetOwner()->GetScene());
+	SetHP(hp);
 	GetComponent<BoxCollider>().lock().get()->SetTypeID(BoxCollider::TypeID::Player);
 }
 

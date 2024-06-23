@@ -111,8 +111,7 @@ void PlayScene::Update(float elapsedTime)
                 if (playerCollider->GetTypeID() == BoxCollider::TypeID::Player &&
                     collider->GetBoundingBox()->Intersects(*playerCollider->GetBoundingBox()))
                 {
-                    int a = 0;
-                    break;
+                    playerCollider->GetOwner()->Damage(1);
                 }
             }
         }
@@ -124,7 +123,7 @@ void PlayScene::Update(float elapsedTime)
             GetBoundingBox()->Intersects(
                 *dropItem.get()->GetComponent<BoxCollider>().lock().get()->GetBoundingBox()))
         {
-            int i = 111;
+
         }
     }
 

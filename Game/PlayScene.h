@@ -24,7 +24,6 @@ public:
 	
 	void Finalize() override;
 
-	void CheckHit(DirectX::BoundingBox a, DirectX::BoundingBox b);
 private:
 
 	Graphics* m_graphics;

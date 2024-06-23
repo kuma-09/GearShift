@@ -14,9 +14,11 @@ BodyTop::~BodyTop()
 
 }
 
-void BodyTop::Initialize()
+
+void BodyTop::Initialize(int hp)
 {
 	SetScene(GetOwner()->GetScene());
+	SetHP(hp);
 	GetComponent<BoxCollider>().lock().get()->SetTypeID(BoxCollider::TypeID::Player);
 }
 

@@ -33,8 +33,18 @@ public:
 	void SetScale(DirectX::SimpleMath::Vector3 scale) { m_scale = scale; }
 	DirectX::SimpleMath::Vector3 GetScale() { return m_scale; }
 
+	// ワールド行列
 	void SetWorld(DirectX::SimpleMath::Matrix world) { m_world = world; }
 	DirectX::SimpleMath::Matrix GetWorld() { return m_world; }
+
+	// HP
+	int GetHP() { return m_hp; }
+	void SetHP(int hp) { m_hp = hp; }
+
+	void Damage(int value) 
+	{
+		m_hp -= value; 
+	}
 
 	// コンポーネントを追加
 	template<typename CompType>
@@ -79,6 +89,8 @@ private:
 	DirectX::SimpleMath::Quaternion m_quaternion = DirectX::SimpleMath::Quaternion::Identity;
 	DirectX::SimpleMath::Vector3	m_scale = DirectX::SimpleMath::Vector3::One;
 	DirectX::SimpleMath::Matrix     m_world = DirectX::SimpleMath::Matrix::Identity;
+
+	int m_hp = 0;
 
 	std::unordered_map<std::type_index, std::shared_ptr<IComponent>> m_umComponents;
 };

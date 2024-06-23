@@ -9,7 +9,7 @@ public:
 	RightArm();
 	~RightArm();
 
-	void Initialize();
+	void Initialize(int hp) override;
 	void Update(float elapsedTime) override;
 	void Render(DirectX::SimpleMath::Matrix world);
 	void Finalize();

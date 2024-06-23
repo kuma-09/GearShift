@@ -14,9 +14,10 @@ BodyBottom::~BodyBottom()
 
 }
 
-void BodyBottom::Initialize()
+void BodyBottom::Initialize(int hp)
 {
 	SetScene(GetOwner()->GetScene());
+	SetHP(hp);
 	GetComponent<BoxCollider>().lock().get()->SetTypeID(BoxCollider::TypeID::Player);
 }
 

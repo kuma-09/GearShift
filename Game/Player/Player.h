@@ -3,6 +3,7 @@
 #include "Game/Parts/IPart.h"
 #include "Framework/InputManager.h"
 #include "Game/Player/State/State.h"
+#include "Framework/DebugString.h"
 
 class Idol;
 class Jump;
@@ -67,6 +68,8 @@ private:
 	std::unique_ptr<Jump> m_jump;
 	std::unique_ptr<Boost> m_boost;
 	std::unique_ptr<Bullet> m_bullet;
+
+	std::unique_ptr<DebugString> m_debugString;
 
 
 };
