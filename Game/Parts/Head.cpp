@@ -18,6 +18,7 @@ void Head::Initialize(int hp)
 {
 	SetScene(GetOwner()->GetScene());
 	SetHP(hp);
+	GetComponent<ModelDraw>().lock().get()->Initialize(ModelDraw::Head);
 	GetComponent<BoxCollider>().lock().get()->SetTypeID(BoxCollider::TypeID::Player);
 }
 
@@ -41,14 +42,8 @@ void Head::Update(float elapsedTime)
 void Head::Render(DirectX::SimpleMath::Matrix world)
 {
 	UNREFERENCED_PARAMETER(world);
-	if (GetHP() >= 0)
-	{
-		GetComponent<ModelDraw>().lock().get()->Render(ModelDraw::Head, GetWorld(),false);
-	}
-	else
-	{
-		GetComponent<ModelDraw>().lock().get()->Render(ModelDraw::Head, GetWorld(),true);
-	}
+
+	GetComponent<ModelDraw>().lock().get()->Render(GetWorld(),GetHP() <= 0);
 	
 	GetComponent<BoxCollider>().lock().get()->Render();
 }

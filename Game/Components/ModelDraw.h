@@ -22,9 +22,9 @@ public:
 		Dice
 	};
 
-	void Initialize();
+	void Initialize(ModelType type);
 	void Update(float elapsedTime);
-	void Render(ModelType type,DirectX::SimpleMath::Matrix world,bool black);
+	void Render(DirectX::SimpleMath::Matrix world,bool black);
 	void Finalize();
 
 private:
@@ -32,5 +32,7 @@ private:
 private:
 	Graphics* m_graphics;
 	Resources* m_resources;
+
+	DirectX::Model* m_model;
 };
 

@@ -5,6 +5,8 @@
 #include "Game/Player/State/State.h"
 #include "Framework/DebugString.h"
 
+#include <map>
+
 class Idol;
 class Jump;
 class Boost;

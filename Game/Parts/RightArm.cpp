@@ -18,6 +18,7 @@ void RightArm::Initialize(int hp)
 {
 	SetScene(GetOwner()->GetScene());
 	SetHP(hp);
+	GetComponent<ModelDraw>().lock().get()->Initialize(ModelDraw::RArm);
 	GetComponent<BoxCollider>().lock().get()->SetTypeID(BoxCollider::TypeID::Player);
 }
 
@@ -42,15 +43,8 @@ void RightArm::Update(float elapsedTime)
 void RightArm::Render(DirectX::SimpleMath::Matrix world)
 {
 	UNREFERENCED_PARAMETER(world);
-	if (GetHP() >= 0)
-	{
-		GetComponent<ModelDraw>().lock().get()->Render(ModelDraw::RArm, GetWorld(),false);
-	}
-	else
-	{
-		GetComponent<ModelDraw>().lock().get()->Render(ModelDraw::RArm, GetWorld(),true);
-	}
 	
+		GetComponent<ModelDraw>().lock().get()->Render(GetWorld(),GetHP() <= 0);
 	GetComponent<BoxCollider>().lock().get()->Render();
 }
 

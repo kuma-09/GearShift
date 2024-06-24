@@ -4,6 +4,8 @@
 #include "Game/Particle/Shader.h"
 
 ModelDraw::ModelDraw()
+	:
+	m_model{}
 {
 	m_graphics = Graphics::GetInstance();
 	m_resources = Resources::GetInstance();
@@ -14,17 +16,49 @@ ModelDraw::~ModelDraw()
 
 }
 
-void ModelDraw::Initialize()
+void ModelDraw::Initialize(ModelType type)
 {
-
+	switch (type)
+	{
+	case ModelDraw::Player:
+		m_model = m_resources->GetPlayerModel();
+	case ModelDraw::Head:
+		m_model = m_resources->GetHeadModel();
+		break;
+	case ModelDraw::BodyTop:
+		m_model = m_resources->GetBodyTopModel();
+		break;
+	case ModelDraw::BodyBottom:
+		m_model = m_resources->GetBodyBottomModel();
+		break;
+	case ModelDraw::LArm:
+		m_model = m_resources->GetlArmModel();
+		break;
+	case ModelDraw::RArm:
+		m_model = m_resources->GetrArmModel();
+		break;
+	case ModelDraw::LLeg:
+		m_model = m_resources->GetlLegModel();
+		break;
+	case ModelDraw::RLeg:
+		m_model = m_resources->GetrLegModel();
+		break;
+	case ModelDraw::Dice:
+		m_model = m_resources->GetDiceModel();
+		break;
+	default:
+		m_model = nullptr;
+		break;
+	}
 }
 
 void ModelDraw::Update(float elapsedTime)
 {
 	UNREFERENCED_PARAMETER(elapsedTime);
+	
 }
 
-void ModelDraw::Render(ModelType type, DirectX::SimpleMath::Matrix world,bool black)
+void ModelDraw::Render(DirectX::SimpleMath::Matrix world,bool black)
 {
 
 	auto context    = m_graphics->GetDeviceResources()->GetD3DDeviceContext();
@@ -32,97 +66,18 @@ void ModelDraw::Render(ModelType type, DirectX::SimpleMath::Matrix world,bool bl
 	auto view       = m_graphics->GetViewMatrix();
 	auto projection = m_graphics->GetProjectionMatrix();
 
+	
+
 	if (black)
 	{
-		switch (type)
+		m_model->Draw(context, *state, world, view, projection, false, [&]()
 		{
-		case ModelDraw::Player:
-			m_resources->GetPlayerModel()->Draw(context, *state, world, view, projection, false, [&]()
-				{
-					SetBlack();
-				});
-		case ModelDraw::Head:
-			m_resources->GetHeadModel()->Draw(context, *state, world, view, projection, false, [&]()
-				{
-					SetBlack();
-				});
-			break;
-		case ModelDraw::BodyTop:
-			m_resources->GetBodyTopModel()->Draw(context, *state, world, view, projection, false, [&]()
-				{
-					SetBlack();
-				});
-			break;
-		case ModelDraw::BodyBottom:
-			m_resources->GetBodyBottomModel()->Draw(context, *state, world, view, projection, false, [&]()
-				{
-					SetBlack();
-				});
-			break;
-		case ModelDraw::LArm:
-			m_resources->GetlArmModel()->Draw(context, *state, world, view, projection, false, [&]()
-				{
-					SetBlack();
-				});
-			break;
-		case ModelDraw::RArm:
-			m_resources->GetrArmModel()->Draw(context, *state, world, view, projection, false, [&]()
-				{
-					SetBlack();
-				});
-			break;
-		case ModelDraw::LLeg:
-			m_resources->GetlLegModel()->Draw(context, *state, world, view, projection, false, [&]()
-				{
-					SetBlack();
-				});
-			break;
-		case ModelDraw::RLeg:
-			m_resources->GetrLegModel()->Draw(context, *state, world, view, projection, false, [&]()
-				{
-					SetBlack();
-				});
-			break;
-		case ModelDraw::Dice:
-			m_resources->GetDiceModel()->Draw(context, *state, world, view, projection);
-			break;
-		default:
-			break;
-		}
+			SetBlack();
+		});
 	}
 	else
 	{
-		switch (type)
-		{
-		case ModelDraw::Player:
-			m_resources->GetPlayerModel()->Draw(context, *state, world, view, projection);
-		case ModelDraw::Head:
-			m_resources->GetHeadModel()->Draw(context, *state, world, view, projection);
-			break;
-		case ModelDraw::BodyTop:
-			m_resources->GetBodyTopModel()->Draw(context, *state, world, view, projection);
-			break;
-		case ModelDraw::BodyBottom:
-			m_resources->GetBodyBottomModel()->Draw(context, *state, world, view, projection);
-			break;
-		case ModelDraw::LArm:
-			m_resources->GetlArmModel()->Draw(context, *state, world, view, projection);
-			break;
-		case ModelDraw::RArm:
-			m_resources->GetrArmModel()->Draw(context, *state, world, view, projection);
-			break;
-		case ModelDraw::LLeg:
-			m_resources->GetlLegModel()->Draw(context, *state, world, view, projection);
-			break;
-		case ModelDraw::RLeg:
-			m_resources->GetrLegModel()->Draw(context, *state, world, view, projection);
-			break;
-		case ModelDraw::Dice:
-			m_resources->GetDiceModel()->Draw(context, *state, world, view, projection);
-			break;
-		default:
-			break;
-		}
+		m_model->Draw(context, *state, world, view, projection);
 	}
 
 

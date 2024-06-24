@@ -15,5 +15,7 @@ public:
 	void Finalize();
 
 private:
+
+
 };
 

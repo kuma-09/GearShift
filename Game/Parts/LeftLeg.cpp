@@ -18,7 +18,9 @@ void LeftLeg::Initialize(int hp)
 {
 	SetScene(GetOwner()->GetScene());
 	SetHP(hp);
+	GetComponent<ModelDraw>().lock().get()->Initialize(ModelDraw::LLeg);
 	GetComponent<BoxCollider>().lock().get()->SetTypeID(BoxCollider::TypeID::Player);
+
 }
 
 void LeftLeg::Update(float elapsedTime)
@@ -30,7 +32,6 @@ void LeftLeg::Update(float elapsedTime)
 	Vector3 pos{ 0,-0.4f,1.0f };
 	//SetPosition(GetPosition() + Vector3::Transform(pos, GetOwner()->GetQuaternion()));
 
-	
 
 	SetPosition(GetOwner()->GetPosition()
 		+ Matrix::CreateFromQuaternion(GetOwner()->GetQuaternion()).Right() * -0.4f
@@ -47,14 +48,8 @@ void LeftLeg::Update(float elapsedTime)
 void LeftLeg::Render(DirectX::SimpleMath::Matrix world)
 {
 	UNREFERENCED_PARAMETER(world);
-	if (GetHP() >= 0)
-	{
-		GetComponent<ModelDraw>().lock().get()->Render(ModelDraw::LLeg, GetWorld(),false);
-	}
-	else
-	{
-		GetComponent<ModelDraw>().lock().get()->Render(ModelDraw::LLeg, GetWorld(),true);
-	}
+
+	GetComponent<ModelDraw>().lock().get()->Render(GetWorld(),GetHP() <= 0);
 	
 	GetComponent<BoxCollider>().lock().get()->Render();
 }

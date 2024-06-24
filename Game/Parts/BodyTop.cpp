@@ -19,6 +19,7 @@ void BodyTop::Initialize(int hp)
 {
 	SetScene(GetOwner()->GetScene());
 	SetHP(hp);
+	GetComponent<ModelDraw>().lock().get()->Initialize(ModelDraw::BodyTop);
 	GetComponent<BoxCollider>().lock().get()->SetTypeID(BoxCollider::TypeID::Player);
 }
 
@@ -43,14 +44,8 @@ void BodyTop::Update(float elapsedTime)
 void BodyTop::Render(DirectX::SimpleMath::Matrix world)
 {
 	UNREFERENCED_PARAMETER(world);
-	if (GetHP() >= 0)
-	{
-		GetComponent<ModelDraw>().lock().get()->Render(ModelDraw::BodyTop, GetWorld(),false);
-	}
-	else
-	{
-		GetComponent<ModelDraw>().lock().get()->Render(ModelDraw::BodyTop, GetWorld(),true);
-	}
+
+	GetComponent<ModelDraw>().lock().get()->Render(GetWorld(),GetHP() <= 0);
 
 
 	GetComponent<BoxCollider>().lock().get()->Render();

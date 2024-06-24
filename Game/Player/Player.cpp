@@ -41,8 +41,6 @@ Player::Player(IScene* scene)
 	AddPart<LeftLeg>();
 	AddPart<RightLeg>();
 
-
-
 	m_idol = std::make_unique<Idol>();
 	m_jump = std::make_unique<Jump>();
 	m_boost = std::make_unique<Boost>();
@@ -108,19 +106,19 @@ void Player::Render()
 
 	GetComponent<Emitter>().lock().get()->Render(GetPosition());
 
-		GetPart<Head>().lock().get()->Render(GetWorld());
+	GetPart<Head>().lock().get()->Render(GetWorld());
 
-		GetPart<BodyTop>().lock().get()->Render(GetWorld());
+	GetPart<BodyTop>().lock().get()->Render(GetWorld());
 
-		GetPart<BodyBottom>().lock().get()->Render(GetWorld());
+	GetPart<BodyBottom>().lock().get()->Render(GetWorld());
 
-		GetPart<LeftArm>().lock().get()->Render(GetWorld());
+	GetPart<LeftArm>().lock().get()->Render(GetWorld());
 
-		GetPart<RightArm>().lock().get()->Render(GetWorld());
+	GetPart<RightArm>().lock().get()->Render(GetWorld());
 
-		GetPart<LeftLeg>().lock().get()->Render(GetWorld());
+	GetPart<LeftLeg>().lock().get()->Render(GetWorld());
 
-		GetPart<RightLeg>().lock().get()->Render(GetWorld());
+	GetPart<RightLeg>().lock().get()->Render(GetWorld());
 
 	//GetComponent<BoxCollider>().lock().get()->Render();
 

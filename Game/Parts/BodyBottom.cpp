@@ -18,6 +18,7 @@ void BodyBottom::Initialize(int hp)
 {
 	SetScene(GetOwner()->GetScene());
 	SetHP(hp);
+	GetComponent<ModelDraw>().lock().get()->Initialize(ModelDraw::BodyBottom);
 	GetComponent<BoxCollider>().lock().get()->SetTypeID(BoxCollider::TypeID::Player);
 }
 
@@ -43,14 +44,8 @@ void BodyBottom::Render(DirectX::SimpleMath::Matrix world)
 {
 	UNREFERENCED_PARAMETER(world);
 
-	if (GetHP() >= 0)
-	{
-		GetComponent<ModelDraw>().lock().get()->Render(ModelDraw::BodyBottom, GetWorld(), false);
-	}
-	else
-	{
-		GetComponent<ModelDraw>().lock().get()->Render(ModelDraw::BodyBottom, GetWorld(), true);
-	}
+
+	GetComponent<ModelDraw>().lock().get()->Render(GetWorld(), GetHP() <= 0);
 
 	GetComponent<BoxCollider>().lock().get()->Render();
 

@@ -5,6 +5,13 @@
 #include "Game/Components/Camera.h"
 #include "Game/Components/BoxCollider.h"
 
+#include "Game/Parts/Head.h"
+#include "Game/Parts/BodyTop.h"
+#include "Game/Parts/BodyBottom.h"
+#include "Game/Parts/LeftArm.h"
+#include "Game/Parts/LeftLeg.h"
+#include "Game/Parts/RightArm.h"
+#include "Game/Parts/RightLeg.h"
 
 
 void PlayScene::Initialize()

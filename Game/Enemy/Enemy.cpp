@@ -29,6 +29,7 @@ void Enemy::Initialize(GameObject* target)
 {
 	m_bullet = std::make_unique<Bullet>(GetScene(),BoxCollider::TypeID::EnemyBullet);
 	GetComponent<Look>().lock().get()->SetTarget(this, target);
+	GetComponent<ModelDraw>().lock().get()->Initialize(ModelDraw::Dice);
 	GetComponent<BoxCollider>().lock().get()->SetTypeID(BoxCollider::TypeID::Enemy);
 }
 
@@ -58,7 +59,7 @@ void Enemy::Update(float elapsedTime)
 void Enemy::Render()
 {
 	m_bullet->Render();
-	GetComponent<ModelDraw>().lock().get()->Render(ModelDraw::Dice,GetWorld(),false);
+	GetComponent<ModelDraw>().lock().get()->Render(GetWorld(),false);
 	//GetComponent<BoxCollider>().lock().get()->Render();
 }
 
