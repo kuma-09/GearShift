@@ -24,8 +24,17 @@ void PlayScene::Initialize()
     m_inputManager = InputManager::GetInstance();
 
     m_player = std::make_unique<Player>(this);
-    m_player->Initialize();
     m_player->SetPosition(Vector3(3, 10, 3));
+
+    m_player->SetPart("Head", std::make_shared<Head>());
+    m_player->SetPart("BodyTop", std::make_shared<BodyTop>());
+    m_player->SetPart("BodyBottom", std::make_shared<BodyBottom>());
+    m_player->SetPart("LeftArm", std::make_shared<LeftArm>());
+    m_player->SetPart("RightArm", std::make_shared<RightArm>());
+    m_player->SetPart("LeftLeg", std::make_shared<LeftLeg>());
+    m_player->SetPart("RightLeg", std::make_shared<RightLeg>());
+
+    m_player->Initialize();
 
     m_enemy.push_back(std::make_unique<Enemy>(this));
     m_enemy.back()->Initialize(m_player.get());

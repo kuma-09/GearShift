@@ -33,13 +33,6 @@ Player::Player(IScene* scene)
 	AddComponent<BoxCollider>();
 	AddComponent<Gravity>();
 	AddComponent<Emitter>();
-	AddPart<Head>();
-	AddPart<BodyTop>();
-	AddPart<BodyBottom>();
-	AddPart<LeftArm>();
-	AddPart<RightArm>();
-	AddPart<LeftLeg>();
-	AddPart<RightLeg>();
 
 	m_idol = std::make_unique<Idol>();
 	m_jump = std::make_unique<Jump>();
@@ -60,13 +53,13 @@ void Player::Initialize()
 	m_boost->Initialize(this);
 	m_bullet->Initalize(this);
 
-	GetPart<Head>().lock().get()->		Initialize(10);
-	GetPart<BodyTop>().lock().get()->	Initialize(10);
-	GetPart<BodyBottom>().lock().get()->Initialize(10);
-	GetPart<LeftArm>().lock().get()->	Initialize(10);
-	GetPart<RightArm>().lock().get()->	Initialize(10);
-	GetPart<LeftLeg>().lock().get()->	Initialize(10);
-	GetPart<RightLeg>().lock().get()->	Initialize(10);
+	GetPart("Head")->Initialize(10);
+	GetPart("BodyTop")->Initialize(10);
+	GetPart("BodyBottom")->Initialize(10);
+	GetPart("LeftArm")->Initialize(10);
+	GetPart("RightArm")->Initialize(10);
+	GetPart("LeftLeg")->Initialize(10);
+	GetPart("RightLeg")->Initialize(10);
 
 	GetComponent<BoxCollider>().lock().get()->SetTypeID(BoxCollider::TypeID::Player);
 
@@ -83,7 +76,7 @@ void Player::Update(float elapsedTime)
 	}
 
 	ComponentsUpdate(elapsedTime);
-	PartUpdate(elapsedTime);
+	UpdateParts(elapsedTime);
 
 	m_state->Update(elapsedTime);
 	m_bullet->Update(elapsedTime);
@@ -106,22 +99,7 @@ void Player::Render()
 
 	GetComponent<Emitter>().lock().get()->Render(GetPosition());
 
-	GetPart<Head>().lock().get()->Render(GetWorld());
-
-	GetPart<BodyTop>().lock().get()->Render(GetWorld());
-
-	GetPart<BodyBottom>().lock().get()->Render(GetWorld());
-
-	GetPart<LeftArm>().lock().get()->Render(GetWorld());
-
-	GetPart<RightArm>().lock().get()->Render(GetWorld());
-
-	GetPart<LeftLeg>().lock().get()->Render(GetWorld());
-
-	GetPart<RightLeg>().lock().get()->Render(GetWorld());
-
-	//GetComponent<BoxCollider>().lock().get()->Render();
-
+	RenderParts();
 
 }
 

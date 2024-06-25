@@ -23,32 +23,6 @@ public:
 	void Render();
 	void Finalize();
 
-	// コンポーネントを追加
-	template<typename PartType>
-	std::weak_ptr<PartType> AddPart()
-	{
-		std::shared_ptr<PartType> newPart = std::make_shared<PartType>();
-		m_umPart[typeid(PartType)] = newPart;
-		newPart->SetOwner(this);
-		return newPart;
-	}
-
-	// コンポーネントを取得
-	template<typename PartType>
-	std::weak_ptr<PartType> GetPart()
-	{
-		return std::static_pointer_cast<PartType>(m_umPart[typeid(PartType)]);
-	}
-
-	// コンポーネントを更新
-	void PartUpdate(float elapsedTime)
-	{
-		for (auto&& spPart : m_umPart)
-		{
-			spPart.second->Update(elapsedTime);
-		}
-	}
-
 	Idol* GetIdol() { return m_idol.get(); }
 	Jump* GetJump() { return m_jump.get(); }
 	Boost* GetBoost() { return m_boost.get(); }
@@ -57,13 +31,43 @@ public:
 
 	void ChangeState(State* state);
 
+	// パーツのセッターゲッター
+	void SetPart(const std::string& partType, std::shared_ptr<IPart> part)
+	{
+		m_pPart[partType] = part;
+		m_pPart[partType]->SetOwner(this);
+	}
+
+	std::shared_ptr<IPart> GetPart(const std::string& partType)
+	{
+		if (m_pPart.find(partType) != m_pPart.end()) 
+		{
+			return m_pPart[partType];
+		}
+		return nullptr;
+	}
+
+	void UpdateParts(float elapsedTime) {
+		for (auto& pair : m_pPart) 
+		{
+			pair.second->Update(elapsedTime);
+		}
+	}
+
+	void RenderParts() {
+		for (auto& pair : m_pPart) 
+		{
+			pair.second->Render(GetWorld());
+		}
+	}
+
 private:
 
 	InputManager* m_inputManager;
 	
 	GameObject* m_target;
 
-	std::unordered_map<std::type_index, std::shared_ptr<IPart>> m_umPart;
+	std::unordered_map<std::string, std::shared_ptr<IPart>> m_pPart;
 
 	State* m_state;
 	std::unique_ptr<Idol> m_idol;

@@ -9,6 +9,7 @@ public:
 
 	virtual void Initialize(int hp) = 0;
 	virtual void Update(float elapsedTime) = 0;
+	virtual void Render(DirectX::SimpleMath::Matrix world) = 0;
 
 	// e‚ğw’è
 	void SetOwner(GameObject* a_pObject)

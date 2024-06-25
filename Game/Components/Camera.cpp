@@ -21,10 +21,6 @@ void Camera::Update(float elapsedTime)
     using namespace DirectX::SimpleMath;
 
     UNREFERENCED_PARAMETER(elapsedTime);
-
-    //! かえりたいい
-    //? 帰りましょう
-    //TODO 帰宅中
     
     // カメラの座標を更新
     Vector3 pos{ 0,CAMERA_HEIGHT,CAMERA_DISTANCE };

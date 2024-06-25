@@ -30,7 +30,7 @@ void Jump::Update(float elapsedTime)
 	m_player->SetVelocity(m_player->GetVelocity() + Vector3(0, JUMPPOWER * elapsedTime, 0));
 
 	const auto& kbState = InputManager::GetInstance()->GetKeyboardState();
-	const auto& kbTracker = InputManager::GetInstance()->GetKeyboardTracker();
+
 	if (kbState.C)
 	{
 		m_player->GetComponent<Gravity>().lock().get()->Reset();
