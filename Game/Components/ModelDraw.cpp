@@ -46,6 +46,9 @@ void ModelDraw::Initialize(ModelType type)
 	case ModelDraw::Dice:
 		m_model = m_resources->GetDiceModel();
 		break;
+	case ModelDraw::Cube:
+		m_model = m_resources->GetCubeModel();
+		break;
 	default:
 		m_model = nullptr;
 		break;

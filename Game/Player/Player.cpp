@@ -97,7 +97,7 @@ void Player::Render()
 	m_bullet->Render();
 
 
-	GetComponent<Emitter>().lock().get()->Render(GetPosition());
+	GetComponent<Emitter>().lock().get()->Render(GetPosition() - DirectX::SimpleMath::Vector3(0, 1,0));
 
 	RenderParts();
 

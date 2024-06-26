@@ -43,9 +43,7 @@ private:
 	std::vector<std::unique_ptr<Wall>> m_wall;
 	std::vector<std::unique_ptr<DropItem>> m_dropItem;
 	std::unique_ptr<SkyDome> m_skyDome;
-	
-	DirectX::VertexPositionColorTexture	m_vertices[4];				// 頂点バッファ
-	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_texture;		// テクスチャ
+
 	
 };
 

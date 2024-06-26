@@ -106,6 +106,8 @@
     <ClInclude Include="Game\Object\Bullet.h" />
     <ClInclude Include="Game\Object\SkyDome.h" />
     <ClInclude Include="Game\Components\Look.h" />
+    <ClInclude Include="Game\Menu\UserInterface.h" />
+    <ClInclude Include="Game\Menu\Menu.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -170,6 +172,8 @@
     <ClCompile Include="Game\Object\Bullet.cpp" />
     <ClCompile Include="Game\Object\SkyDome.cpp" />
     <ClCompile Include="Game\Components\Look.cpp" />
+    <ClCompile Include="Game\Menu\Menu.cpp" />
+    <ClCompile Include="Game\Menu\UserInterface.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />
@@ -187,9 +191,13 @@
   <ItemGroup>
     <None Include="packages.config" />
     <None Include="Resources\Models\robot.sdkmesh" />
+    <None Include="Resources\Shaders\UI.hlsli" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\Shaders\PS.hlsl" />
     <FxCompile Include="Resources\Shaders\VS.hlsl" />
+    <FxCompile Include="Resources\Shaders\UIGS.hlsl" />
+    <FxCompile Include="Resources\Shaders\UIPS.hlsl" />
+    <FxCompile Include="Resources\Shaders\UIVS.hlsl" />
   </ItemGroup>
 </Project>

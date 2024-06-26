@@ -19,7 +19,8 @@ public:
 		RArm,
 		LLeg,
 		RLeg,
-		Dice
+		Dice,
+		Cube
 	};
 
 	void Initialize(ModelType type);

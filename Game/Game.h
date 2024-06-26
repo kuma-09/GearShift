@@ -7,6 +7,7 @@
 #include "Framework/DeviceResources.h"
 #include "Framework/StepTimer.h"
 #include "Game/IScene.h"
+#include "Game/PlayScene.h"
 
 class Graphics;
 class InputManager;
@@ -71,6 +72,7 @@ private:
     Resources* m_resources;
 
 
-    std::unique_ptr<IScene> m_scene;
+    IScene* m_scene;
+    std::unique_ptr<PlayScene> m_playScene;
 
 };

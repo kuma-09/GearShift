@@ -1,5 +1,6 @@
 #pragma once
 #include "Game/GameObject.h"
+#include "Game/Menu/Menu.h"
 
 class DropItem :public GameObject
 {
@@ -10,6 +11,9 @@ public:
 	void Update(float elapsedTime);
 	void Render();
 
-private:
+	void SetHit(bool isHit) { m_isHit = isHit; }
 
+private:
+	std::unique_ptr<Menu> m_menu;
+	bool m_isHit;
 };

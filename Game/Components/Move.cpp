@@ -38,7 +38,6 @@ void Move::Update(float elapsedTime)
     }
     if (gpState.thumbSticks.leftX != 0)
     {
-
         velocity +=  rotate.Right() * elapsedTime * gpState.thumbSticks.leftX;
     }
 

@@ -58,7 +58,10 @@ void Enemy::Update(float elapsedTime)
 
 void Enemy::Render()
 {
+	
 	m_bullet->Render();
+
+	if (GetHP() <= 0) return;
 	GetComponent<ModelDraw>().lock().get()->Render(GetWorld(),false);
 	//GetComponent<BoxCollider>().lock().get()->Render();
 }

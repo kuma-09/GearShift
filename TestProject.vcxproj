@@ -197,6 +197,8 @@
     <ClInclude Include="Game\Game.h" />
     <ClInclude Include="Game\GameObject.h" />
     <ClInclude Include="Game\IScene.h" />
+    <ClInclude Include="Game\Menu\Menu.h" />
+    <ClInclude Include="Game\Menu\UserInterface.h" />
     <ClInclude Include="Game\Object\Bullet.h" />
     <ClInclude Include="Game\Object\DropItem.h" />
     <ClInclude Include="Game\Object\SkyDome.h" />
@@ -240,6 +242,8 @@
     <ClCompile Include="Game\Components\Move.cpp" />
     <ClCompile Include="Game\Enemy\Enemy.cpp" />
     <ClCompile Include="Game\Game.cpp" />
+    <ClCompile Include="Game\Menu\Menu.cpp" />
+    <ClCompile Include="Game\Menu\UserInterface.cpp" />
     <ClCompile Include="Game\Object\Bullet.cpp" />
     <ClCompile Include="Game\Object\DropItem.cpp" />
     <ClCompile Include="Game\Object\SkyDome.cpp" />
@@ -282,6 +286,7 @@
   <ItemGroup>
     <None Include="packages.config" />
     <None Include="Resources\Models\robot.sdkmesh" />
+    <None Include="Resources\Shaders\UI.hlsli" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\Shaders\PS.hlsl">
@@ -289,6 +294,26 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectDir)/Resources/Shaders/%(Filename).cso</ObjectFileOutput>
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ProjectDir)/Resources/Shaders/%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)/Resources/Shaders/%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)/Resources/Shaders/%(Filename).cso</ObjectFileOutput>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\UIGS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Geometry</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">4.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Geometry</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">4.0</ShaderModel>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)/Resources/Shaders/%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)/Resources/Shaders/%(Filename).cso</ObjectFileOutput>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\UIPS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)/Resources/Shaders/%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)/Resources/Shaders/%(Filename).cso</ObjectFileOutput>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\UIVS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)/Resources/Shaders/%(Filename).cso</ObjectFileOutput>
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)/Resources/Shaders/%(Filename).cso</ObjectFileOutput>
     </FxCompile>

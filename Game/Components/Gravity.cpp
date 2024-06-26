@@ -34,8 +34,9 @@ void Gravity::Update(float elapsedTime)
 	}
 	else
 	{
-		m_velocity = 0;
-		GetOwner()->SetVelocity(GetOwner()->GetVelocity() - Vector3(0, m_velocity, 0));
+		//m_velocity = 0;
+		//GetOwner()->SetVelocity(GetOwner()->GetVelocity() - Vector3(0, m_velocity, 0));
+		GetOwner()->SetPosition({ GetOwner()->GetPosition().x,0,GetOwner()->GetPosition().z });
 	}
 }
 

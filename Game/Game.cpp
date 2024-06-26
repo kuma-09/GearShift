@@ -26,7 +26,11 @@ Game::Game() noexcept(false)
     //   Add DX::DeviceResources::c_EnableHDR for HDR10 display.
     m_deviceResources->RegisterDeviceNotify(this);
 
-    m_scene = std::make_unique<PlayScene>();
+
+
+    m_playScene = std::make_unique<PlayScene>();
+    m_scene = m_playScene.get();
+
 }
 
 // Initialize the Direct3D resources required to run.
@@ -35,7 +39,9 @@ void Game::Initialize(HWND window, int width, int height)
     using namespace DirectX::SimpleMath;
 
     m_hWnd = window;
+    m_graphics->SetScreenSize(width, height);
     m_deviceResources->SetWindow(m_hWnd, width, height);
+
 
     m_deviceResources->CreateDeviceResources();
     CreateDeviceDependentResources();

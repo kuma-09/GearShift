@@ -39,14 +39,17 @@ void PlayScene::Initialize()
     m_enemy.push_back(std::make_unique<Enemy>(this));
     m_enemy.back()->Initialize(m_player.get());
     m_enemy.back()->SetPosition(Vector3(0, 0, 0));
+    m_enemy.back()->SetHP(10);
 
     m_enemy.push_back(std::make_unique<Enemy>(this));
     m_enemy.back()->Initialize(m_player.get());
     m_enemy.back()->SetPosition(Vector3(5, 0, 5));
+    m_enemy.back()->SetHP(10);
 
     m_enemy.push_back(std::make_unique<Enemy>(this));
     m_enemy.back()->Initialize(m_player.get());
     m_enemy.back()->SetPosition(Vector3(10, 0, -5));
+    m_enemy.back()->SetHP(10);
 
     m_wall.push_back(std::make_unique<Wall>(this));
     m_wall.back()->SetPosition(Vector3(0, 0, 20));
@@ -115,13 +118,38 @@ void PlayScene::Update(float elapsedTime)
         }
     }
 
+    for (auto& collider : GetColliders())
+    {
+        if (collider->GetTypeID() == BoxCollider::TypeID::PlayerBullet)
+        {
+            for (auto& enemyCollider : GetColliders())
+            {
+                if (enemyCollider->GetTypeID() == BoxCollider::TypeID::Enemy &&
+                    collider->GetBoundingBox()->Intersects(*enemyCollider->GetBoundingBox()))
+                {
+                    enemyCollider->GetOwner()->Damage(1);
+                }
+            }
+        }
+    }
+
     for (auto& dropItem : m_dropItem)
     {
         if (m_player->GetComponent<BoxCollider>().lock().get()->
             GetBoundingBox()->Intersects(
                 *dropItem.get()->GetComponent<BoxCollider>().lock().get()->GetBoundingBox()))
         {
+            dropItem->SetHit(true);
+            if (kb->pressed.X)
+            {
 
+                m_player->GetPart("LeftLeg")->SetHP(10);
+
+            }
+        }
+        else
+        {
+            dropItem->SetHit(false);
         }
     }
 
@@ -140,8 +168,6 @@ void PlayScene::Update(float elapsedTime)
 void PlayScene::Render()
 {
     using namespace DirectX::SimpleMath;
-
-    m_graphics->GetBasicEffect()->SetTexture(m_texture.Get());
 
     m_skyDome->Render();
 
