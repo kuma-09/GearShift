@@ -25,7 +25,9 @@ public:
 	void Finalize() override;
 
 private:
-
+	std::vector<BoxCollider*> GetHitBoxCollider(BoxCollider::TypeID target, BoxCollider::TypeID object);
+	void NextTarget();
+private:
 	Graphics* m_graphics;
 	DX::DeviceResources* m_deviceResources;
 	InputManager* m_inputManager;

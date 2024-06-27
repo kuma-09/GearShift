@@ -77,14 +77,24 @@ void PlayScene::Update(float elapsedTime)
 
     m_player->Update(elapsedTime);
 
-    for (auto& enemy : m_enemy)
+    for (auto it = m_enemy.begin(); it != m_enemy.end(); it++)
     {
-        enemy->Update(elapsedTime);
+        
+        it->get()->Update(elapsedTime);
+        BoxCollider::CheckHit(m_player.get(), it->get());
+        if (it->get()->GetHP() <= 0)
+        {
+            RemoveCollider(it->get()->GetComponent<BoxCollider>().lock().get());
+            m_enemy.erase(it);
+            NextTarget();
+            break;
+        }
     }
 
     for (auto& wall : m_wall)
     {
         wall->Update(elapsedTime);
+        BoxCollider::CheckHit(m_player.get(), wall.get());
     }
 
     for (auto& dropItem : m_dropItem)
@@ -92,45 +102,14 @@ void PlayScene::Update(float elapsedTime)
         dropItem->Update(elapsedTime);
     }
 
-    for (auto& enemy : m_enemy)
+    for (auto hitColliders : GetHitBoxCollider(BoxCollider::TypeID::Player, BoxCollider::TypeID::EnemyBullet))
     {
-         BoxCollider::CheckHit(m_player.get(), enemy.get());
+        hitColliders->GetOwner()->Damage(1);
     }
 
-    for (auto& wall : m_wall)
+    for (auto hitColliders: GetHitBoxCollider(BoxCollider::TypeID::Enemy,BoxCollider::TypeID::PlayerBullet))
     {
-         BoxCollider::CheckHit(m_player.get(), wall.get());
-    }
-
-
-    for (auto& collider: GetColliders())
-    {
-        if (collider->GetTypeID() == BoxCollider::TypeID::EnemyBullet)
-        {
-            for (auto& playerCollider: GetColliders())
-            {
-                if (playerCollider->GetTypeID() == BoxCollider::TypeID::Player &&
-                    collider->GetBoundingBox()->Intersects(*playerCollider->GetBoundingBox()))
-                {
-                    playerCollider->GetOwner()->Damage(1);
-                }
-            }
-        }
-    }
-
-    for (auto& collider : GetColliders())
-    {
-        if (collider->GetTypeID() == BoxCollider::TypeID::PlayerBullet)
-        {
-            for (auto& enemyCollider : GetColliders())
-            {
-                if (enemyCollider->GetTypeID() == BoxCollider::TypeID::Enemy &&
-                    collider->GetBoundingBox()->Intersects(*enemyCollider->GetBoundingBox()))
-                {
-                    enemyCollider->GetOwner()->Damage(1);
-                }
-            }
-        }
+        hitColliders->GetOwner()->Damage(1);
     }
 
     for (auto& dropItem : m_dropItem)
@@ -140,28 +119,14 @@ void PlayScene::Update(float elapsedTime)
                 *dropItem.get()->GetComponent<BoxCollider>().lock().get()->GetBoundingBox()))
         {
             dropItem->SetHit(true);
-            if (kb->pressed.X)
-            {
-
-                m_player->GetPart("LeftLeg")->SetHP(10);
-
-            }
+            if (kb->pressed.X)  m_player->GetPart("LeftLeg")->SetHP(10);
         }
-        else
-        {
-            dropItem->SetHit(false);
-        }
+        else dropItem->SetHit(false);
     }
 
-    
     if (gp->a == gp->PRESSED || kb->IsKeyPressed(DirectX::Keyboard::Z))
     {
-        m_enemyNum++;
-        if (m_enemyNum >= m_enemy.size())
-        {
-            m_enemyNum = 0;
-        }
-        m_player->SetTarget(m_enemy[m_enemyNum].get());
+        NextTarget();
     }
 }
 
@@ -193,4 +158,41 @@ void PlayScene::Render()
 void PlayScene::Finalize()
 {
 
+}
+
+std::vector<BoxCollider*> PlayScene::GetHitBoxCollider(BoxCollider::TypeID target, BoxCollider::TypeID object)
+{
+    std::vector<BoxCollider*> result;
+
+    for (auto& collider : GetColliders())
+    {
+        if (collider->GetTypeID() == target)
+        {
+            for (auto& enemyCollider : GetColliders())
+            {
+                if (enemyCollider->GetTypeID() == object &&
+                    collider->GetBoundingBox()->Intersects(*enemyCollider->GetBoundingBox()))
+                {
+                    result.push_back(collider);
+                }
+            }
+        }
+    }
+    return result;
+}
+
+void PlayScene::NextTarget()
+{
+    m_enemyNum++;
+    if (m_enemyNum >= m_enemy.size())
+    {
+        m_enemyNum = 0;
+    }
+
+    if (m_enemy.empty())
+    {
+        m_player->SetTarget(m_player.get());
+        return;
+    }
+    m_player->SetTarget(m_enemy[m_enemyNum].get());
 }

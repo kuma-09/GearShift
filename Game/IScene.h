@@ -24,6 +24,21 @@ public:
 	{
 		m_pBoxCollider.push_back(collider);
 	}
+	
+	void RemoveCollider(BoxCollider* collider)
+	{
+		int it = 0;
+		for (auto boxColliders: m_pBoxCollider)
+		{
+			it++;
+			if (boxColliders == collider)
+			{
+				break;
+			}
+		}
+
+		m_pBoxCollider.erase(m_pBoxCollider.begin() + it);
+	}
 
 	std::vector<BoxCollider*> GetColliders() { return m_pBoxCollider; }
 
