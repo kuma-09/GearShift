@@ -62,6 +62,7 @@ void Player::Initialize()
 	GetPart("RightLeg")->Initialize(10);
 
 	GetComponent<BoxCollider>().lock().get()->SetTypeID(BoxCollider::TypeID::Player);
+	GetComponent<BoxCollider>().lock().get()->SetSize({ 1,1,1 });
 
 }
 
@@ -98,7 +99,7 @@ void Player::Render()
 
 
 	GetComponent<Emitter>().lock().get()->Render(GetPosition() - DirectX::SimpleMath::Vector3(0, 1,0));
-
+	GetComponent<BoxCollider>().lock().get()->Render();
 	RenderParts();
 
 }

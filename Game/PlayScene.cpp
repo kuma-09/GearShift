@@ -90,17 +90,13 @@ void PlayScene::Update(float elapsedTime)
             break;
         }
     }
-
-    for (auto& wall : m_wall)
-    {
-        wall->Update(elapsedTime);
-        BoxCollider::CheckHit(m_player.get(), wall.get());
-    }
+    
 
     for (auto& dropItem : m_dropItem)
     {
         dropItem->Update(elapsedTime);
     }
+
 
     for (auto hitColliders : GetHitBoxCollider(BoxCollider::TypeID::Player, BoxCollider::TypeID::EnemyBullet))
     {
@@ -111,17 +107,24 @@ void PlayScene::Update(float elapsedTime)
     {
         hitColliders->GetOwner()->Damage(1);
     }
+    
 
-    for (auto& dropItem : m_dropItem)
+    for (auto it = m_dropItem.begin(); it != m_dropItem.end(); it++)
     {
         if (m_player->GetComponent<BoxCollider>().lock().get()->
             GetBoundingBox()->Intersects(
-                *dropItem.get()->GetComponent<BoxCollider>().lock().get()->GetBoundingBox()))
+                *it->get()->GetComponent<BoxCollider>().lock().get()->GetBoundingBox()))
         {
-            dropItem->SetHit(true);
-            if (kb->pressed.X)  m_player->GetPart("LeftLeg")->SetHP(10);
+            it->get()->SetHit(true);
+            if (kb->pressed.X)
+            {
+                m_dropItem.erase(it);
+                m_player->GetPart("LeftLeg")->SetHP(10);
+                //m_player->SetPart("LeftLeg", std::make_unique<LeftLeg>());
+                break;
+            }
         }
-        else dropItem->SetHit(false);
+        else it->get()->SetHit(false);
     }
 
     if (gp->a == gp->PRESSED || kb->IsKeyPressed(DirectX::Keyboard::Z))
