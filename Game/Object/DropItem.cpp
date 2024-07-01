@@ -1,9 +1,10 @@
 #include "pch.h"
 #include "DropItem.h"
+#include "Game/Parts/IPart.h"
 #include "Game/Components/ModelDraw.h"
 #include "Game/Components/BoxCollider.h"
 
-DropItem::DropItem(IScene* scene)
+DropItem::DropItem(IScene* scene, IPart* part)
 {
 	SetScene(scene);
 	AddComponent<BoxCollider>();
@@ -11,6 +12,7 @@ DropItem::DropItem(IScene* scene)
 	GetComponent<BoxCollider>().lock().get()->SetTypeID(BoxCollider::TypeID::DropItem);
 
 	m_menu = std::make_unique<Menu>();
+	m_part = part;
 	int x;
 	int y;
 	Graphics::GetInstance()->GetScreenSize(x, y);

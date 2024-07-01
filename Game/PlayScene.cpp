@@ -5,6 +5,7 @@
 #include "Game/Components/Camera.h"
 #include "Game/Components/BoxCollider.h"
 
+#include "Game/Parts/IPart.h"
 #include "Game/Parts/Head.h"
 #include "Game/Parts/BodyTop.h"
 #include "Game/Parts/BodyBottom.h"
@@ -55,7 +56,7 @@ void PlayScene::Initialize()
     m_wall.back()->SetPosition(Vector3(0, 0, 20));
     m_wall.back()->GetComponent<BoxCollider>().lock().get()->SetSize({ 50,10,1 });
 
-    m_dropItem.push_back(std::make_unique<DropItem>(this));
+    m_dropItem.push_back(std::make_unique<DropItem>(this,std::make_shared<LeftLeg>().get()));
     m_dropItem.back()->SetPosition(Vector3(3, 0, 7));
 
     m_skyDome = std::make_unique<SkyDome>();

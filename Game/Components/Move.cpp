@@ -21,41 +21,43 @@ void Move::Update(float elapsedTime)
 {
     using namespace DirectX::SimpleMath;
 
-	UNREFERENCED_PARAMETER(elapsedTime);
-
     const auto& kb = m_inputManager->GetKeyboardState();
     const auto& gpState = m_inputManager->GetGamePadState();
     const auto& gpTracker = m_inputManager->GetGamePadTracker();
 
+    // パッドの入力情報
+    Vector3 input = Vector3{ gpState.thumbSticks.leftX,0, -gpState.thumbSticks.leftY } * elapsedTime;
 
+    // 親オブジェクトの向いている方向
+    Quaternion quaternion = GetOwner()->GetQuaternion();
+
+    // 親オブジェクトに渡すベクトル
     Vector3 velocity = Vector3::Zero;
-
-    Matrix rotate = Matrix::CreateFromQuaternion(GetOwner()->GetQuaternion());
 
     if (gpState.thumbSticks.leftY != 0)
     {
-        velocity +=  rotate.Forward() * elapsedTime * gpState.thumbSticks.leftY;
+        velocity += Vector3::Transform(input,quaternion);
     }
     if (gpState.thumbSticks.leftX != 0)
     {
-        velocity +=  rotate.Right() * elapsedTime * gpState.thumbSticks.leftX;
+        velocity += Vector3::Transform(input, quaternion);
     }
 
     if (kb.Up)
     {
-        velocity += rotate.Forward() * elapsedTime ;
+        velocity += Vector3::Transform(Vector3(0, 0, -1) * elapsedTime, quaternion);
     }
     if (kb.Down)
     {
-        velocity +=  -rotate.Forward() * elapsedTime ;
+        velocity += Vector3::Transform(Vector3(0, 0,  1) * elapsedTime, quaternion);
     }
     if (kb.Left)
     {
-        velocity +=  -rotate.Right() * elapsedTime ;
+        velocity += Vector3::Transform(Vector3(-1, 0, 0) * elapsedTime, quaternion);
     }
     if (kb.Right)
     {
-        velocity +=  rotate.Right() * elapsedTime ;
+        velocity += Vector3::Transform(Vector3( 1, 0, 0) * elapsedTime, quaternion);
     }
 
     velocity.Normalize();
