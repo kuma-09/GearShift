@@ -14,9 +14,9 @@ LeftLeg::~LeftLeg()
 
 }
 
-void LeftLeg::Initialize(int hp)
+void LeftLeg::Initialize(int hp,IScene* scene)
 {
-	SetScene(GetOwner()->GetScene());
+	SetScene(scene);
 	SetHP(hp);
 	GetComponent<ModelDraw>().lock().get()->Initialize(ModelDraw::LLeg);
 	GetComponent<BoxCollider>().lock().get()->SetTypeID(BoxCollider::TypeID::Player);

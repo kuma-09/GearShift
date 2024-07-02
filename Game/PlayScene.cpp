@@ -56,7 +56,7 @@ void PlayScene::Initialize()
     m_wall.back()->SetPosition(Vector3(0, 0, 20));
     m_wall.back()->GetComponent<BoxCollider>().lock().get()->SetSize({ 50,10,1 });
 
-    m_dropItem.push_back(std::make_unique<DropItem>(this,std::make_shared<LeftLeg>().get()));
+    m_dropItem.push_back(std::make_unique<DropItem>(this,std::make_shared<LeftLeg>()));
     m_dropItem.back()->SetPosition(Vector3(3, 0, 7));
 
     m_skyDome = std::make_unique<SkyDome>();
@@ -119,9 +119,13 @@ void PlayScene::Update(float elapsedTime)
             it->get()->SetHit(true);
             if (kb->pressed.X)
             {
+
+                m_player->SetPart("LeftLeg", it->get()->GetPart());
+                it->get()->GetPart()->Initialize(10, this);
                 m_dropItem.erase(it);
-                m_player->GetPart("LeftLeg")->SetHP(10);
+                //m_player->GetPart("LeftLeg")->SetHP(10);
                 //m_player->SetPart("LeftLeg", std::make_unique<LeftLeg>());
+
                 break;
             }
         }

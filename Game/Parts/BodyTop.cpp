@@ -15,9 +15,9 @@ BodyTop::~BodyTop()
 }
 
 
-void BodyTop::Initialize(int hp)
+void BodyTop::Initialize(int hp,IScene* scene)
 {
-	SetScene(GetOwner()->GetScene());
+	SetScene(scene);
 	SetHP(hp);
 	GetComponent<ModelDraw>().lock().get()->Initialize(ModelDraw::BodyTop);
 	GetComponent<BoxCollider>().lock().get()->SetTypeID(BoxCollider::TypeID::Player);
