@@ -63,7 +63,7 @@ void Enemy::Render()
 
 	if (GetHP() <= 0) return;
 	GetComponent<ModelDraw>().lock().get()->Render(GetWorld(),false);
-	//GetComponent<BoxCollider>().lock().get()->Render();
+	GetComponent<BoxCollider>().lock().get()->Render();
 }
 
 void Enemy::Finalize()

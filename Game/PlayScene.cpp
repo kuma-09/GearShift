@@ -108,10 +108,10 @@ void PlayScene::Update(float elapsedTime)
     }
 
 
-    //for (auto hitColliders : GetHitBoxCollider(BoxCollider::TypeID::Player, BoxCollider::TypeID::EnemyBullet))
-    //{
-    //    hitColliders->GetOwner()->Damage(1);
-    //}
+    for (auto hitColliders : GetHitBoxCollider(BoxCollider::TypeID::Player, BoxCollider::TypeID::EnemyBullet))
+    {
+        hitColliders->GetOwner()->Damage(1);
+    }
 
     for (auto hitColliders: GetHitBoxCollider(BoxCollider::TypeID::Enemy,BoxCollider::TypeID::PlayerBullet))
     {
@@ -170,7 +170,7 @@ void PlayScene::Render()
 
 void PlayScene::Finalize()
 {
-    GetColliders().clear();
+    ClearColliders();
     m_player->Finalize();
 }
 

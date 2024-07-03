@@ -43,6 +43,7 @@ public:
 	}
 
 	std::vector<BoxCollider*> GetColliders() { return m_pBoxCollider; }
+	void ClearColliders() { m_pBoxCollider.clear(); }
 
 	void SetGame(Game* game) { m_game = game; }
 	Game* GetGame() { return m_game; }

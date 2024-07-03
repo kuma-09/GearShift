@@ -252,6 +252,7 @@ void Game::OnDeviceRestored()
 
 void Game::ChangeScene(IScene* scene)
 {
+    
     m_scene->Finalize();
     m_scene = scene;
     m_scene->Initialize(this);
