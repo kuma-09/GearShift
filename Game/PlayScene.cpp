@@ -35,13 +35,13 @@ void PlayScene::Initialize(Game* game)
     m_player->SetPosition(Vector3(3, 10, 3));
 
 
-    m_player->SetPart("Head", new Head());
-    m_player->SetPart("BodyTop", new BodyTop());
-    m_player->SetPart("BodyBottom", new BodyBottom());
-    m_player->SetPart("LeftArm", new LeftArm());
-    m_player->SetPart("RightArm", new RightArm());
-    m_player->SetPart("LeftLeg",  new LeftLeg());
-    m_player->SetPart("RightLeg", new RightLeg());
+    m_player->SetPart("Head", std::make_unique<Head>());
+    m_player->SetPart("BodyTop",std::make_unique<BodyTop>());
+    m_player->SetPart("BodyBottom", std::make_unique<BodyBottom>());
+    m_player->SetPart("LeftArm", std::make_unique<LeftArm>());
+    m_player->SetPart("RightArm", std::make_unique<RightArm>());
+    m_player->SetPart("LeftLeg",  std::make_unique<LeftLeg>());
+    m_player->SetPart("RightLeg", std::make_unique<RightLeg>());
 
     m_player->Initialize();
 
@@ -65,7 +65,7 @@ void PlayScene::Initialize(Game* game)
     m_wall.back()->SetPosition(Vector3(0, 0, 20));
     m_wall.back()->GetComponent<BoxCollider>().lock().get()->SetSize({ 50,10,1 });
 
-    m_dropItem.push_back(std::make_unique<DropItem>(this,new LeftLeg()));
+    m_dropItem.push_back(std::make_unique<DropItem>(this,std::make_unique<LeftLeg>()));
     m_dropItem.back()->SetPosition(Vector3(3, 0, 7));
 
     m_skyDome = std::make_unique<SkyDome>();
@@ -129,7 +129,6 @@ void PlayScene::Update(float elapsedTime)
             if (kb->pressed.X)
             {
                 m_player->SetPart("LeftLeg", it->get()->GetPart());
-                it->get()->GetPart()->Initialize(10, this);
                 m_dropItem.erase(it);
                 break;
             }

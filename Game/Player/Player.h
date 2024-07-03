@@ -32,17 +32,18 @@ public:
 	void ChangeState(State* state);
 
 	// パーツのセッターゲッター
-	void SetPart(const std::string& partType, IPart* part)
+	void SetPart(const std::string& partType, std::unique_ptr<IPart> part)
 	{
-		m_pPart[partType] = part;
+		m_pPart[partType] = std::move(part);
 		m_pPart[partType]->SetOwner(this);
+		m_pPart[partType]->Initialize(10, GetScene());
 	}
 
 	IPart* GetPart(const std::string& partType)
 	{
 		if (m_pPart.find(partType) != m_pPart.end()) 
 		{
-			return m_pPart[partType];
+			return m_pPart[partType].get();
 		}
 		return nullptr;
 	}
@@ -67,7 +68,7 @@ private:
 	
 	GameObject* m_target;
 
-	std::unordered_map<std::string, IPart*> m_pPart;
+	std::unordered_map<std::string, std::unique_ptr<IPart>> m_pPart;
 
 	State* m_state;
 	std::unique_ptr<Idol> m_idol;

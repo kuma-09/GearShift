@@ -56,13 +56,7 @@ void Player::Initialize()
 	m_boost->Initialize(this);
 	m_bullet->Initalize(this);
 
-	GetPart("Head")->		Initialize(10,GetScene());
-	GetPart("BodyTop")->	Initialize(10,GetScene());
-	GetPart("BodyBottom")->	Initialize(10,GetScene());
-	GetPart("LeftArm")->	Initialize(10,GetScene());
-	GetPart("RightArm")->	Initialize(10,GetScene());
-	GetPart("LeftLeg")->	Initialize(10,GetScene());
-	GetPart("RightLeg")->	Initialize(10,GetScene());
+
 
 	GetComponent<BoxCollider>().lock().get()->SetTypeID(BoxCollider::TypeID::Player);
 	GetComponent<BoxCollider>().lock().get()->SetSize({ 1,1,1 });
@@ -109,13 +103,7 @@ void Player::Render()
 
 void Player::Finalize()
 {
-	delete GetPart("Head")			;
-	delete GetPart("BodyTop")		;
-	delete GetPart("BodyBottom")	;
-	delete GetPart("LeftArm")		;
-	delete GetPart("RightArm")		;
-	delete GetPart("LeftLeg")		;
-	delete GetPart("RightLeg")		;
+
 }
 
 void Player::SetTarget(GameObject* target)

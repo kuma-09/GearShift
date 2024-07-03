@@ -4,7 +4,7 @@
 #include "Game/Components/ModelDraw.h"
 #include "Game/Components/BoxCollider.h"
 
-DropItem::DropItem(IScene* scene, IPart* part)
+DropItem::DropItem(IScene* scene, std::unique_ptr<IPart> part)
 {
 	SetScene(scene);
 	AddComponent<BoxCollider>();
@@ -12,7 +12,7 @@ DropItem::DropItem(IScene* scene, IPart* part)
 	GetComponent<BoxCollider>().lock().get()->SetTypeID(BoxCollider::TypeID::DropItem);
 
 	m_menu = std::make_unique<Menu>();
-	m_part = part;
+	m_part = std::move(part);
 	int x;
 	int y;
 	Graphics::GetInstance()->GetScreenSize(x, y);
