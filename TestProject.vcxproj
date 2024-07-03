@@ -224,6 +224,7 @@
     <ClInclude Include="Game\Player\State\Jump.h" />
     <ClInclude Include="Game\Player\State\State.h" />
     <ClInclude Include="Game\PlayScene.h" />
+    <ClInclude Include="Game\TitleScene.h" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
@@ -266,6 +267,7 @@
     <ClCompile Include="Game\Player\State\Idol.cpp" />
     <ClCompile Include="Game\Player\State\Jump.cpp" />
     <ClCompile Include="Game\PlayScene.cpp" />
+    <ClCompile Include="Game\TitleScene.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

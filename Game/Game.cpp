@@ -8,6 +8,7 @@
 #include "Framework/InputManager.h"
 #include "Framework/Resources.h"
 #include "Game/PlayScene.h"
+#include "Game/TitleScene.h"
 
 extern void ExitGame() noexcept;
 
@@ -28,8 +29,8 @@ Game::Game() noexcept(false)
 
 
 
-    m_playScene = std::make_unique<PlayScene>();
-    m_scene = m_playScene.get();
+    m_playScene = new PlayScene();
+    m_titleScene = new TitleScene();
 
 }
 
@@ -57,7 +58,8 @@ void Game::Initialize(HWND window, int width, int height)
     m_timer.SetFixedTimeStep(true);
     m_timer.SetTargetElapsedSeconds(1.0 / 60);
 
-    m_scene->Initialize();
+    m_titleScene->Initialize(this);
+    m_scene = m_titleScene;
 
 
 }
@@ -86,6 +88,7 @@ void Game::Update(DX::StepTimer const& timer)
     // TODO: Add your game logic here.
 
     m_scene->Update(elapsedTime);
+
     elapsedTime;
 
 }
@@ -246,4 +249,12 @@ void Game::OnDeviceRestored()
 
     CreateWindowSizeDependentResources();
 }
+
+void Game::ChangeScene(IScene* scene)
+{
+    m_scene->Finalize();
+    m_scene = scene;
+    m_scene->Initialize(this);
+}
+
 #pragma endregion

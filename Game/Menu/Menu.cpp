@@ -49,16 +49,6 @@ void Menu::Initialize(DX::DeviceResources* pDR,int width,int height)
         , SimpleMath::Vector2(100, 100)
         , SimpleMath::Vector2(0.5f,0.5f)
         , tito::ANCHOR::MIDDLE_CENTER);
-    ////  ‚­‚³•¶š‰æ‘œ‚ğ“Ç‚İ‚Ş
-    //Add(L"Resources/Textures/grass2.png"
-    //    , SimpleMath::Vector2(600, 100)
-    //    , SimpleMath::Vector2(0.5f, 0.5f)
-    //    , tito::ANCHOR::MIDDLE_CENTER);
-    ////  ƒgƒ€‚Ì‰æ‘œ‚ğ“Ç‚İ‚Ş
-    //Add(L"Resources/Textures/image01.png"
-    //    , SimpleMath::Vector2(800, 100)
-    //    , SimpleMath::Vector2(0.5f, 0.5f)
-    //    , tito::ANCHOR::MIDDLE_CENTER);
 
 }
 

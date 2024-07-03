@@ -5,13 +5,15 @@
 #pragma once
 #include "Game/Components/BoxCollider.h"
 
+class Game;
+
 class IScene
 {
 
 public:
 	virtual ~IScene() = default;
 
-	virtual void Initialize() = 0;
+	virtual void Initialize(Game* game) = 0;
 
 	virtual void Update(float elapsedTime) = 0;
 
@@ -42,7 +44,11 @@ public:
 
 	std::vector<BoxCollider*> GetColliders() { return m_pBoxCollider; }
 
+	void SetGame(Game* game) { m_game = game; }
+	Game* GetGame() { return m_game; }
+
 private:
 	std::vector<BoxCollider*> m_pBoxCollider;
+	Game* m_game;
 
 };

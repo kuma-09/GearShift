@@ -16,7 +16,7 @@ Enemy::Enemy(IScene* scene)
 	AddComponent<ModelDraw>();
 	AddComponent<BoxCollider>();
 
-	
+	m_bullet = std::make_unique<Bullet>(GetScene(), BoxCollider::TypeID::EnemyBullet);
 	
 }
 
@@ -27,7 +27,7 @@ Enemy::~Enemy()
 
 void Enemy::Initialize(GameObject* target)
 {
-	m_bullet = std::make_unique<Bullet>(GetScene(),BoxCollider::TypeID::EnemyBullet);
+
 	GetComponent<Look>().lock().get()->SetTarget(this, target);
 	GetComponent<ModelDraw>().lock().get()->Initialize(ModelDraw::Dice);
 	GetComponent<BoxCollider>().lock().get()->SetTypeID(BoxCollider::TypeID::Enemy);

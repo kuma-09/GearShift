@@ -60,8 +60,6 @@ namespace tito
 		// テクスチャハンドル
 		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_texture;
 		Microsoft::WRL::ComPtr<ID3D11Resource> m_res;
-		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_yoshiTexture;
-		Microsoft::WRL::ComPtr<ID3D11Resource> m_yoshiRes;
 		// 頂点シェーダ
 		Microsoft::WRL::ComPtr<ID3D11VertexShader> m_vertexShader;
 		// ピクセルシェーダ
@@ -71,7 +69,6 @@ namespace tito
 
 		int m_windowWidth , m_windowHeight;
 		int m_textureWidth, m_textureHeight;
-		int m_yoshiTextureWidth, m_yoshiTextureHeight;
 
 		DirectX::SimpleMath::Vector2 m_scale;
 		DirectX::SimpleMath::Vector2 m_baseScale;

@@ -24,8 +24,11 @@
 
 
 Player::Player(IScene* scene)
+	:m_target{}
 {
 	SetScene(scene);
+
+	m_inputManager = InputManager::GetInstance();
 
 	AddComponent<Look>();
 	AddComponent<Move>();
@@ -69,7 +72,7 @@ void Player::Initialize()
 void Player::Update(float elapsedTime)
 {
 	using namespace DirectX::SimpleMath;
-	auto& kb = InputManager::GetInstance()->GetKeyboardTracker();
+	auto& kb = m_inputManager->GetKeyboardTracker();
 
 	if (kb->IsKeyPressed(DirectX::Keyboard::B))
 	{
@@ -106,7 +109,13 @@ void Player::Render()
 
 void Player::Finalize()
 {
-	
+	delete GetPart("Head")			;
+	delete GetPart("BodyTop")		;
+	delete GetPart("BodyBottom")	;
+	delete GetPart("LeftArm")		;
+	delete GetPart("RightArm")		;
+	delete GetPart("LeftLeg")		;
+	delete GetPart("RightLeg")		;
 }
 
 void Player::SetTarget(GameObject* target)

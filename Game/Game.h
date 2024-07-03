@@ -8,6 +8,7 @@
 #include "Framework/StepTimer.h"
 #include "Game/IScene.h"
 #include "Game/PlayScene.h"
+#include "Game/TitleScene.h"
 
 class Graphics;
 class InputManager;
@@ -51,6 +52,11 @@ public:
     // Properties
     void GetDefaultSize( int& width, int& height ) const noexcept;
 
+    void ChangeScene(IScene* scene);
+
+    PlayScene* GetPlayScene() { return m_playScene; }
+    TitleScene* GetTitleScene() { return m_titleScene; }
+
 private:
 
     void Update(DX::StepTimer const& timer);
@@ -73,6 +79,7 @@ private:
 
 
     IScene* m_scene;
-    std::unique_ptr<PlayScene> m_playScene;
+    PlayScene* m_playScene;
+    TitleScene* m_titleScene;
 
 };

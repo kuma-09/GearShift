@@ -39,12 +39,8 @@ tito::UserInterface::UserInterface()
 	,m_windowWidth(0)
 	,m_textureHeight(0)
 	,m_textureWidth(0)
-	,m_yoshiTextureHeight(0)
-	,m_yoshiTextureWidth(0)
 	,m_texture(nullptr)
 	,m_res(nullptr)
-	,m_yoshiTexture(nullptr)
-	,m_yoshiRes(nullptr)
 	,m_scale(SimpleMath::Vector2::One)
 	,m_position(SimpleMath::Vector2::Zero)
 	,m_anchor(ANCHOR::TOP_LEFT)
@@ -223,7 +219,6 @@ void tito::UserInterface::Render()
 
 	//	ピクセルシェーダにテクスチャを登録する。
 	context->PSSetShaderResources(0, 1, m_texture.GetAddressOf());
-	context->PSSetShaderResources(1, 1, m_yoshiTexture.GetAddressOf());
 
 
 	//	インプットレイアウトの登録

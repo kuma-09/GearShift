@@ -15,8 +15,9 @@ class Camera;
 class PlayScene final: public IScene
 {
 public:
+	PlayScene();
 
-	void Initialize() override;
+	void Initialize(Game* game) override;
 	
 	void Update(float elapsedTime) override;
 	
@@ -36,8 +37,6 @@ private:
 	std::unique_ptr<DirectX::BoundingBox> m_enemyBox;
 
 	std::unique_ptr<Player> m_player;
-
-	Camera* m_camera;
 
 	std::vector<std::unique_ptr<Enemy>> m_enemy;
 	int m_enemyNum;

@@ -4,7 +4,7 @@
 #include "Game/Components/ModelDraw.h"
 #include "Game/Components/BoxCollider.h"
 
-DropItem::DropItem(IScene* scene, std::shared_ptr<IPart> part)
+DropItem::DropItem(IScene* scene, IPart* part)
 {
 	SetScene(scene);
 	AddComponent<BoxCollider>();

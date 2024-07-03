@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "PlayScene.h"
 #include "cmath"
+#include "Game.h"
 #include "Framework/Microsoft/DebugDraw.h"
 #include "Game/Components/Camera.h"
 #include "Game/Components/BoxCollider.h"
@@ -14,8 +15,12 @@
 #include "Game/Parts/RightArm.h"
 #include "Game/Parts/RightLeg.h"
 
+PlayScene::PlayScene()
+{
 
-void PlayScene::Initialize()
+}
+
+void PlayScene::Initialize(Game* game)
 {
     using namespace DirectX;
     using namespace DirectX::SimpleMath;
@@ -24,18 +29,22 @@ void PlayScene::Initialize()
     m_deviceResources = m_graphics->GetDeviceResources();
     m_inputManager = InputManager::GetInstance();
 
+    SetGame(game);
+
     m_player = std::make_unique<Player>(this);
     m_player->SetPosition(Vector3(3, 10, 3));
 
-    m_player->SetPart("Head", std::make_shared<Head>());
-    m_player->SetPart("BodyTop", std::make_shared<BodyTop>());
-    m_player->SetPart("BodyBottom", std::make_shared<BodyBottom>());
-    m_player->SetPart("LeftArm", std::make_shared<LeftArm>());
-    m_player->SetPart("RightArm", std::make_shared<RightArm>());
-    m_player->SetPart("LeftLeg", std::make_shared<LeftLeg>());
-    m_player->SetPart("RightLeg", std::make_shared<RightLeg>());
+
+    m_player->SetPart("Head", new Head());
+    m_player->SetPart("BodyTop", new BodyTop());
+    m_player->SetPart("BodyBottom", new BodyBottom());
+    m_player->SetPart("LeftArm", new LeftArm());
+    m_player->SetPart("RightArm", new RightArm());
+    m_player->SetPart("LeftLeg",  new LeftLeg());
+    m_player->SetPart("RightLeg", new RightLeg());
 
     m_player->Initialize();
+
 
     m_enemy.push_back(std::make_unique<Enemy>(this));
     m_enemy.back()->Initialize(m_player.get());
@@ -56,7 +65,7 @@ void PlayScene::Initialize()
     m_wall.back()->SetPosition(Vector3(0, 0, 20));
     m_wall.back()->GetComponent<BoxCollider>().lock().get()->SetSize({ 50,10,1 });
 
-    m_dropItem.push_back(std::make_unique<DropItem>(this,std::make_shared<LeftLeg>()));
+    m_dropItem.push_back(std::make_unique<DropItem>(this,new LeftLeg()));
     m_dropItem.back()->SetPosition(Vector3(3, 0, 7));
 
     m_skyDome = std::make_unique<SkyDome>();
@@ -99,10 +108,10 @@ void PlayScene::Update(float elapsedTime)
     }
 
 
-    for (auto hitColliders : GetHitBoxCollider(BoxCollider::TypeID::Player, BoxCollider::TypeID::EnemyBullet))
-    {
-        hitColliders->GetOwner()->Damage(1);
-    }
+    //for (auto hitColliders : GetHitBoxCollider(BoxCollider::TypeID::Player, BoxCollider::TypeID::EnemyBullet))
+    //{
+    //    hitColliders->GetOwner()->Damage(1);
+    //}
 
     for (auto hitColliders: GetHitBoxCollider(BoxCollider::TypeID::Enemy,BoxCollider::TypeID::PlayerBullet))
     {
@@ -119,13 +128,9 @@ void PlayScene::Update(float elapsedTime)
             it->get()->SetHit(true);
             if (kb->pressed.X)
             {
-
                 m_player->SetPart("LeftLeg", it->get()->GetPart());
                 it->get()->GetPart()->Initialize(10, this);
                 m_dropItem.erase(it);
-                //m_player->GetPart("LeftLeg")->SetHP(10);
-                //m_player->SetPart("LeftLeg", std::make_unique<LeftLeg>());
-
                 break;
             }
         }
@@ -165,7 +170,8 @@ void PlayScene::Render()
 
 void PlayScene::Finalize()
 {
-
+    GetColliders().clear();
+    m_player->Finalize();
 }
 
 std::vector<BoxCollider*> PlayScene::GetHitBoxCollider(BoxCollider::TypeID target, BoxCollider::TypeID object)
@@ -199,7 +205,8 @@ void PlayScene::NextTarget()
 
     if (m_enemy.empty())
     {
-        m_player->SetTarget(m_player.get());
+        GetGame()->ChangeScene(GetGame()->GetTitleScene());
+        //m_player->SetTarget(m_player.get());
         return;
     }
     m_player->SetTarget(m_enemy[m_enemyNum].get());
