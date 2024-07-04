@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Boost.h"
 #include "Idol.h"
+#include "Jump.h"
 #include "Game/Components/Gravity.h"
 
 
@@ -32,7 +33,7 @@ void Boost::Update(float elapsedTime)
 
 	if (m_totalTime <= 0)
 	{
-		m_player->ChangeState(m_player->GetIdol());
+		m_player->ChangeState(m_player->GetJump());
 	}
 
 }

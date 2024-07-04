@@ -19,19 +19,17 @@ BoxCollider::~BoxCollider()
 
 void BoxCollider::Initialize()
 {
-
+    
 }
 
 void BoxCollider::Update(float elapsedTime)
 {
-	UNREFERENCED_PARAMETER(elapsedTime);
+    UNREFERENCED_PARAMETER(elapsedTime);
 	m_boudingBox->Center = GetOwner()->GetPosition();
 }
 
 void BoxCollider::Render()
 {
-
-
 	auto view       = m_graphics->GetViewMatrix();
 	auto projection = m_graphics->GetProjectionMatrix();
 
@@ -56,6 +54,11 @@ void BoxCollider::SetTypeID(TypeID id)
     GetOwner()->GetScene()->AddCollider(this);
 }
 
+/// <summary>
+/// “–‚½‚è”»’è‚ğ‚Æ‚è‰Ÿ‚µ–ß‚·ŠÖ”
+/// </summary>
+/// <param name="object1"> ‰Ÿ‚µ–ß‚³‚ê‚é‘ÎÛ </param>
+/// <param name="object2"> ”»’è‚·‚é“–‚½‚è”»’è </param>
 void BoxCollider::CheckHit(GameObject* object1, GameObject* object2)
 {
     using namespace DirectX::SimpleMath;

@@ -6,8 +6,10 @@
 
 
 Idol::Idol()
+	:m_player{}
+	,m_target{}
 {
-
+	m_inputManager = InputManager::GetInstance();
 }
 
 Idol::~Idol()
@@ -41,7 +43,6 @@ void Idol::Update(float elapsedTime)
 void Idol::Render()
 {
 
-	
 }
 
 void Idol::Finalize()

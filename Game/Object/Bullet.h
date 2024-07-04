@@ -4,12 +4,23 @@
 class Bullet :public GameObject
 {
 public:
+
+	enum BulletState
+	{
+		UNUSED,
+		FLYING,
+		USED,
+	};
+
 	Bullet(IScene* scene, BoxCollider::TypeID id);
 	~Bullet();
 	void Initalize(GameObject* object);
 	void Update(float elapsedTime);
 	void Render();
 
-private:
+	BulletState GetState() { return m_state; }
+	void SetState(BulletState state) { m_state = state; }
 
+private:
+	BulletState m_state;
 };

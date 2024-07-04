@@ -29,7 +29,7 @@ void Move::Update(float elapsedTime)
     Vector3 input = Vector3{ gpState.thumbSticks.leftX,0, -gpState.thumbSticks.leftY } * elapsedTime;
 
     // 親オブジェクトの向いている方向
-    Quaternion quaternion = GetOwner()->GetQuaternion();
+    Quaternion quaternion = Quaternion::CreateFromYawPitchRoll(0, GetOwner()->GetQuaternion().ToEuler().y,0);
 
     // 親オブジェクトに渡すベクトル
     Vector3 velocity = Vector3::Zero;
