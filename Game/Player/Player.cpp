@@ -40,7 +40,12 @@ Player::Player(IScene* scene)
 	m_idol = std::make_unique<Idol>();
 	m_jump = std::make_unique<Jump>();
 	m_boost = std::make_unique<Boost>();
-	m_bullet = std::make_unique<Bullet>(GetScene(),BoxCollider::TypeID::PlayerBullet);
+
+	for (int i = 0; i < MAX_BULLET_CUNT; i++)
+	{
+		m_bullet[i] = std::make_unique<Bullet>(GetScene(), BoxCollider::TypeID::PlayerBullet);
+	}
+
 	m_state = m_idol.get();
 }
 
@@ -54,8 +59,6 @@ void Player::Initialize()
 	m_idol->Initialize(this);
 	m_jump->Initialize(this);
 	m_boost->Initialize(this);
-	m_bullet->Initalize(this);
-
 
 
 	GetComponent<BoxCollider>().lock().get()->SetTypeID(BoxCollider::TypeID::Player);
@@ -70,14 +73,27 @@ void Player::Update(float elapsedTime)
 
 	if (kb->IsKeyPressed(DirectX::Keyboard::B))
 	{
-		m_bullet->Initalize(this);
+
+		for (int i = 0; i < MAX_BULLET_CUNT; i++)
+		{
+			if (m_bullet[i]->GetState() == Bullet::BulletState::UNUSED)
+			{
+				m_bullet[i]->Initalize(this);
+				break;
+			}
+		}
 	}
 
 	ComponentsUpdate(elapsedTime);
 	UpdateParts(elapsedTime);
 
 	m_state->Update(elapsedTime);
-	m_bullet->Update(elapsedTime);
+
+	for (int i = 0; i < MAX_BULLET_CUNT; i++)
+	{
+		m_bullet[i]->Update(elapsedTime);
+	}
+
 
 	SetPosition(GetPosition() + GetVelocity());
 
@@ -92,7 +108,12 @@ void Player::Update(float elapsedTime)
 void Player::Render()
 {
 	m_state->Render();
-	m_bullet->Render();
+
+	for (int i = 0; i < MAX_BULLET_CUNT; i++)
+	{
+		m_bullet[i]->Render();
+	}
+
 
 
 	GetComponent<Emitter>().lock().get()->Render(GetPosition() - DirectX::SimpleMath::Vector3(0, 1,0));

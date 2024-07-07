@@ -70,11 +70,13 @@ private:
 
 	std::unordered_map<std::string, std::unique_ptr<IPart>> m_pPart;
 
+	static const int MAX_BULLET_CUNT = 10;
+
 	State* m_state;
 	std::unique_ptr<Idol> m_idol;
 	std::unique_ptr<Jump> m_jump;
 	std::unique_ptr<Boost> m_boost;
-	std::unique_ptr<Bullet> m_bullet;
+	std::unique_ptr<Bullet> m_bullet[MAX_BULLET_CUNT];
 
 	std::unique_ptr<DebugString> m_debugString;
 

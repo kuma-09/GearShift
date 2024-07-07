@@ -8,6 +8,7 @@ Bullet::Bullet(IScene* scene , BoxCollider::TypeID id)
 	AddComponent<BoxCollider>();
 	GetComponent<BoxCollider>().lock().get()->SetTypeID(id);
 	GetComponent<BoxCollider>().lock().get()->SetSize({ 0.25f,0.25f,0.25f });
+	SetState(BulletState::UNUSED);
 }
 
 Bullet::~Bullet()
@@ -27,6 +28,7 @@ void Bullet::Initalize(GameObject* object)
 
 	velocity += rotate.Forward() * 1.0f;
 	SetVelocity(velocity);
+	SetState(BulletState::FLYING);
 }
 
 void Bullet::Update(float elapsedTime)

@@ -29,7 +29,7 @@ void Boost::Update(float elapsedTime)
 
 	m_totalTime -= elapsedTime;
 	
-	m_player->SetVelocity(Vector3(m_velocity.x * m_boostPower * m_totalTime,m_player->GetVelocity().y, m_velocity.z * m_boostPower * m_totalTime));
+	m_player->SetVelocity(Vector3(m_velocity.x * m_boostPower * m_totalTime,/*m_player->GetVelocity().y*/0, m_velocity.z * m_boostPower * m_totalTime));
 
 	if (m_totalTime <= 0)
 	{
