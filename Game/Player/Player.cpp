@@ -59,7 +59,10 @@ void Player::Initialize()
 	m_idol->Initialize(this);
 	m_jump->Initialize(this);
 	m_boost->Initialize(this);
-
+	for (int i = 0; i < MAX_BULLET_CUNT; i++)
+	{
+		m_bullet[i]->Initalize(this);
+	}
 
 	GetComponent<BoxCollider>().lock().get()->SetTypeID(BoxCollider::TypeID::Player);
 	GetComponent<BoxCollider>().lock().get()->SetSize({ 1,1,1 });

@@ -30,6 +30,7 @@ void Move::Update(float elapsedTime)
 
     // 親オブジェクトの向いている方向
     Quaternion quaternion = GetOwner()->GetQuaternion();
+    quaternion = Quaternion::CreateFromYawPitchRoll(GetOwner()->GetQuaternion().ToEuler().y, 0, 0);
 
     // 親オブジェクトに渡すベクトル
     Vector3 velocity = Vector3::Zero;
