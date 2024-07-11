@@ -9,6 +9,7 @@
 #include "Game/Object/Bullet.h"
 
 
+
 Enemy::Enemy(IScene* scene)
 	:m_totalTime{0}
 {
@@ -25,7 +26,7 @@ Enemy::Enemy(IScene* scene)
 
 Enemy::~Enemy()
 {
-
+	GetScene()->RemoveCollider(m_bullet->GetComponent<BoxCollider>().lock().get());
 }
 
 void Enemy::Initialize(GameObject* target)
@@ -68,10 +69,17 @@ void Enemy::Render()
 	if (GetHP() <= 0) return;
 	GetComponent<ModelDraw>().lock().get()->Render(GetWorld(),false);
 	GetComponent<BoxCollider>().lock().get()->Render();
-	GetComponent<HPBar>().lock().get()->Render(GetPosition());
 }
 
 void Enemy::Finalize()
 {
 
+}
+
+void Enemy::Collision(BoxCollider* collider)
+{
+	if (collider->GetTypeID() == BoxCollider::PlayerBullet)
+	{
+		SetHP(GetHP() - 1);
+	}
 }

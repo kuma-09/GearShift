@@ -44,7 +44,10 @@ public:
 
 	void Damage(int value) 
 	{
-		m_hp -= value; 
+		if (m_hp > 0)
+		{
+			m_hp -= value;
+		} 
 	}
 
 	// コンポーネントを追加
@@ -79,7 +82,7 @@ public:
 public:
 	
 	virtual void Update(float elapsedTime) = 0;
-
+	virtual void Collision(BoxCollider* collider) {};
 
 private:
 	IScene* m_scene = nullptr;

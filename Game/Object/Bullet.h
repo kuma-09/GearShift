@@ -22,6 +22,7 @@ public:
 	BulletState GetState() { return m_state; }
 	void SetState(BulletState state) { m_state = state; }
 
+
 private:
 	BulletState m_state;
 };

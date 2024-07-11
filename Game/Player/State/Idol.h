@@ -43,6 +43,7 @@ public:
 
 	void SetTarget(GameObject* target);
 
+
 private:
 	Player* m_player;
 

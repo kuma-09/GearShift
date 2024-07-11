@@ -121,7 +121,7 @@ void Player::Render()
 
 
 	GetComponent<Emitter>().lock().get()->Render(GetPosition() - DirectX::SimpleMath::Vector3(0, 1,0));
-	GetComponent<BoxCollider>().lock().get()->Render();
+	//GetComponent<BoxCollider>().lock().get()->Render();
 	RenderParts();
 
 }
@@ -148,4 +148,12 @@ void Player::ChangeState(State* state)
 	state->SetWorld(m_state->GetWorld());
 	m_state = state;
 	m_state->SetTarget(m_target);
+}
+
+void Player::Collision(BoxCollider* collider)
+{
+	if (collider->GetTypeID() == BoxCollider::EnemyBullet)
+	{
+		SetHP(GetHP() - 1);
+	}
 }

@@ -21,5 +21,6 @@ private:
 
 	int  m_maxHp;
 	DirectX::VertexPositionColorTexture m_vertex[4];
+
 };
 

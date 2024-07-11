@@ -62,6 +62,8 @@ public:
 		}
 	}
 
+	void Collision(BoxCollider* collider);
+
 private:
 
 	InputManager* m_inputManager;

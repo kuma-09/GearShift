@@ -44,8 +44,8 @@ void RightArm::Render(DirectX::SimpleMath::Matrix world)
 {
 	UNREFERENCED_PARAMETER(world);
 	
-		GetComponent<ModelDraw>().lock().get()->Render(GetWorld(),GetHP() <= 0);
-	GetComponent<BoxCollider>().lock().get()->Render();
+	GetComponent<ModelDraw>().lock().get()->Render(GetWorld(),GetHP() <= 0);
+	//GetComponent<BoxCollider>().lock().get()->Render();
 }
 
 void RightArm::Finalize()

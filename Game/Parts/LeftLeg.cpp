@@ -51,7 +51,7 @@ void LeftLeg::Render(DirectX::SimpleMath::Matrix world)
 
 	GetComponent<ModelDraw>().lock().get()->Render(GetWorld(),GetHP() <= 0);
 	
-	GetComponent<BoxCollider>().lock().get()->Render();
+	//GetComponent<BoxCollider>().lock().get()->Render();
 }
 
 void LeftLeg::Finalize()

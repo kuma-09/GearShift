@@ -32,11 +32,11 @@ public:
 		int it = 0;
 		for (auto boxColliders: m_pBoxCollider)
 		{
-			it++;
 			if (boxColliders == collider)
 			{
 				break;
 			}
+			it++;
 		}
 
 		m_pBoxCollider.erase(m_pBoxCollider.begin() + it);

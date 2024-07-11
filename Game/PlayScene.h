@@ -10,6 +10,8 @@
 #include "Game/Object/DropItem.h"
 #include "Game/Object/SkyDome.h"
 
+#include "Framework/DebugString.h"
+
 class Camera;
 
 class PlayScene final: public IScene
@@ -26,7 +28,6 @@ public:
 	void Finalize() override;
 
 private:
-	std::vector<BoxCollider*> GetHitBoxCollider(BoxCollider::TypeID target, BoxCollider::TypeID object);
 	void NextTarget();
 private:
 	Graphics* m_graphics;
@@ -45,6 +46,7 @@ private:
 	std::vector<std::unique_ptr<DropItem>> m_dropItem;
 	std::unique_ptr<SkyDome> m_skyDome;
 
+	std::unique_ptr<DebugString> m_debugString;
 	
 };
 

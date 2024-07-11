@@ -18,6 +18,8 @@ public:
 	void Render();
 	void Finalize();
 
+	void Collision(BoxCollider* collider);
+
 private:
 	GameObject* m_target;
 

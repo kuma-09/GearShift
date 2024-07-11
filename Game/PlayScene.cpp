@@ -5,6 +5,7 @@
 #include "Framework/Microsoft/DebugDraw.h"
 #include "Game/Components/Camera.h"
 #include "Game/Components/BoxCollider.h"
+#include "Game/Components/HPBar.h"
 
 #include "Game/Parts/IPart.h"
 #include "Game/Parts/Head.h"
@@ -34,7 +35,7 @@ void PlayScene::Initialize(Game* game)
     m_player = std::make_unique<Player>(this);
     m_player->SetPosition(Vector3(3, 10, 3));
 
-
+    
     m_player->SetPart("Head", std::make_unique<Head>());
     m_player->SetPart("BodyTop",std::make_unique<BodyTop>());
     m_player->SetPart("BodyBottom", std::make_unique<BodyBottom>());
@@ -67,8 +68,14 @@ void PlayScene::Initialize(Game* game)
 
     m_skyDome = std::make_unique<SkyDome>();
 
-    m_player->SetTarget(m_enemy[0].get());
+    m_enemyNum = 0;
+    m_player->SetTarget(m_enemy[m_enemyNum].get());
 
+    m_debugString = std::make_unique<DebugString>(
+          m_deviceResources->GetD3DDevice()
+        , m_deviceResources->GetD3DDeviceContext()
+        , L"Resources/Fonts/SegoeUI_18.spritefont");
+    m_debugString->SetColor(DirectX::Colors::Red);
 }
 
 
@@ -88,6 +95,7 @@ void PlayScene::Update(float elapsedTime)
     {
         
         it->get()->Update(elapsedTime);
+        m_debugString->AddString(std::to_string(it->get()->GetHP()).c_str());
         BoxCollider::CheckHit(m_player.get(), it->get());
         if (it->get()->GetHP() <= 0)
         {
@@ -104,15 +112,15 @@ void PlayScene::Update(float elapsedTime)
         dropItem->Update(elapsedTime);
     }
 
-
-    for (auto hitColliders : GetHitBoxCollider(BoxCollider::TypeID::Player, BoxCollider::TypeID::EnemyBullet))
+    for (auto& collider : GetColliders())
     {
-        hitColliders->GetOwner()->Damage(1);
-    }
-
-    for (auto hitColliders: GetHitBoxCollider(BoxCollider::TypeID::Enemy,BoxCollider::TypeID::PlayerBullet))
-    {
-        hitColliders->GetOwner()->Damage(1);
+        for (auto& enemyCollider : GetColliders())
+        {
+            if (collider->GetBoundingBox()->Intersects(*enemyCollider->GetBoundingBox()))
+            {
+                collider->GetOwner()->Collision(enemyCollider);
+            }
+        }
     }
     
 
@@ -137,6 +145,8 @@ void PlayScene::Update(float elapsedTime)
     {
         NextTarget();
     }
+
+
 }
 
 void PlayScene::Render()
@@ -152,6 +162,8 @@ void PlayScene::Render()
         enemy->Render();
     }
 
+    m_enemy[m_enemyNum].get()->GetComponent<HPBar>().lock().get()->Render(m_enemy[m_enemyNum]->GetPosition());
+
     for (auto& wall: m_wall)
     {
         wall->Render();
@@ -162,33 +174,15 @@ void PlayScene::Render()
         dropItem->Render();
     }
 
+    auto state = m_graphics->GetCommonStates();
+
+    m_debugString->Render(state);
 }
 
 void PlayScene::Finalize()
 {
     ClearColliders();
     m_player->Finalize();
-}
-
-std::vector<BoxCollider*> PlayScene::GetHitBoxCollider(BoxCollider::TypeID target, BoxCollider::TypeID object)
-{
-    std::vector<BoxCollider*> result;
-
-    for (auto& collider : GetColliders())
-    {
-        if (collider->GetTypeID() == target)
-        {
-            for (auto& enemyCollider : GetColliders())
-            {
-                if (enemyCollider->GetTypeID() == object &&
-                    collider->GetBoundingBox()->Intersects(*enemyCollider->GetBoundingBox()))
-                {
-                    result.push_back(collider);
-                }
-            }
-        }
-    }
-    return result;
 }
 
 void PlayScene::NextTarget()

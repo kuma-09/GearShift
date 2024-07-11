@@ -30,12 +30,20 @@ void HPBar::Update(float elapsedTime)
 
     UNREFERENCED_PARAMETER(elapsedTime);
 
-    float barSize = GetOwner()->GetHP() / m_maxHp;
+    float barSize = 0;
 
-    m_vertex[0] = VertexPositionColorTexture(Vector3(0, 0, 0), Vector4(1, 1, 1, 1), Vector2(0, 0));
-    m_vertex[1] = VertexPositionColorTexture(Vector3(barSize, 0, 0), Vector4(1, 1, 1, 1), Vector2(1, 0));
-    m_vertex[2] = VertexPositionColorTexture(Vector3(0, 1, 0), Vector4(1, 1, 1, 1), Vector2(0, 1));
-    m_vertex[3] = VertexPositionColorTexture(Vector3(barSize, 1, 0), Vector4(1, 1, 1, 1), Vector2(1, 1));
+    if (GetOwner()->GetHP())
+    {
+        barSize =  (float)GetOwner()->GetHP() / (float)m_maxHp;
+        barSize *= 2;
+    }
+
+
+
+    m_vertex[0] = VertexPositionColorTexture(Vector3(-barSize , 0, 0), Vector4(1, 1, 1, 1), Vector2(0, 0));
+    m_vertex[1] = VertexPositionColorTexture(Vector3( barSize , 0, 0), Vector4(1, 1, 1, 1), Vector2(1, 0));
+    m_vertex[2] = VertexPositionColorTexture(Vector3(-barSize , 1, 0), Vector4(1, 1, 1, 1), Vector2(0, 1));
+    m_vertex[3] = VertexPositionColorTexture(Vector3( barSize , 1, 0), Vector4(1, 1, 1, 1), Vector2(1, 1));
 }
 
 void HPBar::Render(DirectX::SimpleMath::Vector3 position)
@@ -76,6 +84,7 @@ void HPBar::Render(DirectX::SimpleMath::Vector3 position)
     m_primitiveBatch->Begin();
     m_primitiveBatch->DrawQuad(m_vertex[0], m_vertex[1], m_vertex[3], m_vertex[2]);
     m_primitiveBatch->End();
+
 }
 
 void HPBar::Finalize()
