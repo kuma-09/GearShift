@@ -46,7 +46,7 @@ void TitleScene::Render()
     using namespace DirectX;
     using namespace DirectX::SimpleMath;
 
-    m_titleLogo->Render();
+    //m_titleLogo->Render();
 
 }
 

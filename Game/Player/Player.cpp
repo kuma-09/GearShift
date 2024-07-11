@@ -73,15 +73,16 @@ void Player::Update(float elapsedTime)
 {
 	using namespace DirectX::SimpleMath;
 	auto& kb = m_inputManager->GetKeyboardTracker();
+	auto& gp = m_inputManager->GetGamePadTracker();
 
-	if (kb->IsKeyPressed(DirectX::Keyboard::B))
+	if (kb->IsKeyPressed(DirectX::Keyboard::B) || gp->x == gp->PRESSED )
 	{
 
 		for (int i = 0; i < MAX_BULLET_CUNT; i++)
 		{
 			if (m_bullet[i]->GetState() == Bullet::BulletState::UNUSED)
 			{
-				m_bullet[i]->Initalize(this);
+				m_bullet[i]->Shot(this);
 				break;
 			}
 		}

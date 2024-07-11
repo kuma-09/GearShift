@@ -70,7 +70,7 @@ private:
 
 	std::unordered_map<std::string, std::unique_ptr<IPart>> m_pPart;
 
-	static const int MAX_BULLET_CUNT = 10;
+	static const int MAX_BULLET_CUNT = 50;
 
 	State* m_state;
 	std::unique_ptr<Idol> m_idol;

@@ -49,17 +49,14 @@ void PlayScene::Initialize(Game* game)
     m_enemy.push_back(std::make_unique<Enemy>(this));
     m_enemy.back()->Initialize(m_player.get());
     m_enemy.back()->SetPosition(Vector3(0, 0, 0));
-    m_enemy.back()->SetHP(10);
 
     m_enemy.push_back(std::make_unique<Enemy>(this));
     m_enemy.back()->Initialize(m_player.get());
     m_enemy.back()->SetPosition(Vector3(5, 0, 5));
-    m_enemy.back()->SetHP(10);
 
     m_enemy.push_back(std::make_unique<Enemy>(this));
     m_enemy.back()->Initialize(m_player.get());
     m_enemy.back()->SetPosition(Vector3(10, 0, -5));
-    m_enemy.back()->SetHP(10);
 
     m_wall.push_back(std::make_unique<Wall>(this));
     m_wall.back()->SetPosition(Vector3(0, 0, 20));

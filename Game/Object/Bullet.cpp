@@ -26,6 +26,19 @@ void Bullet::Initalize(GameObject* object)
 
 	Matrix rotate = Matrix::CreateFromQuaternion(GetQuaternion());
 
+	SetState(BulletState::UNUSED);
+}
+
+void Bullet::Shot(GameObject* object)
+{
+	using namespace DirectX::SimpleMath;
+
+	Vector3 velocity = Vector3::Zero;
+	SetPosition(object->GetPosition());
+	SetQuaternion(object->GetQuaternion());
+
+	Matrix rotate = Matrix::CreateFromQuaternion(GetQuaternion());
+
 	velocity += rotate.Forward() * 1.0f;
 	SetVelocity(velocity);
 	SetState(BulletState::FLYING);

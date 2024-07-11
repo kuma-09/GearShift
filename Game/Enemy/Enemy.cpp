@@ -1,11 +1,13 @@
 #include "pch.h"
 #include "Enemy.h"
+#include <iostream>
+#include <algorithm>
 #include "Game/Components/Look.h"
 #include "Game/Components/ModelDraw.h"
 #include "Game/Components/BoxCollider.h"
+#include "Game/Components/HPBar.h"
 #include "Game/Object/Bullet.h"
-#include <iostream>
-#include <algorithm>
+
 
 Enemy::Enemy(IScene* scene)
 	:m_totalTime{0}
@@ -15,6 +17,7 @@ Enemy::Enemy(IScene* scene)
 	AddComponent<Look>();
 	AddComponent<ModelDraw>();
 	AddComponent<BoxCollider>();
+	AddComponent<HPBar>();
 
 	m_bullet = std::make_unique<Bullet>(GetScene(), BoxCollider::TypeID::EnemyBullet);
 	
@@ -27,10 +30,11 @@ Enemy::~Enemy()
 
 void Enemy::Initialize(GameObject* target)
 {
-
+	SetHP(10);
 	GetComponent<Look>().lock().get()->SetTarget(this, target);
 	GetComponent<ModelDraw>().lock().get()->Initialize(ModelDraw::Dice);
 	GetComponent<BoxCollider>().lock().get()->SetTypeID(BoxCollider::TypeID::Enemy);
+	GetComponent<HPBar>().lock().get()->Initialize();
 }
 
 void Enemy::Update(float elapsedTime)
@@ -42,7 +46,7 @@ void Enemy::Update(float elapsedTime)
 	m_totalTime += elapsedTime;
 	if (m_totalTime >= SHOT_INTERVAL)
 	{
-		m_bullet->Initalize(this);
+		m_bullet->Shot(this);
 		m_totalTime = 0;
 	}
 
@@ -64,6 +68,7 @@ void Enemy::Render()
 	if (GetHP() <= 0) return;
 	GetComponent<ModelDraw>().lock().get()->Render(GetWorld(),false);
 	GetComponent<BoxCollider>().lock().get()->Render();
+	GetComponent<HPBar>().lock().get()->Render(GetPosition());
 }
 
 void Enemy::Finalize()

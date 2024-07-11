@@ -109,6 +109,7 @@
     <ClInclude Include="Game\Menu\UserInterface.h" />
     <ClInclude Include="Game\Menu\Menu.h" />
     <ClInclude Include="Game\TitleScene.h" />
+    <ClInclude Include="Game\Components\HPBar.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -176,6 +177,7 @@
     <ClCompile Include="Game\Menu\Menu.cpp" />
     <ClCompile Include="Game\Menu\UserInterface.cpp" />
     <ClCompile Include="Game\TitleScene.cpp" />
+    <ClCompile Include="Game\Components\HPBar.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />
