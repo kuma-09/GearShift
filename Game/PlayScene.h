@@ -18,6 +18,7 @@ class PlayScene final: public IScene
 {
 public:
 	PlayScene();
+	~PlayScene();
 
 	void Initialize(Game* game) override;
 	
@@ -27,9 +28,35 @@ public:
 	
 	void Finalize() override;
 
+	// コンポーネントを追加
+	void AddCollider(BoxCollider* collider)
+	{
+		m_pBoxCollider.push_back(collider);
+	}
+
+	void RemoveCollider(BoxCollider* collider)
+	{
+		int it = 0;
+		for (auto boxColliders : m_pBoxCollider)
+		{
+			if (boxColliders == collider)
+			{
+				break;
+			}
+			it++;
+		}
+
+		m_pBoxCollider.erase(m_pBoxCollider.begin() + it);
+	}
+
+	std::vector<BoxCollider*> GetColliders() { return m_pBoxCollider; }
+	void ClearColliders() { m_pBoxCollider.clear(); }
+
 private:
 	void NextTarget();
 private:
+
+
 	Graphics* m_graphics;
 	DX::DeviceResources* m_deviceResources;
 	InputManager* m_inputManager;
@@ -45,6 +72,8 @@ private:
 	std::vector<std::unique_ptr<Wall>> m_wall;
 	std::vector<std::unique_ptr<DropItem>> m_dropItem;
 	std::unique_ptr<SkyDome> m_skyDome;
+
+	std::vector<BoxCollider*> m_pBoxCollider;
 
 	std::unique_ptr<DebugString> m_debugString;
 	

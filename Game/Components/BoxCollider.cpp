@@ -3,6 +3,7 @@
 #include "Game/IScene.h"
 #include "Game/GameObject.h"
 #include "Framework/Microsoft/DebugDraw.h"
+#include "Game/PlayScene.h"
 
 BoxCollider::BoxCollider()
 {
@@ -51,7 +52,7 @@ void BoxCollider::SetSize(DirectX::SimpleMath::Vector3 size)
 void BoxCollider::SetTypeID(TypeID id)
 {
     m_typeID = id;
-    GetOwner()->GetScene()->AddCollider(this);
+    static_cast<PlayScene*>(GetOwner()->GetScene())->AddCollider(this);
 }
 
 /// <summary>

@@ -77,7 +77,6 @@ void Player::Update(float elapsedTime)
 
 	if (kb->IsKeyPressed(DirectX::Keyboard::B) || gp->x == gp->PRESSED )
 	{
-
 		for (int i = 0; i < MAX_BULLET_CUNT; i++)
 		{
 			if (m_bullet[i]->GetState() == Bullet::BulletState::UNUSED)

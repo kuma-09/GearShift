@@ -56,3 +56,11 @@ void BodyTop::Finalize()
 {
 
 }
+
+void BodyTop::Collision(BoxCollider* collider)
+{
+	if (collider->GetTypeID() == BoxCollider::EnemyBullet)
+	{
+		SetHP(GetHP() - 1);
+	}
+}

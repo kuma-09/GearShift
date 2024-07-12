@@ -55,3 +55,11 @@ void BodyBottom::Finalize()
 {
 
 }
+
+void BodyBottom::Collision(BoxCollider* collider)
+{
+	if (collider->GetTypeID() == BoxCollider::EnemyBullet)
+	{
+		SetHP(GetHP() - 1);
+	}
+}

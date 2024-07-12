@@ -53,3 +53,11 @@ void RightLeg::Finalize()
 {
 
 }
+
+void RightLeg::Collision(BoxCollider* collider)
+{
+	if (collider->GetTypeID() == BoxCollider::EnemyBullet)
+	{
+		SetHP(GetHP() - 1);
+	}
+}

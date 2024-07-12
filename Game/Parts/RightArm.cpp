@@ -52,3 +52,11 @@ void RightArm::Finalize()
 {
 
 }
+
+void RightArm::Collision(BoxCollider* collider)
+{
+	if (collider->GetTypeID() == BoxCollider::EnemyBullet)
+	{
+		SetHP(GetHP() - 1);
+	}
+}

@@ -20,12 +20,13 @@ void Bullet::Initalize(GameObject* object)
 {
 	using namespace DirectX::SimpleMath;
 
+	m_owner = object;
+
 	Vector3 velocity = Vector3::Zero;
-	SetPosition(object->GetPosition());
-	SetQuaternion(object->GetQuaternion());
+	SetPosition(Vector3::Zero);
+	SetQuaternion(Quaternion::Identity);
 
-	Matrix rotate = Matrix::CreateFromQuaternion(GetQuaternion());
-
+	SetVelocity(Vector3::Zero);
 	SetState(BulletState::UNUSED);
 }
 
@@ -37,11 +38,22 @@ void Bullet::Shot(GameObject* object)
 	SetPosition(object->GetPosition());
 	SetQuaternion(object->GetQuaternion());
 
-	Matrix rotate = Matrix::CreateFromQuaternion(GetQuaternion());
-
-	velocity += rotate.Forward() * 1.0f;
+	velocity += Vector3::Transform(Vector3::Forward, GetQuaternion());
+	//velocity += rotate.Forward() * 1.0f;
 	SetVelocity(velocity);
 	SetState(BulletState::FLYING);
+}
+
+void Bullet::Hit()
+{
+	using namespace DirectX::SimpleMath;
+
+	Vector3 velocity = Vector3::Zero;
+	SetPosition(Vector3::Zero);
+	SetQuaternion(Quaternion::Identity);
+
+	SetVelocity(Vector3::Zero);
+	SetState(BulletState::USED);
 }
 
 void Bullet::Update(float elapsedTime)
@@ -54,4 +66,9 @@ void Bullet::Update(float elapsedTime)
 void Bullet::Render()
 {
 	GetComponent<BoxCollider>().lock().get()->Render();
+}
+
+void Bullet::Collision(BoxCollider* collider)
+{
+
 }

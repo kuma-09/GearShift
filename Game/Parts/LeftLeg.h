@@ -14,6 +14,7 @@ public:
 	void Render(DirectX::SimpleMath::Matrix world);
 	void Finalize();
 
+	void Collision(BoxCollider* collider);
 
 private:
 

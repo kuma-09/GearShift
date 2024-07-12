@@ -7,6 +7,7 @@
 #include "Game/Components/BoxCollider.h"
 #include "Game/Components/HPBar.h"
 #include "Game/Object/Bullet.h"
+#include "Game/PlayScene.h"
 
 
 
@@ -26,7 +27,7 @@ Enemy::Enemy(IScene* scene)
 
 Enemy::~Enemy()
 {
-	GetScene()->RemoveCollider(m_bullet->GetComponent<BoxCollider>().lock().get());
+	dynamic_cast<PlayScene*>(GetScene())->RemoveCollider(m_bullet->GetComponent<BoxCollider>().lock().get());
 }
 
 void Enemy::Initialize(GameObject* target)
@@ -80,6 +81,11 @@ void Enemy::Collision(BoxCollider* collider)
 {
 	if (collider->GetTypeID() == BoxCollider::PlayerBullet)
 	{
-		SetHP(GetHP() - 1);
+		Bullet* bulletObject = static_cast<Bullet*>(collider->GetOwner());
+		if (bulletObject->GetState() == Bullet::FLYING)
+		{
+			SetHP(GetHP() - 1);
+			bulletObject->Hit();
+		}
 	}
 }

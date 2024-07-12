@@ -21,6 +21,11 @@ PlayScene::PlayScene()
 
 }
 
+PlayScene::~PlayScene()
+{
+
+}
+
 void PlayScene::Initialize(Game* game)
 {
     using namespace DirectX;
@@ -133,7 +138,9 @@ void PlayScene::Update(float elapsedTime)
             it->get()->SetHit(true);
             if (kb->pressed.X)
             {
+                RemoveCollider(m_player->GetPart("LeftLeg")->GetComponent<BoxCollider>().lock().get());
                 m_player->SetPart("LeftLeg", it->get()->GetPart());
+                RemoveCollider(it->get()->GetComponent<BoxCollider>().lock().get());
                 m_dropItem.erase(it);
                 break;
             }

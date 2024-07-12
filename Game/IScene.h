@@ -21,35 +21,13 @@ public:
 
 	virtual void Finalize() = 0;
 
-	// コンポーネントを追加
-	void AddCollider(BoxCollider* collider)
-	{
-		m_pBoxCollider.push_back(collider);
-	}
-	
-	void RemoveCollider(BoxCollider* collider)
-	{
-		int it = 0;
-		for (auto boxColliders: m_pBoxCollider)
-		{
-			if (boxColliders == collider)
-			{
-				break;
-			}
-			it++;
-		}
 
-		m_pBoxCollider.erase(m_pBoxCollider.begin() + it);
-	}
-
-	std::vector<BoxCollider*> GetColliders() { return m_pBoxCollider; }
-	void ClearColliders() { m_pBoxCollider.clear(); }
 
 	void SetGame(Game* game) { m_game = game; }
 	Game* GetGame() { return m_game; }
 
 private:
-	std::vector<BoxCollider*> m_pBoxCollider;
+
 	Game* m_game;
 
 };
