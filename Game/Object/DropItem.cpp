@@ -65,3 +65,8 @@ void DropItem::Render()
 		m_menu->Render();
 	}
 }
+
+void DropItem::Finalize()
+{
+
+}

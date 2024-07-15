@@ -16,6 +16,7 @@ public:
 	void Initialize();
 	void Update(float elapsedTime);
 	void Render();
+	void Finalize();
 
 	std::unique_ptr<IPart> GetPart() { return std::move(m_part); }
 	void SetHit(bool isHit) { m_isHit = isHit; }

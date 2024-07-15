@@ -39,6 +39,7 @@ void HPBar::Update(float elapsedTime)
     {
         barSize =  (float)GetOwner()->GetHP() / (float)m_maxHp;
         barSize *= 4;
+        barSize = std::max(barSize, 0.0f);
     }
 
 

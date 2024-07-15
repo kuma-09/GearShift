@@ -137,24 +137,6 @@ void PlayScene::Update(float elapsedTime)
         }
     }
 
-    for (auto it = m_enemy.begin(); it != m_enemy.end();)
-    {
-        m_debugString->AddString(std::to_string(it->get()->GetHP()).c_str());
-        BoxCollider::CheckHit(m_player.get(), it->get());
-        if (it->get()->GetHP() > 0)
-        {
-            it++;
-        }
-        else
-        {
-            RemoveCollider(it->get()->GetComponent<BoxCollider>().lock().get());
-            m_enemy.erase(it);
-            NextTarget();
-            break;
-        }
-    }
-    
-
     for (auto it = m_dropItem.begin(); it != m_dropItem.end(); it++)
     {
         if (m_player->GetComponent<BoxCollider>().lock().get()->
@@ -173,6 +155,26 @@ void PlayScene::Update(float elapsedTime)
         }
         else it->get()->SetHit(false);
     }
+
+    for (auto it = m_enemy.begin(); it != m_enemy.end();)
+    {
+        m_debugString->AddString(std::to_string(it->get()->GetHP()).c_str());
+        BoxCollider::CheckHit(m_player.get(), it->get());
+        if (it->get()->GetHP() > 0)
+        {
+            it++;
+        }
+        else
+        {
+            RemoveCollider(it->get()->GetComponent<BoxCollider>().lock().get());
+            m_enemy.erase(it);
+            NextTarget();
+            break;
+        }
+    }
+    
+
+
 
     if (gp->a == gp->PRESSED || kb->IsKeyPressed(DirectX::Keyboard::Z))
     {
@@ -222,7 +224,21 @@ void PlayScene::Render()
 void PlayScene::Finalize()
 {
     ClearColliders();
-    m_player->Finalize();
+    m_player.reset();
+
+
+    for (auto& enemy : m_enemy)
+    {
+        enemy.reset();
+    }
+    m_enemy.clear();
+
+    for (auto& dropItem : m_dropItem)
+    {
+        dropItem.reset();
+    }
+    m_dropItem.clear();
+    
 }
 
 void PlayScene::CreateHitParticle(DirectX::SimpleMath::Matrix world)
