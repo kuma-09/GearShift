@@ -37,6 +37,7 @@ void Enemy::Initialize(GameObject* target)
 	GetComponent<ModelDraw>().lock().get()->Initialize(ModelDraw::Dice);
 	GetComponent<BoxCollider>().lock().get()->SetTypeID(BoxCollider::TypeID::Enemy);
 	GetComponent<HPBar>().lock().get()->Initialize();
+	m_bullet->Initalize(this);
 }
 
 void Enemy::Update(float elapsedTime)
@@ -68,7 +69,7 @@ void Enemy::Render()
 	m_bullet->Render();
 
 	if (GetHP() <= 0) return;
-	GetComponent<ModelDraw>().lock().get()->Render(GetWorld(),false);
+	GetComponent<ModelDraw>().lock().get()->Render(GetWorld());
 	GetComponent<BoxCollider>().lock().get()->Render();
 }
 
@@ -85,6 +86,7 @@ void Enemy::Collision(BoxCollider* collider)
 		if (bulletObject->GetState() == Bullet::FLYING)
 		{
 			SetHP(GetHP() - 1);
+			static_cast<PlayScene*>(GetScene())->CreateHitParticle(GetWorld());
 			bulletObject->Hit();
 		}
 	}

@@ -44,8 +44,15 @@ void BodyBottom::Render(DirectX::SimpleMath::Matrix world)
 {
 	UNREFERENCED_PARAMETER(world);
 
+	if (GetHP() >= 0)
+	{
+		GetComponent<ModelDraw>().lock().get()->Render(GetWorld());
+	}
+	else
+	{
+		GetComponent<ModelDraw>().lock().get()->Render(GetWorld(),DirectX::Colors::Black);
+	}
 
-	GetComponent<ModelDraw>().lock().get()->Render(GetWorld(), GetHP() <= 0);
 
 	//GetComponent<BoxCollider>().lock().get()->Render();
 

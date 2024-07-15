@@ -205,6 +205,7 @@
     <ClInclude Include="Game\Object\SkyDome.h" />
     <ClInclude Include="Game\Object\Wall.h" />
     <ClInclude Include="Game\Particle\Emitter.h" />
+    <ClInclude Include="Game\Particle\HitParticle.h" />
     <ClInclude Include="Game\Particle\Particle.h" />
     <ClInclude Include="Game\Particle\Shader.h" />
     <ClInclude Include="Game\Particle\ShaderParticle.h">
@@ -252,6 +253,7 @@
     <ClCompile Include="Game\Object\SkyDome.cpp" />
     <ClCompile Include="Game\Object\Wall.cpp" />
     <ClCompile Include="Game\Particle\Emitter.cpp" />
+    <ClCompile Include="Game\Particle\HitParticle.cpp" />
     <ClCompile Include="Game\Particle\Particle.cpp" />
     <ClCompile Include="Game\Particle\Shader.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>

@@ -61,7 +61,18 @@ void ModelDraw::Update(float elapsedTime)
 	
 }
 
-void ModelDraw::Render(DirectX::SimpleMath::Matrix world,bool black)
+void ModelDraw::Render(DirectX::SimpleMath::Matrix world)
+{
+	auto context = m_graphics->GetDeviceResources()->GetD3DDeviceContext();
+	auto state = m_graphics->GetCommonStates();
+	auto view = m_graphics->GetViewMatrix();
+	auto projection = m_graphics->GetProjectionMatrix();
+
+	m_model->Draw(context, *state, world, view, projection);
+
+}
+
+void ModelDraw::Render(DirectX::SimpleMath::Matrix world, DirectX::XMVECTORF32 color)
 {
 
 	auto context    = m_graphics->GetDeviceResources()->GetD3DDeviceContext();
@@ -69,22 +80,10 @@ void ModelDraw::Render(DirectX::SimpleMath::Matrix world,bool black)
 	auto view       = m_graphics->GetViewMatrix();
 	auto projection = m_graphics->GetProjectionMatrix();
 
-	
-
-	if (black)
+	m_model->Draw(context, *state, world, view, projection, false, [&]()
 	{
-		m_model->Draw(context, *state, world, view, projection, false, [&]()
-		{
-			SetBlack();
-		});
-	}
-	else
-	{
-		m_model->Draw(context, *state, world, view, projection);
-	}
-
-
-
+		SetColor(color);
+	});
 }
 
 void ModelDraw::Finalize()
@@ -92,10 +91,10 @@ void ModelDraw::Finalize()
 
 }
 
-void ModelDraw::SetBlack()
+void ModelDraw::SetColor(DirectX::XMVECTORF32 color)
 {
 	auto effect = std::make_unique<DirectX::BasicEffect>(m_graphics->GetDeviceResources()->GetD3DDevice());
-	effect->SetDiffuseColor(DirectX::SimpleMath::Vector4(0, 0, 0, 1));
+	effect->SetDiffuseColor(color);
 	effect->SetView(m_graphics->GetViewMatrix());
 	effect->SetProjection(m_graphics->GetProjectionMatrix());
 	effect->SetWorld(GetOwner()->GetWorld());

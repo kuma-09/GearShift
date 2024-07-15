@@ -1,13 +1,16 @@
 #include "pch.h"
 #include "Bullet.h"
 #include "Game/Components/BoxCollider.h"
+#include "Game/Components/ModelDraw.h"
 
 Bullet::Bullet(IScene* scene , BoxCollider::TypeID id)
 {
 	SetScene(scene);
 	AddComponent<BoxCollider>();
+	AddComponent<ModelDraw>();
 	GetComponent<BoxCollider>().lock().get()->SetTypeID(id);
-	GetComponent<BoxCollider>().lock().get()->SetSize({ 0.25f,0.25f,0.25f });
+	GetComponent<BoxCollider>().lock().get()->SetSize({ 0.1f,0.1f,0.1f });
+	SetScale({ 0.1f,0.1f,0.1f });
 	SetState(BulletState::UNUSED);
 }
 
@@ -21,6 +24,7 @@ void Bullet::Initalize(GameObject* object)
 	using namespace DirectX::SimpleMath;
 
 	m_owner = object;
+	GetComponent<ModelDraw>().lock().get()->Initialize(ModelDraw::Cube);
 
 	Vector3 velocity = Vector3::Zero;
 	SetPosition(Vector3::Zero);
@@ -58,14 +62,25 @@ void Bullet::Hit()
 
 void Bullet::Update(float elapsedTime)
 {
+	using namespace DirectX::SimpleMath;
+
 	ComponentsUpdate(elapsedTime);
 
 	SetPosition(GetPosition() + GetVelocity());
+
+	Matrix world = Matrix::CreateScale(GetScale());
+	world *= Matrix::CreateFromQuaternion(GetQuaternion());
+	world *= Matrix::CreateTranslation(GetPosition());
+	SetWorld(world);
 }
 
 void Bullet::Render()
-{
-	GetComponent<BoxCollider>().lock().get()->Render();
+{	
+	if (m_state == FLYING)
+	{
+		GetComponent<ModelDraw>().lock().get()->Render(GetWorld());
+	}
+
 }
 
 void Bullet::Collision(BoxCollider* collider)

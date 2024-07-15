@@ -13,6 +13,7 @@ public:
 	DropItem(IScene* scene, std::unique_ptr<IPart> part);
 	~DropItem();
 	
+	void Initialize();
 	void Update(float elapsedTime);
 	void Render();
 

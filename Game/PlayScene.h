@@ -14,6 +14,8 @@
 
 class Camera;
 
+class HitParticle;
+
 class PlayScene final: public IScene
 {
 public:
@@ -52,6 +54,8 @@ public:
 	std::vector<BoxCollider*> GetColliders() { return m_pBoxCollider; }
 	void ClearColliders() { m_pBoxCollider.clear(); }
 
+	void CreateHitParticle(DirectX::SimpleMath::Matrix world);
+
 private:
 	void NextTarget();
 private:
@@ -76,6 +80,8 @@ private:
 	std::vector<BoxCollider*> m_pBoxCollider;
 
 	std::unique_ptr<DebugString> m_debugString;
+
+	std::vector<std::unique_ptr<HitParticle>> m_hitParticle;
 	
 };
 

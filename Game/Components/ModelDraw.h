@@ -25,11 +25,12 @@ public:
 
 	void Initialize(ModelType type);
 	void Update(float elapsedTime);
-	void Render(DirectX::SimpleMath::Matrix world,bool black);
+	void Render(DirectX::SimpleMath::Matrix world);
+	void Render(DirectX::SimpleMath::Matrix world, DirectX::XMVECTORF32 color);
 	void Finalize();
 
 private:
-	void SetBlack();
+	void SetColor(DirectX::XMVECTORF32 color);
 private:
 	Graphics* m_graphics;
 	Resources* m_resources;

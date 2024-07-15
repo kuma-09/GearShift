@@ -16,6 +16,8 @@
 #include "Game/Parts/RightArm.h"
 #include "Game/Parts/RightLeg.h"
 
+#include "Game/Particle/HitParticle.h"
+
 PlayScene::PlayScene()
 {
 
@@ -70,10 +72,11 @@ void PlayScene::Initialize(Game* game)
 
     m_dropItem.push_back(std::make_unique<DropItem>(this,std::make_unique<LeftLeg>()));
     m_dropItem.back()->SetPosition(Vector3(3, 0, 7));
+    m_dropItem.back()->Initialize();
 
     m_skyDome = std::make_unique<SkyDome>();
 
-    m_enemyNum = 0;
+    m_enemyNum = 2;
     m_player->SetTarget(m_enemy[m_enemyNum].get());
 
     m_debugString = std::make_unique<DebugString>(
@@ -81,6 +84,8 @@ void PlayScene::Initialize(Game* game)
         , m_deviceResources->GetD3DDeviceContext()
         , L"Resources/Fonts/SegoeUI_18.spritefont");
     m_debugString->SetColor(DirectX::Colors::Red);
+
+
 }
 
 
@@ -92,23 +97,27 @@ void PlayScene::Update(float elapsedTime)
     const auto& gp = m_inputManager->GetGamePadTracker();
     const auto& kb = m_inputManager->GetKeyboardTracker();
 
+
+    
+    for (auto it = m_hitParticle.begin(); it != m_hitParticle.end();)
+    {
+        if (it->get()->Update())
+        {
+            it = m_hitParticle.erase(it);
+        }
+        else
+        {
+            it++;
+        }
+    }
+
     m_skyDome->Update(elapsedTime);
 
     m_player->Update(elapsedTime);
 
-    for (auto it = m_enemy.begin(); it != m_enemy.end(); it++)
+    for (auto& enemy : m_enemy)
     {
-        
-        it->get()->Update(elapsedTime);
-        m_debugString->AddString(std::to_string(it->get()->GetHP()).c_str());
-        BoxCollider::CheckHit(m_player.get(), it->get());
-        if (it->get()->GetHP() <= 0)
-        {
-            RemoveCollider(it->get()->GetComponent<BoxCollider>().lock().get());
-            m_enemy.erase(it);
-            NextTarget();
-            break;
-        }
+        enemy->Update(elapsedTime);
     }
     
 
@@ -125,6 +134,23 @@ void PlayScene::Update(float elapsedTime)
             {
                 collider->GetOwner()->Collision(enemyCollider);
             }
+        }
+    }
+
+    for (auto it = m_enemy.begin(); it != m_enemy.end();)
+    {
+        m_debugString->AddString(std::to_string(it->get()->GetHP()).c_str());
+        BoxCollider::CheckHit(m_player.get(), it->get());
+        if (it->get()->GetHP() > 0)
+        {
+            it++;
+        }
+        else
+        {
+            RemoveCollider(it->get()->GetComponent<BoxCollider>().lock().get());
+            m_enemy.erase(it);
+            NextTarget();
+            break;
         }
     }
     
@@ -184,12 +210,43 @@ void PlayScene::Render()
     auto state = m_graphics->GetCommonStates();
 
     m_debugString->Render(state);
+
+    for (auto& particle : m_hitParticle)
+    {
+        particle->Render(m_graphics->GetViewMatrix(), m_graphics->GetProjectionMatrix());
+    }
+
+    
 }
 
 void PlayScene::Finalize()
 {
     ClearColliders();
     m_player->Finalize();
+}
+
+void PlayScene::CreateHitParticle(DirectX::SimpleMath::Matrix world)
+{
+    using namespace DirectX::SimpleMath;
+
+
+
+    int particleValue = HitParticle::get_rand(5, 10);
+    Vector3 pos = { world._41,world._42,world._43 };
+
+
+    for (int i = 0; i < particleValue; i++)
+    {
+
+        float velocityX = (float)HitParticle::get_rand(-10, 10) / 100.0f;
+        float velocityY = (float)HitParticle::get_rand(-10, 10) / 100.0f;
+        float velocityZ = (float)HitParticle::get_rand(-10, 10) / 100.0f;
+
+        m_hitParticle.push_back(std::make_unique<HitParticle>());
+        m_hitParticle.back()->Initialize(pos, Vector3(velocityX, velocityY, velocityZ));
+    }
+
+
 }
 
 void PlayScene::NextTarget()

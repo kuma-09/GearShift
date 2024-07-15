@@ -49,7 +49,14 @@ void LeftLeg::Render(DirectX::SimpleMath::Matrix world)
 {
 	UNREFERENCED_PARAMETER(world);
 
-	GetComponent<ModelDraw>().lock().get()->Render(GetWorld(),GetHP() <= 0);
+	if (GetHP() >= 0)
+	{
+		GetComponent<ModelDraw>().lock().get()->Render(GetWorld());
+	}
+	else
+	{
+		GetComponent<ModelDraw>().lock().get()->Render(GetWorld(), DirectX::Colors::Black);
+	}
 	
 	//GetComponent<BoxCollider>().lock().get()->Render();
 }
