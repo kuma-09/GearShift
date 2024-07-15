@@ -84,6 +84,11 @@ void Graphics::Initialize()
 	// エフェクトファクトリを生成する
 	m_effectFactory = std::make_unique<DirectX::EffectFactory>(m_device);
 	m_effectFactory->SetDirectory(L"Resources/Models");
+
+	// 入力レイアウトを設定する
+	m_basicEffect->Apply(m_context);
+	// 入力レイアウトを設定する
+	m_context->IASetInputLayout(m_inputLayout.Get());
 }
 
 // 描画プリミティブを開始する

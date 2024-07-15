@@ -62,6 +62,7 @@ public:
 		}
 	}
 
+
 	void Collision(BoxCollider* collider);
 
 private:

@@ -2,11 +2,13 @@
 #include "BodyBottom.h"
 #include "Game/Components/ModelDraw.h"
 #include "Game/Components/BoxCollider.h"
+#include "Game/Components/HPBar.h"
 
 BodyBottom::BodyBottom()
 {
 	AddComponent<ModelDraw>();
 	AddComponent<BoxCollider>();
+	AddComponent<HPBar>();
 }
 
 BodyBottom::~BodyBottom()
@@ -20,6 +22,7 @@ void BodyBottom::Initialize(int hp,IScene* scene)
 	SetHP(hp);
 	GetComponent<ModelDraw>().lock().get()->Initialize(ModelDraw::BodyBottom);
 	GetComponent<BoxCollider>().lock().get()->SetTypeID(BoxCollider::TypeID::Player);
+	GetComponent<HPBar>().lock().get()->Initialize();
 }
 
 void BodyBottom::Update(float elapsedTime)
@@ -53,6 +56,7 @@ void BodyBottom::Render(DirectX::SimpleMath::Matrix world)
 		GetComponent<ModelDraw>().lock().get()->Render(GetWorld(),DirectX::Colors::Black);
 	}
 
+	GetComponent<HPBar>().lock().get()->Render(GetPosition() + DirectX::SimpleMath::Vector3{ 0,2,0 });
 
 	//GetComponent<BoxCollider>().lock().get()->Render();
 

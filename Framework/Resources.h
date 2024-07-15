@@ -22,7 +22,7 @@ public:
 	DirectX::Model* GetCubeModel()		 { return m_cube.get(); }
 	DirectX::Model* GetSkyDome()		 { return m_skydome.get(); }
 	// テクスチャを取得
-	ID3D11ShaderResourceView* GetTexture() { return m_texture.Get(); }
+	ID3D11ShaderResourceView* GetGreenTexture() { return m_greenTexture.Get(); }
 public:
 	Resources(Resources&&) = default;
 	Resources& operator= (Resources&&) = default;
@@ -40,13 +40,6 @@ public:
 private:
 	// コンストラクタ
 	Resources() noexcept
-		:
-		m_graphics{},										// グラフィックス
-		m_device{},											// デバイス
-		m_player{},											// モデル
-		m_dice{},
-		m_texture{}											// テクスチャ
-
 	{
 	}
 
@@ -72,7 +65,7 @@ private:
 	std::unique_ptr<DirectX::Model> m_skydome;
 
 	// テクスチャ
-	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_texture;
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_greenTexture;
 };
 
 #endif		// RESOURCES_DEFINED

@@ -1,7 +1,7 @@
 #pragma once
 #include "IComponent.h"
 #include "Framework/Graphics.h"
-
+#include "Framework/Resources.h"
 
 class HPBar : public IComponent
 {
@@ -21,6 +21,9 @@ private:
 
 	int  m_maxHp;
 	DirectX::VertexPositionColorTexture m_vertex[4];
+	DirectX::VertexPositionColorTexture m_backVertex[4];
+
+	ID3D11ShaderResourceView* m_texture;
 
 };
 

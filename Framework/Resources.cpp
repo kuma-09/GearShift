@@ -40,8 +40,8 @@ void Resources::LoadResource()
 	// テクスチャをロードする
 	DirectX::CreateWICTextureFromFile(
 		m_device,
-		L"Resources/Textures/Daylight_Box.png",
+		L"Resources/Textures/green.png",
 		nullptr,
-		m_texture.GetAddressOf()
+		m_greenTexture.GetAddressOf()
 	);
 }
