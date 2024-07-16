@@ -111,6 +111,7 @@
     <ClInclude Include="Game\TitleScene.h" />
     <ClInclude Include="Game\Components\HPBar.h" />
     <ClInclude Include="Game\Particle\HitParticle.h" />
+    <ClInclude Include="Game\ResultScene.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -180,6 +181,7 @@
     <ClCompile Include="Game\TitleScene.cpp" />
     <ClCompile Include="Game\Components\HPBar.cpp" />
     <ClCompile Include="Game\Particle\HitParticle.cpp" />
+    <ClCompile Include="Game\ResultScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />

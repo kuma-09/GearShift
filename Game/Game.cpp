@@ -31,6 +31,7 @@ Game::Game() noexcept(false)
 
     m_playScene = new PlayScene();
     m_titleScene = new TitleScene();
+    m_resultScene = new ResultScene();
 
 }
 

@@ -9,6 +9,7 @@
 #include "Game/IScene.h"
 #include "Game/PlayScene.h"
 #include "Game/TitleScene.h"
+#include "Game/ResultScene.h"
 
 class Graphics;
 class InputManager;
@@ -56,6 +57,7 @@ public:
 
     PlayScene* GetPlayScene() { return m_playScene; }
     TitleScene* GetTitleScene() { return m_titleScene; }
+    ResultScene* GetResultScene() { return m_resultScene; }
 
 private:
 
@@ -81,5 +83,6 @@ private:
     IScene* m_scene;
     PlayScene* m_playScene;
     TitleScene* m_titleScene;
+    ResultScene* m_resultScene;
 
 };

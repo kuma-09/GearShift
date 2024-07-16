@@ -100,7 +100,7 @@ void HitParticle::Initialize(Vector3 pos, Vector3 vel)
 bool HitParticle::Update()
 {
 	m_pos += m_vel;
-	ALPHA -= 0.05f;
+	ALPHA -= 0.02f;
 	RG	  += 0.01f;
 	if (ALPHA < 0.3f)
 	{

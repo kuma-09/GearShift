@@ -7,7 +7,7 @@
 
 class Camera;
 
-class TitleScene final: public IScene
+class ResultScene final: public IScene
 {
 public:
 
@@ -24,7 +24,7 @@ private:
 	InputManager* m_inputManager;
 
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_texture;		// テクスチャ
-	std::unique_ptr<tito::UserInterface> m_titleLogo;
+	std::unique_ptr<tito::UserInterface> m_result;
 	std::unique_ptr<tito::UserInterface> m_backGround;
 	
 };

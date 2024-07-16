@@ -66,10 +66,6 @@ void PlayScene::Initialize(Game* game)
     m_enemy.back()->Initialize(m_player.get());
     m_enemy.back()->SetPosition(Vector3(10, 0, -5));
 
-    m_wall.push_back(std::make_unique<Wall>(this));
-    m_wall.back()->SetPosition(Vector3(0, 0, 20));
-    m_wall.back()->GetComponent<BoxCollider>().lock().get()->SetSize({ 50,10,1 });
-
     m_dropItem.push_back(std::make_unique<DropItem>(this,std::make_unique<LeftLeg>()));
     m_dropItem.back()->SetPosition(Vector3(3, 0, 7));
     m_dropItem.back()->Initialize();
@@ -158,7 +154,6 @@ void PlayScene::Update(float elapsedTime)
 
     for (auto it = m_enemy.begin(); it != m_enemy.end();)
     {
-        m_debugString->AddString(std::to_string(it->get()->GetHP()).c_str());
         BoxCollider::CheckHit(m_player.get(), it->get());
         if (it->get()->GetHP() > 0)
         {
@@ -195,14 +190,10 @@ void PlayScene::Render()
     for (auto& enemy: m_enemy)
     {
         enemy->Render();
+        enemy->GetComponent<HPBar>().lock().get()->Render(m_enemy[m_enemyNum]->GetPosition());
     }
 
-    m_enemy[m_enemyNum].get()->GetComponent<HPBar>().lock().get()->Render(m_enemy[m_enemyNum]->GetPosition());
-
-    for (auto& wall: m_wall)
-    {
-        wall->Render();
-    }
+    //m_enemy[m_enemyNum].get()->GetComponent<HPBar>().lock().get()->Render(m_enemy[m_enemyNum]->GetPosition());
 
     for (auto& dropItem : m_dropItem)
     {
@@ -210,8 +201,6 @@ void PlayScene::Render()
     }
 
     auto state = m_graphics->GetCommonStates();
-
-    m_debugString->Render(state);
 
     for (auto& particle : m_hitParticle)
     {
@@ -275,7 +264,7 @@ void PlayScene::NextTarget()
 
     if (m_enemy.empty())
     {
-        GetGame()->ChangeScene(GetGame()->GetTitleScene());
+        GetGame()->ChangeScene(GetGame()->GetResultScene());
         //m_player->SetTarget(m_player.get());
         return;
     }

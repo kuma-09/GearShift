@@ -1,5 +1,7 @@
 #include "pch.h"
 #include "BodyBottom.h"
+#include "Game/Object/Bullet.h"
+#include "Game/PlayScene.h"
 #include "Game/Components/ModelDraw.h"
 #include "Game/Components/BoxCollider.h"
 #include "Game/Components/HPBar.h"
@@ -8,7 +10,7 @@ BodyBottom::BodyBottom()
 {
 	AddComponent<ModelDraw>();
 	AddComponent<BoxCollider>();
-	AddComponent<HPBar>();
+	//AddComponent<HPBar>();
 }
 
 BodyBottom::~BodyBottom()
@@ -22,7 +24,7 @@ void BodyBottom::Initialize(int hp,IScene* scene)
 	SetHP(hp);
 	GetComponent<ModelDraw>().lock().get()->Initialize(ModelDraw::BodyBottom);
 	GetComponent<BoxCollider>().lock().get()->SetTypeID(BoxCollider::TypeID::Player);
-	GetComponent<HPBar>().lock().get()->Initialize();
+	//GetComponent<HPBar>().lock().get()->Initialize();
 }
 
 void BodyBottom::Update(float elapsedTime)
@@ -41,22 +43,33 @@ void BodyBottom::Update(float elapsedTime)
 	SetWorld(world);
 
 	ComponentsUpdate(elapsedTime);
+
+	m_isHit = false;
 }
 
 void BodyBottom::Render(DirectX::SimpleMath::Matrix world)
 {
 	UNREFERENCED_PARAMETER(world);
 
+
+
 	if (GetHP() >= 0)
 	{
-		GetComponent<ModelDraw>().lock().get()->Render(GetWorld());
+		if (!m_isHit)
+		{
+			GetComponent<ModelDraw>().lock().get()->Render(GetWorld());
+		}
+		else
+		{
+			GetComponent<ModelDraw>().lock().get()->Render(GetWorld(),DirectX::Colors::Red);
+		}
 	}
 	else
 	{
 		GetComponent<ModelDraw>().lock().get()->Render(GetWorld(),DirectX::Colors::Black);
 	}
 
-	GetComponent<HPBar>().lock().get()->Render(GetPosition() + DirectX::SimpleMath::Vector3{ 0,2,0 });
+	//GetComponent<HPBar>().lock().get()->Render(GetPosition() + DirectX::SimpleMath::Vector3{ 0,2,0 });
 
 	//GetComponent<BoxCollider>().lock().get()->Render();
 
@@ -71,6 +84,12 @@ void BodyBottom::Collision(BoxCollider* collider)
 {
 	if (collider->GetTypeID() == BoxCollider::EnemyBullet)
 	{
-		SetHP(GetHP() - 1);
+		Bullet* bulletObject = static_cast<Bullet*>(collider->GetOwner());
+		if (bulletObject->GetState() == Bullet::FLYING)
+		{
+			SetHP(GetHP() - 1);
+			bulletObject->Hit();
+			m_isHit = true;
+		}
 	}
 }

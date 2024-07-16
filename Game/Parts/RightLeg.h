@@ -18,5 +18,6 @@ public:
 
 
 private:
+	bool m_isHit;
 };
 

@@ -31,7 +31,7 @@ void Jump::Update(float elapsedTime)
 
 	const auto& kbState = InputManager::GetInstance()->GetKeyboardState();
 
-	if (kbState.C)
+	if (kbState.Space)
 	{
 		m_player->GetComponent<Gravity>().lock().get()->Reset();
 	}

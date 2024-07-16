@@ -17,5 +17,7 @@ public:
 	void Collision(BoxCollider* collider);
 
 private:
+	bool m_isHit;
+
 };
 

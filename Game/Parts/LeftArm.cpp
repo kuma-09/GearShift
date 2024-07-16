@@ -38,22 +38,35 @@ void LeftArm::Update(float elapsedTime)
 	SetWorld(world);
 
 	ComponentsUpdate(elapsedTime);
+	m_isHit = false;
 }
 
 void LeftArm::Render(DirectX::SimpleMath::Matrix world)
 {
 	UNREFERENCED_PARAMETER(world);
 
+
+
 	if (GetHP() >= 0)
 	{
-		GetComponent<ModelDraw>().lock().get()->Render(GetWorld());
+		if (!m_isHit)
+		{
+			GetComponent<ModelDraw>().lock().get()->Render(GetWorld());
+		}
+		else
+		{
+			GetComponent<ModelDraw>().lock().get()->Render(GetWorld(), DirectX::Colors::Red);
+		}
 	}
 	else
 	{
 		GetComponent<ModelDraw>().lock().get()->Render(GetWorld(), DirectX::Colors::Black);
 	}
-	
+
+	//GetComponent<HPBar>().lock().get()->Render(GetPosition() + DirectX::SimpleMath::Vector3{ 0,2,0 });
+
 	//GetComponent<BoxCollider>().lock().get()->Render();
+
 }
 
 void LeftArm::Finalize()
@@ -66,5 +79,6 @@ void LeftArm::Collision(BoxCollider* collider)
 	if (collider->GetTypeID() == BoxCollider::EnemyBullet)
 	{
 		SetHP(GetHP() - 1);
+		m_isHit = true;
 	}
 }

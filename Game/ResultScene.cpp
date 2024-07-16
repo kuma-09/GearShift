@@ -1,9 +1,9 @@
 #include "pch.h"
-#include "TitleScene.h"
+#include "ResultScene.h"
 #include "Game.h"
 
 
-void TitleScene::Initialize(Game* game)
+void ResultScene::Initialize(Game* game)
 {
     using namespace DirectX;
     using namespace DirectX::SimpleMath;
@@ -17,9 +17,9 @@ void TitleScene::Initialize(Game* game)
     int x, y;
     m_graphics->GetScreenSize(x, y);
 
-    m_titleLogo = std::make_unique<tito::UserInterface>();
-    m_titleLogo->Create(m_deviceResources, L"Resources/Textures/GearShiftLogo.png", Vector2(x / 2, y / 2), Vector2::One * 2, tito::MIDDLE_CENTER);
-    m_titleLogo->SetWindowSize(x, y);
+    m_result = std::make_unique<tito::UserInterface>();
+    m_result->Create(m_deviceResources, L"Resources/Textures/StageClear.png", Vector2(x / 2, y / 2), Vector2::One * 2, tito::MIDDLE_CENTER);
+    m_result->SetWindowSize(x, y);
 
     m_backGround = std::make_unique<tito::UserInterface>();
     m_backGround->Create(m_deviceResources, L"Resources/Textures/haguruma.png", Vector2(x / 2, y / 2), Vector2::One, tito::MIDDLE_CENTER);
@@ -28,7 +28,7 @@ void TitleScene::Initialize(Game* game)
 }
 
 
-void TitleScene::Update(float elapsedTime)
+void ResultScene::Update(float elapsedTime)
 {
     using namespace DirectX::SimpleMath;
 
@@ -39,23 +39,23 @@ void TitleScene::Update(float elapsedTime)
 
     if (kb->pressed.Space)
     {
-        GetGame()->ChangeScene(GetGame()->GetPlayScene());
+        GetGame()->ChangeScene(GetGame()->GetTitleScene());
     }
 
 
 }
 
-void TitleScene::Render()
+void ResultScene::Render()
 {
     using namespace DirectX;
     using namespace DirectX::SimpleMath;
 
     m_backGround->Render();
-    m_titleLogo->Render();
+    m_result->Render();
 
 }
 
-void TitleScene::Finalize()
+void ResultScene::Finalize()
 {
 
 }

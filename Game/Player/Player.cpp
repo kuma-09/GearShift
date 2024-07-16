@@ -75,7 +75,7 @@ void Player::Update(float elapsedTime)
 	auto& kb = m_inputManager->GetKeyboardTracker();
 	auto& gp = m_inputManager->GetGamePadTracker();
 
-	if (kb->IsKeyPressed(DirectX::Keyboard::B) || gp->x == gp->PRESSED )
+	if (kb->IsKeyPressed(DirectX::Keyboard::C) || gp->x == gp->PRESSED )
 	{
 		for (int i = 0; i < MAX_BULLET_CUNT; i++)
 		{
