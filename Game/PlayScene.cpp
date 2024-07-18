@@ -190,10 +190,10 @@ void PlayScene::Render()
     for (auto& enemy: m_enemy)
     {
         enemy->Render();
-        enemy->GetComponent<HPBar>().lock().get()->Render(m_enemy[m_enemyNum]->GetPosition());
+        //enemy->GetComponent<HPBar>().lock().get()->Render(m_enemy[m_enemyNum]->GetPosition());
     }
 
-    //m_enemy[m_enemyNum].get()->GetComponent<HPBar>().lock().get()->Render(m_enemy[m_enemyNum]->GetPosition());
+    m_enemy[m_enemyNum].get()->GetComponent<HPBar>().lock().get()->Render(m_enemy[m_enemyNum]->GetPosition());
 
     for (auto& dropItem : m_dropItem)
     {
