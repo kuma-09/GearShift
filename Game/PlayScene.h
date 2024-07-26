@@ -82,6 +82,9 @@ private:
 	std::unique_ptr<DebugString> m_debugString;
 
 	std::vector<std::unique_ptr<HitParticle>> m_hitParticle;
+
+	float m_totalTime;
+	float m_timeLimit;
 	
 };
 

@@ -154,5 +154,6 @@ void Player::Collision(BoxCollider* collider)
 	if (collider->GetTypeID() == BoxCollider::EnemyBullet)
 	{
 		SetHP(GetHP() - 1);
+		GetComponent<Camera>().lock().get()->shake();
 	}
 }
