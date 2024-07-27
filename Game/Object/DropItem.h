@@ -1,8 +1,7 @@
 #pragma once
 #include "Game/GameObject.h"
 #include "Game/Menu/Menu.h"
-
-class Part;
+#include "Game/Parts/Part.h"
 
 class DropItem :public GameObject
 {
@@ -18,6 +17,7 @@ public:
 	void Render();
 	void Finalize();
 
+	Part::TypeID GetPartType() { return m_part->GetTypeID(); }
 	std::unique_ptr<Part> GetPart() { return std::move(m_part); }
 	void SetHit(bool isHit) { m_isHit = isHit; }
 

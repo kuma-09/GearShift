@@ -99,7 +99,7 @@
     <ClInclude Include="Game\Player\State\Boost.h" />
     <ClInclude Include="Game\Player\State\Idol.h" />
     <ClInclude Include="Game\Player\State\Jump.h" />
-    <ClInclude Include="Game\Player\State\State.h" />
+    <ClInclude Include="Game\State.h" />
     <ClInclude Include="Game\Particle\Particle.h" />
     <ClInclude Include="Game\Particle\Emitter.h" />
     <ClInclude Include="Game\Components\Camera.h" />

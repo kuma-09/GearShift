@@ -2,7 +2,7 @@
 #include "Game/GameObject.h"
 #include "Game/Parts/Part.h"
 #include "Framework/InputManager.h"
-#include "Game/Player/State/State.h"
+#include "Game/State.h"
 #include "Framework/DebugString.h"
 
 #include <map>

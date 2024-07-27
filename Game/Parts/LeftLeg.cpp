@@ -7,6 +7,7 @@ LeftLeg::LeftLeg()
 {
 	AddComponent<ModelDraw>();
 	AddComponent<BoxCollider>();
+	SetTypeID(Part::LeftLeg);
 }
 
 LeftLeg::~LeftLeg()

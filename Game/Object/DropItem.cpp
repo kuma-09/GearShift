@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "DropItem.h"
-#include "Game/Parts/Part.h"
 #include "Game/Components/ModelDraw.h"
 #include "Game/Components/BoxCollider.h"
 

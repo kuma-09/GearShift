@@ -18,11 +18,11 @@ void ResultScene::Initialize(Game* game)
     m_graphics->GetScreenSize(x, y);
 
     m_result = std::make_unique<tito::UserInterface>();
-    m_result->Create(m_deviceResources, L"Resources/Textures/StageClear.png", Vector2(x / 2, y / 2), Vector2::One * 2, tito::MIDDLE_CENTER);
+    m_result->Create(m_deviceResources, L"Resources/Textures/StageClear.png", Vector2(x / 2.0f, y / 2.0f), Vector2::One * 2, tito::MIDDLE_CENTER);
     m_result->SetWindowSize(x, y);
 
     m_backGround = std::make_unique<tito::UserInterface>();
-    m_backGround->Create(m_deviceResources, L"Resources/Textures/haguruma.png", Vector2(x / 2, y / 2), Vector2::One, tito::MIDDLE_CENTER);
+    m_backGround->Create(m_deviceResources, L"Resources/Textures/haguruma.png", Vector2(x / 2.0f, y / 2.0f), Vector2::One, tito::MIDDLE_CENTER);
     m_backGround->SetWindowSize(x, y);
     
 }
@@ -34,7 +34,7 @@ void ResultScene::Update(float elapsedTime)
 
     UNREFERENCED_PARAMETER(elapsedTime);
     
-    const auto& gp = m_inputManager->GetGamePadTracker();
+    //const auto& gp = m_inputManager->GetGamePadTracker();
     const auto& kb = m_inputManager->GetKeyboardTracker();
 
     if (kb->pressed.Space)
