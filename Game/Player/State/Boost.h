@@ -1,6 +1,6 @@
 #pragma once 
 #include "State.h"
-#include "Game/Parts/IPart.h"
+#include "Game/Parts/Part.h"
 #include "Framework/InputManager.h"
 #include "Game/Player/Player.h"
 

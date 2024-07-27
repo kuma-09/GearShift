@@ -1,6 +1,6 @@
 #pragma once 
 #include "State.h"
-#include "Game/Parts/IPart.h"
+#include "Game/Parts/Part.h"
 #include "Framework/InputManager.h"
 #include "Game/Player/Player.h"
 
@@ -50,7 +50,7 @@ private:
 
 	GameObject* m_target;
 
-	std::unordered_map<std::type_index, std::shared_ptr<IPart>> m_umPart;
+	std::unordered_map<std::type_index, std::shared_ptr<Part>> m_umPart;
 
 	// ƒWƒƒƒ“ƒv—Í
 	const float JUMPPOWER = 25.0f;

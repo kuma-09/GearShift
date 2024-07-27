@@ -1,6 +1,6 @@
 #pragma once 
 #include "Game/GameObject.h"
-#include "Game/Parts/IPart.h"
+#include "Game/Parts/Part.h"
 #include "Framework/InputManager.h"
 #include "Game/Player/State/State.h"
 #include "Framework/DebugString.h"
@@ -32,14 +32,14 @@ public:
 	void ChangeState(State* state);
 
 	// パーツのセッターゲッター
-	void SetPart(const std::string& partType, std::unique_ptr<IPart> part)
+	void SetPart(const Part::TypeID& partType, std::unique_ptr<Part> part)
 	{
 		m_pPart[partType] = std::move(part);
 		m_pPart[partType]->SetOwner(this);
 		m_pPart[partType]->Initialize(10, GetScene());
 	}
 
-	IPart* GetPart(const std::string& partType)
+	Part* GetPart(const Part::TypeID& partType)
 	{
 		if (m_pPart.find(partType) != m_pPart.end()) 
 		{
@@ -71,7 +71,7 @@ private:
 	
 	GameObject* m_target;
 
-	std::unordered_map<std::string, std::unique_ptr<IPart>> m_pPart;
+	std::unordered_map<Part::TypeID, std::unique_ptr<Part>> m_pPart;
 
 	static const int MAX_BULLET_CUNT = 50;
 

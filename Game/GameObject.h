@@ -80,10 +80,8 @@ public:
 	IScene* GetScene() { return m_scene; }
 
 public:
-	
 	virtual void Update(float elapsedTime) = 0;
-	virtual void Collision(BoxCollider* collider) {};
-
+	virtual void Collision(BoxCollider* collider) { UNREFERENCED_PARAMETER(collider); };
 private:
 	IScene* m_scene = nullptr;
 

@@ -68,7 +68,7 @@
     <ClInclude Include="Game\Parts\Head.h">
       <Filter>Game\Parts</Filter>
     </ClInclude>
-    <ClInclude Include="Game\Parts\IPart.h">
+    <ClInclude Include="Game\Parts\Part.h">
       <Filter>Game\Parts</Filter>
     </ClInclude>
     <ClInclude Include="Game\Components\BoxCollider.h">

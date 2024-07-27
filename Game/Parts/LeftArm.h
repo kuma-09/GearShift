@@ -1,9 +1,9 @@
 #pragma once
-#include "IPart.h"
+#include "Part.h"
 #include "Framework/Graphics.h"
 #include "Framework/Resources.h"
 
-class LeftArm : public IPart
+class LeftArm : public Part
 {
 public:
 	LeftArm();

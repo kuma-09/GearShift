@@ -1,11 +1,11 @@
 #pragma once
 #include "Game/GameObject.h"
 
-class IPart :public GameObject
+class Part :public GameObject
 {
 public:
-	IPart() {};
-	virtual ~IPart() = default;
+	Part() {};
+	virtual ~Part() = default;
 
 	virtual void Initialize(int hp, IScene* scene) = 0;
 	virtual void Update(float elapsedTime) = 0;
@@ -19,10 +19,24 @@ public:
 
 	GameObject* GetOwner() { return m_pOwner; }
 
+	enum TypeID
+	{
+		Head,
+		BodyTop,
+		LeftArm,
+		RightArm,
+		BodyBottom,
+		LeftLeg,
+		RightLeg
+	};
+
+	void SetTypeID(TypeID id) { m_typeID = id; }
+	TypeID GetTypeID() { return m_typeID; }
 
 
 private:
 
 	// êe
 	GameObject* m_pOwner = nullptr;
+	TypeID m_typeID;
 };

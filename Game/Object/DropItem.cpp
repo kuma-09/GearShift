@@ -1,10 +1,10 @@
 #include "pch.h"
 #include "DropItem.h"
-#include "Game/Parts/IPart.h"
+#include "Game/Parts/Part.h"
 #include "Game/Components/ModelDraw.h"
 #include "Game/Components/BoxCollider.h"
 
-DropItem::DropItem(IScene* scene, std::unique_ptr<IPart> part)
+DropItem::DropItem(IScene* scene, std::unique_ptr<Part> part)
 {
 
 

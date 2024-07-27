@@ -26,8 +26,6 @@ void Idol::Update(float elapsedTime)
 {
 	using namespace DirectX::SimpleMath;
 
-	ComponentsUpdate(elapsedTime);
-	PartUpdate(elapsedTime);
 
 	const auto& kb = InputManager::GetInstance()->GetKeyboardTracker();
 	if (kb->IsKeyPressed(DirectX::Keyboard::Space))

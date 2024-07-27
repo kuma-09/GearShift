@@ -3,7 +3,7 @@
 
 class Player;
 
-class State : public GameObject
+class State 
 {
 public:
 

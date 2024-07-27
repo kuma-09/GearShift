@@ -24,9 +24,6 @@ void Jump::Update(float elapsedTime)
 {
 	using namespace DirectX::SimpleMath;
 
-	ComponentsUpdate(elapsedTime);
-	PartUpdate(elapsedTime);
-
 	m_player->SetVelocity(m_player->GetVelocity() + Vector3(0, JUMPPOWER * elapsedTime, 0));
 
 	const auto& kbState = InputManager::GetInstance()->GetKeyboardState();

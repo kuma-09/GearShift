@@ -215,7 +215,7 @@
     <ClInclude Include="Game\Parts\BodyBottom.h" />
     <ClInclude Include="Game\Parts\BodyTop.h" />
     <ClInclude Include="Game\Parts\Head.h" />
-    <ClInclude Include="Game\Parts\IPart.h" />
+    <ClInclude Include="Game\Parts\Part.h" />
     <ClInclude Include="Game\Parts\LeftArm.h" />
     <ClInclude Include="Game\Parts\LeftLeg.h" />
     <ClInclude Include="Game\Parts\RightArm.h" />
