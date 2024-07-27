@@ -5,11 +5,9 @@
 
 
 
-Idol::Idol()
-	:m_player{}
-	,m_target{}
+Idol::Idol(Player* player)
 {
-	m_inputManager = InputManager::GetInstance();
+	m_player = player;
 }
 
 Idol::~Idol()
@@ -17,15 +15,16 @@ Idol::~Idol()
 
 }
 
-void Idol::Initialize(Player* player)
+void Idol::Initialize()
 {
-	m_player = player;
+
 }
 
 void Idol::Update(float elapsedTime)
 {
 	using namespace DirectX::SimpleMath;
 
+	UNREFERENCED_PARAMETER(elapsedTime);
 
 	const auto& kb = InputManager::GetInstance()->GetKeyboardTracker();
 	if (kb->IsKeyPressed(DirectX::Keyboard::Space))
@@ -45,11 +44,5 @@ void Idol::Render()
 
 void Idol::Finalize()
 {
-	
-}
-
-void Idol::SetTarget(GameObject* target)
-{
-	m_target = target;
 	
 }

@@ -5,9 +5,10 @@
 #include "Game/Components/Gravity.h"
 
 
-Boost::Boost()
+Boost::Boost(Player* player)
 {
-
+	m_player = player;
+	m_totalTime = m_boostTime;
 }
 
 Boost::~Boost()
@@ -15,10 +16,10 @@ Boost::~Boost()
 
 }
 
-void Boost::Initialize(Player* player)
+void Boost::Initialize()
 {
-	m_player = player;
 	m_totalTime = m_boostTime;
+	m_velocity = m_player->GetVelocity();
 }
 
 void Boost::Update(float elapsedTime)
@@ -44,11 +45,4 @@ void Boost::Render()
 void Boost::Finalize()
 {
 	
-}
-
-void Boost::SetTarget(GameObject* target)
-{
-	m_target = target;
-	m_totalTime = m_boostTime;
-	m_velocity = m_player->GetVelocity();
 }

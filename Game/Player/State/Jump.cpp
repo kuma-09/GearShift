@@ -5,9 +5,9 @@
 #include "Game/Components/Gravity.h"
 
 
-Jump::Jump()
+Jump::Jump(Player* player)
 {
-
+	m_player = player;
 }
 
 Jump::~Jump()
@@ -15,9 +15,9 @@ Jump::~Jump()
 
 }
 
-void Jump::Initialize(Player* player)
+void Jump::Initialize()
 {
-	m_player = player;
+
 }
 
 void Jump::Update(float elapsedTime)
@@ -50,9 +50,4 @@ void Jump::Render()
 void Jump::Finalize()
 {
 	
-}
-
-void Jump::SetTarget(GameObject* target)
-{
-	m_target = target;
 }

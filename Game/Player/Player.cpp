@@ -37,9 +37,9 @@ Player::Player(IScene* scene)
 	AddComponent<Gravity>();
 	AddComponent<Emitter>();
 
-	m_idol = std::make_unique<Idol>();
-	m_jump = std::make_unique<Jump>();
-	m_boost = std::make_unique<Boost>();
+	m_idol = std::make_unique<Idol>(this);
+	m_jump = std::make_unique<Jump>(this);
+	m_boost = std::make_unique<Boost>(this);
 
 	for (int i = 0; i < MAX_BULLET_CUNT; i++)
 	{
@@ -56,9 +56,6 @@ Player::~Player()
 
 void Player::Initialize()
 {
-	m_idol->Initialize(this);
-	m_jump->Initialize(this);
-	m_boost->Initialize(this);
 	for (int i = 0; i < MAX_BULLET_CUNT; i++)
 	{
 		m_bullet[i]->Initalize(this);
@@ -139,14 +136,8 @@ void Player::SetTarget(GameObject* target)
 
 void Player::ChangeState(State* state)
 {
-	state->SetPosition(m_state->GetPosition());
-	state->SetQuaternion(m_state->GetQuaternion());
-	state->SetRotation(m_state->GetRotation());
-	state->SetScale(m_state->GetScale());
-	state->SetVelocity(m_state->GetVelocity());
-	state->SetWorld(m_state->GetWorld());
 	m_state = state;
-	m_state->SetTarget(m_target);
+	m_state->Initialize();
 }
 
 void Player::Collision(BoxCollider* collider)

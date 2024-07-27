@@ -7,22 +7,17 @@
 class Boost : public State
 {
 public:
-	Boost();
+	Boost(Player* player);
 	~Boost();
 
-	void Initialize(Player* player);
+	void Initialize();
 	void Update(float elapsedTime);
 	void Render();
 	void Finalize();
 
-	void SetTarget(GameObject* target);
 
 private:
 	Player* m_player;
-
-	InputManager* m_inputManager;
-
-	GameObject* m_target;
 
 	// ブーストする力
 	float m_boostPower = 10.0f;

@@ -7,7 +7,7 @@
 #include "Game/Components/BoxCollider.h"
 #include "Game/Components/HPBar.h"
 
-#include "Game/Parts/IPart.h"
+#include "Game/Parts/Part.h"
 #include "Game/Parts/Head.h"
 #include "Game/Parts/BodyTop.h"
 #include "Game/Parts/BodyBottom.h"
@@ -43,13 +43,13 @@ void PlayScene::Initialize(Game* game)
     m_player->SetPosition(Vector3(3, 10, 3));
 
     
-    m_player->SetPart("Head", std::make_unique<Head>());
-    m_player->SetPart("BodyTop",std::make_unique<BodyTop>());
-    m_player->SetPart("BodyBottom", std::make_unique<BodyBottom>());
-    m_player->SetPart("LeftArm", std::make_unique<LeftArm>());
-    m_player->SetPart("RightArm", std::make_unique<RightArm>());
-    m_player->SetPart("LeftLeg",  std::make_unique<LeftLeg>());
-    m_player->SetPart("RightLeg", std::make_unique<RightLeg>());
+    m_player->SetPart(Part::Head, std::make_unique<Head>());
+    m_player->SetPart(Part::BodyTop,std::make_unique<BodyTop>());
+    m_player->SetPart(Part::BodyBottom, std::make_unique<BodyBottom>());
+    m_player->SetPart(Part::LeftArm, std::make_unique<LeftArm>());
+    m_player->SetPart(Part::RightArm, std::make_unique<RightArm>());
+    m_player->SetPart(Part::LeftLeg,  std::make_unique<LeftLeg>());
+    m_player->SetPart(Part::RightLeg, std::make_unique<RightLeg>());
 
     m_player->Initialize();
 
@@ -146,8 +146,8 @@ void PlayScene::Update(float elapsedTime)
             it->get()->SetHit(true);
             if (kb->pressed.X)
             {
-                RemoveCollider(m_player->GetPart("LeftLeg")->GetComponent<BoxCollider>().lock().get());
-                m_player->SetPart("LeftLeg", it->get()->GetPart());
+                RemoveCollider(m_player->GetPart(Part::LeftLeg)->GetComponent<BoxCollider>().lock().get());
+                m_player->SetPart(Part::LeftLeg, it->get()->GetPart());
                 RemoveCollider(it->get()->GetComponent<BoxCollider>().lock().get());
                 m_dropItem.erase(it);
                 break;
