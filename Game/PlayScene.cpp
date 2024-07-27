@@ -81,6 +81,9 @@ void PlayScene::Initialize(Game* game)
         , L"Resources/Fonts/SegoeUI_18.spritefont");
     m_debugString->SetColor(DirectX::Colors::Red);
 
+    m_timeLimit = 180.0f;
+    m_totalTime = 0;
+
 
 }
 
@@ -93,8 +96,9 @@ void PlayScene::Update(float elapsedTime)
     const auto& gp = m_inputManager->GetGamePadTracker();
     const auto& kb = m_inputManager->GetKeyboardTracker();
 
+    m_totalTime += elapsedTime;
+    m_debugString->AddString(std::to_string(m_timeLimit - m_totalTime).c_str());
 
-    
     for (auto it = m_hitParticle.begin(); it != m_hitParticle.end();)
     {
         if (it->get()->Update())
@@ -206,6 +210,8 @@ void PlayScene::Render()
     {
         particle->Render(m_graphics->GetViewMatrix(), m_graphics->GetProjectionMatrix());
     }
+
+    m_debugString->Render(state);
 
     
 }

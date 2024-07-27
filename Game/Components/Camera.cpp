@@ -4,6 +4,7 @@
 Camera::Camera()
 {
     m_graphics = Graphics::GetInstance();
+    m_shakeTime = 0;
 }
 
 Camera::~Camera()
@@ -43,6 +44,14 @@ void Camera::Render()
 void Camera::Finalize()
 {
 
+}
+
+void Camera::shake()
+{
+    using namespace DirectX::SimpleMath;
+    m_shakeRate = SHAKE_RATE;
+    Vector3 velocity = Vector3::Transform({-1,-1,-1}, GetOwner()->GetQuaternion());
+    m_targetPosition += velocity;
 }
 
 void Camera::SetTarget(GameObject* player, GameObject* enemy)
