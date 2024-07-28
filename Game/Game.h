@@ -55,9 +55,32 @@ public:
 
     void ChangeScene(IScene* scene);
 
-    PlayScene* GetPlayScene() { return m_playScene; }
-    TitleScene* GetTitleScene() { return m_titleScene; }
-    ResultScene* GetResultScene() { return m_resultScene; }
+    TitleScene* GetTitleScene()
+    {
+        if (m_titleScene)
+        {
+            return m_titleScene;
+        }
+        return m_titleScene = new TitleScene();
+    }
+
+    PlayScene* GetPlayScene() 
+    {
+        if (m_playScene)
+        {
+            return m_playScene;
+        }
+        return m_playScene = new PlayScene();
+    }
+
+    ResultScene* GetResultScene() 
+    {
+        if (m_resultScene)
+        {
+            return m_resultScene;
+        }
+        return m_resultScene = new ResultScene();
+    }
 
 private:
 

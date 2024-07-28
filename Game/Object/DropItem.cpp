@@ -9,9 +9,9 @@ DropItem::DropItem(IScene* scene, std::unique_ptr<Part> part)
 
 	SetScene(scene);
 	AddComponent<BoxCollider>();
-	GetComponent<BoxCollider>().lock().get()->SetTypeID(BoxCollider::TypeID::DropItem);
+	GetComponent<BoxCollider>()->SetTypeID(BoxCollider::TypeID::DropItem);
 	AddComponent<ModelDraw>();
-	GetComponent<ModelDraw>().lock().get()->Initialize(ModelDraw::LLeg);
+	GetComponent<ModelDraw>()->Initialize(ModelDraw::LLeg);
 
 	m_menu = std::make_unique<Menu>();
 	m_part = std::move(part);
@@ -57,8 +57,7 @@ void DropItem::Update(float elapsedTime)
 
 void DropItem::Render()
 {
-	//GetComponent<BoxCollider>().lock().get()->Render();
-	GetComponent<ModelDraw>().lock().get()->Render(GetWorld());
+	GetComponent<ModelDraw>()->Render(GetWorld());
 	if (m_isHit)
 	{
 		m_menu->Render();

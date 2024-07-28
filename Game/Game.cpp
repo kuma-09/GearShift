@@ -29,9 +29,7 @@ Game::Game() noexcept(false)
 
 
 
-    m_playScene = new PlayScene();
-    m_titleScene = new TitleScene();
-    m_resultScene = new ResultScene();
+
 
 }
 
@@ -59,8 +57,13 @@ void Game::Initialize(HWND window, int width, int height)
     m_timer.SetFixedTimeStep(true);
     m_timer.SetTargetElapsedSeconds(1.0 / 60);
 
-    m_titleScene->Initialize(this);
-    m_scene = m_titleScene;
+    m_scene = nullptr;
+    m_titleScene = nullptr;
+    m_playScene = nullptr;
+    m_resultScene = nullptr;
+ 
+
+    ChangeScene(GetTitleScene());
 
 }
 
@@ -252,7 +255,28 @@ void Game::OnDeviceRestored()
 
 void Game::ChangeScene(IScene* scene)
 {
-    m_scene->Finalize();
+
+    if (m_scene)
+    {
+        m_scene->Finalize();
+        if (dynamic_cast<PlayScene*>(m_scene))
+        {
+            delete dynamic_cast<PlayScene*>(m_scene);
+            m_playScene = nullptr;
+        }
+        else if (dynamic_cast<TitleScene*>(m_scene))
+        {
+            delete dynamic_cast<TitleScene*>(m_scene);
+            m_titleScene = nullptr;
+        }
+        else if (dynamic_cast<ResultScene*>(m_scene))
+        {
+            delete dynamic_cast<ResultScene*>(m_scene);
+            m_resultScene = nullptr;
+        }
+        m_scene = nullptr;
+    }
+
     m_scene = scene;
     m_scene->Initialize(this);
 

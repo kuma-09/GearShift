@@ -61,8 +61,8 @@ void Player::Initialize()
 		m_bullet[i]->Initalize(this);
 	}
 
-	GetComponent<BoxCollider>().lock().get()->SetTypeID(BoxCollider::TypeID::Player);
-	GetComponent<BoxCollider>().lock().get()->SetSize({ 1,1,1 });
+	GetComponent<BoxCollider>()->SetTypeID(BoxCollider::TypeID::Player);
+	GetComponent<BoxCollider>()->SetSize({ 1,1,1 });
 
 }
 
@@ -115,8 +115,7 @@ void Player::Render()
 	}
 
 
-
-	GetComponent<Emitter>().lock().get()->Render(GetPosition() - DirectX::SimpleMath::Vector3(0, 1,0));
+	GetComponent<Emitter>()->Render(GetPosition() - DirectX::SimpleMath::Vector3(0, 1,0));
 	//GetComponent<BoxCollider>().lock().get()->Render();
 	RenderParts();
 
@@ -130,8 +129,8 @@ void Player::Finalize()
 void Player::SetTarget(GameObject* target)
 {
 	m_target = target;
-	GetComponent<Look>().lock().get()->SetTarget(this, target);
-	GetComponent<Camera>().lock().get()->SetTarget(this, target);
+	GetComponent<Look>()->SetTarget(this, target);
+	GetComponent<Camera>()->SetTarget(this, target);
 }
 
 void Player::ChangeState(State* state)
@@ -145,6 +144,6 @@ void Player::Collision(BoxCollider* collider)
 	if (collider->GetTypeID() == BoxCollider::EnemyBullet)
 	{
 		SetHP(GetHP() - 1);
-		GetComponent<Camera>().lock().get()->shake();
+		GetComponent<Camera>()->shake();
 	}
 }

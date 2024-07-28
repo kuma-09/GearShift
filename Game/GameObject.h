@@ -52,19 +52,23 @@ public:
 
 	// コンポーネントを追加
 	template<typename CompType>
-	std::weak_ptr<CompType> AddComponent()
+	void AddComponent()
 	{
-		std::shared_ptr<CompType> newComp = std::make_shared<CompType>();
-		m_umComponents[typeid(CompType)] = newComp;
-		newComp->SetOwner(this);
-		return newComp;
+		std::unique_ptr<CompType> newComp = std::make_unique<CompType>();
+		m_umComponents[typeid(CompType)] = std::move(newComp);
+		m_umComponents[typeid(CompType)]->SetOwner(this);
 	}
 
 	// コンポーネントを取得
 	template<typename CompType>
-	std::weak_ptr<CompType> GetComponent()
+	CompType* GetComponent()
 	{
-		return std::static_pointer_cast<CompType>(m_umComponents[typeid(CompType)]);
+		auto it = m_umComponents.find(typeid(CompType));
+		if (it != m_umComponents.end())
+		{
+			return static_cast<CompType*>(it->second.get());
+		}
+		return nullptr;
 	}
 
 	// コンポーネントを更新
@@ -94,5 +98,5 @@ private:
 
 	int m_hp = 0;
 
-	std::unordered_map<std::type_index, std::shared_ptr<IComponent>> m_umComponents;
+	std::unordered_map<std::type_index, std::unique_ptr<IComponent>> m_umComponents;
 };

@@ -57,5 +57,5 @@ void TitleScene::Render()
 
 void TitleScene::Finalize()
 {
-
+    
 }

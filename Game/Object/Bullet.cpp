@@ -8,8 +8,8 @@ Bullet::Bullet(IScene* scene , BoxCollider::TypeID id)
 	SetScene(scene);
 	AddComponent<BoxCollider>();
 	AddComponent<ModelDraw>();
-	GetComponent<BoxCollider>().lock().get()->SetTypeID(id);
-	GetComponent<BoxCollider>().lock().get()->SetSize({ 0.1f,0.1f,0.1f });
+	GetComponent<BoxCollider>()->SetTypeID(id);
+	GetComponent<BoxCollider>()->SetSize({ 0.1f,0.1f,0.1f });
 	SetScale({ 0.1f,0.1f,0.1f });
 	SetState(BulletState::UNUSED);
 }
@@ -24,7 +24,7 @@ void Bullet::Initalize(GameObject* object)
 	using namespace DirectX::SimpleMath;
 
 	m_owner = object;
-	GetComponent<ModelDraw>().lock().get()->Initialize(ModelDraw::Cube);
+	GetComponent<ModelDraw>()->Initialize(ModelDraw::Cube);
 
 	Vector3 velocity = Vector3::Zero;
 	SetPosition(Vector3::Zero);
@@ -78,7 +78,7 @@ void Bullet::Render()
 {	
 	if (m_state == FLYING)
 	{
-		GetComponent<ModelDraw>().lock().get()->Render(GetWorld());
+		GetComponent<ModelDraw>()->Render(GetWorld());
 	}
 
 }

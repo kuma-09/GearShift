@@ -10,6 +10,7 @@ class Camera;
 class ResultScene final: public IScene
 {
 public:
+	ResultScene();
 
 	void Initialize(Game* game) override;
 	

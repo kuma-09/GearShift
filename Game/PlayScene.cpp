@@ -126,6 +126,8 @@ void PlayScene::Update(float elapsedTime)
         dropItem->Update(elapsedTime);
     }
 
+
+    // 
     for (auto& collider : GetColliders())
     {
         for (auto& enemyCollider : GetColliders())
@@ -139,17 +141,17 @@ void PlayScene::Update(float elapsedTime)
 
     for (auto it = m_dropItem.begin(); it != m_dropItem.end(); it++)
     {
-        if (m_player->GetComponent<BoxCollider>().lock().get()->
+        if (m_player->GetComponent<BoxCollider>()->
             GetBoundingBox()->Intersects(
-                *it->get()->GetComponent<BoxCollider>().lock().get()->GetBoundingBox()))
+                *it->get()->GetComponent<BoxCollider>()->GetBoundingBox()))
         {
             it->get()->SetHit(true);
             if (kb->pressed.X)
             {
                 Part::TypeID typeID = it->get()->GetPartType();
-                RemoveCollider(m_player->GetPart(typeID)->GetComponent<BoxCollider>().lock().get());
+                RemoveCollider(m_player->GetPart(typeID)->GetComponent<BoxCollider>());
                 m_player->SetPart(typeID, it->get()->GetPart());
-                RemoveCollider(it->get()->GetComponent<BoxCollider>().lock().get());
+                RemoveCollider(it->get()->GetComponent<BoxCollider>());
                 m_dropItem.erase(it);
                 break;
             }
@@ -166,7 +168,7 @@ void PlayScene::Update(float elapsedTime)
         }
         else
         {
-            RemoveCollider(it->get()->GetComponent<BoxCollider>().lock().get());
+            RemoveCollider(it->get()->GetComponent<BoxCollider>());
             m_enemy.erase(it);
             NextTarget();
             break;
@@ -198,7 +200,7 @@ void PlayScene::Render()
         //enemy->GetComponent<HPBar>().lock().get()->Render(m_enemy[m_enemyNum]->GetPosition());
     }
 
-    m_enemy[m_enemyNum].get()->GetComponent<HPBar>().lock().get()->Render(m_enemy[m_enemyNum]->GetPosition());
+    m_enemy[m_enemyNum].get()->GetComponent<HPBar>()->Render(m_enemy[m_enemyNum]->GetPosition());
 
     for (auto& dropItem : m_dropItem)
     {

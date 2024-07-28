@@ -6,7 +6,7 @@ Wall::Wall(IScene* scene)
 {
 	SetScene(scene);
 	AddComponent<BoxCollider>();
-	GetComponent<BoxCollider>().lock().get()->SetTypeID(BoxCollider::TypeID::Wall);
+	GetComponent<BoxCollider>()->SetTypeID(BoxCollider::TypeID::Wall);
 }
 
 Wall::~Wall()
@@ -21,5 +21,5 @@ void Wall::Update(float elapsedTime)
 
 void Wall::Render()
 {
-	GetComponent<BoxCollider>().lock().get()->Render();
+	GetComponent<BoxCollider>()->Render();
 }

@@ -30,7 +30,7 @@ void Jump::Update(float elapsedTime)
 
 	if (kbState.Space)
 	{
-		m_player->GetComponent<Gravity>().lock().get()->Reset();
+		m_player->GetComponent<Gravity>()->Reset();
 	}
 	if (kbState.V)
 	{

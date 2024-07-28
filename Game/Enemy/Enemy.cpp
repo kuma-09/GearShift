@@ -27,16 +27,16 @@ Enemy::Enemy(IScene* scene)
 
 Enemy::~Enemy()
 {
-	dynamic_cast<PlayScene*>(GetScene())->RemoveCollider(m_bullet->GetComponent<BoxCollider>().lock().get());
+	dynamic_cast<PlayScene*>(GetScene())->RemoveCollider(m_bullet->GetComponent<BoxCollider>());
 }
 
 void Enemy::Initialize(GameObject* target)
 {
 	SetHP(10);
-	GetComponent<Look>().lock().get()->SetTarget(this, target);
-	GetComponent<ModelDraw>().lock().get()->Initialize(ModelDraw::Dice);
-	GetComponent<BoxCollider>().lock().get()->SetTypeID(BoxCollider::TypeID::Enemy);
-	GetComponent<HPBar>().lock().get()->Initialize();
+	GetComponent<Look>()->SetTarget(this, target);
+	GetComponent<ModelDraw>()->Initialize(ModelDraw::Dice);
+	GetComponent<BoxCollider>()->SetTypeID(BoxCollider::TypeID::Enemy);
+	GetComponent<HPBar>()->Initialize();
 	m_bullet->Initalize(this);
 }
 
@@ -69,7 +69,7 @@ void Enemy::Render()
 	m_bullet->Render();
 
 	if (GetHP() <= 0) return;
-	GetComponent<ModelDraw>().lock().get()->Render(GetWorld());
+	GetComponent<ModelDraw>()->Render(GetWorld());
 	//GetComponent<BoxCollider>().lock().get()->Render();
 }
 

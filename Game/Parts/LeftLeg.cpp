@@ -19,8 +19,8 @@ void LeftLeg::Initialize(int hp,IScene* scene)
 {
 	SetScene(scene);
 	SetHP(hp);
-	GetComponent<ModelDraw>().lock().get()->Initialize(ModelDraw::LLeg);
-	GetComponent<BoxCollider>().lock().get()->SetTypeID(BoxCollider::TypeID::Player);
+	GetComponent<ModelDraw>()->Initialize(ModelDraw::LLeg);
+	GetComponent<BoxCollider>()->SetTypeID(BoxCollider::TypeID::Player);
 
 }
 
@@ -57,16 +57,16 @@ void LeftLeg::Render(DirectX::SimpleMath::Matrix world)
 	{
 		if (!m_isHit)
 		{
-			GetComponent<ModelDraw>().lock().get()->Render(GetWorld());
+			GetComponent<ModelDraw>()->Render(GetWorld());
 		}
 		else
 		{
-			GetComponent<ModelDraw>().lock().get()->Render(GetWorld(), DirectX::Colors::Red);
+			GetComponent<ModelDraw>()->Render(GetWorld(), DirectX::Colors::Red);
 		}
 	}
 	else
 	{
-		GetComponent<ModelDraw>().lock().get()->Render(GetWorld(), DirectX::Colors::Black);
+		GetComponent<ModelDraw>()->Render(GetWorld(), DirectX::Colors::Black);
 	}
 
 	//GetComponent<HPBar>().lock().get()->Render(GetPosition() + DirectX::SimpleMath::Vector3{ 0,2,0 });
