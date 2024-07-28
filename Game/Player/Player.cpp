@@ -19,6 +19,7 @@
 #include "Game/Particle/Shader.h"
 #include "Game/Player/State/Jump.h"
 #include "Game/Player/State/Boost.h"
+#include "Game/Player/State/Attack.h"
 #include "Game/Object/Bullet.h"
 
 
@@ -40,6 +41,8 @@ Player::Player(IScene* scene)
 	m_idol = std::make_unique<Idol>(this);
 	m_jump = std::make_unique<Jump>(this);
 	m_boost = std::make_unique<Boost>(this);
+	m_attack = std::make_unique<Attack>(this);
+	
 
 	for (int i = 0; i < MAX_BULLET_CUNT; i++)
 	{
@@ -89,6 +92,15 @@ void Player::Update(float elapsedTime)
 
 	m_state->Update(elapsedTime);
 
+	if (m_state == m_attack.get())
+	{
+		GetComponent<BoxCollider>()->SetSize(Vector3(2.f,2.f,2.f));
+	}
+	else
+	{
+		GetComponent<BoxCollider>()->SetSize(Vector3(1.f,1.f,1.f));
+	}
+
 	for (int i = 0; i < MAX_BULLET_CUNT; i++)
 	{
 		m_bullet[i]->Update(elapsedTime);
@@ -116,7 +128,7 @@ void Player::Render()
 
 
 	GetComponent<Emitter>()->Render(GetPosition() - DirectX::SimpleMath::Vector3(0, 1,0));
-	//GetComponent<BoxCollider>().lock().get()->Render();
+	GetComponent<BoxCollider>()->Render();
 	RenderParts();
 
 }
@@ -143,7 +155,10 @@ void Player::Collision(BoxCollider* collider)
 {
 	if (collider->GetTypeID() == BoxCollider::EnemyBullet)
 	{
-		SetHP(GetHP() - 1);
-		GetComponent<Camera>()->shake();
+		if (m_state != m_boost.get())
+		{
+			SetHP(GetHP() - 1);
+			GetComponent<Camera>()->shake();
+		}
 	}
 }

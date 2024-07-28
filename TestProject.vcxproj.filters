@@ -112,6 +112,7 @@
     <ClInclude Include="Game\Components\HPBar.h" />
     <ClInclude Include="Game\Particle\HitParticle.h" />
     <ClInclude Include="Game\ResultScene.h" />
+    <ClInclude Include="Game\Player\State\Attack.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -182,6 +183,7 @@
     <ClCompile Include="Game\Components\HPBar.cpp" />
     <ClCompile Include="Game\Particle\HitParticle.cpp" />
     <ClCompile Include="Game\ResultScene.cpp" />
+    <ClCompile Include="Game\Player\State\Attack.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />

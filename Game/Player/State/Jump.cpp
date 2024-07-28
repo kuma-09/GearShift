@@ -2,6 +2,7 @@
 #include "Jump.h"
 #include "Idol.h"
 #include "Boost.h"
+#include "Attack.h"
 #include "Game/Components/Gravity.h"
 
 
@@ -35,6 +36,10 @@ void Jump::Update(float elapsedTime)
 	if (kbState.V)
 	{
 		m_player->ChangeState(m_player->GetBoost());
+	}
+	if (kbState.X)
+	{
+		m_player->ChangeState(m_player->GetAttack());
 	}
 	if ( m_player->GetPosition().y + m_player->GetVelocity().y < 0)
 	{

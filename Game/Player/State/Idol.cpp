@@ -2,6 +2,7 @@
 #include "Idol.h"
 #include "Jump.h"
 #include "Boost.h"
+#include "Attack.h"
 
 
 
@@ -34,6 +35,10 @@ void Idol::Update(float elapsedTime)
 	if (kb->IsKeyPressed(DirectX::Keyboard::V))
 	{
 		m_player->ChangeState(m_player->GetBoost());
+	}
+	if (kb->IsKeyPressed(DirectX::Keyboard::X))
+	{
+		m_player->ChangeState(m_player->GetAttack());
 	}
 }
 

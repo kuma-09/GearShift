@@ -10,6 +10,7 @@
 class Idol;
 class Jump;
 class Boost;
+class Attack;
 class Bullet;
 
 class Player : public GameObject
@@ -26,6 +27,7 @@ public:
 	Idol* GetIdol() { return m_idol.get(); }
 	Jump* GetJump() { return m_jump.get(); }
 	Boost* GetBoost() { return m_boost.get(); }
+	Attack* GetAttack() { return m_attack.get(); }
 
 	void SetTarget(GameObject* target);
 
@@ -79,6 +81,7 @@ private:
 	std::unique_ptr<Idol> m_idol;
 	std::unique_ptr<Jump> m_jump;
 	std::unique_ptr<Boost> m_boost;
+	std::unique_ptr<Attack> m_attack;
 	std::unique_ptr<Bullet> m_bullet[MAX_BULLET_CUNT];
 
 	std::unique_ptr<DebugString> m_debugString;
