@@ -157,7 +157,16 @@ void Player::Collision(BoxCollider* collider)
 	{
 		if (m_state != m_boost.get())
 		{
-			SetHP(GetHP() - 1);
+			//SetHP(GetHP() - 1);
+
+			GetPart(Part::Head)->Collision(collider);
+			GetPart(Part::BodyTop)->Collision(collider);
+			GetPart(Part::BodyBottom)->Collision(collider);
+			GetPart(Part::LeftArm)->Collision(collider);
+			GetPart(Part::RightArm)->Collision(collider);
+			GetPart(Part::LeftLeg)->Collision(collider);
+			GetPart(Part::RightLeg)->Collision(collider);
+
 			GetComponent<Camera>()->shake();
 		}
 	}

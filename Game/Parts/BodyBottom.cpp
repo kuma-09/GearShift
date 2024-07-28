@@ -24,7 +24,6 @@ void BodyBottom::Initialize(int hp,IScene* scene)
 	SetScene(scene);
 	SetHP(hp);
 	GetComponent<ModelDraw>()->Initialize(ModelDraw::BodyBottom);
-	GetComponent<BoxCollider>()->SetTypeID(BoxCollider::TypeID::Player);
 	//GetComponent<HPBar>().lock().get()->Initialize();
 }
 
@@ -83,7 +82,8 @@ void BodyBottom::Finalize()
 
 void BodyBottom::Collision(BoxCollider* collider)
 {
-	if (collider->GetTypeID() == BoxCollider::EnemyBullet)
+	// ÉpÅ[ÉcÇ∆ÇÃìñÇΩÇËîªíË
+	if (GetComponent<BoxCollider>()->GetBoundingBox()->Intersects(*collider->GetBoundingBox()))
 	{
 		Bullet* bulletObject = static_cast<Bullet*>(collider->GetOwner());
 		if (bulletObject->GetState() == Bullet::FLYING)

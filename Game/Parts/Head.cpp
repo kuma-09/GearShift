@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Head.h"
+#include "Game/Object/Bullet.h"
 #include "Game/Components/ModelDraw.h"
 #include "Game/Components/BoxCollider.h"
 
@@ -19,7 +20,6 @@ void Head::Initialize(int hp,IScene* scene)
 	SetScene(scene);
 	SetHP(hp);
 	GetComponent<ModelDraw>()->Initialize(ModelDraw::Head);
-	GetComponent<BoxCollider>()->SetTypeID(BoxCollider::TypeID::Player);
 }
 
 void Head::Update(float elapsedTime)
@@ -75,9 +75,15 @@ void Head::Finalize()
 
 void Head::Collision(BoxCollider* collider)
 {
-	if (collider->GetTypeID() == BoxCollider::EnemyBullet)
+	// ÉpÅ[ÉcÇ∆ÇÃìñÇΩÇËîªíË
+	if (GetComponent<BoxCollider>()->GetBoundingBox()->Intersects(*collider->GetBoundingBox()))
 	{
-		SetHP(GetHP() - 1);
-		m_isHit = true;
+		Bullet* bulletObject = static_cast<Bullet*>(collider->GetOwner());
+		if (bulletObject->GetState() == Bullet::FLYING)
+		{
+			SetHP(GetHP() - 1);
+			bulletObject->Hit();
+			m_isHit = true;
+		}
 	}
 }

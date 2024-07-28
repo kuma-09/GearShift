@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "LeftLeg.h"
+#include "Game/Object/Bullet.h"
 #include "Game/Components/ModelDraw.h"
 #include "Game/Components/BoxCollider.h"
 
@@ -20,7 +21,6 @@ void LeftLeg::Initialize(int hp,IScene* scene)
 	SetScene(scene);
 	SetHP(hp);
 	GetComponent<ModelDraw>()->Initialize(ModelDraw::LLeg);
-	GetComponent<BoxCollider>()->SetTypeID(BoxCollider::TypeID::Player);
 
 }
 
@@ -82,9 +82,15 @@ void LeftLeg::Finalize()
 
 void LeftLeg::Collision(BoxCollider* collider)
 {
-	if (collider->GetTypeID() == BoxCollider::EnemyBullet)
+	// ÉpÅ[ÉcÇ∆ÇÃìñÇΩÇËîªíË
+	if (GetComponent<BoxCollider>()->GetBoundingBox()->Intersects(*collider->GetBoundingBox()))
 	{
-		SetHP(GetHP() - 1);
-		m_isHit = true;
+		Bullet* bulletObject = static_cast<Bullet*>(collider->GetOwner());
+		if (bulletObject->GetState() == Bullet::FLYING)
+		{
+			SetHP(GetHP() - 1);
+			bulletObject->Hit();
+			m_isHit = true;
+		}
 	}
 }
