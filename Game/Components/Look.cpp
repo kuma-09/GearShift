@@ -21,7 +21,6 @@ void Look::Update(float elapsedTime)
 
     // プレイヤーの向いている方向を計算
     Vector3 direction = GetOwner()->GetPosition() - m_targetPosition;
-    //Vector3 direction = m_targetPosition - GetOwner()->GetPosition();
     float radianY = atan2f(direction.x, direction.z);
     float radianX = -atan2f(direction.y, sqrt(direction.x * direction.x + direction.z * direction.z));
 

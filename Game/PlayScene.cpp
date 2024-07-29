@@ -149,7 +149,6 @@ void PlayScene::Update(float elapsedTime)
             if (kb->pressed.X)
             {
                 Part::TypeID typeID = it->get()->GetPartType();
-                RemoveCollider(m_player->GetPart(typeID)->GetComponent<BoxCollider>());
                 m_player->SetPart(typeID, it->get()->GetPart());
                 RemoveCollider(it->get()->GetComponent<BoxCollider>());
                 m_dropItem.erase(it);
