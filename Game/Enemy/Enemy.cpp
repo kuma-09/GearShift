@@ -27,7 +27,7 @@ Enemy::Enemy(IScene* scene)
 
 Enemy::~Enemy()
 {
-	dynamic_cast<PlayScene*>(GetScene())->RemoveCollider(m_bullet->GetComponent<BoxCollider>());
+
 }
 
 void Enemy::Initialize(GameObject* target)
@@ -75,7 +75,7 @@ void Enemy::Render()
 
 void Enemy::Finalize()
 {
-
+	dynamic_cast<PlayScene*>(GetScene())->RemoveCollider(m_bullet->GetComponent<BoxCollider>());
 }
 
 void Enemy::Collision(BoxCollider* collider)

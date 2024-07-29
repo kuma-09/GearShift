@@ -26,10 +26,10 @@ Game::Game() noexcept(false)
     //   Add DX::DeviceResources::c_AllowTearing to opt-in to variable rate displays.
     //   Add DX::DeviceResources::c_EnableHDR for HDR10 display.
     m_deviceResources->RegisterDeviceNotify(this);
+}
 
-
-
-
+Game::~Game()
+{
 
 }
 
@@ -50,8 +50,7 @@ void Game::Initialize(HWND window, int width, int height)
     CreateWindowSizeDependentResources();
 
     m_inputManager->Initialize(window);
-    m_resources->Initalize(m_graphics);
-    m_resources->LoadResource();
+    m_resources->LoadResource(m_graphics);
     // TODO: Change the timer settings if you want something other than the default variable timestep mode.
     // e.g. for 60 FPS fixed timestep update logic, call:
     m_timer.SetFixedTimeStep(true);
@@ -261,18 +260,19 @@ void Game::ChangeScene(IScene* scene)
         m_scene->Finalize();
         if (dynamic_cast<PlayScene*>(m_scene))
         {
-            delete dynamic_cast<PlayScene*>(m_scene);
-            m_playScene = nullptr;
+            //delete dynamic_cast<PlayScene*>(m_scene);
+            //m_playScene = nullptr;
+            m_playScene.release();
         }
         else if (dynamic_cast<TitleScene*>(m_scene))
         {
-            delete dynamic_cast<TitleScene*>(m_scene);
-            m_titleScene = nullptr;
+            //delete dynamic_cast<TitleScene*>(m_scene);
+            //m_titleScene = nullptr;
+            m_titleScene.reset();
         }
         else if (dynamic_cast<ResultScene*>(m_scene))
         {
-            delete dynamic_cast<ResultScene*>(m_scene);
-            m_resultScene = nullptr;
+            m_resultScene.release();
         }
         m_scene = nullptr;
     }

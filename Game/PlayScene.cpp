@@ -25,7 +25,7 @@ PlayScene::PlayScene()
 
 PlayScene::~PlayScene()
 {
-
+    Finalize();
 }
 
 /// <summary>
@@ -177,6 +177,7 @@ void PlayScene::Update(float elapsedTime)
         else
         {
             RemoveCollider(it->get()->GetComponent<BoxCollider>());
+            it->get()->Finalize();
             m_enemy.erase(it);
             NextTarget();
             break;
@@ -236,6 +237,7 @@ void PlayScene::Finalize()
     m_player.reset();
 
 
+
     for (auto& enemy : m_enemy)
     {
         enemy.reset();
@@ -247,6 +249,12 @@ void PlayScene::Finalize()
         dropItem.reset();
     }
     m_dropItem.clear();
+
+    for (auto& hitParticle: m_hitParticle)
+    {
+        hitParticle.reset();
+    }
+    m_hitParticle.clear();
     
 }
 
