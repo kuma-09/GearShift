@@ -28,6 +28,10 @@ PlayScene::~PlayScene()
 
 }
 
+/// <summary>
+/// 初期化処理
+/// </summary>
+/// <param name="game"> ゲーム </param>
 void PlayScene::Initialize(Game* game)
 {
     using namespace DirectX;
@@ -39,10 +43,11 @@ void PlayScene::Initialize(Game* game)
 
     SetGame(game);
 
+    // プレイヤー生成
     m_player = std::make_unique<Player>(this);
     m_player->SetPosition(Vector3(3, 10, 3));
 
-    
+    // パーツを装備
     m_player->SetPart(Part::Head, std::make_unique<Head>());
     m_player->SetPart(Part::BodyTop,std::make_unique<BodyTop>());
     m_player->SetPart(Part::BodyBottom, std::make_unique<BodyBottom>());
@@ -52,7 +57,6 @@ void PlayScene::Initialize(Game* game)
     m_player->SetPart(Part::RightLeg, std::make_unique<RightLeg>());
 
     m_player->Initialize();
-
 
     m_enemy.push_back(std::make_unique<Enemy>(this));
     m_enemy.back()->Initialize(m_player.get());
@@ -87,7 +91,10 @@ void PlayScene::Initialize(Game* game)
 
 }
 
-
+/// <summary>
+/// 更新処理
+/// </summary>
+/// <param name="elapsedTime"> 経過時間 </param>
 void PlayScene::Update(float elapsedTime)
 {
     using namespace DirectX::SimpleMath;
@@ -127,7 +134,7 @@ void PlayScene::Update(float elapsedTime)
     }
 
 
-    // 
+    // 当たり判定
     for (auto& collider : GetColliders())
     {
         for (auto& enemyCollider : GetColliders())
@@ -139,6 +146,7 @@ void PlayScene::Update(float elapsedTime)
         }
     }
 
+    // プレイヤーがドロップアイテムに触れている時
     for (auto it = m_dropItem.begin(); it != m_dropItem.end(); it++)
     {
         if (m_player->GetComponent<BoxCollider>()->
@@ -158,6 +166,7 @@ void PlayScene::Update(float elapsedTime)
         else it->get()->SetHit(false);
     }
 
+    // 体力の無い敵を削除
     for (auto it = m_enemy.begin(); it != m_enemy.end();)
     {
         BoxCollider::CheckHit(m_player.get(), it->get());
@@ -174,9 +183,7 @@ void PlayScene::Update(float elapsedTime)
         }
     }
     
-
-
-
+    // ターゲット切り替え
     if (gp->a == gp->PRESSED || kb->IsKeyPressed(DirectX::Keyboard::Z))
     {
         NextTarget();
@@ -185,6 +192,9 @@ void PlayScene::Update(float elapsedTime)
 
 }
 
+/// <summary>
+/// 描画処理
+/// </summary>
 void PlayScene::Render()
 {
     using namespace DirectX::SimpleMath;
@@ -196,7 +206,6 @@ void PlayScene::Render()
     for (auto& enemy: m_enemy)
     {
         enemy->Render();
-        //enemy->GetComponent<HPBar>().lock().get()->Render(m_enemy[m_enemyNum]->GetPosition());
     }
 
     m_enemy[m_enemyNum].get()->GetComponent<HPBar>()->Render(m_enemy[m_enemyNum]->GetPosition());
@@ -218,6 +227,9 @@ void PlayScene::Render()
     
 }
 
+/// <summary>
+/// 終了処理
+/// </summary>
 void PlayScene::Finalize()
 {
     ClearColliders();
@@ -238,6 +250,10 @@ void PlayScene::Finalize()
     
 }
 
+/// <summary>
+/// ヒットエフェクトを生成する関数
+/// </summary>
+/// <param name="world"> ワールド行列 </param>
 void PlayScene::CreateHitParticle(DirectX::SimpleMath::Matrix world)
 {
     using namespace DirectX::SimpleMath;
@@ -262,6 +278,9 @@ void PlayScene::CreateHitParticle(DirectX::SimpleMath::Matrix world)
 
 }
 
+/// <summary>
+/// ターゲットを切り替える関数
+/// </summary>
 void PlayScene::NextTarget()
 {
     m_enemyNum++;
