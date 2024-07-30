@@ -32,10 +32,8 @@ public:
 	// Resoucesクラスのインスタンスを取得する
 	static Resources* const GetInstance();
 
-	void Initalize(Graphics* graphics);
-
 	// リソースをロードする
-	void LoadResource();
+	void LoadResource(Graphics* graphics);
 
 private:
 	// コンストラクタ
@@ -46,10 +44,7 @@ private:
 private:
 	// リソース
 	static std::unique_ptr<Resources> m_resources;
-	// グラフィックス
-	Graphics* m_graphics;
-	// デバイス
-	ID3D11Device* m_device;
+
 
 	// モデル
 	std::unique_ptr<DirectX::Model> m_player;

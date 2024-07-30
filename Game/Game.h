@@ -23,7 +23,7 @@ class Game final : public DX::IDeviceNotify
 public:
 
     Game() noexcept(false);
-    ~Game() = default;
+    ~Game();
 
     Game(Game&&) = default;
     Game& operator= (Game&&) = default;
@@ -59,27 +59,30 @@ public:
     {
         if (m_titleScene)
         {
-            return m_titleScene;
+            return m_titleScene.get();
         }
-        return m_titleScene = new TitleScene();
+        m_titleScene = std::make_unique<TitleScene>();
+        return m_titleScene.get();
     }
 
     PlayScene* GetPlayScene() 
     {
         if (m_playScene)
         {
-            return m_playScene;
+            return m_playScene.get();
         }
-        return m_playScene = new PlayScene();
+        m_playScene = std::make_unique<PlayScene>();
+        return m_playScene.get();
     }
 
     ResultScene* GetResultScene() 
     {
         if (m_resultScene)
         {
-            return m_resultScene;
+            return m_resultScene.get();
         }
-        return m_resultScene = new ResultScene();
+        m_resultScene = std::make_unique<ResultScene>();
+        return m_resultScene.get();
     }
 
 private:
@@ -104,8 +107,8 @@ private:
 
 
     IScene* m_scene;
-    PlayScene* m_playScene;
-    TitleScene* m_titleScene;
-    ResultScene* m_resultScene;
+    std::unique_ptr<PlayScene> m_playScene;
+    std::unique_ptr<TitleScene> m_titleScene;
+    std::unique_ptr<ResultScene> m_resultScene;
 
 };
