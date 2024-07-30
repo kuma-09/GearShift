@@ -54,7 +54,7 @@ Player::Player(IScene* scene)
 
 Player::~Player()
 {
-
+	Finalize();
 }
 
 void Player::Initialize()
@@ -135,7 +135,7 @@ void Player::Render()
 
 void Player::Finalize()
 {
-
+	RemoveAllComponents();
 }
 
 void Player::SetTarget(GameObject* target)

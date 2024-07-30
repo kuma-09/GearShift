@@ -4,6 +4,11 @@
 
 std::unique_ptr<Resources> Resources::m_resources = nullptr;
 
+Resources::~Resources()
+{
+
+}
+
 Resources* const Resources::GetInstance()
 {
 	if (m_resources == nullptr)

@@ -33,8 +33,7 @@ private:
 	void SetColor(DirectX::XMVECTORF32 color);
 private:
 	Graphics* m_graphics;
-	Resources* m_resources;
-
+	std::unique_ptr<DirectX::BasicEffect> m_effect;
 	DirectX::Model* m_model;
 };
 

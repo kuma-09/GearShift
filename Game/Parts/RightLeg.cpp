@@ -12,7 +12,7 @@ RightLeg::RightLeg()
 
 RightLeg::~RightLeg()
 {
-
+	Finalize();
 }
 
 void RightLeg::Initialize(int hp,IScene* scene)
@@ -71,7 +71,7 @@ void RightLeg::Render(DirectX::SimpleMath::Matrix world)
 
 void RightLeg::Finalize()
 {
-
+	RemoveAllComponents();
 }
 
 void RightLeg::Collision(BoxCollider* collider)

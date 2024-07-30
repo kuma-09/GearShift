@@ -80,6 +80,11 @@ public:
 		}
 	}
 
+	void RemoveAllComponents()
+	{
+		m_umComponents.clear();
+	}
+
 	void SetScene(IScene* scene) { m_scene = scene; }
 	IScene* GetScene() { return m_scene; }
 

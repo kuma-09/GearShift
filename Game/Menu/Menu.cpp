@@ -33,6 +33,13 @@ Menu::Menu()
 
 Menu::~Menu()
 {
+    for (auto& userInterface : m_userInterface)
+    {
+        userInterface.reset();
+    }
+    m_userInterface.clear();
+    m_base.clear();
+    m_baseWindow.reset();
 }
 
 void Menu::Initialize(DX::DeviceResources* pDR,int width,int height)

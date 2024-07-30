@@ -25,13 +25,6 @@ void SkyDome::Update(float elapsedTime)
 			BasicEffect* basicEffect = dynamic_cast<BasicEffect*>(effect);
 			if (basicEffect)
 			{
-				//// ライトを有効化する
-				//basicEffect->SetLightingEnabled(true);
-				/*
-					・モデルクラスではデフォルトで内部的にライトが有効化されている
-					・この設定が無くてもライトは有効化されている
-				*/
-
 				// 個別のライトをすべて無効化する
 				basicEffect->SetLightEnabled(0, false);
 				basicEffect->SetLightEnabled(1, false);

@@ -28,7 +28,7 @@ public:
 	Resources& operator= (Resources&&) = default;
 	Resources& operator= (Resources const&) = delete;
 	// デストラクタ
-	~Resources() = default;
+	~Resources();
 	// Resoucesクラスのインスタンスを取得する
 	static Resources* const GetInstance();
 
@@ -44,7 +44,6 @@ private:
 private:
 	// リソース
 	static std::unique_ptr<Resources> m_resources;
-
 
 	// モデル
 	std::unique_ptr<DirectX::Model> m_player;

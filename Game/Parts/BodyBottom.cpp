@@ -16,7 +16,7 @@ BodyBottom::BodyBottom()
 
 BodyBottom::~BodyBottom()
 {
-
+	Finalize();
 }
 
 void BodyBottom::Initialize(int hp,IScene* scene)
@@ -77,7 +77,7 @@ void BodyBottom::Render(DirectX::SimpleMath::Matrix world)
 
 void BodyBottom::Finalize()
 {
-
+	RemoveAllComponents();
 }
 
 void BodyBottom::Collision(BoxCollider* collider)

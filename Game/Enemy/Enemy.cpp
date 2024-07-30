@@ -27,6 +27,7 @@ Enemy::Enemy(IScene* scene)
 
 Enemy::~Enemy()
 {
+	RemoveAllComponents();
 
 }
 

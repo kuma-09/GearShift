@@ -57,6 +57,5 @@ void TitleScene::Render()
 
 void TitleScene::Finalize()
 {
-    m_backGround.reset();
-    m_titleLogo.reset();
+
 }

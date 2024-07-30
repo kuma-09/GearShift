@@ -62,6 +62,7 @@ void PlayScene::Initialize(Game* game)
     m_enemy.back()->Initialize(m_player.get());
     m_enemy.back()->SetPosition(Vector3(0, 0, 0));
 
+
     m_enemy.push_back(std::make_unique<Enemy>(this));
     m_enemy.back()->Initialize(m_player.get());
     m_enemy.back()->SetPosition(Vector3(5, 0, 5));
@@ -76,7 +77,7 @@ void PlayScene::Initialize(Game* game)
 
     m_skyDome = std::make_unique<SkyDome>();
 
-    m_enemyNum = 2;
+    m_enemyNum = 0;
     m_player->SetTarget(m_enemy[m_enemyNum].get());
 
     m_debugString = std::make_unique<DebugString>(
@@ -236,9 +237,7 @@ void PlayScene::Finalize()
     ClearColliders();
     m_player.reset();
 
-
-
-    for (auto& enemy : m_enemy)
+    for (auto& enemy: m_enemy)
     {
         enemy.reset();
     }

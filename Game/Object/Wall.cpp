@@ -11,7 +11,7 @@ Wall::Wall(IScene* scene)
 
 Wall::~Wall()
 {
-
+	RemoveAllComponents();
 }
 
 void Wall::Update(float elapsedTime)

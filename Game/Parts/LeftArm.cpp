@@ -12,7 +12,7 @@ LeftArm::LeftArm()
 
 LeftArm::~LeftArm()
 {
-
+	Finalize();
 }
 
 void LeftArm::Initialize(int hp,IScene* scene)
@@ -71,7 +71,7 @@ void LeftArm::Render(DirectX::SimpleMath::Matrix world)
 
 void LeftArm::Finalize()
 {
-
+	RemoveAllComponents();
 }
 
 void LeftArm::Collision(BoxCollider* collider)

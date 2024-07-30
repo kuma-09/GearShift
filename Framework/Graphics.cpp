@@ -36,6 +36,11 @@ Graphics::Graphics()
 	m_deviceResources = std::make_unique<DX::DeviceResources>();
 }
 
+Graphics::~Graphics()
+{
+
+}
+
 // ‰Šú‰»‚·‚é
 void Graphics::Initialize()
 {

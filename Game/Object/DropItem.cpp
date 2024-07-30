@@ -22,7 +22,7 @@ DropItem::DropItem(IScene* scene, std::unique_ptr<Part> part)
 
 DropItem::~DropItem()
 {
-
+	Finalize();
 }
 
 void DropItem::Initialize()
@@ -66,5 +66,5 @@ void DropItem::Render()
 
 void DropItem::Finalize()
 {
-
+	RemoveAllComponents();
 }

@@ -16,7 +16,7 @@ Bullet::Bullet(IScene* scene , BoxCollider::TypeID id)
 
 Bullet::~Bullet()
 {
-
+	RemoveAllComponents();
 }
 
 void Bullet::Initalize(GameObject* object)

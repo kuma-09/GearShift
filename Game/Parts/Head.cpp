@@ -12,7 +12,7 @@ Head::Head()
 
 Head::~Head()
 {
-
+	Finalize();
 }
 
 void Head::Initialize(int hp,IScene* scene)
@@ -70,7 +70,7 @@ void Head::Render(DirectX::SimpleMath::Matrix world)
 
 void Head::Finalize()
 {
-
+	RemoveAllComponents();
 }
 
 void Head::Collision(BoxCollider* collider)

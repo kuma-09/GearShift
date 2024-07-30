@@ -56,7 +56,7 @@ public:
 	// 初期化する
 	void Initialize();
 	// デストラクタ
-	~Graphics() = default;
+	~Graphics();
 
 	// プリミティブ描画を開始する
 	void DrawPrimitiveBegin(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& projection);

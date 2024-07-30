@@ -260,19 +260,15 @@ void Game::ChangeScene(IScene* scene)
         m_scene->Finalize();
         if (dynamic_cast<PlayScene*>(m_scene))
         {
-            //delete dynamic_cast<PlayScene*>(m_scene);
-            //m_playScene = nullptr;
-            m_playScene.release();
+            m_playScene.reset();
         }
         else if (dynamic_cast<TitleScene*>(m_scene))
         {
-            //delete dynamic_cast<TitleScene*>(m_scene);
-            //m_titleScene = nullptr;
             m_titleScene.reset();
         }
         else if (dynamic_cast<ResultScene*>(m_scene))
         {
-            m_resultScene.release();
+            m_resultScene.reset();
         }
         m_scene = nullptr;
     }

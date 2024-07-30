@@ -8,46 +8,47 @@ ModelDraw::ModelDraw()
 	m_model{}
 {
 	m_graphics = Graphics::GetInstance();
-	m_resources = Resources::GetInstance();
 }
 
 ModelDraw::~ModelDraw()
 {
-
+	Finalize();
 }
 
 void ModelDraw::Initialize(ModelType type)
 {
+	Resources* resources = Resources::GetInstance();
+
 	switch (type)
 	{
 	case ModelDraw::Player:
-		m_model = m_resources->GetPlayerModel();
+		m_model = resources->GetPlayerModel();
 	case ModelDraw::Head:
-		m_model = m_resources->GetHeadModel();
+		m_model = resources->GetHeadModel();
 		break;
 	case ModelDraw::BodyTop:
-		m_model = m_resources->GetBodyTopModel();
+		m_model = resources->GetBodyTopModel();
 		break;
 	case ModelDraw::BodyBottom:
-		m_model = m_resources->GetBodyBottomModel();
+		m_model = resources->GetBodyBottomModel();
 		break;
 	case ModelDraw::LArm:
-		m_model = m_resources->GetlArmModel();
+		m_model = resources->GetlArmModel();
 		break;
 	case ModelDraw::RArm:
-		m_model = m_resources->GetrArmModel();
+		m_model = resources->GetrArmModel();
 		break;
 	case ModelDraw::LLeg:
-		m_model = m_resources->GetlLegModel();
+		m_model = resources->GetlLegModel();
 		break;
 	case ModelDraw::RLeg:
-		m_model = m_resources->GetrLegModel();
+		m_model = resources->GetrLegModel();
 		break;
 	case ModelDraw::Dice:
-		m_model = m_resources->GetDiceModel();
+		m_model = resources->GetDiceModel();
 		break;
 	case ModelDraw::Cube:
-		m_model = m_resources->GetCubeModel();
+		m_model = resources->GetCubeModel();
 		break;
 	default:
 		m_model = nullptr;
@@ -93,10 +94,14 @@ void ModelDraw::Finalize()
 
 void ModelDraw::SetColor(DirectX::XMVECTORF32 color)
 {
-	auto effect = std::make_unique<DirectX::BasicEffect>(m_graphics->GetDeviceResources()->GetD3DDevice());
-	effect->SetDiffuseColor(color);
-	effect->SetView(m_graphics->GetViewMatrix());
-	effect->SetProjection(m_graphics->GetProjectionMatrix());
-	effect->SetWorld(GetOwner()->GetWorld());
-	effect->Apply(m_graphics->GetDeviceResources()->GetD3DDeviceContext());
+	if (!m_effect)
+	{
+		m_effect = std::make_unique<DirectX::BasicEffect>(m_graphics->GetDeviceResources()->GetD3DDevice());
+	}
+
+	m_effect->SetDiffuseColor(color);
+	m_effect->SetView(m_graphics->GetViewMatrix());
+	m_effect->SetProjection(m_graphics->GetProjectionMatrix());
+	m_effect->SetWorld(GetOwner()->GetWorld());
+	m_effect->Apply(m_graphics->GetDeviceResources()->GetD3DDeviceContext());
 }

@@ -52,7 +52,10 @@ public:
 	}
 
 	std::vector<BoxCollider*> GetColliders() { return m_pBoxCollider; }
-	void ClearColliders() { m_pBoxCollider.clear(); }
+	void ClearColliders() 
+	{
+		m_pBoxCollider.clear();
+	}
 
 	void CreateHitParticle(DirectX::SimpleMath::Matrix world);
 

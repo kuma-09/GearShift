@@ -13,7 +13,7 @@ LeftLeg::LeftLeg()
 
 LeftLeg::~LeftLeg()
 {
-
+	Finalize();
 }
 
 void LeftLeg::Initialize(int hp,IScene* scene)
@@ -77,7 +77,7 @@ void LeftLeg::Render(DirectX::SimpleMath::Matrix world)
 
 void LeftLeg::Finalize()
 {
-
+	RemoveAllComponents();
 }
 
 void LeftLeg::Collision(BoxCollider* collider)
