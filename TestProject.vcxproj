@@ -203,6 +203,10 @@
     <ClInclude Include="Game\Object\Bullet.h" />
     <ClInclude Include="Game\Object\DropItem.h" />
     <ClInclude Include="Game\Object\SkyDome.h" />
+    <ClInclude Include="Game\Object\Sword.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="Game\Object\Wall.h" />
     <ClInclude Include="Game\Particle\Emitter.h" />
     <ClInclude Include="Game\Particle\HitParticle.h" />
@@ -253,6 +257,10 @@
     <ClCompile Include="Game\Object\Bullet.cpp" />
     <ClCompile Include="Game\Object\DropItem.cpp" />
     <ClCompile Include="Game\Object\SkyDome.cpp" />
+    <ClCompile Include="Game\Object\Sword.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="Game\Object\Wall.cpp" />
     <ClCompile Include="Game\Particle\Emitter.cpp" />
     <ClCompile Include="Game\Particle\HitParticle.cpp" />

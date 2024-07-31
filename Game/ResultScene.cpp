@@ -62,6 +62,5 @@ void ResultScene::Render()
 
 void ResultScene::Finalize()
 {
-    m_backGround.reset();
-    m_result.reset();
+
 }

@@ -105,5 +105,4 @@ private:
 
 	std::unordered_map<std::type_index, std::unique_ptr<IComponent>> m_umComponents;
 
-	std::vector<std::unique_ptr<GameObject>> m_umGameObject;
 };

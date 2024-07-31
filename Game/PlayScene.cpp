@@ -56,6 +56,7 @@ void PlayScene::Initialize(Game* game)
     m_player->SetPart(Part::LeftLeg,  std::make_unique<LeftLeg>());
     m_player->SetPart(Part::RightLeg, std::make_unique<RightLeg>());
 
+
     m_player->Initialize();
 
     m_enemy.push_back(std::make_unique<Enemy>(this));
@@ -92,9 +93,7 @@ void PlayScene::Initialize(Game* game)
 
 }
 
-/// <summary>
-/// 更新処理
-/// </summary>
+/// <summary> 更新処理 </summary>
 /// <param name="elapsedTime"> 経過時間 </param>
 void PlayScene::Update(float elapsedTime)
 {
@@ -119,6 +118,9 @@ void PlayScene::Update(float elapsedTime)
         }
     }
 
+
+
+
     m_skyDome->Update(elapsedTime);
 
     m_player->Update(elapsedTime);
@@ -126,6 +128,7 @@ void PlayScene::Update(float elapsedTime)
     for (auto& enemy : m_enemy)
     {
         enemy->Update(elapsedTime);
+
     }
     
 
@@ -160,7 +163,7 @@ void PlayScene::Update(float elapsedTime)
                 Part::TypeID typeID = it->get()->GetPartType();
                 m_player->SetPart(typeID, it->get()->GetPart());
                 RemoveCollider(it->get()->GetComponent<BoxCollider>());
-                m_dropItem.erase(it);
+                it = m_dropItem.erase(it);
                 break;
             }
         }
@@ -179,7 +182,7 @@ void PlayScene::Update(float elapsedTime)
         {
             RemoveCollider(it->get()->GetComponent<BoxCollider>());
             it->get()->Finalize();
-            m_enemy.erase(it);
+            it = m_enemy.erase(it);
             NextTarget();
             break;
         }
@@ -285,9 +288,7 @@ void PlayScene::CreateHitParticle(DirectX::SimpleMath::Matrix world)
 
 }
 
-/// <summary>
-/// ターゲットを切り替える関数
-/// </summary>
+/// <summary> ターゲットを切り替える関数 </summary>
 void PlayScene::NextTarget()
 {
     m_enemyNum++;
@@ -299,7 +300,6 @@ void PlayScene::NextTarget()
     if (m_enemy.empty())
     {
         GetGame()->ChangeScene(GetGame()->GetResultScene());
-        //m_player->SetTarget(m_player.get());
         return;
     }
     m_player->SetTarget(m_enemy[m_enemyNum].get());
