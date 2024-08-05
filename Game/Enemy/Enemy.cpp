@@ -9,6 +9,9 @@
 #include "Game/Object/Bullet.h"
 #include "Game/PlayScene.h"
 
+#include "Game/Enemy/State/EnemyAttackState.h"
+#include "Game/Enemy/State/EnemyMoveState.h"
+
 
 
 Enemy::Enemy(IScene* scene)
@@ -23,6 +26,10 @@ Enemy::Enemy(IScene* scene)
 
 	m_bullet = std::make_unique<Bullet>(GetScene(), BoxCollider::TypeID::EnemyBullet);
 	
+	m_attack = std::make_unique<EnemyAttackState>();
+	m_move = std::make_unique<EnemyMoveState>(this);
+
+	m_state = m_move.get();
 }
 
 Enemy::~Enemy()
@@ -39,6 +46,7 @@ void Enemy::Initialize(GameObject* target)
 	GetComponent<BoxCollider>()->SetTypeID(BoxCollider::TypeID::Enemy);
 	GetComponent<HPBar>()->Initialize();
 	m_bullet->Initalize(this);
+	m_state->Initialize();
 }
 
 void Enemy::Update(float elapsedTime)
@@ -46,6 +54,8 @@ void Enemy::Update(float elapsedTime)
 	using namespace DirectX::SimpleMath;
 
 	ComponentsUpdate(elapsedTime);
+
+	m_state->Update(elapsedTime);
 
 	m_totalTime += elapsedTime;
 	if (m_totalTime >= SHOT_INTERVAL)
@@ -55,6 +65,9 @@ void Enemy::Update(float elapsedTime)
 	}
 
 	m_bullet->Update(elapsedTime);
+
+	// À•W‚ÌˆÚ“®
+	SetPosition(GetPosition() + Vector3::Transform(GetVelocity(), GetQuaternion()));
 
 	Matrix world = Matrix::Identity;
 	world = Matrix::CreateScale(GetScale());
@@ -68,7 +81,7 @@ void Enemy::Render()
 {
 	
 	m_bullet->Render();
-
+	m_state->Render();
 	if (GetHP() <= 0) return;
 	GetComponent<ModelDraw>()->Render(GetWorld());
 	//GetComponent<BoxCollider>().lock().get()->Render();

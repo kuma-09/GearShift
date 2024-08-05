@@ -4,22 +4,12 @@
 
 SkyDome::SkyDome()
 {
-	m_graphics = Graphics::GetInstance();
-	SetWorld(DirectX::SimpleMath::Matrix::Identity);
-}
-
-SkyDome::~SkyDome()
-{
-
-}
-
-void SkyDome::Update(float elapsedTime)
-{
 	using namespace DirectX;
 
-	ComponentsUpdate(elapsedTime);
+	m_graphics = Graphics::GetInstance();
+	SetWorld(SimpleMath::Matrix::Identity);
 	// モデルのエフェクト情報を更新する
-	Resources::GetInstance()->GetSkyDome()->UpdateEffects([](DirectX::IEffect* effect)
+	Resources::GetInstance()->GetSkyDome()->UpdateEffects([](IEffect* effect)
 		{
 			// ベーシックエフェクトを設定する
 			BasicEffect* basicEffect = dynamic_cast<BasicEffect*>(effect);
@@ -35,6 +25,18 @@ void SkyDome::Update(float elapsedTime)
 			}
 		}
 	);
+}
+
+SkyDome::~SkyDome()
+{
+
+}
+
+void SkyDome::Update(float elapsedTime)
+{
+
+	ComponentsUpdate(elapsedTime);
+
 }
 
 void SkyDome::Render()

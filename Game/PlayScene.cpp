@@ -28,9 +28,7 @@ PlayScene::~PlayScene()
     Finalize();
 }
 
-/// <summary>
-/// 初期化処理
-/// </summary>
+/// <summary> 初期化処理 </summary>
 /// <param name="game"> ゲーム </param>
 void PlayScene::Initialize(Game* game)
 {
@@ -45,7 +43,7 @@ void PlayScene::Initialize(Game* game)
 
     // プレイヤー生成
     m_player = std::make_unique<Player>(this);
-    m_player->SetPosition(Vector3(3, 10, 3));
+    m_player->SetPosition(Vector3(3, 0, 3));
 
     // パーツを装備
     m_player->SetPart(Part::Head, std::make_unique<Head>());
@@ -62,15 +60,6 @@ void PlayScene::Initialize(Game* game)
     m_enemy.push_back(std::make_unique<Enemy>(this));
     m_enemy.back()->Initialize(m_player.get());
     m_enemy.back()->SetPosition(Vector3(0, 0, 0));
-
-
-    m_enemy.push_back(std::make_unique<Enemy>(this));
-    m_enemy.back()->Initialize(m_player.get());
-    m_enemy.back()->SetPosition(Vector3(5, 0, 5));
-
-    m_enemy.push_back(std::make_unique<Enemy>(this));
-    m_enemy.back()->Initialize(m_player.get());
-    m_enemy.back()->SetPosition(Vector3(10, 0, -5));
 
     m_dropItem.push_back(std::make_unique<DropItem>(this,std::make_unique<LeftLeg>()));
     m_dropItem.back()->SetPosition(Vector3(3, 0, 7));
@@ -197,9 +186,7 @@ void PlayScene::Update(float elapsedTime)
 
 }
 
-/// <summary>
-/// 描画処理
-/// </summary>
+/// <summary> 描画処理 </summary>
 void PlayScene::Render()
 {
     using namespace DirectX::SimpleMath;
@@ -232,12 +219,10 @@ void PlayScene::Render()
     
 }
 
-/// <summary>
-/// 終了処理
-/// </summary>
+/// <summary> 終了処理 </summary>
 void PlayScene::Finalize()
 {
-    ClearColliders();
+    m_pBoxCollider.clear();
     m_player.reset();
 
     for (auto& enemy: m_enemy)
@@ -260,9 +245,7 @@ void PlayScene::Finalize()
     
 }
 
-/// <summary>
-/// ヒットエフェクトを生成する関数
-/// </summary>
+/// <summary> ヒットエフェクトを生成する関数 </summary>
 /// <param name="world"> ワールド行列 </param>
 void PlayScene::CreateHitParticle(DirectX::SimpleMath::Matrix world)
 {

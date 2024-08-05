@@ -37,10 +37,6 @@ void Idol::Update(float elapsedTime)
 	{
 		m_player->ChangeState(m_player->GetBoost());
 	}
-	if (kb->IsKeyPressed(DirectX::Keyboard::X))
-	{
-		m_player->ChangeState(m_player->GetAttack());
-	}
 }
 
 void Idol::Render()

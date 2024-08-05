@@ -37,10 +37,6 @@ void Jump::Update(float elapsedTime)
 	{
 		m_player->ChangeState(m_player->GetBoost());
 	}
-	if (kbState.X)
-	{
-		m_player->ChangeState(m_player->GetAttack());
-	}
 	if ( m_player->GetPosition().y + m_player->GetVelocity().y < 0)
 	{
 		m_player->ChangeState(m_player->GetIdol());

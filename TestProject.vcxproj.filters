@@ -114,6 +114,9 @@
     <ClInclude Include="Game\ResultScene.h" />
     <ClInclude Include="Game\Player\State\Attack.h" />
     <ClInclude Include="Game\Object\Sword.h" />
+    <ClInclude Include="Game\Enemy\State\EnemyAttackState.h" />
+    <ClInclude Include="Game\Enemy\State\EnemyMoveState.h" />
+    <ClInclude Include="Game\Object\Floor.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -186,6 +189,9 @@
     <ClCompile Include="Game\ResultScene.cpp" />
     <ClCompile Include="Game\Player\State\Attack.cpp" />
     <ClCompile Include="Game\Object\Sword.cpp" />
+    <ClCompile Include="Game\Enemy\State\EnemyAttackState.cpp" />
+    <ClCompile Include="Game\Enemy\State\EnemyMoveState.cpp" />
+    <ClCompile Include="Game\Object\Floor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />

@@ -44,7 +44,7 @@ Player::Player(IScene* scene)
 	m_attack = std::make_unique<Attack>(this);
 	
 
-	for (int i = 0; i < MAX_BULLET_CUNT; i++)
+	for (int i = 0; i < MAX_BULLET_COUNT; i++)
 	{
 		m_bullet[i] = std::make_unique<Bullet>(GetScene(), BoxCollider::TypeID::PlayerBullet);
 	}
@@ -59,7 +59,7 @@ Player::~Player()
 
 void Player::Initialize()
 {
-	for (int i = 0; i < MAX_BULLET_CUNT; i++)
+	for (int i = 0; i < MAX_BULLET_COUNT; i++)
 	{
 		m_bullet[i]->Initalize(this);
 	}
@@ -74,15 +74,35 @@ void Player::Update(float elapsedTime)
 	using namespace DirectX::SimpleMath;
 	auto& kb = m_inputManager->GetKeyboardTracker();
 	auto& gp = m_inputManager->GetGamePadTracker();
+	auto& kbState = m_inputManager->GetKeyboardState();
+	auto& gpState = m_inputManager->GetGamePadState();
 
-	if (kb->IsKeyPressed(DirectX::Keyboard::C) || gp->x == gp->PRESSED )
+
+	if (kb->IsKeyPressed(DirectX::Keyboard::C) || gp->x == gp->PRESSED)
 	{
-		for (int i = 0; i < MAX_BULLET_CUNT; i++)
+		m_holdTime = 0;
+	}
+
+	if (kbState.C || gp->x)
+	{
+		m_holdTime += elapsedTime;
+	}
+
+	if (kb->IsKeyReleased(DirectX::Keyboard::C) || gp->x == gp->RELEASED )
+	{
+		if (m_holdTime >= HOLD_TIME)
 		{
-			if (m_bullet[i]->GetState() == Bullet::BulletState::UNUSED)
+			ChangeState(GetAttack());
+		}
+		else
+		{
+			for (int i = 0; i < MAX_BULLET_COUNT; i++)
 			{
-				m_bullet[i]->Shot(this);
-				break;
+				if (m_bullet[i]->GetState() == Bullet::BulletState::UNUSED)
+				{
+					m_bullet[i]->Shot(this);
+					break;
+				}
 			}
 		}
 	}
@@ -101,7 +121,7 @@ void Player::Update(float elapsedTime)
 		GetComponent<BoxCollider>()->SetSize(Vector3(1.f,1.f,1.f));
 	}
 
-	for (int i = 0; i < MAX_BULLET_CUNT; i++)
+	for (int i = 0; i < MAX_BULLET_COUNT; i++)
 	{
 		m_bullet[i]->Update(elapsedTime);
 	}
@@ -121,7 +141,7 @@ void Player::Render()
 {
 	m_state->Render();
 
-	for (int i = 0; i < MAX_BULLET_CUNT; i++)
+	for (int i = 0; i < MAX_BULLET_COUNT; i++)
 	{
 		m_bullet[i]->Render();
 	}
@@ -157,8 +177,6 @@ void Player::Collision(BoxCollider* collider)
 	{
 		if (m_state != m_boost.get())
 		{
-			//SetHP(GetHP() - 1);
-
 			GetPart(Part::Head)->Collision(collider);
 			GetPart(Part::BodyTop)->Collision(collider);
 			GetPart(Part::BodyBottom)->Collision(collider);

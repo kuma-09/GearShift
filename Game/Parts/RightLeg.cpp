@@ -32,6 +32,8 @@ void RightLeg::Update(float elapsedTime)
 		+ Matrix::CreateFromQuaternion(GetOwner()->GetQuaternion()).Right() * 0.4f 
 		+ Matrix::CreateFromQuaternion(GetOwner()->GetQuaternion()).Down()  * 0.1f);
 
+
+
 	Matrix world = Matrix::Identity;
 	world = Matrix::CreateScale(GetScale());
 	world *= Matrix::CreateFromQuaternion(GetOwner()->GetQuaternion());
@@ -62,10 +64,6 @@ void RightLeg::Render(DirectX::SimpleMath::Matrix world)
 	{
 		GetComponent<ModelDraw>()->Render(GetWorld(), DirectX::Colors::Black);
 	}
-
-	//GetComponent<HPBar>().lock().get()->Render(GetPosition() + DirectX::SimpleMath::Vector3{ 0,2,0 });
-
-	//GetComponent<BoxCollider>().lock().get()->Render();
 
 }
 

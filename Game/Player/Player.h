@@ -30,10 +30,9 @@ public:
 	Attack* GetAttack() { return m_attack.get(); }
 
 	void SetTarget(GameObject* target);
-
 	void ChangeState(State* state);
 
-	// パーツのセッターゲッター
+	// パーツをセット
 	void SetPart(const Part::TypeID& partType, std::unique_ptr<Part> part)
 	{
 		m_pPart[partType] = std::move(part);
@@ -41,6 +40,7 @@ public:
 		m_pPart[partType]->Initialize(10, GetScene());
 	}
 
+	// パーツを取得
 	Part* GetPart(const Part::TypeID& partType)
 	{
 		if (m_pPart.find(partType) != m_pPart.end()) 
@@ -50,6 +50,7 @@ public:
 		return nullptr;
 	}
 
+	// パーツをまとめて更新
 	void UpdateParts(float elapsedTime) {
 		for (auto& pair : m_pPart) 
 		{
@@ -57,6 +58,7 @@ public:
 		}
 	}
 
+	// パーツをまとめて描画
 	void RenderParts() {
 		for (auto& pair : m_pPart) 
 		{
@@ -64,25 +66,36 @@ public:
 		}
 	}
 
-
 	void Collision(BoxCollider* collider);
 
 private:
 
 	InputManager* m_inputManager;
 	
+	// ターゲット
 	GameObject* m_target;
 
+	// パーツ配列
 	std::unordered_map<Part::TypeID, std::unique_ptr<Part>> m_pPart;
 
-	static const int MAX_BULLET_CUNT = 50;
+	// 弾の最大数
+	static const int MAX_BULLET_COUNT = 50;
 
+	// 長押し時間
+	const float HOLD_TIME = 1.0f;
+
+	// ステート
 	State* m_state;
 	std::unique_ptr<Idol> m_idol;
 	std::unique_ptr<Jump> m_jump;
 	std::unique_ptr<Boost> m_boost;
 	std::unique_ptr<Attack> m_attack;
-	std::unique_ptr<Bullet> m_bullet[MAX_BULLET_CUNT];
+
+	// 弾配列
+	std::unique_ptr<Bullet> m_bullet[MAX_BULLET_COUNT];
+
+	// 長押しした時間
+	float m_holdTime;
 
 	std::unique_ptr<DebugString> m_debugString;
 

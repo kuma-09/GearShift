@@ -23,7 +23,6 @@ void Move::Update(float elapsedTime)
 
     const auto& kb = m_inputManager->GetKeyboardState();
     const auto& gpState = m_inputManager->GetGamePadState();
-    const auto& gpTracker = m_inputManager->GetGamePadTracker();
 
     // ƒpƒbƒh‚Ì“ü—Íî•ñ
     Vector3 input = Vector3{ gpState.thumbSticks.leftX,0, -gpState.thumbSticks.leftY } * elapsedTime;
