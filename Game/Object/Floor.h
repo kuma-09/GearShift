@@ -3,7 +3,8 @@
 
 class Floor : public GameObject
 {
-	Floor();
+public:
+	Floor(IScene* scene);
 
 	void Update(float elapsedTime);
 	void Render();

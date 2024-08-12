@@ -30,6 +30,8 @@ public:
 		RightLeg
 	};
 
+	void Action();
+
 	void SetTypeID(TypeID id) { m_typeID = id; }
 	TypeID GetTypeID() { return m_typeID; }
 

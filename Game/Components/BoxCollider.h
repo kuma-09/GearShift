@@ -13,7 +13,8 @@ public:
 		Enemy,
 		EnemyBullet,
 		Wall,
-		DropItem
+		DropItem,
+		Floor
 	};
 
 	BoxCollider();

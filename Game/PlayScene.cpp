@@ -43,7 +43,7 @@ void PlayScene::Initialize(Game* game)
 
     // プレイヤー生成
     m_player = std::make_unique<Player>(this);
-    m_player->SetPosition(Vector3(3, 0, 3));
+    m_player->SetPosition(Vector3(3, 5, 3));
 
     // パーツを装備
     m_player->SetPart(Part::Head, std::make_unique<Head>());
@@ -65,6 +65,7 @@ void PlayScene::Initialize(Game* game)
     m_dropItem.back()->SetPosition(Vector3(3, 0, 7));
     m_dropItem.back()->Initialize();
 
+    m_floor = std::make_unique<Floor>(this);
     m_skyDome = std::make_unique<SkyDome>();
 
     m_enemyNum = 0;
@@ -111,6 +112,8 @@ void PlayScene::Update(float elapsedTime)
 
 
     m_skyDome->Update(elapsedTime);
+
+    m_floor->Update(elapsedTime);
 
     m_player->Update(elapsedTime);
 
@@ -159,10 +162,13 @@ void PlayScene::Update(float elapsedTime)
         else it->get()->SetHit(false);
     }
 
+    BoxCollider::CheckHit(m_player.get(), m_floor.get());
+
     // 体力の無い敵を削除
     for (auto it = m_enemy.begin(); it != m_enemy.end();)
     {
         BoxCollider::CheckHit(m_player.get(), it->get());
+        BoxCollider::CheckHit(it->get(), m_floor.get());
         if (it->get()->GetHP() > 0)
         {
             it++;
@@ -194,6 +200,8 @@ void PlayScene::Render()
     m_skyDome->Render();
 
     m_player->Render();
+
+    m_floor->Render();
 
     for (auto& enemy: m_enemy)
     {

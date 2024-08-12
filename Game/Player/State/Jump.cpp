@@ -18,7 +18,7 @@ Jump::~Jump()
 
 void Jump::Initialize()
 {
-
+	m_player->GetComponent<Gravity>()->Reset();
 }
 
 void Jump::Update(float elapsedTime)
@@ -37,10 +37,7 @@ void Jump::Update(float elapsedTime)
 	{
 		m_player->ChangeState(m_player->GetBoost());
 	}
-	if ( m_player->GetPosition().y + m_player->GetVelocity().y < 0)
-	{
-		m_player->ChangeState(m_player->GetIdol());
-	}
+
 }
 
 void Jump::Render()

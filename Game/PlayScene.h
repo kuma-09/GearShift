@@ -9,6 +9,7 @@
 #include "Game/Object/Wall.h"
 #include "Game/Object/DropItem.h"
 #include "Game/Object/SkyDome.h"
+#include "Game/Object/Floor.h"
 
 #include "Framework/DebugString.h"
 
@@ -16,7 +17,6 @@ class Camera;
 
 class HitParticle;
 
-class Floor;
 
 class PlayScene final: public IScene
 {

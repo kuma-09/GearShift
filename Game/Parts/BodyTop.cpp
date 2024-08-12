@@ -79,7 +79,7 @@ void BodyTop::Finalize()
 void BodyTop::Collision(BoxCollider* collider)
 {
 	// ƒp[ƒc‚Æ‚Ì“–‚½‚è”»’è
-	if (GetComponent<BoxCollider>()->GetBoundingBox()->Intersects(*collider->GetBoundingBox()))
+	if (GetComponent<BoxCollider>()->GetBoundingBox()->Intersects(*collider->GetBoundingBox()) && GetHP() >= 0)
 	{
 		Bullet* bulletObject = static_cast<Bullet*>(collider->GetOwner());
 		if (bulletObject->GetState() == Bullet::FLYING)

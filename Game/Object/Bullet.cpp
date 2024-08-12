@@ -42,8 +42,7 @@ void Bullet::Shot(GameObject* object)
 	SetPosition(object->GetPosition());
 	SetQuaternion(object->GetQuaternion());
 
-	velocity += Vector3::Transform(Vector3::Forward, GetQuaternion());
-	//velocity += rotate.Forward() * 1.0f;
+	velocity += Vector3::Transform(Vector3::Forward * SPEED, GetQuaternion());
 	SetVelocity(velocity);
 	SetState(BulletState::FLYING);
 }

@@ -2,6 +2,7 @@
 #include "Player.h"
 #include "Game/Player/State/Idol.h"
 #include "Game/Player/State/Jump.h"
+#include "Game/Components/HPBar.h"
 #include "Game/Components/ModelDraw.h"
 #include "Game/Components/BoxCollider.h"
 #include "Game/Components/Move.h"
@@ -37,6 +38,7 @@ Player::Player(IScene* scene)
 	AddComponent<BoxCollider>();
 	AddComponent<Gravity>();
 	AddComponent<Emitter>();
+	AddComponent<HPBar>();
 
 	m_idol = std::make_unique<Idol>(this);
 	m_jump = std::make_unique<Jump>(this);
@@ -66,6 +68,8 @@ void Player::Initialize()
 
 	GetComponent<BoxCollider>()->SetTypeID(BoxCollider::TypeID::Player);
 	GetComponent<BoxCollider>()->SetSize({ 1,1,1 });
+	SetHP(100);
+	GetComponent<HPBar>()->Initialize();
 
 }
 
@@ -96,14 +100,7 @@ void Player::Update(float elapsedTime)
 		}
 		else
 		{
-			for (int i = 0; i < MAX_BULLET_COUNT; i++)
-			{
-				if (m_bullet[i]->GetState() == Bullet::BulletState::UNUSED)
-				{
-					m_bullet[i]->Shot(this);
-					break;
-				}
-			}
+			Shot();
 		}
 	}
 
@@ -149,6 +146,7 @@ void Player::Render()
 
 	GetComponent<Emitter>()->Render(GetPosition() - DirectX::SimpleMath::Vector3(0, 1,0));
 	GetComponent<BoxCollider>()->Render();
+	GetComponent<HPBar>()->Render(GetPosition());
 	RenderParts();
 
 }
@@ -171,6 +169,18 @@ void Player::ChangeState(State* state)
 	m_state->Initialize();
 }
 
+void Player::Shot()
+{
+	for (int i = 0; i < MAX_BULLET_COUNT; i++)
+	{
+		if (m_bullet[i]->GetState() == Bullet::BulletState::UNUSED)
+		{
+			m_bullet[i]->Shot(this);
+			break;
+		}
+	}
+}
+
 void Player::Collision(BoxCollider* collider)
 {
 	if (collider->GetTypeID() == BoxCollider::EnemyBullet)
@@ -186,6 +196,12 @@ void Player::Collision(BoxCollider* collider)
 			GetPart(Part::RightLeg)->Collision(collider);
 
 			GetComponent<Camera>()->shake();
+			SetHP(GetHP() - 1);
 		}
+	}
+	
+	if (collider->GetTypeID() == BoxCollider::Floor)
+	{
+
 	}
 }

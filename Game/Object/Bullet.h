@@ -29,4 +29,6 @@ public:
 private:
 	BulletState m_state;
 	GameObject* m_owner;
+
+	const float SPEED = 2.0f;
 };

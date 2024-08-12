@@ -31,6 +31,7 @@ public:
 
 	void SetTarget(GameObject* target);
 	void ChangeState(State* state);
+	void Shot();
 
 	// パーツをセット
 	void SetPart(const Part::TypeID& partType, std::unique_ptr<Part> part)

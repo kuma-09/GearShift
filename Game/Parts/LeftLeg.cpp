@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "LeftLeg.h"
+#include "Game/Player/Player.h"
 #include "Game/Object/Bullet.h"
 #include "Game/Components/ModelDraw.h"
 #include "Game/Components/BoxCollider.h"
@@ -32,6 +33,7 @@ void LeftLeg::Update(float elapsedTime)
 
 	Vector3 pos{ 0,-0.4f,1.0f };
 	//SetPosition(GetPosition() + Vector3::Transform(pos, GetOwner()->GetQuaternion()));
+
 
 
 	SetPosition(GetOwner()->GetPosition()
@@ -93,4 +95,9 @@ void LeftLeg::Collision(BoxCollider* collider)
 			m_isHit = true;
 		}
 	}
+}
+
+void LeftLeg::Action()
+{
+	static_cast<Player*>(GetOwner())->Shot();
 }

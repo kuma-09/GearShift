@@ -23,14 +23,16 @@ public:
 
 	EnemyAttackState* GetAttackState() { return m_attack.get(); }
 	EnemyMoveState* GetMoveState() { return m_move.get(); }
+	GameObject* GetTarget() { return m_target; }
+
+	void Shot();
+	void ChangeState(State* state);
 
 	void Collision(BoxCollider* collider);
 
 private:
 	GameObject* m_target;
 
-	const float SHOT_INTERVAL = 3.0f;
-	float m_totalTime;
 	std::unique_ptr<Bullet> m_bullet;
 
 	State* m_state;

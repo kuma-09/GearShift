@@ -15,7 +15,6 @@
 
 
 Enemy::Enemy(IScene* scene)
-	:m_totalTime{0}
 {
 	SetScene(scene);
 
@@ -26,7 +25,7 @@ Enemy::Enemy(IScene* scene)
 
 	m_bullet = std::make_unique<Bullet>(GetScene(), BoxCollider::TypeID::EnemyBullet);
 	
-	m_attack = std::make_unique<EnemyAttackState>();
+	m_attack = std::make_unique<EnemyAttackState>(this);
 	m_move = std::make_unique<EnemyMoveState>(this);
 
 	m_state = m_move.get();
@@ -41,9 +40,11 @@ Enemy::~Enemy()
 void Enemy::Initialize(GameObject* target)
 {
 	SetHP(10);
+	m_target = target;
 	GetComponent<Look>()->SetTarget(this, target);
 	GetComponent<ModelDraw>()->Initialize(ModelDraw::Dice);
 	GetComponent<BoxCollider>()->SetTypeID(BoxCollider::TypeID::Enemy);
+	GetComponent<BoxCollider>()->SetSize({0.5f, 0.5f, 0.5f});
 	GetComponent<HPBar>()->Initialize();
 	m_bullet->Initalize(this);
 	m_state->Initialize();
@@ -56,13 +57,6 @@ void Enemy::Update(float elapsedTime)
 	ComponentsUpdate(elapsedTime);
 
 	m_state->Update(elapsedTime);
-
-	m_totalTime += elapsedTime;
-	if (m_totalTime >= SHOT_INTERVAL)
-	{
-		m_bullet->Shot(this);
-		m_totalTime = 0;
-	}
 
 	m_bullet->Update(elapsedTime);
 
@@ -90,6 +84,17 @@ void Enemy::Render()
 void Enemy::Finalize()
 {
 	dynamic_cast<PlayScene*>(GetScene())->RemoveCollider(m_bullet->GetComponent<BoxCollider>());
+}
+
+void Enemy::Shot()
+{
+	m_bullet->Shot(this);
+}
+
+void Enemy::ChangeState(State* state)
+{
+	m_state = state;
+	m_state->Initialize();
 }
 
 void Enemy::Collision(BoxCollider* collider)
