@@ -16,8 +16,6 @@ DropItem::DropItem(IScene* scene, std::unique_ptr<Part> part)
 	m_menu = std::make_unique<Menu>();
 	m_part = std::move(part);
 
-
-
 }
 
 DropItem::~DropItem()

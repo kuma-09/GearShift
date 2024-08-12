@@ -11,7 +11,7 @@ class Idol;
 class Jump;
 class Boost;
 class Attack;
-class Bullet;
+class HomingBullet;
 
 class Player : public GameObject
 {
@@ -30,6 +30,7 @@ public:
 	Attack* GetAttack() { return m_attack.get(); }
 
 	void SetTarget(GameObject* target);
+	GameObject* GetTarget() { return m_target; }
 	void ChangeState(State* state);
 	void Shot();
 
@@ -93,7 +94,7 @@ private:
 	std::unique_ptr<Attack> m_attack;
 
 	// ’e”z—ñ
-	std::unique_ptr<Bullet> m_bullet[MAX_BULLET_COUNT];
+	std::unique_ptr<HomingBullet> m_bullet[MAX_BULLET_COUNT];
 
 	// ’·‰Ÿ‚µ‚µ‚½ŽžŠÔ
 	float m_holdTime;

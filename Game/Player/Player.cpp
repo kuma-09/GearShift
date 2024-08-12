@@ -21,7 +21,7 @@
 #include "Game/Player/State/Jump.h"
 #include "Game/Player/State/Boost.h"
 #include "Game/Player/State/Attack.h"
-#include "Game/Object/Bullet.h"
+#include "Game/Object/HomingBullet.h"
 
 
 
@@ -48,7 +48,7 @@ Player::Player(IScene* scene)
 
 	for (int i = 0; i < MAX_BULLET_COUNT; i++)
 	{
-		m_bullet[i] = std::make_unique<Bullet>(GetScene(), BoxCollider::TypeID::PlayerBullet);
+		m_bullet[i] = std::make_unique<HomingBullet>(GetScene(), BoxCollider::TypeID::PlayerBullet);
 	}
 
 	m_state = m_idol.get();
@@ -81,27 +81,9 @@ void Player::Update(float elapsedTime)
 	auto& kbState = m_inputManager->GetKeyboardState();
 	auto& gpState = m_inputManager->GetGamePadState();
 
-
-	if (kb->IsKeyPressed(DirectX::Keyboard::C) || gp->x == gp->PRESSED)
+	if (kb->IsKeyPressed(DirectX::Keyboard::C) || gp->x == gp->PRESSED )
 	{
-		m_holdTime = 0;
-	}
-
-	if (kbState.C || gp->x)
-	{
-		m_holdTime += elapsedTime;
-	}
-
-	if (kb->IsKeyReleased(DirectX::Keyboard::C) || gp->x == gp->RELEASED )
-	{
-		if (m_holdTime >= HOLD_TIME)
-		{
-			ChangeState(GetAttack());
-		}
-		else
-		{
-			Shot();
-		}
+		Shot();
 	}
 
 	ComponentsUpdate(elapsedTime);
@@ -173,7 +155,7 @@ void Player::Shot()
 {
 	for (int i = 0; i < MAX_BULLET_COUNT; i++)
 	{
-		if (m_bullet[i]->GetState() == Bullet::BulletState::UNUSED)
+		if (m_bullet[i]->GetState() == HomingBullet::BulletState::UNUSED)
 		{
 			m_bullet[i]->Shot(this);
 			break;

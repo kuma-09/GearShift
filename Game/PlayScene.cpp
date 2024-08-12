@@ -61,7 +61,7 @@ void PlayScene::Initialize(Game* game)
     m_enemy.back()->Initialize(m_player.get());
     m_enemy.back()->SetPosition(Vector3(0, 0, 0));
 
-    m_dropItem.push_back(std::make_unique<DropItem>(this,std::make_unique<LeftLeg>()));
+    m_dropItem.push_back(std::make_unique<DropItem>(this,std::make_unique<BodyTop>()));
     m_dropItem.back()->SetPosition(Vector3(3, 0, 7));
     m_dropItem.back()->Initialize();
 

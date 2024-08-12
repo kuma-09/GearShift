@@ -205,6 +205,7 @@
     <ClInclude Include="Game\Object\Bullet.h" />
     <ClInclude Include="Game\Object\DropItem.h" />
     <ClInclude Include="Game\Object\Floor.h" />
+    <ClInclude Include="Game\Object\HomingBullet.h" />
     <ClInclude Include="Game\Object\SkyDome.h" />
     <ClInclude Include="Game\Object\Sword.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
@@ -262,6 +263,7 @@
     <ClCompile Include="Game\Object\Bullet.cpp" />
     <ClCompile Include="Game\Object\DropItem.cpp" />
     <ClCompile Include="Game\Object\Floor.cpp" />
+    <ClCompile Include="Game\Object\HomingBullet.cpp" />
     <ClCompile Include="Game\Object\SkyDome.cpp" />
     <ClCompile Include="Game\Object\Sword.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
