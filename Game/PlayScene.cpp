@@ -41,6 +41,9 @@ void PlayScene::Initialize(Game* game)
 
     SetGame(game);
 
+    m_timeLimit = 180.0f;
+    m_totalTime = 0;
+
     // プレイヤー生成
     m_player = std::make_unique<Player>(this);
     m_player->SetPosition(Vector3(3, 5, 3));
@@ -54,16 +57,56 @@ void PlayScene::Initialize(Game* game)
     m_player->SetPart(Part::LeftLeg,  std::make_unique<LeftLeg>());
     m_player->SetPart(Part::RightLeg, std::make_unique<RightLeg>());
 
-
     m_player->Initialize();
 
     m_enemy.push_back(std::make_unique<Enemy>(this));
     m_enemy.back()->Initialize(m_player.get());
     m_enemy.back()->SetPosition(Vector3(0, 0, 0));
 
-    m_dropItem.push_back(std::make_unique<DropItem>(this,std::make_unique<BodyTop>()));
-    m_dropItem.back()->SetPosition(Vector3(3, 0, 7));
-    m_dropItem.back()->Initialize();
+    m_enemy.push_back(std::make_unique<Enemy>(this));
+    m_enemy.back()->Initialize(m_player.get());
+    m_enemy.back()->SetPosition(Vector3(2, 0, 3));
+
+    m_enemy.push_back(std::make_unique<Enemy>(this));
+    m_enemy.back()->Initialize(m_player.get());
+    m_enemy.back()->SetPosition(Vector3(-4, 0, -5));
+
+    // ドロップアイテム生成　べた書き　後で別クラスに
+
+    for (int i = 0; i < m_timeLimit / 10; i++)
+    {
+
+        int x = rand() % 7;
+
+        switch (x)
+        {
+        case 0:
+            m_dropItem.push_back(std::make_unique<DropItem>(this, std::make_unique<Head>()));
+            break;
+        case 1:
+            m_dropItem.push_back(std::make_unique<DropItem>(this, std::make_unique<BodyTop>()));
+            break;
+        case 2:
+            m_dropItem.push_back(std::make_unique<DropItem>(this, std::make_unique<BodyBottom>()));
+            break;
+        case 3:
+            m_dropItem.push_back(std::make_unique<DropItem>(this, std::make_unique<LeftArm>()));
+            break;
+        case 4:
+            m_dropItem.push_back(std::make_unique<DropItem>(this, std::make_unique<RightArm>()));
+            break;
+        case 5:
+            m_dropItem.push_back(std::make_unique<DropItem>(this, std::make_unique<LeftLeg>()));
+            break;
+        case 6:
+            m_dropItem.push_back(std::make_unique<DropItem>(this, std::make_unique<RightLeg>()));
+            break;
+        default:
+            break;
+        }
+        m_dropItem.back()->SetPosition(Vector3(x, 0, 7));
+        m_dropItem.back()->Initialize();
+    }
 
     m_floor = std::make_unique<Floor>(this);
     m_skyDome = std::make_unique<SkyDome>();
@@ -77,8 +120,7 @@ void PlayScene::Initialize(Game* game)
         , L"Resources/Fonts/SegoeUI_18.spritefont");
     m_debugString->SetColor(DirectX::Colors::Red);
 
-    m_timeLimit = 180.0f;
-    m_totalTime = 0;
+
 
 
 }
@@ -108,13 +150,8 @@ void PlayScene::Update(float elapsedTime)
         }
     }
 
-
-
-
     m_skyDome->Update(elapsedTime);
-
     m_floor->Update(elapsedTime);
-
     m_player->Update(elapsedTime);
 
     for (auto& enemy : m_enemy)
@@ -123,12 +160,10 @@ void PlayScene::Update(float elapsedTime)
 
     }
     
-
     for (auto& dropItem : m_dropItem)
     {
         dropItem->Update(elapsedTime);
     }
-
 
     // 当たり判定
     for (auto& collider : GetColliders())

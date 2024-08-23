@@ -47,9 +47,7 @@ void BodyTop::Render(DirectX::SimpleMath::Matrix world)
 {
 	UNREFERENCED_PARAMETER(world);
 
-
-
-	if (GetHP() >= 0)
+	if (GetHP() > 0)
 	{
 		if (!m_isHit)
 		{
@@ -65,10 +63,6 @@ void BodyTop::Render(DirectX::SimpleMath::Matrix world)
 		GetComponent<ModelDraw>()->Render(GetWorld(), DirectX::Colors::Black);
 	}
 
-	//GetComponent<HPBar>().lock().get()->Render(GetPosition() + DirectX::SimpleMath::Vector3{ 0,2,0 });
-
-	//GetComponent<BoxCollider>().lock().get()->Render();
-
 }
 
 void BodyTop::Finalize()
@@ -79,7 +73,7 @@ void BodyTop::Finalize()
 void BodyTop::Collision(BoxCollider* collider)
 {
 	// ÉpÅ[ÉcÇ∆ÇÃìñÇΩÇËîªíË
-	if (GetComponent<BoxCollider>()->GetBoundingBox()->Intersects(*collider->GetBoundingBox()) && GetHP() >= 0)
+	if (GetComponent<BoxCollider>()->GetBoundingBox()->Intersects(*collider->GetBoundingBox()) && GetHP() > 0)
 	{
 		Bullet* bulletObject = static_cast<Bullet*>(collider->GetOwner());
 		if (bulletObject->GetState() == Bullet::FLYING)

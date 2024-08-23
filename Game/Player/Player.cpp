@@ -1,7 +1,5 @@
 #include "pch.h"
 #include "Player.h"
-#include "Game/Player/State/Idol.h"
-#include "Game/Player/State/Jump.h"
 #include "Game/Components/HPBar.h"
 #include "Game/Components/ModelDraw.h"
 #include "Game/Components/BoxCollider.h"
@@ -10,14 +8,9 @@
 #include "Game/Components/Camera.h"
 #include "Game/Components/Look.h"
 #include "Game/Particle/Emitter.h"
-#include "Game/Parts/Head.h"
-#include "Game/Parts/BodyTop.h"
-#include "Game/Parts/BodyBottom.h"
-#include "Game/Parts/LeftArm.h"
-#include "Game/Parts/LeftLeg.h"
-#include "Game/Parts/RightArm.h"
-#include "Game/Parts/RightLeg.h"
 #include "Game/Particle/Shader.h"
+#include "Game/Player/State/Idol.h"
+#include "Game/Player/State/Jump.h"
 #include "Game/Player/State/Jump.h"
 #include "Game/Player/State/Boost.h"
 #include "Game/Player/State/Attack.h"
@@ -91,20 +84,10 @@ void Player::Update(float elapsedTime)
 
 	m_state->Update(elapsedTime);
 
-	if (m_state == m_attack.get())
-	{
-		GetComponent<BoxCollider>()->SetSize(Vector3(2.f,2.f,2.f));
-	}
-	else
-	{
-		GetComponent<BoxCollider>()->SetSize(Vector3(1.f,1.f,1.f));
-	}
-
 	for (int i = 0; i < MAX_BULLET_COUNT; i++)
 	{
 		m_bullet[i]->Update(elapsedTime);
 	}
-
 
 	SetPosition(GetPosition() + GetVelocity());
 
@@ -124,7 +107,6 @@ void Player::Render()
 	{
 		m_bullet[i]->Render();
 	}
-
 
 	GetComponent<Emitter>()->Render(GetPosition() - DirectX::SimpleMath::Vector3(0, 1,0));
 	GetComponent<BoxCollider>()->Render();

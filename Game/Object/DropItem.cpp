@@ -6,7 +6,6 @@
 DropItem::DropItem(IScene* scene, std::unique_ptr<Part> part)
 {
 
-
 	SetScene(scene);
 	AddComponent<BoxCollider>();
 	GetComponent<BoxCollider>()->SetTypeID(BoxCollider::TypeID::DropItem);
