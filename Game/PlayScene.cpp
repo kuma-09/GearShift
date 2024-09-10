@@ -71,42 +71,15 @@ void PlayScene::Initialize(Game* game)
     m_enemy.back()->Initialize(m_player.get());
     m_enemy.back()->SetPosition(Vector3(-4, 0, -5));
 
-    // ドロップアイテム生成　べた書き　後で別クラスに
+    m_wall.push_back(std::make_unique<Wall>(this));
+    m_wall.back()->SetScale({ 10, 10, 10 });
+    m_wall.back()->SetPosition({ 5, 5, 0 });
 
-    for (int i = 0; i < m_timeLimit / 10; i++)
-    {
 
-        int x = rand() % 7;
-
-        switch (x)
-        {
-        case 0:
-            m_dropItem.push_back(std::make_unique<DropItem>(this, std::make_unique<Head>()));
-            break;
-        case 1:
-            m_dropItem.push_back(std::make_unique<DropItem>(this, std::make_unique<BodyTop>()));
-            break;
-        case 2:
-            m_dropItem.push_back(std::make_unique<DropItem>(this, std::make_unique<BodyBottom>()));
-            break;
-        case 3:
-            m_dropItem.push_back(std::make_unique<DropItem>(this, std::make_unique<LeftArm>()));
-            break;
-        case 4:
-            m_dropItem.push_back(std::make_unique<DropItem>(this, std::make_unique<RightArm>()));
-            break;
-        case 5:
-            m_dropItem.push_back(std::make_unique<DropItem>(this, std::make_unique<LeftLeg>()));
-            break;
-        case 6:
-            m_dropItem.push_back(std::make_unique<DropItem>(this, std::make_unique<RightLeg>()));
-            break;
-        default:
-            break;
-        }
-        m_dropItem.back()->SetPosition(Vector3(x, 0, 7));
-        m_dropItem.back()->Initialize();
-    }
+    m_dropItem.push_back(std::make_unique<DropItem>(this, std::make_unique<BodyTop>()));
+ 
+    m_dropItem.back()->SetPosition(Vector3(0, 0, 7));
+    m_dropItem.back()->Initialize();
 
     m_floor = std::make_unique<Floor>(this);
     m_skyDome = std::make_unique<SkyDome>();
@@ -165,6 +138,11 @@ void PlayScene::Update(float elapsedTime)
         dropItem->Update(elapsedTime);
     }
 
+    for (auto& wall : m_wall)
+    {
+        wall->Update(elapsedTime);
+    }
+
     // 当たり判定
     for (auto& collider : GetColliders())
     {
@@ -198,6 +176,7 @@ void PlayScene::Update(float elapsedTime)
     }
 
     BoxCollider::CheckHit(m_player.get(), m_floor.get());
+    BoxCollider::CheckHit(m_player.get(), m_wall.back().get());
 
     // 体力の無い敵を削除
     for (auto it = m_enemy.begin(); it != m_enemy.end();)
@@ -248,6 +227,11 @@ void PlayScene::Render()
     for (auto& dropItem : m_dropItem)
     {
         dropItem->Render();
+    }
+
+    for (auto& wall : m_wall)
+    {
+        wall->Render();
     }
 
     auto state = m_graphics->GetCommonStates();

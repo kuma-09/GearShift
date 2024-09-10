@@ -109,8 +109,6 @@ void Player::Render()
 	}
 
 	GetComponent<Emitter>()->Render(GetPosition() - DirectX::SimpleMath::Vector3(0, 1,0));
-	GetComponent<BoxCollider>()->Render();
-	GetComponent<HPBar>()->Render(GetPosition());
 	RenderParts();
 
 }
