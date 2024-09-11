@@ -33,6 +33,7 @@ TargetArea::~TargetArea()
 
 void TargetArea::Initialize()
 {
+    // ターゲットをロックできる範囲
     m_range = 100;
 }
 
@@ -51,10 +52,6 @@ bool TargetArea::Update(Player* player , GameObject* target)
 
     w /= 2;
     h /= 2;
-
-    Ray ray;
-
-    
 
     Matrix viewport = {
         float(w) , 0 , 0 , 0 ,
@@ -77,8 +74,10 @@ bool TargetArea::Update(Player* player , GameObject* target)
     float x = w - screenPos.x;
     float y = h - screenPos.y;
 
+    // ターゲット範囲にいるか
     if ((x * x) + (y * y) <= m_range * m_range)
     {
+        // 範囲にいた敵をターゲットとして適用
         player->SetTarget(target);
         return true;
     }
@@ -91,7 +90,6 @@ void TargetArea::Render()
 {
     using namespace DirectX::SimpleMath;
 
-    // ビューポート行列（スクリーン行列）の作成
     int w;
     int h;
 
@@ -100,6 +98,7 @@ void TargetArea::Render()
     w /= 2;
     h /= 2;
 
+    // 画面の中心に円を表示
     m_spriteBatch->Begin();
     m_spriteBatch->Draw(m_texture.Get(),Vector2(w,h) - Vector2(250,250));
     m_spriteBatch->End();

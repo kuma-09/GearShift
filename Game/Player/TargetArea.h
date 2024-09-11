@@ -19,10 +19,12 @@ private:
 
 	Graphics* m_graphics;
 
+	// ターゲット範囲
 	float m_range;
 
 	std::unique_ptr<DirectX::SpriteBatch> m_spriteBatch;
 
+	// 画面の中心用の画像
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_texture;
 };
 
