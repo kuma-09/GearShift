@@ -4,6 +4,7 @@
 #include "Framework/InputManager.h"
 #include "Game/State.h"
 #include "Framework/DebugString.h"
+#include "Game/Player/BoostGage.h"
 
 #include <map>
 

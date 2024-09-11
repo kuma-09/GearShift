@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Player.h"
+
 #include "Game/Components/HPBar.h"
 #include "Game/Components/ModelDraw.h"
 #include "Game/Components/BoxCollider.h"
@@ -7,8 +8,10 @@
 #include "Game/Components/Gravity.h"
 #include "Game/Components/Camera.h"
 #include "Game/Components/Look.h"
+
 #include "Game/Particle/Emitter.h"
 #include "Game/Particle/Shader.h"
+
 #include "Game/Player/State/Idol.h"
 #include "Game/Player/State/Jump.h"
 #include "Game/Player/State/Jump.h"
@@ -96,6 +99,7 @@ void Player::Update(float elapsedTime)
 	world *= Matrix::CreateTranslation(GetPosition());
 
 	SetWorld(world);
+
 }
 
 void Player::Render()

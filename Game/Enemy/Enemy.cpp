@@ -78,6 +78,9 @@ void Enemy::Render()
 	m_state->Render();
 	if (GetHP() <= 0) return;
 	GetComponent<ModelDraw>()->Render(GetWorld());
+
+	
+
 	//GetComponent<BoxCollider>().lock().get()->Render();
 }
 

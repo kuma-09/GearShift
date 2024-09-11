@@ -18,6 +18,7 @@ public:
 	void shake();
 	void SetTarget(GameObject* player, GameObject* enemy);
 
+
 private:
 	Graphics* m_graphics;
 	

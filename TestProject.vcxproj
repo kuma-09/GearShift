@@ -228,11 +228,13 @@
     <ClInclude Include="Game\Parts\LeftLeg.h" />
     <ClInclude Include="Game\Parts\RightArm.h" />
     <ClInclude Include="Game\Parts\RightLeg.h" />
+    <ClInclude Include="Game\Player\BoostGage.h" />
     <ClInclude Include="Game\Player\Player.h" />
     <ClInclude Include="Game\Player\State\Attack.h" />
     <ClInclude Include="Game\Player\State\Boost.h" />
     <ClInclude Include="Game\Player\State\Idol.h" />
     <ClInclude Include="Game\Player\State\Jump.h" />
+    <ClInclude Include="Game\Player\TargetArea.h" />
     <ClInclude Include="Game\State.h" />
     <ClInclude Include="Game\PlayScene.h" />
     <ClInclude Include="Game\ResultScene.h" />
@@ -284,11 +286,13 @@
     <ClCompile Include="Game\Parts\LeftLeg.cpp" />
     <ClCompile Include="Game\Parts\RightArm.cpp" />
     <ClCompile Include="Game\Parts\RightLeg.cpp" />
+    <ClCompile Include="Game\Player\BoostGage.cpp" />
     <ClCompile Include="Game\Player\Player.cpp" />
     <ClCompile Include="Game\Player\State\Attack.cpp" />
     <ClCompile Include="Game\Player\State\Boost.cpp" />
     <ClCompile Include="Game\Player\State\Idol.cpp" />
     <ClCompile Include="Game\Player\State\Jump.cpp" />
+    <ClCompile Include="Game\Player\TargetArea.cpp" />
     <ClCompile Include="Game\PlayScene.cpp" />
     <ClCompile Include="Game\ResultScene.cpp" />
     <ClCompile Include="Game\TitleScene.cpp" />

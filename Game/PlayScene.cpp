@@ -72,8 +72,8 @@ void PlayScene::Initialize(Game* game)
     m_enemy.back()->SetPosition(Vector3(-4, 0, -5));
 
     m_wall.push_back(std::make_unique<Wall>(this));
-    m_wall.back()->SetScale({ 1, 2, 2 });
-    m_wall.back()->SetPosition({ 5, 0, 0 });
+    m_wall.back()->SetScale({ 1, 1, 1 });
+    m_wall.back()->SetPosition(Vector3::One);
     m_wall.back()->Initialize();
 
 
@@ -95,6 +95,8 @@ void PlayScene::Initialize(Game* game)
     m_debugString->SetColor(DirectX::Colors::Red);
 
 
+    m_targetArea = std::make_unique<TargetArea>();
+    m_targetArea->Initialize();
 
 
 }
@@ -184,6 +186,7 @@ void PlayScene::Update(float elapsedTime)
     {
         BoxCollider::CheckHit(m_player.get(), it->get());
         BoxCollider::CheckHit(it->get(), m_floor.get());
+        m_targetArea->Update(m_player.get(), it->get());
         if (it->get()->GetHP() > 0)
         {
             it++;
@@ -223,7 +226,7 @@ void PlayScene::Render()
         enemy->Render();
     }
 
-    m_enemy[m_enemyNum].get()->GetComponent<HPBar>()->Render(m_enemy[m_enemyNum]->GetPosition());
+    m_player->GetTarget()->GetComponent<HPBar>()->Render(m_player->GetTarget()->GetPosition());
 
     for (auto& dropItem : m_dropItem)
     {
@@ -242,8 +245,9 @@ void PlayScene::Render()
         particle->Render(m_graphics->GetViewMatrix(), m_graphics->GetProjectionMatrix());
     }
 
-    m_debugString->Render(state);
-
+    m_targetArea->Render();
+    //m_debugString->Render(state);
+    
     
 }
 

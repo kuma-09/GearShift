@@ -118,6 +118,8 @@
     <ClInclude Include="Game\Enemy\State\EnemyMoveState.h" />
     <ClInclude Include="Game\Object\Floor.h" />
     <ClInclude Include="Game\Object\HomingBullet.h" />
+    <ClInclude Include="Game\Player\BoostGage.h" />
+    <ClInclude Include="Game\Player\TargetArea.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -194,6 +196,8 @@
     <ClCompile Include="Game\Enemy\State\EnemyMoveState.cpp" />
     <ClCompile Include="Game\Object\Floor.cpp" />
     <ClCompile Include="Game\Object\HomingBullet.cpp" />
+    <ClCompile Include="Game\Player\BoostGage.cpp" />
+    <ClCompile Include="Game\Player\TargetArea.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />

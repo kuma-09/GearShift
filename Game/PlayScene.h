@@ -11,6 +11,8 @@
 #include "Game/Object/SkyDome.h"
 #include "Game/Object/Floor.h"
 
+#include "Game/Player/TargetArea.h"
+
 #include "Framework/DebugString.h"
 
 class Camera;
@@ -83,6 +85,9 @@ private:
 	std::unique_ptr<Floor>   m_floor;
 	// ターゲット対象の番号
 	int m_enemyNum;
+
+	// ターゲット範囲
+	std::unique_ptr<TargetArea> m_targetArea;
 
 
 	// ボックスコライダーをまとめた配列
