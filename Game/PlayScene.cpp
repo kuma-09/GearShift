@@ -130,6 +130,8 @@ void PlayScene::Update(float elapsedTime)
     m_floor->Update(elapsedTime);
     m_player->Update(elapsedTime);
 
+
+
     int inArea = 0;
     for (auto& enemy : m_enemy)
     {
@@ -207,17 +209,14 @@ void PlayScene::Update(float elapsedTime)
             RemoveCollider(it->get()->GetComponent<BoxCollider>());
             it->get()->Finalize();
             it = m_enemy.erase(it);
-            NextTarget();
+            m_player->SetTarget(nullptr);
+            if (m_enemy.empty())
+            {
+                GetGame()->ChangeScene(GetGame()->GetResultScene());
+            }
             break;
         }
     }
-    
-    // ターゲット切り替え
-    if (gp->a == gp->PRESSED || kb->IsKeyPressed(DirectX::Keyboard::Z))
-    {
-        NextTarget();
-    }
-
 
 }
 
@@ -315,21 +314,4 @@ void PlayScene::CreateHitParticle(DirectX::SimpleMath::Matrix world)
     }
 
 
-}
-
-/// <summary> ターゲットを切り替える関数 </summary>
-void PlayScene::NextTarget()
-{
-    m_enemyNum++;
-    if (m_enemyNum >= m_enemy.size())
-    {
-        m_enemyNum = 0;
-    }
-
-    if (m_enemy.empty())
-    {
-        GetGame()->ChangeScene(GetGame()->GetResultScene());
-        return;
-    }
-    m_player->SetTarget(m_enemy[m_enemyNum].get());
 }

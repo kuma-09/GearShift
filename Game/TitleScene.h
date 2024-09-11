@@ -5,8 +5,6 @@
 #include "Framework/DeviceResources.h"
 #include "Game/Menu/UserInterface.h"
 
-class Camera;
-
 class TitleScene final: public IScene
 {
 public:
@@ -26,6 +24,7 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_texture;		// テクスチャ
 	std::unique_ptr<tito::UserInterface> m_titleLogo;
 	std::unique_ptr<tito::UserInterface> m_backGround;
+
 	
 };
 

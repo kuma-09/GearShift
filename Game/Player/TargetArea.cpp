@@ -84,6 +84,7 @@ bool TargetArea::Update(Player* player , GameObject* target)
 
     return false;
 
+
 }
 
 void TargetArea::Render()

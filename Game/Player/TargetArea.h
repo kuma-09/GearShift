@@ -22,7 +22,14 @@ private:
 	// ターゲット範囲
 	float m_range;
 
+	// スプライトバッチ
 	std::unique_ptr<DirectX::SpriteBatch> m_spriteBatch;
+
+	// カメラポジション
+	DirectX::SimpleMath::Vector3 m_eyePosition;
+
+	// 注視点
+	DirectX::SimpleMath::Vector3 m_targetPosition;
 
 	// 画面の中心用の画像
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_texture;
