@@ -43,19 +43,19 @@ void Move::Update(float elapsedTime)
         velocity += Vector3::Transform(input, quaternion);
     }
 
-    if (kb.Up)
+    if (kb.W)
     {
         velocity += Vector3::Transform(Vector3(0, 0, -1) * elapsedTime, quaternion);
     }
-    if (kb.Down)
+    if (kb.S)
     {
         velocity += Vector3::Transform(Vector3(0, 0,  1) * elapsedTime, quaternion);
     }
-    if (kb.Left)
+    if (kb.A)
     {
         velocity += Vector3::Transform(Vector3(-1, 0, 0) * elapsedTime, quaternion);
     }
-    if (kb.Right)
+    if (kb.D)
     {
         velocity += Vector3::Transform(Vector3( 1, 0, 0) * elapsedTime, quaternion);
     }

@@ -25,7 +25,6 @@ Player::Player(IScene* scene)
 
 	m_inputManager = InputManager::GetInstance();
 
-	AddComponent<Look>();
 	AddComponent<Move>();
 	AddComponent<Camera>();
 	AddComponent<BoxCollider>();
@@ -121,7 +120,6 @@ void Player::Finalize()
 void Player::SetTarget(GameObject* target)
 {
 	m_target = target;
-	GetComponent<Look>()->SetTarget(this, target);
 	GetComponent<Camera>()->SetTarget(this, target);
 }
 

@@ -45,12 +45,18 @@ private:
 	// ‰æ–Ê—h‚êŒo‰ßŽžŠÔ
 	float m_shakeTime;
 
-
+	
 
 	GameObject* m_player;
 	GameObject* m_enemy;
 
 	DirectX::SimpleMath::Vector3 m_eyePosition;
 	DirectX::SimpleMath::Vector3 m_targetPosition;
+
+	DirectX::SimpleMath::Quaternion m_quaternion;
+
+	float m_rotateX;
+	float m_rotateY;
+
 };
 

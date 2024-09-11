@@ -7,6 +7,7 @@ public:
 	Wall(IScene* scene);
 	~Wall();
 
+	void Initialize();
 	void Update(float elapsedTime);
 	void Render();
 

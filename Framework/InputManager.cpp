@@ -33,7 +33,6 @@ void InputManager::Initialize(const HWND& window)
 	// マウスを使用できる状態にする
 	m_mouse = std::make_unique<DirectX::Mouse>();
 	m_mouse->SetWindow(window);
-	m_mouse->SetVisible(false);
 	m_mouseTracker = std::make_unique<DirectX::Mouse::ButtonStateTracker>();
 
 	// キーボードを使用できる状態にする

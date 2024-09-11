@@ -72,8 +72,9 @@ void PlayScene::Initialize(Game* game)
     m_enemy.back()->SetPosition(Vector3(-4, 0, -5));
 
     m_wall.push_back(std::make_unique<Wall>(this));
-    m_wall.back()->SetScale({ 10, 10, 10 });
-    m_wall.back()->SetPosition({ 5, 5, 0 });
+    m_wall.back()->SetScale({ 1, 2, 2 });
+    m_wall.back()->SetPosition({ 5, 0, 0 });
+    m_wall.back()->Initialize();
 
 
     m_dropItem.push_back(std::make_unique<DropItem>(this, std::make_unique<BodyTop>()));
