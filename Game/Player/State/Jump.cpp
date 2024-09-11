@@ -28,12 +28,13 @@ void Jump::Update(float elapsedTime)
 	m_player->SetVelocity(m_player->GetVelocity() + Vector3(0, JUMPPOWER * elapsedTime, 0));
 
 	const auto& kbState = InputManager::GetInstance()->GetKeyboardState();
+	const auto& mouse = InputManager::GetInstance()->GetMouseTracker();
 
 	if (kbState.Space)
 	{
 		m_player->GetComponent<Gravity>()->Reset();
 	}
-	if (kbState.V)
+	if (mouse->rightButton == mouse->PRESSED)
 	{
 		m_player->ChangeState(m_player->GetBoost());
 	}

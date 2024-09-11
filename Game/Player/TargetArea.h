@@ -11,7 +11,7 @@ public:
 	~TargetArea();
 
 	void Initialize();
-	void Update(Player* plaer ,GameObject* target);
+	bool Update(Player* plaer ,GameObject* target);
 	void Render();
 	void Finalize();
 

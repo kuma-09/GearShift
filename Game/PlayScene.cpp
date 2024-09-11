@@ -130,12 +130,23 @@ void PlayScene::Update(float elapsedTime)
     m_floor->Update(elapsedTime);
     m_player->Update(elapsedTime);
 
+    int inArea = 0;
     for (auto& enemy : m_enemy)
     {
         enemy->Update(elapsedTime);
+        if (m_targetArea->Update(m_player.get(), enemy.get()))
+        {
+            inArea++;
+        }
+    }
 
+    if (!inArea)
+    {
+        m_player->SetTarget(nullptr);
     }
     
+
+
     for (auto& dropItem : m_dropItem)
     {
         dropItem->Update(elapsedTime);
@@ -226,7 +237,10 @@ void PlayScene::Render()
         enemy->Render();
     }
 
-    m_player->GetTarget()->GetComponent<HPBar>()->Render(m_player->GetTarget()->GetPosition());
+    if (m_player->GetTarget())
+    {
+        m_player->GetTarget()->GetComponent<HPBar>()->Render(m_player->GetTarget()->GetPosition());
+    }
 
     for (auto& dropItem : m_dropItem)
     {

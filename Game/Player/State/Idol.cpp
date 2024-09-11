@@ -28,12 +28,13 @@ void Idol::Update(float elapsedTime)
 	UNREFERENCED_PARAMETER(elapsedTime);
 
 	const auto& kb = InputManager::GetInstance()->GetKeyboardTracker();
+	const auto& mouse = InputManager::GetInstance()->GetMouseTracker();
 
 	if (kb->IsKeyPressed(DirectX::Keyboard::Space))
 	{
 		m_player->ChangeState(m_player->GetJump());
 	}
-	if (kb->IsKeyPressed(DirectX::Keyboard::V))
+	if (mouse->rightButton == mouse->PRESSED)
 	{
 		m_player->ChangeState(m_player->GetBoost());
 	}

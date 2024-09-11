@@ -41,9 +41,10 @@ void HomingBullet::Shot(GameObject* object)
 {
 	using namespace DirectX::SimpleMath;
 
+	m_target = object;
 	Vector3 velocity = Vector3::Zero;
-	SetPosition(object->GetPosition());
-	SetQuaternion(object->GetQuaternion());
+	SetPosition(m_owner->GetPosition());
+	SetQuaternion(m_owner->GetQuaternion());
 	m_position = GetPosition();
 	m_velocity = Vector3::One * 10;
 	period = 2;
@@ -76,9 +77,7 @@ void HomingBullet::Update(float elapsedTime)
 
 		Vector3 acceleration = Vector3::Zero;
 
-		GameObject* target = static_cast<Player*>(m_owner)->GetTarget();
-
-		Vector3 diff = target->GetPosition() - m_position;
+		Vector3 diff = m_target->GetPosition() - m_position;
 
 		
 		acceleration += (diff - m_velocity * period) * 2.f / (period * period);

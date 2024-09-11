@@ -36,7 +36,7 @@ void TargetArea::Initialize()
     m_range = 100;
 }
 
-void TargetArea::Update(Player* player , GameObject* target)
+bool TargetArea::Update(Player* player , GameObject* target)
 {
     using namespace DirectX::SimpleMath;
 
@@ -80,7 +80,10 @@ void TargetArea::Update(Player* player , GameObject* target)
     if ((x * x) + (y * y) <= m_range * m_range)
     {
         player->SetTarget(target);
+        return true;
     }
+
+    return false;
 
 }
 

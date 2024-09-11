@@ -29,6 +29,7 @@ public:
 private:
 	BulletState m_state;
 	GameObject* m_owner;
+	GameObject* m_target;
 
 	const float SPEED = 2.0f;
 	DirectX::SimpleMath::Vector3 m_position;

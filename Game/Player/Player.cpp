@@ -75,8 +75,9 @@ void Player::Update(float elapsedTime)
 	auto& gp = m_inputManager->GetGamePadTracker();
 	auto& kbState = m_inputManager->GetKeyboardState();
 	auto& gpState = m_inputManager->GetGamePadState();
+	auto& mouse = m_inputManager->GetMouseTracker();
 
-	if (kb->IsKeyPressed(DirectX::Keyboard::C) || gp->x == gp->PRESSED )
+	if (mouse->leftButton == mouse->PRESSED || gp->x == gp->PRESSED )
 	{
 		Shot();
 	}
@@ -129,6 +130,7 @@ void Player::SetTarget(GameObject* target)
 
 void Player::ChangeState(State* state)
 {
+	m_state->Finalize();
 	m_state = state;
 	m_state->Initialize();
 }
@@ -137,9 +139,9 @@ void Player::Shot()
 {
 	for (int i = 0; i < MAX_BULLET_COUNT; i++)
 	{
-		if (m_bullet[i]->GetState() == HomingBullet::BulletState::UNUSED)
+		if (m_bullet[i]->GetState() == HomingBullet::BulletState::UNUSED && m_target)
 		{
-			m_bullet[i]->Shot(this);
+			m_bullet[i]->Shot(m_target);
 			break;
 		}
 	}
