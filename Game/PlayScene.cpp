@@ -72,7 +72,7 @@ void PlayScene::Initialize(Game* game)
     m_enemy.back()->SetPosition(Vector3(-4, 0, -5));
 
     m_wall.push_back(std::make_unique<Wall>(this));
-    m_wall.back()->SetScale({ 1, 1, 1 });
+    m_wall.back()->SetScale({ 5, 5, 1 });
     m_wall.back()->SetPosition(Vector3::One);
     m_wall.back()->Initialize();
 
@@ -129,6 +129,9 @@ void PlayScene::Update(float elapsedTime)
     m_skyDome->Update(elapsedTime);
     m_floor->Update(elapsedTime);
     m_player->Update(elapsedTime);
+
+
+
 
 
 
@@ -216,6 +219,23 @@ void PlayScene::Update(float elapsedTime)
             }
             break;
         }
+    }
+
+    if (m_player->GetTarget())
+    {
+        Ray ray = { m_player->GetPosition(),Vector3::Transform(Vector3::Forward,m_player->GetQuaternion())};
+
+        float n = 0.0f;
+
+        for (auto& wall : m_wall)
+        {
+            if (ray.Intersects(*wall->GetComponent<BoxCollider>()->GetBoundingBox(), n))
+            {
+                m_player->SetTarget(nullptr);
+            }
+        }
+
+        
     }
 
 }
