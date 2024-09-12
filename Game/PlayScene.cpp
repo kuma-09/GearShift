@@ -6,6 +6,7 @@
 #include "Game/Components/Camera.h"
 #include "Game/Components/BoxCollider.h"
 #include "Game/Components/HPBar.h"
+#include "Game/Components/ModelDraw.h"
 
 #include "Game/Parts/Part.h"
 #include "Game/Parts/Head.h"
@@ -259,6 +260,7 @@ void PlayScene::Render()
     if (m_player->GetTarget())
     {
         m_player->GetTarget()->GetComponent<HPBar>()->Render(m_player->GetTarget()->GetPosition());
+        m_player->GetTarget()->GetComponent<ModelDraw>()->OutLineRender();
     }
 
     for (auto& dropItem : m_dropItem)

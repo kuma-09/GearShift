@@ -1,13 +1,15 @@
 #include "pch.h"
 #include "ModelDraw.h"
 #include "Game/GameObject.h"
-#include "Game/Particle/Shader.h"
+#include "Game/Shader/Shader.h"
 
 ModelDraw::ModelDraw()
 	:
 	m_model{}
 {
 	m_graphics = Graphics::GetInstance();
+	m_shader = std::make_unique<Shader>();
+	m_shader->CreateShader();
 }
 
 ModelDraw::~ModelDraw()
@@ -85,6 +87,21 @@ void ModelDraw::Render(DirectX::SimpleMath::Matrix world, DirectX::XMVECTORF32 c
 	{
 		SetColor(color);
 	});
+}
+
+void ModelDraw::OutLineRender()
+{
+	auto context = m_graphics->GetDeviceResources()->GetD3DDeviceContext();
+	auto state = m_graphics->GetCommonStates();
+	auto view = m_graphics->GetViewMatrix();
+	auto projection = m_graphics->GetProjectionMatrix();
+	auto world = GetOwner()->GetWorld();
+
+	m_model->Draw(context, *state, world, view, projection, false, [&]()
+		{
+			m_shader->RenderStart(world, view, projection);
+		}
+	);
 }
 
 void ModelDraw::Finalize()

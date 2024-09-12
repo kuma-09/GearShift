@@ -120,6 +120,7 @@
     <ClInclude Include="Game\Object\HomingBullet.h" />
     <ClInclude Include="Game\Player\BoostGage.h" />
     <ClInclude Include="Game\Player\TargetArea.h" />
+    <ClInclude Include="Game\Shader\Shader.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -198,6 +199,7 @@
     <ClCompile Include="Game\Object\HomingBullet.cpp" />
     <ClCompile Include="Game\Player\BoostGage.cpp" />
     <ClCompile Include="Game\Player\TargetArea.cpp" />
+    <ClCompile Include="Game\Shader\Shader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />
@@ -223,5 +225,7 @@
     <FxCompile Include="Resources\Shaders\UIGS.hlsl" />
     <FxCompile Include="Resources\Shaders\UIPS.hlsl" />
     <FxCompile Include="Resources\Shaders\UIVS.hlsl" />
+    <FxCompile Include="Resources\Shaders\OutLineVS.hlsl" />
+    <FxCompile Include="Resources\Shaders\OutLinePS.hlsl" />
   </ItemGroup>
 </Project>

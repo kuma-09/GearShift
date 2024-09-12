@@ -3,6 +3,8 @@
 #include "Framework/Graphics.h"
 #include "Framework/Resources.h"
 
+class Shader;
+
 class ModelDraw : public IComponent
 {
 public:
@@ -27,6 +29,7 @@ public:
 	void Update(float elapsedTime);
 	void Render(DirectX::SimpleMath::Matrix world);
 	void Render(DirectX::SimpleMath::Matrix world, DirectX::XMVECTORF32 color);
+	void OutLineRender();
 	void Finalize();
 
 private:
@@ -35,5 +38,6 @@ private:
 	Graphics* m_graphics;
 	std::unique_ptr<DirectX::BasicEffect> m_effect;
 	DirectX::Model* m_model;
+	std::unique_ptr<Shader> m_shader;
 };
 

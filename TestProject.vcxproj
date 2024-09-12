@@ -235,6 +235,7 @@
     <ClInclude Include="Game\Player\State\Idol.h" />
     <ClInclude Include="Game\Player\State\Jump.h" />
     <ClInclude Include="Game\Player\TargetArea.h" />
+    <ClInclude Include="Game\Shader\Shader.h" />
     <ClInclude Include="Game\State.h" />
     <ClInclude Include="Game\PlayScene.h" />
     <ClInclude Include="Game\ResultScene.h" />
@@ -295,6 +296,7 @@
     <ClCompile Include="Game\Player\TargetArea.cpp" />
     <ClCompile Include="Game\PlayScene.cpp" />
     <ClCompile Include="Game\ResultScene.cpp" />
+    <ClCompile Include="Game\Shader\Shader.cpp" />
     <ClCompile Include="Game\TitleScene.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="pch.cpp">
@@ -319,6 +321,18 @@
     <None Include="Resources\Shaders\UI.hlsli" />
   </ItemGroup>
   <ItemGroup>
+    <FxCompile Include="Resources\Shaders\OutLinePS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)/Resources/Shaders/%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)/Resources/Shaders/%(Filename).cso</ObjectFileOutput>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\OutLineVS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)/Resources/Shaders/%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)/Resources/Shaders/%(Filename).cso</ObjectFileOutput>
+    </FxCompile>
     <FxCompile Include="Resources\Shaders\PS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
