@@ -131,7 +131,8 @@ void PlayScene::Update(float elapsedTime)
     m_floor->Update(elapsedTime);
     m_player->Update(elapsedTime);
 
-
+    BoxCollider::CheckHit(m_player.get(), m_floor.get());
+    BoxCollider::CheckHit(m_player.get(), m_wall.back().get());
 
 
 
@@ -195,8 +196,9 @@ void PlayScene::Update(float elapsedTime)
         else it->get()->SetHit(false);
     }
 
-    BoxCollider::CheckHit(m_player.get(), m_floor.get());
-    BoxCollider::CheckHit(m_player.get(), m_wall.back().get());
+
+
+    
 
     // ‘Ì—Í‚Ì–³‚¢“G‚ðíœ
     for (auto it = m_enemy.begin(); it != m_enemy.end();)
@@ -217,14 +219,14 @@ void PlayScene::Update(float elapsedTime)
             if (m_enemy.empty())
             {
                 GetGame()->ChangeScene(GetGame()->GetResultScene());
+                return;
             }
             break;
         }
     }
-
     if (m_player->GetTarget())
     {
-        Ray ray = { m_player->GetPosition(),Vector3::Transform(Vector3::Forward,m_player->GetQuaternion())};
+        Ray ray = { m_player->GetPosition(),Vector3::Transform(Vector3::Forward,m_player->GetQuaternion()) };
 
         float n = 0.0f;
 
@@ -235,9 +237,8 @@ void PlayScene::Update(float elapsedTime)
                 m_player->SetTarget(nullptr);
             }
         }
-
-        
     }
+
 
 }
 

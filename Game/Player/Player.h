@@ -30,6 +30,8 @@ public:
 	Boost* GetBoost() { return m_boost.get(); }
 	Attack* GetAttack() { return m_attack.get(); }
 
+	void SetPrePosition(DirectX::SimpleMath::Vector3 pos) {	m_prePosition = pos;}
+	DirectX::SimpleMath::Vector3 GetPrePosition() { return m_prePosition; }
 	void SetTarget(GameObject* target);
 	GameObject* GetTarget() { return m_target; }
 	void ChangeState(State* state);
@@ -84,8 +86,8 @@ private:
 	// 弾の最大数
 	static const int MAX_BULLET_COUNT = 50;
 
-	// 長押し時間
-	const float HOLD_TIME = 1.0f;
+	// 一フレーム前の座標
+	DirectX::SimpleMath::Vector3 m_prePosition;
 
 	// ステート
 	State* m_state;
@@ -96,9 +98,6 @@ private:
 
 	// 弾配列
 	std::unique_ptr<HomingBullet> m_bullet[MAX_BULLET_COUNT];
-
-	// 長押しした時間
-	float m_holdTime;
 
 	std::unique_ptr<DebugString> m_debugString;
 

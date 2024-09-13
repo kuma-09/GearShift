@@ -92,6 +92,7 @@ void Player::Update(float elapsedTime)
 		m_bullet[i]->Update(elapsedTime);
 	}
 
+	SetPrePosition(GetPosition());
 	SetPosition(GetPosition() + GetVelocity());
 
 	Matrix world = Matrix::Identity;

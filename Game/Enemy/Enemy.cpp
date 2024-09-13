@@ -91,7 +91,7 @@ void Enemy::Finalize()
 
 void Enemy::Shot()
 {
-	m_bullet->Shot(this);
+	m_bullet->Shot(static_cast<Player*>(m_target));
 }
 
 void Enemy::ChangeState(State* state)
