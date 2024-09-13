@@ -204,6 +204,7 @@
     <ClInclude Include="Game\Menu\UserInterface.h" />
     <ClInclude Include="Game\Object\Bullet.h" />
     <ClInclude Include="Game\Object\DropItem.h" />
+    <ClInclude Include="Game\Object\EnemyBullet.h" />
     <ClInclude Include="Game\Object\Floor.h" />
     <ClInclude Include="Game\Object\HomingBullet.h" />
     <ClInclude Include="Game\Object\SkyDome.h" />
@@ -265,6 +266,7 @@
     <ClCompile Include="Game\Menu\UserInterface.cpp" />
     <ClCompile Include="Game\Object\Bullet.cpp" />
     <ClCompile Include="Game\Object\DropItem.cpp" />
+    <ClCompile Include="Game\Object\EnemyBullet.cpp" />
     <ClCompile Include="Game\Object\Floor.cpp" />
     <ClCompile Include="Game\Object\HomingBullet.cpp" />
     <ClCompile Include="Game\Object\SkyDome.cpp" />

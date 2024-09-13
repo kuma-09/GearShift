@@ -6,7 +6,7 @@
 #include "Game/Components/ModelDraw.h"
 #include "Game/Components/BoxCollider.h"
 #include "Game/Components/HPBar.h"
-#include "Game/Object/Bullet.h"
+#include "Game/Object/EnemyBullet.h"
 #include "Game/PlayScene.h"
 
 #include "Game/Enemy/State/EnemyAttackState.h"
@@ -23,7 +23,7 @@ Enemy::Enemy(IScene* scene)
 	AddComponent<BoxCollider>();
 	AddComponent<HPBar>();
 
-	m_bullet = std::make_unique<Bullet>(GetScene(), BoxCollider::TypeID::EnemyBullet);
+	m_bullet = std::make_unique<EnemyBullet>(GetScene(), BoxCollider::TypeID::EnemyBullet);
 	
 	m_attack = std::make_unique<EnemyAttackState>(this);
 	m_move = std::make_unique<EnemyMoveState>(this);
@@ -104,8 +104,8 @@ void Enemy::Collision(BoxCollider* collider)
 {
 	if (collider->GetTypeID() == BoxCollider::PlayerBullet)
 	{
-		Bullet* bulletObject = static_cast<Bullet*>(collider->GetOwner());
-		if (bulletObject->GetState() == Bullet::FLYING)
+		EnemyBullet* bulletObject = static_cast<EnemyBullet*>(collider->GetOwner());
+		if (bulletObject->GetState() == EnemyBullet::FLYING)
 		{
 			SetHP(GetHP() - 1);
 			static_cast<PlayScene*>(GetScene())->CreateHitParticle(GetWorld());

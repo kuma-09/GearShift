@@ -33,8 +33,7 @@ TargetArea::~TargetArea()
 
 void TargetArea::Initialize()
 {
-    // ターゲットをロックできる範囲
-    m_range = 100;
+
 }
 
 bool TargetArea::Update(Player* player , GameObject* target)

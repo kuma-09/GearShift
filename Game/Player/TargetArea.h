@@ -20,7 +20,7 @@ private:
 	Graphics* m_graphics;
 
 	// ターゲット範囲
-	float m_range;
+	const float m_range = 200;
 
 	// スプライトバッチ
 	std::unique_ptr<DirectX::SpriteBatch> m_spriteBatch;
