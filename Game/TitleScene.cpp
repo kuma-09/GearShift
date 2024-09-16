@@ -25,7 +25,7 @@ void TitleScene::Initialize(Game* game)
     m_backGround = std::make_unique<tito::UserInterface>();
     m_backGround->Create(m_deviceResources, L"Resources/Textures/haguruma.png", Vector2(x / 2.0f, y / 2.0f), Vector2::One, tito::MIDDLE_CENTER);
     m_backGround->SetWindowSize(x, y);
-
+    
     
 }
 

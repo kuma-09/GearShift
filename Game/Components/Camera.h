@@ -35,10 +35,10 @@ private:
 	const float CAMERA_TARGET_RATE  =  0.1f;
 
 	// ˆê‰ñ“–‚½‚è‚Ì‰æ–Ê—h‚ê‚ÌŠÔ
-	const float SHAKE_TIME = 1.0f;
+	const float SHAKE_TIME = 0.1f;
 
 	// ‰æ–Ê—h‚êŒW”
-	const float SHAKE_RATE = 1.0f;
+	const float SHAKE_RATE = 1.5f;
 
 	// ‰æ–Ê—h‚êŒW”
 	float m_shakeRate;

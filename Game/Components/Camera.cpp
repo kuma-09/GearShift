@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Camera.h"
+#include "math.h"
 
 Camera::Camera()
 {
@@ -36,11 +37,13 @@ void Camera::Update(float elapsedTime)
     m_rotateX -= mouse.x * 0.001f;
     m_rotateY -= mouse.y * 0.001f;
 
-    
+
 
     m_quaternion = Quaternion::CreateFromYawPitchRoll({ m_rotateY ,m_rotateX ,0 });
 
     m_targetPosition += (m_player->GetPosition() - m_targetPosition);
+
+
 
     // カメラのデフォルトの座標ベクトル
     DirectX::SimpleMath::Vector3 eye{ 0.0f,1,20 };
@@ -50,6 +53,24 @@ void Camera::Update(float elapsedTime)
 
     // カメラ座標を計算する
     m_eyePosition += (m_targetPosition + eye - m_eyePosition) ;
+
+    m_shakeTime -= elapsedTime;
+    if (m_shakeTime >= 0)
+    {
+
+        if (m_shakeRate > 0)
+        {
+            m_shakeRate -= elapsedTime;
+            m_shakeRate *= -1.0f;
+        }
+        else if (m_shakeRate < 0)
+        {
+            m_shakeRate += elapsedTime;
+            m_shakeRate *= -1.0f;
+        }
+        Vector3 velocity = Vector3::Transform(Vector3::Lerp( Vector3::Zero, { m_shakeRate,m_shakeRate,0 }, m_shakeTime), GetOwner()->GetQuaternion());
+        m_targetPosition += velocity;
+    }
 
     
     GetOwner()->SetQuaternion(m_quaternion);
@@ -72,10 +93,11 @@ void Camera::Finalize()
 
 void Camera::shake()
 {
-    //using namespace DirectX::SimpleMath;
-    //m_shakeRate = SHAKE_RATE;
-    //Vector3 velocity = Vector3::Transform({-1,-1,-1}, GetOwner()->GetQuaternion());
-    //m_targetPosition += velocity;
+    using namespace DirectX::SimpleMath;
+    m_shakeRate = SHAKE_RATE;
+    m_shakeTime = SHAKE_TIME;
+    Vector3 velocity = Vector3::Transform({m_shakeRate,m_shakeRate,m_shakeRate}, GetOwner()->GetQuaternion());
+    m_targetPosition += velocity;
 }
 
 void Camera::SetTarget(GameObject* player, GameObject* enemy)
