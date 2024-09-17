@@ -9,6 +9,7 @@ public:
 	~HomingBullet();
 	void Initalize(GameObject* object);
 	void Shot(GameObject* object);
+	void Shot(GameObject* object, float period);
 	void Hit();
 	void Update(float elapsedTime);
 	void Render();
@@ -21,5 +22,5 @@ private:
 	const float SPEED = 2.0f;
 	DirectX::SimpleMath::Vector3 m_position;
 	DirectX::SimpleMath::Vector3 m_velocity;
-	float period;
+	float m_period;
 };

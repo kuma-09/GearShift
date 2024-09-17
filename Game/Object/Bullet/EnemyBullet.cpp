@@ -57,8 +57,6 @@ void EnemyBullet::Shot(GameObject* target)
 
 	Vector3 predictionPosition = LinePrediction(static_cast<Player*>(target)) + Vector3(resultx, resulty, resultz);
 
-
-
 	velocity += Vector3::Transform(Vector3::Backward * SPEED, Quaternion::FromToRotation(GetOwner()->GetPosition(), predictionPosition));
 
 	velocity = predictionPosition - GetOwner()->GetPosition();
@@ -107,7 +105,10 @@ void EnemyBullet::Render()
 
 void EnemyBullet::Collision(BoxCollider* collider)
 {
-	UNREFERENCED_PARAMETER(collider);
+	if (collider->GetTypeID() == BoxCollider::Wall)
+	{
+		Hit();
+	}
 }
 
 DirectX::SimpleMath::Vector3 EnemyBullet::LinePrediction(Player* target)
@@ -128,41 +129,14 @@ DirectX::SimpleMath::Vector3 EnemyBullet::LinePrediction(Player* target)
 	float B = 2 * (targetPos.x * targetVel.x + targetPos.y * targetVel.y + targetPos.z * targetVel.z);
 	float C = (targetPos.x * targetPos.x + targetPos.y * targetPos.y + targetPos.z * targetPos.z);
 
-	//0割り禁止処理
-	if (A == 0)
-	{
-		if (B == 0)
-		{
-			return target->GetPosition();
-		}
-		else
-		{
-			return target->GetPosition() + targetVel * (-C / B);
-		}
-	}
+	//0割禁止
+	if (A == 0 && B == 0)return target->GetPosition();
+	if (A == 0)return target->GetPosition() + targetVel * (-C / B / 2);
 
-	//弾が当たる時間のフレームを計算する
-	float flame1, flame2;
-	//二次方程式の解の公式の判別式で分類
-	float D = B * B - 4 * A * C;
-	if (D > 0)
-	{
+	//虚数解はどうせ当たらないので絶対値で無視した
+	float D = std::sqrt(std::abs(B * B - A * C));
+	return target->GetPosition() + targetVel * PlusMin((-B - D) / A, (-B + D) / A);
 
-		float E = sqrt(D);
-		flame1 = (-B - E) / (2 * A);
-		flame2 = (-B + E) / (2 * A);
-		//解は2つなので正の数の最小値を使う
-		flame1 = PlusMin(flame1, flame2);
-	}
-	else
-	{
-		//虚数解
-		//当たらないので今の位置を狙う
-		flame1 = 0;
-	}
-
-	//予想位置を返す
-	return target->GetPosition() + targetVel * flame1;
 }
 
 //プラスの最小値を返す(両方マイナスなら0)

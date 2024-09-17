@@ -135,12 +135,19 @@ void Player::ChangeState(State* state)
 
 void Player::Shot()
 {
+
+	int n = 0;
+
 	for (int i = 0; i < MAX_BULLET_COUNT; i++)
 	{
 		if (m_bullet[i]->GetState() == HomingBullet::BulletState::UNUSED && m_target)
 		{
-			m_bullet[i]->Shot(m_target);
-			break;
+			n++;
+			m_bullet[i]->Shot(m_target , 2 + 0.1f * n);
+			if (n >= 10)
+			{
+				break;
+			}
 		}
 	}
 }
@@ -158,14 +165,11 @@ void Player::Collision(BoxCollider* collider)
 			GetPart(Part::RightArm)->Collision(collider);
 			GetPart(Part::LeftLeg)->Collision(collider);
 			GetPart(Part::RightLeg)->Collision(collider);
-
-			GetComponent<Camera>()->shake();
-			SetHP(GetHP() - 1);
 		}
 	}
 	
 	if (collider->GetTypeID() == BoxCollider::Floor)
 	{
-
+		SetVelocity(DirectX::SimpleMath::Vector3::Zero);
 	}
 }

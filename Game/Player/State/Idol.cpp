@@ -34,6 +34,7 @@ void Idol::Update(float elapsedTime)
 	{
 		m_player->ChangeState(m_player->GetJump());
 	}
+
 	if (mouse->rightButton == mouse->PRESSED)
 	{
 		m_player->ChangeState(m_player->GetBoost());

@@ -34,7 +34,7 @@ PS_INPUT main(VS_INPUT input)
     output.Pos = mul(float4(input.Pos + input.Normal * 0.1f, 1.0f), matWorld);
     
     // ローカル座標方向に拡大ver
-    output.Pos = mul(float4(input.Pos * 1.2f, 1.0f), matWorld);
+    output.Pos = mul(float4(input.Pos * 1.5f, 1.0f), matWorld);
     
     output.Pos = mul(output.Pos, matView);
     output.Pos = mul(output.Pos, matProj);

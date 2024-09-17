@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "LeftArm.h"
+#include "Game/Components/Camera.h"
 #include "Game/Object/Bullet/Bullet.h"
 #include "Game/Components/ModelDraw.h"
 #include "Game/Components/BoxCollider.h"
@@ -82,7 +83,12 @@ void LeftArm::Collision(BoxCollider* collider)
 		Bullet* bulletObject = static_cast<Bullet*>(collider->GetOwner());
 		if (bulletObject->GetState() == Bullet::FLYING)
 		{
+			GetOwner()->GetComponent<Camera>()->shake();
 			SetHP(GetHP() - 1);
+			if (GetHP() <= 0)
+			{
+				GetOwner()->SetHP(GetOwner()->GetHP() - 1);
+			}
 			bulletObject->Hit();
 			m_isHit = true;
 		}
