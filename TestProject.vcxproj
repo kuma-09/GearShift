@@ -195,6 +195,7 @@
     <ClInclude Include="Game\Components\ModelDraw.h" />
     <ClInclude Include="Game\Components\Move.h" />
     <ClInclude Include="Game\Enemy\Enemy.h" />
+    <ClInclude Include="Game\Enemy\HomingEnemy.h" />
     <ClInclude Include="Game\Enemy\State\EnemyAttackState.h" />
     <ClInclude Include="Game\Enemy\State\EnemyMoveState.h" />
     <ClInclude Include="Game\Game.h" />
@@ -259,6 +260,7 @@
     <ClCompile Include="Game\Components\ModelDraw.cpp" />
     <ClCompile Include="Game\Components\Move.cpp" />
     <ClCompile Include="Game\Enemy\Enemy.cpp" />
+    <ClCompile Include="Game\Enemy\HomingEnemy.cpp" />
     <ClCompile Include="Game\Enemy\State\EnemyAttackState.cpp" />
     <ClCompile Include="Game\Enemy\State\EnemyMoveState.cpp" />
     <ClCompile Include="Game\Game.cpp" />

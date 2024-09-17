@@ -5,12 +5,19 @@
 
 EnemyMoveState::EnemyMoveState(Enemy* enemy)
 {
-	m_enemy = enemy;
+	//m_enemy = enemy;
+
 }
 
 void EnemyMoveState::Initialize()
 {
 
+	m_totalTime = 0;
+}
+
+void EnemyMoveState::Initialize(Enemy* enemy)
+{
+	m_enemy = enemy;
 	m_totalTime = 0;
 }
 

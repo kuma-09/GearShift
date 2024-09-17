@@ -5,7 +5,7 @@
 #include "Framework/DeviceResources.h"
 #include "Game/Particle/Emitter.h"
 #include "Player/Player.h"
-#include "Enemy/Enemy.h"
+#include "Enemy/HomingEnemy.h"
 #include "Game/Object/Wall.h"
 #include "Game/Object/DropItem.h"
 #include "Game/Object/SkyDome.h"
@@ -74,7 +74,7 @@ private:
 	// プレイヤー
 	std::unique_ptr<Player> m_player;
 	// エネミー配列
-	std::vector<std::unique_ptr<Enemy>> m_enemy;
+	std::vector<std::unique_ptr<HomingEnemy>> m_enemy;
 	// 壁配列
 	std::vector<std::unique_ptr<Wall>> m_wall;
 	// アイテム配列

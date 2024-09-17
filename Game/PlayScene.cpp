@@ -60,15 +60,15 @@ void PlayScene::Initialize(Game* game)
 
     m_player->Initialize();
 
-    m_enemy.push_back(std::make_unique<Enemy>(this));
+    m_enemy.push_back(std::make_unique<HomingEnemy>(this));
     m_enemy.back()->Initialize(m_player.get());
     m_enemy.back()->SetPosition(Vector3(0, 0, 0));
 
-    m_enemy.push_back(std::make_unique<Enemy>(this));
+    m_enemy.push_back(std::make_unique<HomingEnemy>(this));
     m_enemy.back()->Initialize(m_player.get());
     m_enemy.back()->SetPosition(Vector3(2, 0, 3));
 
-    m_enemy.push_back(std::make_unique<Enemy>(this));
+    m_enemy.push_back(std::make_unique<HomingEnemy>(this));
     m_enemy.back()->Initialize(m_player.get());
     m_enemy.back()->SetPosition(Vector3(-4, 0, -5));
 

@@ -2,32 +2,33 @@
 #include "Framework/Graphics.h"
 #include "Framework/DeviceResources.h"
 #include "Framework/Resources.h"
-#include "Game/GameObject.h"
+#include "Enemy.h"
 
 class State;
 class EnemyBullet;
 class EnemyAttackState;
 class EnemyMoveState;
 
-class Enemy : public GameObject
+class HomingEnemy : public Enemy
 {
 public:
 
-	~Enemy() = default;
+	HomingEnemy(IScene* scene);
+	~HomingEnemy();
 
-	virtual void Initialize(GameObject* target) = 0;
-	virtual void Update(float elapsedTime) = 0;
-	virtual void Render() = 0;
-	virtual void Finalize() = 0;
+	void Initialize(GameObject* target);
+	void Update(float elapsedTime);
+	void Render();
+	void Finalize();
 
 	EnemyAttackState* GetAttackState() { return m_attack.get(); }
 	EnemyMoveState* GetMoveState() { return m_move.get(); }
 	GameObject* GetTarget() { return m_target; }
 
-	virtual void Shot() = 0;
-	virtual void ChangeState(State* state) = 0;
+	void Shot();
+	void ChangeState(State* state);
 
-	virtual void Collision(BoxCollider* collider) = 0;
+	void Collision(BoxCollider* collider);
 
 private:
 	GameObject* m_target;
@@ -38,7 +39,5 @@ private:
 
 	std::unique_ptr<EnemyAttackState> m_attack;
 	std::unique_ptr<EnemyMoveState>   m_move;
-
-
 };
 

@@ -10,6 +10,7 @@ public:
 	EnemyMoveState(Enemy* enemy);
 
 	void Initialize();
+	void Initialize(Enemy* enemy);
 	void Update(float elapsedTime);
 	void Render();
 	void Finalize();
