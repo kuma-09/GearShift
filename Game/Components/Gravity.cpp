@@ -23,21 +23,15 @@ void Gravity::Update(float elapsedTime)
 
 	Vector3 position = GetOwner()->GetPosition();
 
-	if (GetOwner()->GetPosition().y > 0)
+
+	m_velocity += elapsedTime;
+	if (m_velocity > MAX_GRAVITY)
 	{
-		m_velocity += elapsedTime;
-		if (m_velocity > MAX_GRAVITY)
-		{
-			m_velocity = MAX_GRAVITY;
-		}
-		GetOwner()->SetVelocity(GetOwner()->GetVelocity() - Vector3(0, m_velocity, 0));
+		m_velocity = MAX_GRAVITY;
 	}
-	else
-	{
-		//m_velocity = 0;
-		//GetOwner()->SetVelocity(GetOwner()->GetVelocity() - Vector3(0, m_velocity, 0));
-		GetOwner()->SetPosition({ GetOwner()->GetPosition().x,0,GetOwner()->GetPosition().z });
-	}
+	GetOwner()->SetVelocity(GetOwner()->GetVelocity() - Vector3(0, m_velocity, 0));
+	
+
 }
 
 

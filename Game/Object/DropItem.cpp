@@ -63,5 +63,4 @@ void DropItem::Render()
 
 void DropItem::Finalize()
 {
-	RemoveAllComponents();
 }

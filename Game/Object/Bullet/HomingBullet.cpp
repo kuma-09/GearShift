@@ -21,7 +21,6 @@ HomingBullet::HomingBullet(IScene* scene, BoxCollider::TypeID id)
 
 HomingBullet::~HomingBullet()
 {
-	RemoveAllComponents();
 }
 
 void HomingBullet::Initalize(GameObject* object)

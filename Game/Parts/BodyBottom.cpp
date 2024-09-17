@@ -78,7 +78,6 @@ void BodyBottom::Render(DirectX::SimpleMath::Matrix world)
 
 void BodyBottom::Finalize()
 {
-	RemoveAllComponents();
 }
 
 void BodyBottom::Collision(BoxCollider* collider)

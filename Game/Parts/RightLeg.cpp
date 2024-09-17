@@ -70,7 +70,6 @@ void RightLeg::Render(DirectX::SimpleMath::Matrix world)
 
 void RightLeg::Finalize()
 {
-	RemoveAllComponents();
 }
 
 void RightLeg::Collision(BoxCollider* collider)

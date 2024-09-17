@@ -2,6 +2,7 @@
 #include "PlayScene.h"
 #include "cmath"
 #include "Game.h"
+
 #include "Framework/Microsoft/DebugDraw.h"
 #include "Game/Components/Camera.h"
 #include "Game/Components/BoxCollider.h"
@@ -136,7 +137,6 @@ void PlayScene::Update(float elapsedTime)
 
 
 
-
     int inArea = 0;
     for (auto& enemy : m_enemy)
     {
@@ -248,10 +248,10 @@ void PlayScene::Render()
     using namespace DirectX::SimpleMath;
 
     m_skyDome->Render();
-
+    m_floor->Render();
     m_player->Render();
 
-    m_floor->Render();
+
 
     for (auto& enemy: m_enemy)
     {

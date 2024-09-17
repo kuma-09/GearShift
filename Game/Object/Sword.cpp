@@ -17,7 +17,6 @@ Sword::Sword(IScene* scene , BoxCollider::TypeID id)
 
 Sword::~Sword()
 {
-	RemoveAllComponents();
 }
 
 void Sword::Initalize(GameObject* object)
@@ -86,5 +85,5 @@ void Sword::Render()
 
 void Sword::Collision(BoxCollider* collider)
 {
-
+	UNREFERENCED_PARAMETER(collider);
 }

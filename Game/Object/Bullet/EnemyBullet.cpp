@@ -19,7 +19,7 @@ EnemyBullet::EnemyBullet(IScene* scene, BoxCollider::TypeID id)
 
 EnemyBullet::~EnemyBullet()
 {
-	RemoveAllComponents();
+
 }
 
 void EnemyBullet::Initalize(GameObject* object)

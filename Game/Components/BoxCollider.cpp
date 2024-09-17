@@ -95,11 +95,13 @@ void BoxCollider::CheckHit(GameObject* object1, GameObject* object2)
 
     // ‰Ÿ‚µ–ß‚µƒxƒNƒgƒ‹
     Vector3 pushBackVec = Vector3::Zero;
+    Vector3 velocity = object1->GetVelocity();
 
     // ‚ß‚è‚İ‚ªˆê”Ô¬‚³‚¢²‚ğ‰Ÿ‚µ–ß‚·
     if (abs(dx) <= abs(dy) && abs(dx) <= abs(dz))
     {
         pushBackVec.x += dx;
+        
     }
 
     if (abs(dy) <= abs(dx) && abs(dy) <= abs(dz))
@@ -115,4 +117,14 @@ void BoxCollider::CheckHit(GameObject* object1, GameObject* object2)
     // ‰Ÿ‚µ–ß‚·
 
     object1->SetPosition(object1->GetPosition() + pushBackVec);
+    
+    Matrix world = Matrix::Identity;
+    world = Matrix::CreateScale(object1->GetScale());
+    world *= Matrix::CreateFromQuaternion(object1->GetQuaternion());
+    world *= Matrix::CreateTranslation(object1->GetPosition());
+
+    object1->GetComponent<BoxCollider>()->Update(0.0f);
+
+    object1->SetWorld(world);
+    
 }

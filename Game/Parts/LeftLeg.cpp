@@ -80,7 +80,6 @@ void LeftLeg::Render(DirectX::SimpleMath::Matrix world)
 
 void LeftLeg::Finalize()
 {
-	RemoveAllComponents();
 }
 
 void LeftLeg::Collision(BoxCollider* collider)

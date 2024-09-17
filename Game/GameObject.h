@@ -42,13 +42,7 @@ public:
 	int GetHP() { return m_hp; }
 	void SetHP(int hp) { m_hp = hp; }
 
-	void Damage(int value) 
-	{
-		if (m_hp > 0)
-		{
-			m_hp -= value;
-		} 
-	}
+	void UpdateWorld();
 
 	// コンポーネントを追加
 	template<typename CompType>
@@ -72,18 +66,7 @@ public:
 	}
 
 	// コンポーネントを更新
-	void ComponentsUpdate(float elapsedTime)
-	{
-		for (auto&& spComp : m_umComponents)
-		{
-			spComp.second->Update(elapsedTime);
-		}
-	}
-
-	void RemoveAllComponents()
-	{
-		m_umComponents.clear();
-	}
+	void ComponentsUpdate(float elapsedTime);
 
 	void SetScene(IScene* scene) { m_scene = scene; }
 	IScene* GetScene() { return m_scene; }

@@ -33,7 +33,7 @@ FixedEnemy::FixedEnemy(IScene* scene)
 
 FixedEnemy::~FixedEnemy()
 {
-	RemoveAllComponents();
+	//RemoveAllComponents();
 
 }
 

@@ -110,14 +110,14 @@ void Player::Render()
 		m_bullet[i]->Render();
 	}
 
+	GetComponent<BoxCollider>()->Render();
 	GetComponent<Emitter>()->Render(GetPosition() - DirectX::SimpleMath::Vector3(0, 1,0));
 	RenderParts();
 
 }
 
 void Player::Finalize()
-{
-	RemoveAllComponents();
+{	
 }
 
 void Player::SetTarget(GameObject* target)

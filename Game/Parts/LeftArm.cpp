@@ -72,7 +72,6 @@ void LeftArm::Render(DirectX::SimpleMath::Matrix world)
 
 void LeftArm::Finalize()
 {
-	RemoveAllComponents();
 }
 
 void LeftArm::Collision(BoxCollider* collider)

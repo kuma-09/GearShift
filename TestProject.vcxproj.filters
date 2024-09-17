@@ -103,7 +103,6 @@
     <ClInclude Include="Game\Particle\Particle.h" />
     <ClInclude Include="Game\Particle\Emitter.h" />
     <ClInclude Include="Game\Components\Camera.h" />
-    <ClInclude Include="Game\Object\Bullet.h" />
     <ClInclude Include="Game\Object\SkyDome.h" />
     <ClInclude Include="Game\Components\Look.h" />
     <ClInclude Include="Game\Menu\UserInterface.h" />
@@ -117,11 +116,14 @@
     <ClInclude Include="Game\Enemy\State\EnemyAttackState.h" />
     <ClInclude Include="Game\Enemy\State\EnemyMoveState.h" />
     <ClInclude Include="Game\Object\Floor.h" />
-    <ClInclude Include="Game\Object\HomingBullet.h" />
     <ClInclude Include="Game\Player\BoostGage.h" />
     <ClInclude Include="Game\Player\TargetArea.h" />
     <ClInclude Include="Game\Shader\Shader.h" />
-    <ClInclude Include="Game\Object\EnemyBullet.h" />
+    <ClInclude Include="Game\Enemy\FixedEnemy.h" />
+    <ClInclude Include="Game\Enemy\HomingEnemy.h" />
+    <ClInclude Include="Game\Object\Bullet\Bullet.h" />
+    <ClInclude Include="Game\Object\Bullet\EnemyBullet.h" />
+    <ClInclude Include="Game\Object\Bullet\HomingBullet.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -183,7 +185,6 @@
     <ClCompile Include="Game\Particle\Emitter.cpp" />
     <ClCompile Include="Game\Particle\Particle.cpp" />
     <ClCompile Include="Game\Components\Camera.cpp" />
-    <ClCompile Include="Game\Object\Bullet.cpp" />
     <ClCompile Include="Game\Object\SkyDome.cpp" />
     <ClCompile Include="Game\Components\Look.cpp" />
     <ClCompile Include="Game\Menu\Menu.cpp" />
@@ -197,11 +198,15 @@
     <ClCompile Include="Game\Enemy\State\EnemyAttackState.cpp" />
     <ClCompile Include="Game\Enemy\State\EnemyMoveState.cpp" />
     <ClCompile Include="Game\Object\Floor.cpp" />
-    <ClCompile Include="Game\Object\HomingBullet.cpp" />
     <ClCompile Include="Game\Player\BoostGage.cpp" />
     <ClCompile Include="Game\Player\TargetArea.cpp" />
     <ClCompile Include="Game\Shader\Shader.cpp" />
-    <ClCompile Include="Game\Object\EnemyBullet.cpp" />
+    <ClCompile Include="Game\Enemy\FixedEnemy.cpp" />
+    <ClCompile Include="Game\Enemy\HomingEnemy.cpp" />
+    <ClCompile Include="Game\Object\Bullet\Bullet.cpp" />
+    <ClCompile Include="Game\Object\Bullet\EnemyBullet.cpp" />
+    <ClCompile Include="Game\Object\Bullet\HomingBullet.cpp" />
+    <ClCompile Include="Game\GameObject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />
@@ -220,6 +225,7 @@
     <None Include="packages.config" />
     <None Include="Resources\Models\robot.sdkmesh" />
     <None Include="Resources\Shaders\UI.hlsli" />
+    <None Include=".gitignore" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\Shaders\PS.hlsl" />

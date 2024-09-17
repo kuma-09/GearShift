@@ -71,7 +71,6 @@ void Head::Render(DirectX::SimpleMath::Matrix world)
 
 void Head::Finalize()
 {
-	RemoveAllComponents();
 }
 
 void Head::Collision(BoxCollider* collider)

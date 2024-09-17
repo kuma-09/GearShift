@@ -68,7 +68,6 @@ void BodyTop::Render(DirectX::SimpleMath::Matrix world)
 
 void BodyTop::Finalize()
 {
-	RemoveAllComponents();
 }
 
 void BodyTop::Collision(BoxCollider* collider)

@@ -33,7 +33,7 @@ HomingEnemy::HomingEnemy(IScene* scene)
 
 HomingEnemy::~HomingEnemy()
 {
-	RemoveAllComponents();
+	//RemoveAllComponents();
 
 }
 
