@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "HomingEnemy.h"
+#include "FixedEnemy.h"
 #include <iostream>
 #include <algorithm>
 #include "Game/Components/Look.h"
@@ -14,7 +14,7 @@
 
 
 
-HomingEnemy::HomingEnemy(IScene* scene)
+FixedEnemy::FixedEnemy(IScene* scene)
 {
 	SetScene(scene);
 
@@ -31,13 +31,13 @@ HomingEnemy::HomingEnemy(IScene* scene)
 	m_state = GetMoveState();
 }
 
-HomingEnemy::~HomingEnemy()
+FixedEnemy::~FixedEnemy()
 {
 	RemoveAllComponents();
 
 }
 
-void HomingEnemy::Initialize(GameObject* target)
+void FixedEnemy::Initialize(GameObject* target)
 {
 	SetHP(10);
 	SetTarget(target);
@@ -50,7 +50,7 @@ void HomingEnemy::Initialize(GameObject* target)
 	m_state->Initialize();
 }
 
-void HomingEnemy::Update(float elapsedTime)
+void FixedEnemy::Update(float elapsedTime)
 {
 	using namespace DirectX::SimpleMath;
 
@@ -71,7 +71,7 @@ void HomingEnemy::Update(float elapsedTime)
 	SetWorld(world);
 }
 
-void HomingEnemy::Render()
+void FixedEnemy::Render()
 {
 	
 	m_bullet->Render();
@@ -84,28 +84,28 @@ void HomingEnemy::Render()
 	//GetComponent<BoxCollider>().lock().get()->Render();
 }
 
-void HomingEnemy::Finalize()
+void FixedEnemy::Finalize()
 {
 	dynamic_cast<PlayScene*>(GetScene())->RemoveCollider(m_bullet->GetComponent<BoxCollider>());
 }
 
-void HomingEnemy::Shot()
+void FixedEnemy::Shot()
 {
 	m_bullet->Shot(static_cast<Player*>(GetTarget()));
 }
 
-void HomingEnemy::ChangeState(State* state)
+void FixedEnemy::ChangeState(State* state)
 {
 	m_state = state;
 	m_state->Initialize();
 }
 
-void HomingEnemy::Collision(BoxCollider* collider)
+void FixedEnemy::Collision(BoxCollider* collider)
 {
 	if (collider->GetTypeID() == BoxCollider::PlayerBullet)
 	{
-		Bullet* bulletObject = static_cast<Bullet*>(collider->GetOwner());
-		if (bulletObject->GetState() == Bullet::FLYING)
+		EnemyBullet* bulletObject = static_cast<EnemyBullet*>(collider->GetOwner());
+		if (bulletObject->GetState() == EnemyBullet::FLYING)
 		{
 			SetHP(GetHP() - 1);
 			static_cast<PlayScene*>(GetScene())->CreateHitParticle(GetWorld());

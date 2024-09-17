@@ -1,16 +1,9 @@
 #pragma once
-#include "Game/GameObject.h"
+#include "Bullet.h"
 
-class HomingBullet :public GameObject
+class HomingBullet :public Bullet
 {
 public:
-
-	enum BulletState
-	{
-		UNUSED,
-		FLYING,
-		USED,
-	};
 
 	HomingBullet(IScene* scene, BoxCollider::TypeID id);
 	~HomingBullet();
@@ -20,16 +13,10 @@ public:
 	void Update(float elapsedTime);
 	void Render();
 
-	BulletState GetState() { return m_state; }
-	void SetState(BulletState state) { m_state = state; }
-
 	void Collision(BoxCollider* collider);
 
 
 private:
-	BulletState m_state;
-	GameObject* m_owner;
-	GameObject* m_target;
 
 	const float SPEED = 2.0f;
 	DirectX::SimpleMath::Vector3 m_position;

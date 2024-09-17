@@ -195,6 +195,7 @@
     <ClInclude Include="Game\Components\ModelDraw.h" />
     <ClInclude Include="Game\Components\Move.h" />
     <ClInclude Include="Game\Enemy\Enemy.h" />
+    <ClInclude Include="Game\Enemy\FixedEnemy.h" />
     <ClInclude Include="Game\Enemy\HomingEnemy.h" />
     <ClInclude Include="Game\Enemy\State\EnemyAttackState.h" />
     <ClInclude Include="Game\Enemy\State\EnemyMoveState.h" />
@@ -203,11 +204,11 @@
     <ClInclude Include="Game\IScene.h" />
     <ClInclude Include="Game\Menu\Menu.h" />
     <ClInclude Include="Game\Menu\UserInterface.h" />
-    <ClInclude Include="Game\Object\Bullet.h" />
+    <ClInclude Include="Game\Object\Bullet\Bullet.h" />
+    <ClInclude Include="Game\Object\Bullet\EnemyBullet.h" />
+    <ClInclude Include="Game\Object\Bullet\HomingBullet.h" />
     <ClInclude Include="Game\Object\DropItem.h" />
-    <ClInclude Include="Game\Object\EnemyBullet.h" />
     <ClInclude Include="Game\Object\Floor.h" />
-    <ClInclude Include="Game\Object\HomingBullet.h" />
     <ClInclude Include="Game\Object\SkyDome.h" />
     <ClInclude Include="Game\Object\Sword.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
@@ -260,17 +261,18 @@
     <ClCompile Include="Game\Components\ModelDraw.cpp" />
     <ClCompile Include="Game\Components\Move.cpp" />
     <ClCompile Include="Game\Enemy\Enemy.cpp" />
+    <ClCompile Include="Game\Enemy\FixedEnemy.cpp" />
     <ClCompile Include="Game\Enemy\HomingEnemy.cpp" />
     <ClCompile Include="Game\Enemy\State\EnemyAttackState.cpp" />
     <ClCompile Include="Game\Enemy\State\EnemyMoveState.cpp" />
     <ClCompile Include="Game\Game.cpp" />
     <ClCompile Include="Game\Menu\Menu.cpp" />
     <ClCompile Include="Game\Menu\UserInterface.cpp" />
-    <ClCompile Include="Game\Object\Bullet.cpp" />
+    <ClCompile Include="Game\Object\Bullet\Bullet.cpp" />
+    <ClCompile Include="Game\Object\Bullet\EnemyBullet.cpp" />
+    <ClCompile Include="Game\Object\Bullet\HomingBullet.cpp" />
     <ClCompile Include="Game\Object\DropItem.cpp" />
-    <ClCompile Include="Game\Object\EnemyBullet.cpp" />
     <ClCompile Include="Game\Object\Floor.cpp" />
-    <ClCompile Include="Game\Object\HomingBullet.cpp" />
     <ClCompile Include="Game\Object\SkyDome.cpp" />
     <ClCompile Include="Game\Object\Sword.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>

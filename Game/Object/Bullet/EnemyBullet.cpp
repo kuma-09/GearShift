@@ -1,12 +1,12 @@
 #include "pch.h"
-#include "Bullet.h"
+#include "EnemyBullet.h"
 #include "Game/Enemy/Enemy.h"
 #include "Game/Player/Player.h"
 #include "Game/Components/BoxCollider.h"
 #include "Game/Components/ModelDraw.h"
 #include <random>
 
-Bullet::Bullet(IScene* scene , BoxCollider::TypeID id)
+EnemyBullet::EnemyBullet(IScene* scene, BoxCollider::TypeID id)
 {
 	SetScene(scene);
 	AddComponent<BoxCollider>();
@@ -17,16 +17,17 @@ Bullet::Bullet(IScene* scene , BoxCollider::TypeID id)
 	SetState(BulletState::UNUSED);
 }
 
-Bullet::~Bullet()
+EnemyBullet::~EnemyBullet()
 {
 	RemoveAllComponents();
 }
 
-void Bullet::Initalize(GameObject* object)
+void EnemyBullet::Initalize(GameObject* object)
 {
 	using namespace DirectX::SimpleMath;
 
-	m_owner = object;
+	SetOwner(object);
+
 	GetComponent<ModelDraw>()->Initialize(ModelDraw::Cube);
 
 	Vector3 velocity = Vector3::Zero;
@@ -37,16 +38,16 @@ void Bullet::Initalize(GameObject* object)
 	SetState(BulletState::UNUSED);
 }
 
-void Bullet::Shot(Player* target)
+void EnemyBullet::Shot(GameObject* target)
 {
 	using namespace DirectX::SimpleMath;
 
 	Vector3 velocity = Vector3::Zero;
-	SetPosition(m_owner->GetPosition());
-	m_owner->GetQuaternion();
+	SetPosition(GetOwner()->GetPosition());
+	GetOwner()->GetQuaternion();
 
 	std::random_device seed_gen;
-	std::mt19937 mt (seed_gen());
+	std::mt19937 mt(seed_gen());
 
 	std::uniform_real_distribution<float> dist(-DIFFUSION, DIFFUSION);
 
@@ -54,22 +55,22 @@ void Bullet::Shot(Player* target)
 	float resulty = dist(mt);
 	float resultz = dist(mt);
 
-	Vector3 predictionPosition = LinePrediction(target) + Vector3(resultx,resulty,resultz);
-	
-	
+	Vector3 predictionPosition = LinePrediction(static_cast<Player*>(target)) + Vector3(resultx, resulty, resultz);
 
-	velocity += Vector3::Transform(Vector3::Backward * SPEED, Quaternion::FromToRotation(m_owner->GetPosition(), predictionPosition));
 
-	velocity = predictionPosition - m_owner->GetPosition();
+
+	velocity += Vector3::Transform(Vector3::Backward * SPEED, Quaternion::FromToRotation(GetOwner()->GetPosition(), predictionPosition));
+
+	velocity = predictionPosition - GetOwner()->GetPosition();
 	velocity.Normalize();
 
 	SetVelocity(velocity * SPEED);
 	SetState(BulletState::FLYING);
 
-	
+
 }
 
-void Bullet::Hit()
+void EnemyBullet::Hit()
 {
 	using namespace DirectX::SimpleMath;
 
@@ -81,7 +82,7 @@ void Bullet::Hit()
 	SetState(BulletState::USED);
 }
 
-void Bullet::Update(float elapsedTime)
+void EnemyBullet::Update(float elapsedTime)
 {
 	using namespace DirectX::SimpleMath;
 
@@ -95,21 +96,21 @@ void Bullet::Update(float elapsedTime)
 	SetWorld(world);
 }
 
-void Bullet::Render()
-{	
-	if (m_state == FLYING)
+void EnemyBullet::Render()
+{
+	if (GetState() == FLYING)
 	{
 		GetComponent<ModelDraw>()->Render(GetWorld());
 	}
 
 }
 
-void Bullet::Collision(BoxCollider* collider)
+void EnemyBullet::Collision(BoxCollider* collider)
 {
-
+	UNREFERENCED_PARAMETER(collider);
 }
 
-DirectX::SimpleMath::Vector3 Bullet::LinePrediction(Player* target)
+DirectX::SimpleMath::Vector3 EnemyBullet::LinePrediction(Player* target)
 {
 	using namespace DirectX::SimpleMath;
 
@@ -165,7 +166,7 @@ DirectX::SimpleMath::Vector3 Bullet::LinePrediction(Player* target)
 }
 
 //プラスの最小値を返す(両方マイナスなら0)
-float Bullet::PlusMin(float a, float b)
+float EnemyBullet::PlusMin(float a, float b)
 {
 	if (a < 0 && b < 0) return 0;
 	if (a < 0) return b;

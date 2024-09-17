@@ -9,12 +9,12 @@ class EnemyBullet;
 class EnemyAttackState;
 class EnemyMoveState;
 
-class HomingEnemy : public Enemy
+class FixedEnemy : public Enemy
 {
 public:
 
-	HomingEnemy(IScene* scene);
-	~HomingEnemy();
+	FixedEnemy(IScene* scene);
+	~FixedEnemy();
 
 	void Initialize(GameObject* target);
 	void Update(float elapsedTime);

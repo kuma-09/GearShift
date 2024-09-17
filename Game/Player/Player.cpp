@@ -17,7 +17,7 @@
 #include "Game/Player/State/Jump.h"
 #include "Game/Player/State/Boost.h"
 #include "Game/Player/State/Attack.h"
-#include "Game/Object/HomingBullet.h"
+#include "Game/Object/Bullet/HomingBullet.h"
 
 
 
@@ -71,10 +71,7 @@ void Player::Initialize()
 void Player::Update(float elapsedTime)
 {
 	using namespace DirectX::SimpleMath;
-	auto& kb = m_inputManager->GetKeyboardTracker();
 	auto& gp = m_inputManager->GetGamePadTracker();
-	auto& kbState = m_inputManager->GetKeyboardState();
-	auto& gpState = m_inputManager->GetGamePadState();
 	auto& mouse = m_inputManager->GetMouseTracker();
 
 	if (mouse->leftButton == mouse->PRESSED || gp->x == gp->PRESSED )

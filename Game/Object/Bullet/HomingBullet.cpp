@@ -26,7 +26,7 @@ void HomingBullet::Initalize(GameObject* object)
 {
 	using namespace DirectX::SimpleMath;
 
-	m_owner = object;
+	SetOwner(object);
 	GetComponent<ModelDraw>()->Initialize(ModelDraw::Cube);
 
 	Vector3 velocity = Vector3::Zero;
@@ -41,10 +41,10 @@ void HomingBullet::Shot(GameObject* object)
 {
 	using namespace DirectX::SimpleMath;
 
-	m_target = object;
+	SetTarget(object);
 	Vector3 velocity = Vector3::Zero;
-	SetPosition(m_owner->GetPosition());
-	SetQuaternion(m_owner->GetQuaternion());
+	SetPosition(GetOwner()->GetPosition());
+	SetQuaternion(GetOwner()->GetQuaternion());
 	m_position = GetPosition();
 	m_velocity = Vector3::One * 10;
 	period = 2;
@@ -72,12 +72,12 @@ void HomingBullet::Update(float elapsedTime)
 
 	ComponentsUpdate(elapsedTime);
 
-	if (m_state == FLYING)
+	if (GetState() == FLYING)
 	{
 
 		Vector3 acceleration = Vector3::Zero;
 
-		Vector3 diff = m_target->GetPosition() - m_position;
+		Vector3 diff = GetTarget()->GetPosition() - m_position;
 
 		
 		acceleration += (diff - m_velocity * period) * 2.f / (period * period);
@@ -99,7 +99,7 @@ void HomingBullet::Update(float elapsedTime)
 
 void HomingBullet::Render()
 {
-	if (m_state == FLYING)
+	if (GetState() == FLYING)
 	{
 		GetComponent<ModelDraw>()->Render(GetWorld());
 		GetComponent<Emitter>()->Render(GetPosition());
@@ -109,5 +109,5 @@ void HomingBullet::Render()
 
 void HomingBullet::Collision(BoxCollider* collider)
 {
-
+	UNREFERENCED_PARAMETER(collider);
 }

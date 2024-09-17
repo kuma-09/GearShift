@@ -5,7 +5,7 @@
 
 EnemyMoveState::EnemyMoveState(Enemy* enemy)
 {
-	//m_enemy = enemy;
+	m_enemy = enemy;
 
 }
 

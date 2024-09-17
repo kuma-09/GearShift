@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "RightArm.h"
-#include "Game/Object/Bullet.h"
+#include "Game/Object/Bullet/Bullet.h"
 #include "Game/Components/ModelDraw.h"
 #include "Game/Components/BoxCollider.h"
 
