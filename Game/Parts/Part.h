@@ -4,7 +4,9 @@
 class Part :public GameObject
 {
 public:
-	Part() {};
+	Part()
+		:m_typeID{}
+	{};
 	virtual ~Part() = default;
 
 	virtual void Initialize(int hp, IScene* scene) = 0;
@@ -21,6 +23,7 @@ public:
 
 	enum TypeID
 	{
+		None,
 		Head,
 		BodyTop,
 		LeftArm,
@@ -30,10 +33,11 @@ public:
 		RightLeg
 	};
 
-	void Action();
-
 	void SetTypeID(TypeID id) { m_typeID = id; }
 	TypeID GetTypeID() { return m_typeID; }
+
+	void SetMaxHP(float hp) { m_maxHP = hp; }
+	float GetMaxHP() { return m_maxHP; }
 
 
 private:
@@ -41,4 +45,5 @@ private:
 	// êe
 	GameObject* m_pOwner = nullptr;
 	TypeID m_typeID;
+	float m_maxHP;
 };

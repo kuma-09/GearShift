@@ -12,6 +12,7 @@ class Idol;
 class Jump;
 class Boost;
 class Attack;
+class Bullet;
 class NormalBullet;
 class HomingBullet;
 
@@ -75,6 +76,10 @@ public:
 	void Collision(BoxCollider* collider);
 
 private:
+	void Reload();
+
+
+private:
 
 	InputManager* m_inputManager;
 	
@@ -98,7 +103,7 @@ private:
 	std::unique_ptr<Attack> m_attack;
 
 	// ’e”z—ñ
-	std::unique_ptr<NormalBullet> m_bullet[MAX_BULLET_COUNT];
+	std::unique_ptr<Bullet> m_bullet[MAX_BULLET_COUNT];
 
 	std::unique_ptr<DebugString> m_debugString;
 

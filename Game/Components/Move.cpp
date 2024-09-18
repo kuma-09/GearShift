@@ -45,23 +45,23 @@ void Move::Update(float elapsedTime)
 
     if (kb.W)
     {
-        velocity += Vector3::Transform(Vector3(0, 0, -1) * elapsedTime, quaternion);
+        velocity += Vector3::Transform(Vector3::Forward * elapsedTime, quaternion);
     }
     if (kb.S)
     {
-        velocity += Vector3::Transform(Vector3(0, 0,  1) * elapsedTime, quaternion);
+        velocity += Vector3::Transform(Vector3::Backward * elapsedTime, quaternion);
     }
     if (kb.A)
     {
-        velocity += Vector3::Transform(Vector3(-1, 0, 0) * elapsedTime, quaternion);
+        velocity += Vector3::Transform(Vector3::Left * elapsedTime, quaternion);
     }
     if (kb.D)
     {
-        velocity += Vector3::Transform(Vector3( 1, 0, 0) * elapsedTime, quaternion);
+        velocity += Vector3::Transform(Vector3::Right * elapsedTime, quaternion);
     }
 
     velocity.Normalize();
-    GetOwner()->SetVelocity(velocity / 5);
+    GetOwner()->SetVelocity(velocity / 3);
 }
 
 

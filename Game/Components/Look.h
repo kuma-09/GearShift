@@ -15,12 +15,12 @@ public:
 	void Render();
 	void Finalize();
 
-	void SetTarget(GameObject* player, GameObject* enemy);
+	void SetTarget(GameObject* from, GameObject* to);
 
 private:
 
-	GameObject* m_player;
-	GameObject* m_enemy;
+	GameObject* m_from;
+	GameObject* m_to;
 
 	DirectX::SimpleMath::Vector3 m_eyePosition;
 	DirectX::SimpleMath::Vector3 m_targetPosition;

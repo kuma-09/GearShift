@@ -45,7 +45,7 @@ Player::Player(IScene* scene)
 
 	for (int i = 0; i < MAX_BULLET_COUNT; i++)
 	{
-		m_bullet[i] = std::make_unique<NormalBullet>(GetScene(), BoxCollider::TypeID::PlayerBullet);
+		m_bullet[i] = std::make_unique<HomingBullet>(GetScene(), BoxCollider::TypeID::PlayerBullet);
 	}
 
 	m_state = m_idol.get();
@@ -70,6 +70,7 @@ void Player::Initialize()
 	SetHP(100);
 	GetComponent<HPBar>()->Initialize();
 
+
 }
 
 void Player::Update(float elapsedTime)
@@ -77,6 +78,7 @@ void Player::Update(float elapsedTime)
 	using namespace DirectX::SimpleMath;
 	auto& gp = m_inputManager->GetGamePadTracker();
 	auto& mouse = m_inputManager->GetMouseTracker();
+	auto& kb = m_inputManager->GetKeyboardTracker();
 
 	if (m_target)
 	{
@@ -90,6 +92,11 @@ void Player::Update(float elapsedTime)
 	if (mouse->leftButton == mouse->PRESSED || gp->x == gp->PRESSED )
 	{
 		Shot();
+	}
+
+	if (kb->IsKeyPressed(DirectX::Keyboard::R))
+	{
+		Reload();
 	}
 
 	ComponentsUpdate(elapsedTime);
@@ -181,5 +188,13 @@ void Player::Collision(BoxCollider* collider)
 	if (collider->GetTypeID() == BoxCollider::Floor)
 	{
 		SetVelocity(DirectX::SimpleMath::Vector3::Zero);
+	}
+}
+
+void Player::Reload()
+{
+	for (int i = 0; i < MAX_BULLET_COUNT; i++)
+	{
+		m_bullet[i]->Initalize(this);
 	}
 }

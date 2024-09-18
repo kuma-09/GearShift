@@ -4,6 +4,7 @@
 #include "Framework/InputManager.h"
 #include "Framework/DeviceResources.h"
 #include "Game/Menu/UserInterface.h"
+#include "Game/Object/SkyDome.h"
 
 class TitleScene final: public IScene
 {
@@ -24,6 +25,7 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_texture;		// テクスチャ
 	std::unique_ptr<tito::UserInterface> m_titleLogo;
 	std::unique_ptr<tito::UserInterface> m_backGround;
+	std::unique_ptr<SkyDome> m_skydome;
 
 	
 };

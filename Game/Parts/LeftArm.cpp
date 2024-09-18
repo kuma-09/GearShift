@@ -9,6 +9,7 @@ LeftArm::LeftArm()
 {
 	AddComponent<ModelDraw>();
 	AddComponent<BoxCollider>();
+	SetTypeID(TypeID::LeftArm);
 }
 
 LeftArm::~LeftArm()
@@ -20,6 +21,7 @@ void LeftArm::Initialize(int hp,IScene* scene)
 {
 	SetScene(scene);
 	SetHP(hp);
+	SetMaxHP(float(hp));
 	GetComponent<ModelDraw>()->Initialize(ModelDraw::LArm);
 }
 

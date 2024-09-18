@@ -19,7 +19,7 @@ void Look::Update(float elapsedTime)
 
     UNREFERENCED_PARAMETER(elapsedTime);
 
-    if (m_enemy)
+    if (m_to)
     {
         // プレイヤーの向いている方向を計算
         Vector3 direction = GetOwner()->GetPosition() - m_targetPosition;
@@ -31,7 +31,7 @@ void Look::Update(float elapsedTime)
         GetOwner()->SetQuaternion(quaternion);
 
         // ターゲットの座標を更新
-        m_targetPosition = Vector3::Lerp(m_targetPosition, m_enemy->GetPosition(), 0.1f);
+        m_targetPosition = Vector3::Lerp(m_targetPosition, m_to->GetPosition(), 0.1f);
     }
 }
 
@@ -45,8 +45,8 @@ void Look::Finalize()
 
 }
 
-void Look::SetTarget(GameObject* player, GameObject* enemy)
+void Look::SetTarget(GameObject* from, GameObject* to)
 {
-    m_player = player;
-    m_enemy  = enemy;
+    m_from = from;
+    m_to  = to;
 }

@@ -9,6 +9,7 @@ RightArm::RightArm()
 {
 	AddComponent<ModelDraw>();
 	AddComponent<BoxCollider>();
+	SetTypeID(TypeID::RightArm);
 }
 
 RightArm::~RightArm()
@@ -19,7 +20,8 @@ RightArm::~RightArm()
 void RightArm::Initialize(int hp,IScene* scene)
 {
 	SetScene(scene);
-	SetHP(hp);
+	SetHP(float(hp));
+	SetMaxHP(float(hp));
 	GetComponent<ModelDraw>()->Initialize(ModelDraw::RArm);
 }
 

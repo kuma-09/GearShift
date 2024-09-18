@@ -12,7 +12,6 @@ BodyBottom::BodyBottom()
 	AddComponent<ModelDraw>();
 	AddComponent<BoxCollider>();
 	SetTypeID(Part::BodyBottom);
-	//AddComponent<HPBar>();
 }
 
 BodyBottom::~BodyBottom()

@@ -9,6 +9,7 @@ RightLeg::RightLeg()
 {
 	AddComponent<ModelDraw>();
 	AddComponent<BoxCollider>();
+	SetTypeID(TypeID::RightLeg);
 }
 
 RightLeg::~RightLeg()
@@ -19,7 +20,8 @@ RightLeg::~RightLeg()
 void RightLeg::Initialize(int hp,IScene* scene)
 {
 	SetScene(scene);
-	SetHP(hp);
+	SetHP(float(hp));
+	SetMaxHP(float(hp));
 	GetComponent<ModelDraw>()->Initialize(ModelDraw::RLeg);
 }
 

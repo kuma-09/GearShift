@@ -9,6 +9,7 @@ Head::Head()
 {
 	AddComponent<ModelDraw>();
 	AddComponent<BoxCollider>();
+	SetTypeID(TypeID::Head);
 }
 
 Head::~Head()
@@ -19,7 +20,8 @@ Head::~Head()
 void Head::Initialize(int hp,IScene* scene)
 {
 	SetScene(scene);
-	SetHP(hp);
+	SetHP(float(hp));
+	SetMaxHP(float(hp));
 	GetComponent<ModelDraw>()->Initialize(ModelDraw::Head);
 }
 

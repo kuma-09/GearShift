@@ -20,7 +20,15 @@
 
 #include "Game/Particle/HitParticle.h"
 
+#include "UI/HPUI.h"
+
 PlayScene::PlayScene()
+    :
+    m_deviceResources{},
+    m_graphics{},
+    m_inputManager{},
+    m_timeLimit{},
+    m_totalTime{}
 {
 
 }
@@ -106,6 +114,8 @@ void PlayScene::Initialize(Game* game)
     m_targetArea->Initialize();
 
 
+    m_hpUI = std::make_unique<HPUI>();
+
 }
 
 /// <summary> XVˆ— </summary>
@@ -115,7 +125,7 @@ void PlayScene::Update(float elapsedTime)
     using namespace DirectX::SimpleMath;
 
     
-    const auto& gp = m_inputManager->GetGamePadTracker();
+    //const auto& gp = m_inputManager->GetGamePadTracker();
     const auto& kb = m_inputManager->GetKeyboardTracker();
 
     m_totalTime += elapsedTime;
@@ -244,6 +254,15 @@ void PlayScene::Update(float elapsedTime)
         }
     }
 
+    std::vector<float> hp;
+    hp.push_back(m_player->GetPart(Part::Head)->GetHP() / m_player->GetPart(Part::Head)->GetMaxHP());
+    hp.push_back(m_player->GetPart(Part::BodyTop)->GetHP() / m_player->GetPart(Part::BodyTop)->GetMaxHP());
+    hp.push_back(m_player->GetPart(Part::LeftArm)->GetHP() / m_player->GetPart(Part::LeftArm)->GetMaxHP());
+    hp.push_back(m_player->GetPart(Part::RightArm)->GetHP() / m_player->GetPart(Part::RightArm)->GetMaxHP());
+    hp.push_back(m_player->GetPart(Part::LeftLeg)->GetHP() / m_player->GetPart(Part::LeftLeg)->GetMaxHP());
+    hp.push_back(m_player->GetPart(Part::RightLeg)->GetHP() / m_player->GetPart(Part::RightLeg)->GetMaxHP());
+
+    m_hpUI->Update(hp);
 
 }
 
@@ -279,8 +298,6 @@ void PlayScene::Render()
         wall->Render();
     }
 
-    auto state = m_graphics->GetCommonStates();
-
     for (auto& particle : m_hitParticle)
     {
         particle->Render(m_graphics->GetViewMatrix(), m_graphics->GetProjectionMatrix());
@@ -289,7 +306,10 @@ void PlayScene::Render()
     m_targetArea->Render();
     //m_debugString->Render(state);
     
+
     
+    m_hpUI->Render();
+
 }
 
 /// <summary> I—¹ˆ— </summary>

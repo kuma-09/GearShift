@@ -17,7 +17,7 @@
 #include "Framework/DebugString.h"
 
 class Camera;
-
+class HPUI;
 class HitParticle;
 
 
@@ -84,6 +84,9 @@ private:
 
 	// ターゲット範囲
 	std::unique_ptr<TargetArea> m_targetArea;
+
+	// HPの表示UI
+	std::unique_ptr<HPUI> m_hpUI;
 
 
 	// ボックスコライダーをまとめた配列
