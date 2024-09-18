@@ -5,6 +5,7 @@
 #include "Framework/DeviceResources.h"
 #include "Game/Particle/Emitter.h"
 #include "Player/Player.h"
+#include "Enemy/FixedEnemy.h"
 #include "Enemy/HomingEnemy.h"
 #include "Game/Object/Wall.h"
 #include "Game/Object/DropItem.h"
@@ -62,9 +63,6 @@ public:
 	void CreateHitParticle(DirectX::SimpleMath::Matrix world);
 
 private:
-	// ターゲットを切り替える関数
-	void NextTarget();
-private:
 
 
 	Graphics* m_graphics;
@@ -74,7 +72,7 @@ private:
 	// プレイヤー
 	std::unique_ptr<Player> m_player;
 	// エネミー配列
-	std::vector<std::unique_ptr<HomingEnemy>> m_enemy;
+	std::vector<std::unique_ptr<Enemy>> m_Enemy;
 	// 壁配列
 	std::vector<std::unique_ptr<Wall>> m_wall;
 	// アイテム配列
@@ -83,8 +81,6 @@ private:
 	std::unique_ptr<SkyDome> m_skyDome;
 	// 床
 	std::unique_ptr<Floor>   m_floor;
-	// ターゲット対象の番号
-	int m_enemyNum;
 
 	// ターゲット範囲
 	std::unique_ptr<TargetArea> m_targetArea;

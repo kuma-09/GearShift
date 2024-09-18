@@ -124,6 +124,8 @@
     <ClInclude Include="Game\Object\Bullet\Bullet.h" />
     <ClInclude Include="Game\Object\Bullet\EnemyBullet.h" />
     <ClInclude Include="Game\Object\Bullet\HomingBullet.h" />
+    <ClInclude Include="Game\Object\Bullet\NormalBullet.h" />
+    <ClInclude Include="Game\Object\Bullet\FixedEnemyBullet.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -207,6 +209,8 @@
     <ClCompile Include="Game\Object\Bullet\EnemyBullet.cpp" />
     <ClCompile Include="Game\Object\Bullet\HomingBullet.cpp" />
     <ClCompile Include="Game\GameObject.cpp" />
+    <ClCompile Include="Game\Object\Bullet\NormalBullet.cpp" />
+    <ClCompile Include="Game\Object\Bullet\FixedEnemyBullet.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />

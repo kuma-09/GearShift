@@ -6,7 +6,7 @@
 #include "Game/Components/ModelDraw.h"
 #include "Game/Components/BoxCollider.h"
 #include "Game/Components/HPBar.h"
-#include "Game/Object/Bullet/EnemyBullet.h"
+#include "Game/Object/Bullet/FixedEnemyBullet.h"
 #include "Game/PlayScene.h"
 
 #include "Game/Enemy/State/EnemyAttackState.h"
@@ -23,7 +23,7 @@ FixedEnemy::FixedEnemy(IScene* scene)
 	AddComponent<BoxCollider>();
 	AddComponent<HPBar>();
 
-	m_bullet = std::make_unique<EnemyBullet>(GetScene(), BoxCollider::TypeID::EnemyBullet);
+	m_bullet = std::make_unique<FixedEnemyBullet>(GetScene(), BoxCollider::TypeID::EnemyBullet);
 	
 	SetEnemyAttack(std::make_unique<EnemyAttackState>(this));
 	SetEnemyMove(std::make_unique<EnemyMoveState>(this));
@@ -104,8 +104,8 @@ void FixedEnemy::Collision(BoxCollider* collider)
 {
 	if (collider->GetTypeID() == BoxCollider::PlayerBullet)
 	{
-		EnemyBullet* bulletObject = static_cast<EnemyBullet*>(collider->GetOwner());
-		if (bulletObject->GetState() == EnemyBullet::FLYING)
+		FixedEnemyBullet* bulletObject = static_cast<FixedEnemyBullet*>(collider->GetOwner());
+		if (bulletObject->GetState() == Bullet::FLYING)
 		{
 			SetHP(GetHP() - 1);
 			static_cast<PlayScene*>(GetScene())->CreateHitParticle(GetWorld());

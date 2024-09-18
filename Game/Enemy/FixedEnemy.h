@@ -5,7 +5,7 @@
 #include "Enemy.h"
 
 class State;
-class EnemyBullet;
+class FixedEnemyBullet;
 class EnemyAttackState;
 class EnemyMoveState;
 
@@ -29,7 +29,7 @@ public:
 
 private:
 
-	std::unique_ptr<EnemyBullet> m_bullet;
+	std::unique_ptr<FixedEnemyBullet> m_bullet;
 
 	State* m_state;
 };

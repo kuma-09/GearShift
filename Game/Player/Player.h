@@ -12,6 +12,7 @@ class Idol;
 class Jump;
 class Boost;
 class Attack;
+class NormalBullet;
 class HomingBullet;
 
 class Player : public GameObject
@@ -97,7 +98,7 @@ private:
 	std::unique_ptr<Attack> m_attack;
 
 	// ’e”z—ñ
-	std::unique_ptr<HomingBullet> m_bullet[MAX_BULLET_COUNT];
+	std::unique_ptr<NormalBullet> m_bullet[MAX_BULLET_COUNT];
 
 	std::unique_ptr<DebugString> m_debugString;
 

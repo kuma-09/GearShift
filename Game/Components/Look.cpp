@@ -19,17 +19,20 @@ void Look::Update(float elapsedTime)
 
     UNREFERENCED_PARAMETER(elapsedTime);
 
-    // プレイヤーの向いている方向を計算
-    Vector3 direction = GetOwner()->GetPosition() - m_targetPosition;
-    float radianY = atan2f(direction.x, direction.z);
-    float radianX = -atan2f(direction.y, sqrt(direction.x * direction.x + direction.z * direction.z));
+    if (m_enemy)
+    {
+        // プレイヤーの向いている方向を計算
+        Vector3 direction = GetOwner()->GetPosition() - m_targetPosition;
+        float radianY = atan2f(direction.x, direction.z);
+        float radianX = -atan2f(direction.y, sqrt(direction.x * direction.x + direction.z * direction.z));
 
-    // プレイヤーの向いている方向を設定
-    Quaternion quaternion = Quaternion::CreateFromYawPitchRoll(Vector3(radianX, radianY, 0));
-    GetOwner()->SetQuaternion(quaternion);
+        // プレイヤーの向いている方向を設定
+        Quaternion quaternion = Quaternion::CreateFromYawPitchRoll(Vector3(radianX, radianY, 0));
+        GetOwner()->SetQuaternion(quaternion);
 
-    // ターゲットの座標を更新
-    m_targetPosition = Vector3::Lerp(m_targetPosition, m_enemy->GetPosition(), 0.1f);
+        // ターゲットの座標を更新
+        m_targetPosition = Vector3::Lerp(m_targetPosition, m_enemy->GetPosition(), 0.1f);
+    }
 }
 
 void Look::Render()

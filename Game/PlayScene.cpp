@@ -61,17 +61,25 @@ void PlayScene::Initialize(Game* game)
 
     m_player->Initialize();
 
-    m_enemy.push_back(std::make_unique<HomingEnemy>(this));
-    m_enemy.back()->Initialize(m_player.get());
-    m_enemy.back()->SetPosition(Vector3(0, 0, 0));
+    m_Enemy.push_back(std::make_unique<HomingEnemy>(this));
+    m_Enemy.back()->Initialize(m_player.get());
+    m_Enemy.back()->SetPosition(Vector3(0, 0, 0));
 
-    m_enemy.push_back(std::make_unique<HomingEnemy>(this));
-    m_enemy.back()->Initialize(m_player.get());
-    m_enemy.back()->SetPosition(Vector3(2, 0, 3));
+    m_Enemy.push_back(std::make_unique<HomingEnemy>(this));
+    m_Enemy.back()->Initialize(m_player.get());
+    m_Enemy.back()->SetPosition(Vector3(2, 0, 3));
 
-    m_enemy.push_back(std::make_unique<HomingEnemy>(this));
-    m_enemy.back()->Initialize(m_player.get());
-    m_enemy.back()->SetPosition(Vector3(-4, 0, -5));
+    m_Enemy.push_back(std::make_unique<HomingEnemy>(this));
+    m_Enemy.back()->Initialize(m_player.get());
+    m_Enemy.back()->SetPosition(Vector3(-4, 0, -5));
+
+    m_Enemy.push_back(std::make_unique<FixedEnemy>(this));
+    m_Enemy.back()->Initialize(m_player.get());
+    m_Enemy.back()->SetPosition(Vector3(5, 0, 2));
+
+    m_Enemy.push_back(std::make_unique<FixedEnemy>(this));
+    m_Enemy.back()->Initialize(m_player.get());
+    m_Enemy.back()->SetPosition(Vector3(10, 0, 2));
 
     m_wall.push_back(std::make_unique<Wall>(this));
     m_wall.back()->SetScale({ 5, 5, 1 });
@@ -86,9 +94,6 @@ void PlayScene::Initialize(Game* game)
 
     m_floor = std::make_unique<Floor>(this);
     m_skyDome = std::make_unique<SkyDome>();
-
-    m_enemyNum = 0;
-    m_player->SetTarget(m_enemy[m_enemyNum].get());
 
     m_debugString = std::make_unique<DebugString>(
           m_deviceResources->GetD3DDevice()
@@ -138,7 +143,7 @@ void PlayScene::Update(float elapsedTime)
 
 
     int inArea = 0;
-    for (auto& enemy : m_enemy)
+    for (auto& enemy : m_Enemy)
     {
         enemy->Update(elapsedTime);
         if (m_targetArea->Update(m_player.get(), enemy.get()))
@@ -201,7 +206,7 @@ void PlayScene::Update(float elapsedTime)
     
 
     // ‘Ì—Í‚Ì–³‚¢“G‚ðíœ
-    for (auto it = m_enemy.begin(); it != m_enemy.end();)
+    for (auto it = m_Enemy.begin(); it != m_Enemy.end();)
     {
         BoxCollider::CheckHit(m_player.get(), it->get());
         BoxCollider::CheckHit(it->get(), m_floor.get());
@@ -214,9 +219,9 @@ void PlayScene::Update(float elapsedTime)
         {
             RemoveCollider(it->get()->GetComponent<BoxCollider>());
             it->get()->Finalize();
-            it = m_enemy.erase(it);
+            it = m_Enemy.erase(it);
             m_player->SetTarget(nullptr);
-            if (m_enemy.empty())
+            if (m_Enemy.empty())
             {
                 GetGame()->ChangeScene(GetGame()->GetResultScene());
                 return;
@@ -253,7 +258,7 @@ void PlayScene::Render()
 
 
 
-    for (auto& enemy: m_enemy)
+    for (auto& enemy: m_Enemy)
     {
         enemy->Render();
     }
@@ -293,11 +298,11 @@ void PlayScene::Finalize()
     m_pBoxCollider.clear();
     m_player.reset();
 
-    for (auto& enemy: m_enemy)
+    for (auto& enemy: m_Enemy)
     {
         enemy.reset();
     }
-    m_enemy.clear();
+    m_Enemy.clear();
 
     for (auto& dropItem : m_dropItem)
     {
