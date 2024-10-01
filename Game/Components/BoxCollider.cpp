@@ -116,6 +116,7 @@ void BoxCollider::CheckHit(GameObject* object1, GameObject* object2)
         object1->SetVelocity({ velocity.x,velocity.y,0 });
     }
 
+
     // ‰Ÿ‚µ–ß‚·
 
     object1->SetPosition(object1->GetPosition() + pushBackVec);
@@ -126,5 +127,6 @@ void BoxCollider::CheckHit(GameObject* object1, GameObject* object2)
     world *= Matrix::CreateTranslation(object1->GetPosition());
 
     object1->SetWorld(world);
+    object1->GetComponent<BoxCollider>()->Update(0.0f);
     
 }

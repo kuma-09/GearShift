@@ -195,7 +195,7 @@ void Player::Collision(BoxCollider* collider)
 		}
 	}
 	
-	if (collider->GetTypeID() == BoxCollider::Floor || collider->GetTypeID() == BoxCollider::Wall)
+	if (collider->GetTypeID() == BoxCollider::Floor /*|| collider->GetTypeID() == BoxCollider::Wall*/)
 	{
 		SetOnFloor(true);
 	}

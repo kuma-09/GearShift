@@ -30,8 +30,9 @@ void Boost::Update(float elapsedTime)
 	
 	m_player->SetVelocity(Vector3(m_velocity.x * m_boostPower * m_totalTime,0, m_velocity.z * m_boostPower * m_totalTime));
 
-	if (m_totalTime <= 0)
+	if (m_totalTime <= m_boostTime / 2)
 	{
+		m_player->GetComponent<Gravity>()->Reset();
 		m_player->ChangeState(m_player->GetIdol());
 	}
 
