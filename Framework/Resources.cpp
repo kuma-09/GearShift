@@ -37,7 +37,7 @@ void Resources::LoadResource(Graphics* graphics)
 	m_dice		 = DirectX::Model::CreateFromCMO	(device, L"Resources\\Models\\dice.cmo",            *graphics->GetFX());
 	m_cube		 = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\cube.sdkmesh",        *graphics->GetFX());
 	m_skydome    = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\skydome.sdkmesh",     *graphics->GetFX());
-	//m_floor      = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\block-grass.sdkmesh", *graphics->GetFX());
+	m_floor      = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\floor-small-square.sdkmesh", *graphics->GetFX());
 
 	// テクスチャをロードする
 	DirectX::CreateWICTextureFromFile(

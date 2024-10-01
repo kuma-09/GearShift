@@ -9,10 +9,10 @@ Floor::Floor(IScene* scene)
 
 	SetScene(scene);
 	AddComponent<BoxCollider>();
-	//AddComponent<ModelDraw>();
-	GetComponent<BoxCollider>()->SetSize({ 50, 1, 50 });
+	AddComponent<ModelDraw>();
+	GetComponent<BoxCollider>()->SetSize({ 100, 1, 100 });
 	GetComponent<BoxCollider>()->SetTypeID(BoxCollider::Floor);
-	//GetComponent<ModelDraw>()->Initialize(ModelDraw::Floor);
+	GetComponent<ModelDraw>()->Initialize(ModelDraw::Floor);
 	SetPosition({ 0,-1,0 });
 	
 	Matrix world = Matrix::CreateScale({ 50,1,50 });
@@ -27,6 +27,20 @@ void Floor::Update(float elapsedTime)
 
 void Floor::Render()
 {
-	//GetComponent<ModelDraw>()->Render(DirectX::SimpleMath::Matrix::Identity);
+	using namespace DirectX::SimpleMath;
+
+	for (int i = 0; i < 2; i++)
+	{
+		for (int n = 0; n < 2; n++)
+		{
+			Matrix world = Matrix::CreateScale({ 1,1,1 });
+			world *= Matrix::CreateTranslation(Vector3{ -50 + float(i) * 100 ,1, -50 + float(n) * 100 } + GetPosition());
+			GetComponent<ModelDraw>()->Render(world);
+		}
+	}
+
+
+
+
 	GetComponent<BoxCollider>()->Render();
 }

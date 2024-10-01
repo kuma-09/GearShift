@@ -80,7 +80,7 @@ private:
 	// スカイドーム
 	std::unique_ptr<SkyDome> m_skyDome;
 	// 床
-	std::unique_ptr<Floor>   m_floor;
+	std::vector<std::unique_ptr<Floor>>   m_floor;
 
 	// ターゲット範囲
 	std::unique_ptr<TargetArea> m_targetArea;

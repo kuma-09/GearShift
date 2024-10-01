@@ -71,23 +71,23 @@ void PlayScene::Initialize(Game* game)
 
     m_Enemy.push_back(std::make_unique<HomingEnemy>(this));
     m_Enemy.back()->Initialize(m_player.get());
-    m_Enemy.back()->SetPosition(Vector3(0, 0, 0));
+    m_Enemy.back()->SetPosition(Vector3(0, 5, 0));
 
     m_Enemy.push_back(std::make_unique<HomingEnemy>(this));
     m_Enemy.back()->Initialize(m_player.get());
-    m_Enemy.back()->SetPosition(Vector3(2, 0, 3));
+    m_Enemy.back()->SetPosition(Vector3(2, 5, 3));
 
     m_Enemy.push_back(std::make_unique<HomingEnemy>(this));
     m_Enemy.back()->Initialize(m_player.get());
-    m_Enemy.back()->SetPosition(Vector3(-4, 0, -5));
+    m_Enemy.back()->SetPosition(Vector3(-4, 2, -5));
 
     m_Enemy.push_back(std::make_unique<FixedEnemy>(this));
     m_Enemy.back()->Initialize(m_player.get());
-    m_Enemy.back()->SetPosition(Vector3(5, 0, 2));
+    m_Enemy.back()->SetPosition(Vector3(5, 3, 2));
 
     m_Enemy.push_back(std::make_unique<FixedEnemy>(this));
     m_Enemy.back()->Initialize(m_player.get());
-    m_Enemy.back()->SetPosition(Vector3(10, 0, 2));
+    m_Enemy.back()->SetPosition(Vector3(10, 1, 2));
 
     m_wall.push_back(std::make_unique<Wall>(this));
     m_wall.back()->SetScale({ 5, 5, 1 });
@@ -100,7 +100,14 @@ void PlayScene::Initialize(Game* game)
     m_dropItem.back()->SetPosition(Vector3(0, 0, 7));
     m_dropItem.back()->Initialize();
 
-    m_floor = std::make_unique<Floor>(this);
+    m_floor.push_back(std::make_unique<Floor>(this));
+    m_floor.back()->SetPosition({ -100,0,-100 });
+    m_floor.push_back(std::make_unique<Floor>(this));
+    m_floor.back()->SetPosition({  100,0,-100 });
+    m_floor.push_back(std::make_unique<Floor>(this));
+    m_floor.back()->SetPosition({ -100,0, 100 });
+    m_floor.push_back(std::make_unique<Floor>(this));
+    m_floor.back()->SetPosition({  100,0, 100 });
     m_skyDome = std::make_unique<SkyDome>();
 
     m_debugString = std::make_unique<DebugString>(
@@ -144,11 +151,15 @@ void PlayScene::Update(float elapsedTime)
     }
 
     m_skyDome->Update(elapsedTime);
-    m_floor->Update(elapsedTime);
-    m_player->Update(elapsedTime);
 
-    BoxCollider::CheckHit(m_player.get(), m_floor.get());
+
+    m_player->Update(elapsedTime);
     BoxCollider::CheckHit(m_player.get(), m_wall.back().get());
+    for (auto& floor : m_floor)
+    {
+        floor->Update(elapsedTime);
+        BoxCollider::CheckHit(m_player.get(), floor.get());
+    }
 
 
 
@@ -219,7 +230,11 @@ void PlayScene::Update(float elapsedTime)
     for (auto it = m_Enemy.begin(); it != m_Enemy.end();)
     {
         BoxCollider::CheckHit(m_player.get(), it->get());
-        BoxCollider::CheckHit(it->get(), m_floor.get());
+        for (auto& floor : m_floor)
+        {
+            BoxCollider::CheckHit(it->get(), floor.get());
+        }
+
         m_targetArea->Update(m_player.get(), it->get());
         if (it->get()->GetHP() > 0)
         {
@@ -272,7 +287,12 @@ void PlayScene::Render()
     using namespace DirectX::SimpleMath;
 
     m_skyDome->Render();
-    m_floor->Render();
+
+    for (auto& floor: m_floor)
+    {
+        floor->Render();
+    }
+
     m_player->Render();
 
 
