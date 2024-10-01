@@ -89,7 +89,7 @@ void Shader::CreateShader()
 }
 
 
-void Shader::RenderStart(DirectX::SimpleMath::Matrix world, DirectX::SimpleMath::Matrix view, DirectX::SimpleMath::Matrix projection)
+void Shader::OutlineRenderStart(DirectX::SimpleMath::Matrix world, DirectX::SimpleMath::Matrix view, DirectX::SimpleMath::Matrix projection)
 {
 	auto states = Graphics::GetInstance()->GetCommonStates();
 	auto context = Graphics::GetInstance()->GetDeviceResources()->GetD3DDeviceContext();

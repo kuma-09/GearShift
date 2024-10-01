@@ -21,9 +21,6 @@ void Gravity::Update(float elapsedTime)
 {
     using namespace DirectX::SimpleMath;
 
-	Vector3 position = GetOwner()->GetPosition();
-
-
 	m_velocity += elapsedTime;
 	if (m_velocity > MAX_GRAVITY)
 	{

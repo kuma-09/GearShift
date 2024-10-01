@@ -30,6 +30,11 @@ void Jump::Update(float elapsedTime)
 	const auto& kbState = InputManager::GetInstance()->GetKeyboardState();
 	const auto& mouse = InputManager::GetInstance()->GetMouseTracker();
 
+	if (m_player->GetVelocity().y < 0)
+	{
+		m_player->GetComponent<Gravity>()->Reset();
+		m_player->ChangeState(m_player->GetIdol());
+	}
 	if (kbState.Space)
 	{
 		m_player->GetComponent<Gravity>()->Reset();

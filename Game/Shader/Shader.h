@@ -52,7 +52,7 @@ public:
 
 	void CreateShader();
 
-	void RenderStart(DirectX::SimpleMath::Matrix world, DirectX::SimpleMath::Matrix view, DirectX::SimpleMath::Matrix projection);
+	void OutlineRenderStart(DirectX::SimpleMath::Matrix world, DirectX::SimpleMath::Matrix view, DirectX::SimpleMath::Matrix projection);
 	void RenderEnd();
 
 };

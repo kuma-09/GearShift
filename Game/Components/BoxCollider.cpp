@@ -101,29 +101,29 @@ void BoxCollider::CheckHit(GameObject* object1, GameObject* object2)
     if (abs(dx) <= abs(dy) && abs(dx) <= abs(dz))
     {
         pushBackVec.x += dx;
-        
+        object1->SetVelocity({ 0, velocity.y, velocity.z });
     }
 
     if (abs(dy) <= abs(dx) && abs(dy) <= abs(dz))
     {
         pushBackVec.y += dy;
+        object1->SetVelocity({ velocity.x,0,velocity.z });
     }
 
     if (abs(dz) <= abs(dx) && abs(dz) <= abs(dy))
     {
         pushBackVec.z += dz;
+        object1->SetVelocity({ velocity.x,velocity.y,0 });
     }
 
     // ‰Ÿ‚µ–ß‚·
 
     object1->SetPosition(object1->GetPosition() + pushBackVec);
-    
+
     Matrix world = Matrix::Identity;
     world = Matrix::CreateScale(object1->GetScale());
     world *= Matrix::CreateFromQuaternion(object1->GetQuaternion());
     world *= Matrix::CreateTranslation(object1->GetPosition());
-
-    object1->GetComponent<BoxCollider>()->Update(0.0f);
 
     object1->SetWorld(world);
     

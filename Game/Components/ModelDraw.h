@@ -22,7 +22,8 @@ public:
 		LLeg,
 		RLeg,
 		Dice,
-		Cube
+		Cube,
+		Floor
 	};
 
 	void Initialize(ModelType type);

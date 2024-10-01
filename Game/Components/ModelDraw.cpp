@@ -52,6 +52,9 @@ void ModelDraw::Initialize(ModelType type)
 	case ModelDraw::Cube:
 		m_model = resources->GetCubeModel();
 		break;
+	case ModelDraw::Floor:
+		m_model = resources->GetFloor();
+		break;
 	default:
 		m_model = nullptr;
 		break;
@@ -99,7 +102,7 @@ void ModelDraw::OutLineRender()
 
 	m_model->Draw(context, *state, world, view, projection, false, [&]()
 		{
-			m_shader->RenderStart(world, view, projection);
+			m_shader->OutlineRenderStart(world, view, projection);
 		}
 	);
 }

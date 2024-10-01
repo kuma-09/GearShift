@@ -26,17 +26,19 @@ void Resources::LoadResource(Graphics* graphics)
 	// リソースディレクトリを設定する
 	graphics->GetFX()->SetDirectory(L"Resources\\Models");
 	// モデルをロードする
-	m_player	 = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\robot.sdkmesh",      *graphics->GetFX());
-	m_head		 = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\head.sdkmesh",       *graphics->GetFX());
-	m_bodyTop	 = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\bodyTop.sdkmesh",    *graphics->GetFX());
-	m_bodyBottom = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\bodyBottom.sdkmesh", *graphics->GetFX());
-	m_lArm		 = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\lArm.sdkmesh",       *graphics->GetFX());
-	m_rArm		 = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\rArm.sdkmesh",       *graphics->GetFX());
-	m_lLeg		 = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\lLeg.sdkmesh",       *graphics->GetFX());
-	m_rLeg		 = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\rLeg.sdkmesh",       *graphics->GetFX());
-	m_dice		 = DirectX::Model::CreateFromCMO	(device, L"Resources\\Models\\dice.cmo",           *graphics->GetFX());
-	m_cube		 = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\cube.sdkmesh",       *graphics->GetFX());
-	m_skydome    = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\skydome.sdkmesh",    *graphics->GetFX());
+	m_player	 = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\robot.sdkmesh",       *graphics->GetFX());
+	m_head		 = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\head.sdkmesh",        *graphics->GetFX());
+	m_bodyTop	 = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\bodyTop.sdkmesh",     *graphics->GetFX());
+	m_bodyBottom = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\bodyBottom.sdkmesh",  *graphics->GetFX());
+	m_lArm		 = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\lArm.sdkmesh",        *graphics->GetFX());
+	m_rArm		 = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\rArm.sdkmesh",        *graphics->GetFX());
+	m_lLeg		 = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\lLeg.sdkmesh",        *graphics->GetFX());
+	m_rLeg		 = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\rLeg.sdkmesh",        *graphics->GetFX());
+	m_dice		 = DirectX::Model::CreateFromCMO	(device, L"Resources\\Models\\dice.cmo",            *graphics->GetFX());
+	m_cube		 = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\cube.sdkmesh",        *graphics->GetFX());
+	m_skydome    = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\skydome.sdkmesh",     *graphics->GetFX());
+	//m_floor      = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\block-grass.sdkmesh", *graphics->GetFX());
+
 	// テクスチャをロードする
 	DirectX::CreateWICTextureFromFile(
 		device,

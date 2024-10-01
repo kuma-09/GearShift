@@ -69,6 +69,7 @@ void Player::Initialize()
 	GetComponent<Camera>()->SetTarget(this, nullptr);
 	SetHP(100);
 	GetComponent<HPBar>()->Initialize();
+	SetOnFloor(false);
 
 
 }
@@ -99,7 +100,15 @@ void Player::Update(float elapsedTime)
 		Reload();
 	}
 
+
+
 	ComponentsUpdate(elapsedTime);
+
+	if (GetOnFloor())
+	{
+		SetVelocity({ GetVelocity().x, 0, GetVelocity().z });
+	}
+
 	UpdateParts(elapsedTime);
 
 	m_state->Update(elapsedTime);
@@ -121,6 +130,7 @@ void Player::Update(float elapsedTime)
 	world *= Matrix::CreateTranslation(GetPosition());
 
 	SetWorld(world);
+	SetOnFloor(false);
 
 }
 
@@ -185,9 +195,9 @@ void Player::Collision(BoxCollider* collider)
 		}
 	}
 	
-	if (collider->GetTypeID() == BoxCollider::Floor)
+	if (collider->GetTypeID() == BoxCollider::Floor || collider->GetTypeID() == BoxCollider::Wall)
 	{
-		SetVelocity(DirectX::SimpleMath::Vector3::Zero);
+		SetOnFloor(true);
 	}
 }
 

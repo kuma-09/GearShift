@@ -36,6 +36,8 @@ public:
 	DirectX::SimpleMath::Vector3 GetPrePosition() { return m_prePosition; }
 	void SetTarget(GameObject* target);
 	GameObject* GetTarget() { return m_target; }
+	void SetOnFloor(bool n) { m_onFloor = n; }
+	bool GetOnFloor() { return m_onFloor; }
 	void ChangeState(State* state);
 	void Shot();
 
@@ -107,5 +109,6 @@ private:
 
 	std::unique_ptr<DebugString> m_debugString;
 
+	bool m_onFloor;
 
 };
