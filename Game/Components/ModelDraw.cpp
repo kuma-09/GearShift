@@ -53,7 +53,10 @@ void ModelDraw::Initialize(ModelType type)
 		m_model = resources->GetCubeModel();
 		break;
 	case ModelDraw::Floor:
-		m_model = resources->GetFloor();
+		m_model = resources->GetFloorModel();
+		break;
+	case ModelDraw::BillA:
+		m_model = resources->GetBillAModel();
 		break;
 	default:
 		m_model = nullptr;

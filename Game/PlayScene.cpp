@@ -90,8 +90,8 @@ void PlayScene::Initialize(Game* game)
     m_Enemy.back()->SetPosition(Vector3(10, 1, 2));
 
     m_wall.push_back(std::make_unique<Wall>(this));
-    m_wall.back()->SetScale({ 5, 5, 1 });
-    m_wall.back()->SetPosition(Vector3::One);
+    m_wall.back()->SetScale({ 5, 4, 3 });
+    m_wall.back()->SetPosition({0,5,0});
     m_wall.back()->Initialize();
 
 

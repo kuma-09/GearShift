@@ -18,8 +18,9 @@ Wall::~Wall()
 
 void Wall::Initialize()
 {
-	GetComponent<ModelDraw>()->Initialize(ModelDraw::Cube);
+	GetComponent<ModelDraw>()->Initialize(ModelDraw::BillA);
 	GetComponent<BoxCollider>()->SetSize(GetScale());
+	GetComponent<BoxCollider>()->GetBoundingBox()->Center = GetPosition();
 }
 
 void Wall::Update(float elapsedTime)
@@ -36,6 +37,8 @@ void Wall::Update(float elapsedTime)
 
 void Wall::Render()
 {
+	using namespace DirectX::SimpleMath;
+
 	GetComponent<BoxCollider>()->Render();
-	GetComponent<ModelDraw>()->Render(GetWorld());
+	GetComponent<ModelDraw>()->Render(Matrix::CreateScale(0.5f) * Matrix::CreateTranslation({0,1,0}));
 }

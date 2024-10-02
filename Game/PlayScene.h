@@ -7,7 +7,7 @@
 #include "Player/Player.h"
 #include "Enemy/FixedEnemy.h"
 #include "Enemy/HomingEnemy.h"
-#include "Game/Object/Wall.h"
+#include "Game/Object/Wall/Wall.h"
 #include "Game/Object/DropItem.h"
 #include "Game/Object/SkyDome.h"
 #include "Game/Object/Floor.h"

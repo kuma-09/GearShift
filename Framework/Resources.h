@@ -21,7 +21,9 @@ public:
 	DirectX::Model* GetDiceModel()		 { return m_dice.get(); }
 	DirectX::Model* GetCubeModel()		 { return m_cube.get(); }
 	DirectX::Model* GetSkyDome()		 { return m_skydome.get(); }
-	DirectX::Model* GetFloor()			 { return m_floor.get(); }
+	DirectX::Model* GetFloorModel()		 { return m_floor.get(); }
+	DirectX::Model* GetBillAModel()		 { return m_billA.get(); }
+
 	// テクスチャを取得
 	ID3D11ShaderResourceView* GetGreenTexture() { return m_greenTexture.Get(); }
 public:
@@ -59,6 +61,7 @@ private:
 	std::unique_ptr<DirectX::Model> m_cube;
 	std::unique_ptr<DirectX::Model> m_skydome;
 	std::unique_ptr<DirectX::Model> m_floor;
+	std::unique_ptr<DirectX::Model> m_billA;
 
 	// テクスチャ
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_greenTexture;

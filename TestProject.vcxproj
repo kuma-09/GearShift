@@ -216,7 +216,8 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
     </ClInclude>
-    <ClInclude Include="Game\Object\Wall.h" />
+    <ClInclude Include="Game\Object\Wall\BillA.h" />
+    <ClInclude Include="Game\Object\Wall\Wall.h" />
     <ClInclude Include="Game\Particle\Emitter.h" />
     <ClInclude Include="Game\Particle\HitParticle.h" />
     <ClInclude Include="Game\Particle\Particle.h" />
@@ -284,7 +285,8 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="Game\Object\Wall.cpp" />
+    <ClCompile Include="Game\Object\Wall\BillA.cpp" />
+    <ClCompile Include="Game\Object\Wall\Wall.cpp" />
     <ClCompile Include="Game\Particle\Emitter.cpp" />
     <ClCompile Include="Game\Particle\HitParticle.cpp" />
     <ClCompile Include="Game\Particle\Particle.cpp" />

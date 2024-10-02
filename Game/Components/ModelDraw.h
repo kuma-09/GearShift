@@ -23,7 +23,8 @@ public:
 		RLeg,
 		Dice,
 		Cube,
-		Floor
+		Floor,
+		BillA
 	};
 
 	void Initialize(ModelType type);

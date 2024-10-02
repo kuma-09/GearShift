@@ -83,7 +83,6 @@
     <ClInclude Include="Game\Components\Move.h">
       <Filter>Game\Components</Filter>
     </ClInclude>
-    <ClInclude Include="Game\Object\Wall.h" />
     <ClInclude Include="Framework\BinaryFile.h" />
     <ClInclude Include="Game\Parts\LeftArm.h" />
     <ClInclude Include="Game\Parts\LeftLeg.h" />
@@ -127,6 +126,8 @@
     <ClInclude Include="Game\Object\Bullet\FixedEnemyBullet.h" />
     <ClInclude Include="Game\UI\HPUI.h" />
     <ClInclude Include="Game\Title\TitleCamera.h" />
+    <ClInclude Include="Game\Object\Wall\Wall.h" />
+    <ClInclude Include="Game\Object\Wall\BillA.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -170,7 +171,6 @@
     <ClCompile Include="Game\Components\Move.cpp">
       <Filter>Game\Components</Filter>
     </ClCompile>
-    <ClCompile Include="Game\Object\Wall.cpp" />
     <ClCompile Include="Framework\BinaryFile.cpp" />
     <ClCompile Include="Game\Parts\LeftArm.cpp" />
     <ClCompile Include="Game\Parts\LeftLeg.cpp" />
@@ -213,6 +213,8 @@
     <ClCompile Include="Game\Object\Bullet\FixedEnemyBullet.cpp" />
     <ClCompile Include="Game\UI\HPUI.cpp" />
     <ClCompile Include="Game\Title\TitleCamera.cpp" />
+    <ClCompile Include="Game\Object\Wall\Wall.cpp" />
+    <ClCompile Include="Game\Object\Wall\BillA.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />

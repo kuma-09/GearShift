@@ -10,7 +10,6 @@
 #include "Game/Components/Look.h"
 
 #include "Game/Particle/Emitter.h"
-#include "Game/Particle/Shader.h"
 
 #include "Game/Player/State/Idol.h"
 #include "Game/Player/State/Jump.h"
@@ -195,7 +194,7 @@ void Player::Collision(BoxCollider* collider)
 		}
 	}
 	
-	if (collider->GetTypeID() == BoxCollider::Floor /*|| collider->GetTypeID() == BoxCollider::Wall*/)
+	if (collider->GetTypeID() == BoxCollider::Floor || collider->GetTypeID() == BoxCollider::Wall)
 	{
 		SetOnFloor(true);
 	}
