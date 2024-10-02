@@ -61,6 +61,9 @@ void ModelDraw::Initialize(ModelType type)
 	case ModelDraw::BillB:
 		m_model = resources->GetBillBModel();
 		break;
+	case ModelDraw::DropItem:
+		m_model = resources->GetDropItemModel();
+		break;
 	default:
 		m_model = nullptr;
 		break;

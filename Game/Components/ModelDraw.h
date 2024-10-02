@@ -25,7 +25,8 @@ public:
 		Cube,
 		Floor,
 		BillA,
-		BillB
+		BillB,
+		DropItem
 	};
 
 	void Initialize(ModelType type);

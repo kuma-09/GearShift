@@ -24,5 +24,6 @@ public:
 private:
 	std::unique_ptr<Menu> m_menu;
 	std::unique_ptr<Part> m_part;
+	const float m_dropItemModelSize = 0.1f;
 	bool m_isHit;
 };

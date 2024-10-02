@@ -102,8 +102,7 @@ void PlayScene::Initialize(Game* game)
 
 
     m_dropItem.push_back(std::make_unique<DropItem>(this, std::make_unique<BodyTop>()));
- 
-    m_dropItem.back()->SetPosition(Vector3(0, 0, 7));
+    m_dropItem.back()->SetPosition(Vector3(0, 3, 7));
     m_dropItem.back()->Initialize();
 
     m_floor.push_back(std::make_unique<Floor>(this));
@@ -137,7 +136,7 @@ void PlayScene::Update(float elapsedTime)
 {
     using namespace DirectX::SimpleMath;
 
-    
+
     //const auto& gp = m_inputManager->GetGamePadTracker();
     const auto& kb = m_inputManager->GetKeyboardTracker();
 
@@ -160,12 +159,16 @@ void PlayScene::Update(float elapsedTime)
 
 
     m_player->Update(elapsedTime);
-    BoxCollider::CheckHit(m_player.get(), m_wall.back().get());
     for (auto& floor : m_floor)
     {
         floor->Update(elapsedTime);
         BoxCollider::CheckHit(m_player.get(), floor.get());
     }
+    for (auto& wall : m_wall)
+    {
+        BoxCollider::CheckHit(m_player.get(), wall.get());
+    }
+
 
 
 
@@ -173,6 +176,15 @@ void PlayScene::Update(float elapsedTime)
     for (auto& enemy : m_Enemy)
     {
         enemy->Update(elapsedTime);
+        BoxCollider::CheckHit(m_player.get(), enemy.get());
+        for (auto& floor : m_floor)
+        {
+            BoxCollider::CheckHit(enemy.get(), floor.get());
+        }
+        for (auto& wall : m_wall)
+        {
+            BoxCollider::CheckHit(enemy.get(), wall.get());
+        }
         if (m_targetArea->Update(m_player.get(), enemy.get()))
         {
             inArea++;
@@ -235,12 +247,6 @@ void PlayScene::Update(float elapsedTime)
     // ‘Ì—Í‚Ì–³‚¢“G‚ðíœ
     for (auto it = m_Enemy.begin(); it != m_Enemy.end();)
     {
-        BoxCollider::CheckHit(m_player.get(), it->get());
-        for (auto& floor : m_floor)
-        {
-            BoxCollider::CheckHit(it->get(), floor.get());
-        }
-
         m_targetArea->Update(m_player.get(), it->get());
         if (it->get()->GetHP() > 0)
         {
@@ -298,6 +304,10 @@ void PlayScene::Render()
     {
         floor->Render();
     }
+    for (auto& wall : m_wall)
+    {
+        wall->Render();
+    }
 
     m_player->Render();
 
@@ -319,10 +329,7 @@ void PlayScene::Render()
         dropItem->Render();
     }
 
-    for (auto& wall : m_wall)
-    {
-        wall->Render();
-    }
+
 
     for (auto& particle : m_hitParticle)
     {

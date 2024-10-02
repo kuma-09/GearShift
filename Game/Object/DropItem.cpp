@@ -10,10 +10,25 @@ DropItem::DropItem(IScene* scene, std::unique_ptr<Part> part)
 	AddComponent<BoxCollider>();
 	GetComponent<BoxCollider>()->SetTypeID(BoxCollider::TypeID::DropItem);
 	AddComponent<ModelDraw>();
-	GetComponent<ModelDraw>()->Initialize(ModelDraw::LLeg);
+	GetComponent<ModelDraw>()->Initialize(ModelDraw::DropItem);
 
 	m_menu = std::make_unique<Menu>();
 	m_part = std::move(part);
+
+	using namespace DirectX;
+
+	// モデルのエフェクト情報を更新する
+	Resources::GetInstance()->GetDropItemModel()->UpdateEffects([](IEffect* effect)
+		{
+			// ベーシックエフェクトを設定する
+			BasicEffect* basicEffect = dynamic_cast<BasicEffect*>(effect);
+			if (basicEffect)
+			{
+				// モデルを自発光させる
+				basicEffect->SetEmissiveColor(Colors::White);
+			}
+		}
+	);
 
 }
 
@@ -30,6 +45,7 @@ void DropItem::Initialize()
 	int y;
 	Graphics::GetInstance()->GetScreenSize(x, y);
 	m_menu->Initialize(Graphics::GetInstance()->GetDeviceResources(), x, y);
+	SetScale({ m_dropItemModelSize,m_dropItemModelSize,m_dropItemModelSize});
 
 	Matrix world = Matrix::CreateScale(GetScale());
 	world *= Matrix::CreateFromQuaternion(GetQuaternion());
