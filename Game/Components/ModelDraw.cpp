@@ -58,6 +58,9 @@ void ModelDraw::Initialize(ModelType type)
 	case ModelDraw::BillA:
 		m_model = resources->GetBillAModel();
 		break;
+	case ModelDraw::BillB:
+		m_model = resources->GetBillBModel();
+		break;
 	default:
 		m_model = nullptr;
 		break;

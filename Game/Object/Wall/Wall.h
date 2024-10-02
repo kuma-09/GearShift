@@ -4,13 +4,10 @@
 class Wall :public GameObject
 {
 public:
-	Wall(IScene* scene);
-	~Wall();
+	Wall() {};
+	virtual ~Wall() = default;
 
-	void Initialize();
-	void Update(float elapsedTime);
-	void Render();
-
-private:
-
+	virtual void Initialize() = 0;
+	virtual void Update(float elapsedtime) = 0;
+	virtual void Render() = 0;
 };

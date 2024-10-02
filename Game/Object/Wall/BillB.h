@@ -1,11 +1,11 @@
 #pragma once
 #include "Game/Object/Wall/Wall.h"
 
-class BillA :public Wall
+class BillB :public Wall
 {
 public:
-	BillA(IScene* scene);
-	~BillA();
+	BillB(IScene* scene);
+	~BillB();
 
 	void Initialize() ;
 	void Update(float elapsedtime);

@@ -18,6 +18,9 @@
 #include "Game/Parts/RightArm.h"
 #include "Game/Parts/RightLeg.h"
 
+#include "Game/Object/Wall/BillA.h"
+#include "Game/Object/Wall/BillB.h"
+
 #include "Game/Particle/HitParticle.h"
 
 #include "UI/HPUI.h"
@@ -89,9 +92,12 @@ void PlayScene::Initialize(Game* game)
     m_Enemy.back()->Initialize(m_player.get());
     m_Enemy.back()->SetPosition(Vector3(10, 1, 2));
 
-    m_wall.push_back(std::make_unique<Wall>(this));
-    m_wall.back()->SetScale({ 5, 4, 3 });
-    m_wall.back()->SetPosition({0,5,0});
+    m_wall.push_back(std::make_unique<BillA>(this));
+    m_wall.back()->SetPosition({5,9,40});
+    m_wall.back()->Initialize();
+
+    m_wall.push_back(std::make_unique<BillB>(this));
+    m_wall.back()->SetPosition({ -6,9,-20 });
     m_wall.back()->Initialize();
 
 

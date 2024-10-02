@@ -1,9 +1,9 @@
 #include "pch.h"
-#include "Game/Object/Wall/BillA.h"
+#include "Game/Object/Wall/BillB.h"
 #include "Game/Components/ModelDraw.h"
 #include "Game/Components/BoxCollider.h"
 
-BillA::BillA(IScene* scene)
+BillB::BillB(IScene* scene)
 {
 	SetScene(scene);
 	AddComponent<BoxCollider>();
@@ -12,16 +12,16 @@ BillA::BillA(IScene* scene)
 
 }
 
-BillA::~BillA()
+BillB::~BillB()
 {
 }
 
-void BillA::Initialize()
+void BillB::Initialize()
 {
 	using namespace DirectX::SimpleMath;
 
-	GetComponent<ModelDraw>()->Initialize(ModelDraw::BillA);
-	SetScale({ 10, 8, 6 });
+	GetComponent<ModelDraw>()->Initialize(ModelDraw::BillB);
+	SetScale({ 4, 8, 4 });
 	GetComponent<BoxCollider>()->SetSize(GetScale());
 	GetComponent<BoxCollider>()->GetBoundingBox()->Center = GetPosition();
 
@@ -31,15 +31,15 @@ void BillA::Initialize()
 	SetWorld(world);
 }
 
-void BillA::Update(float elapsedtime)
+void BillB::Update(float elapsedtime)
 {
 	UNREFERENCED_PARAMETER(elapsedtime);
 }
 
-void BillA::Render()
+void BillB::Render()
 {
 	using namespace DirectX::SimpleMath;
 
 	GetComponent<BoxCollider>()->Render();
-	GetComponent<ModelDraw>()->Render(Matrix::CreateTranslation(Vector3{ GetPosition().x,GetPosition().y - GetScale().y,GetPosition().z}));
+	GetComponent<ModelDraw>()->Render(Matrix::CreateTranslation(Vector3{ GetPosition().x,GetPosition().y - GetScale().y,GetPosition().z }));
 }

@@ -24,7 +24,8 @@ public:
 		Dice,
 		Cube,
 		Floor,
-		BillA
+		BillA,
+		BillB
 	};
 
 	void Initialize(ModelType type);
