@@ -73,7 +73,7 @@ void Camera::Update(float elapsedTime)
     }
 
     
-    GetOwner()->SetQuaternion(m_quaternion);
+    GetOwner()->SetQuaternion(Quaternion::CreateFromYawPitchRoll({ 0 ,m_rotateX ,0 }));
 
     // Views—ñ‚ÌXV
     Matrix view = Matrix::CreateLookAt(m_eyePosition, m_targetPosition, Vector3::UnitY);
