@@ -220,7 +220,6 @@
     <ClInclude Include="Game\Particle\Emitter.h" />
     <ClInclude Include="Game\Particle\HitParticle.h" />
     <ClInclude Include="Game\Particle\Particle.h" />
-    <ClInclude Include="Game\Particle\Shader.h" />
     <ClInclude Include="Game\Particle\ShaderParticle.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
@@ -289,10 +288,6 @@
     <ClCompile Include="Game\Particle\Emitter.cpp" />
     <ClCompile Include="Game\Particle\HitParticle.cpp" />
     <ClCompile Include="Game\Particle\Particle.cpp" />
-    <ClCompile Include="Game\Particle\Shader.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
-    </ClCompile>
     <ClCompile Include="Game\Parts\BodyBottom.cpp" />
     <ClCompile Include="Game\Parts\BodyTop.cpp" />
     <ClCompile Include="Game\Parts\Head.cpp" />

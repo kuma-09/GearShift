@@ -6,7 +6,7 @@
 //-------------------------------------------------------------------------------------
 
 #include "pch.h"
-#include "Shader.h"
+#include "Game/Shader/Shader.h"
 #include "VertexTypes.h"
 #include "Framework/Graphics.h"
 #include "Framework/Resources.h"
