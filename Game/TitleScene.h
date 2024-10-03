@@ -31,7 +31,8 @@ private:
 	std::unique_ptr<TitleCamera> m_camera;
 	std::unique_ptr<SkyDome> m_skydome;
 	std::unique_ptr<TitlePlayer> m_player;
-	std::unique_ptr<Floor> m_floor;
+	DirectX::Model* m_floorModel;
+	std::vector<DirectX::SimpleMath::Vector3> m_floorPosition;
 
 	
 };

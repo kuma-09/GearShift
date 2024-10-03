@@ -39,7 +39,7 @@ TitlePlayer::~TitlePlayer()
 void TitlePlayer::Initialize()
 {
 	using namespace DirectX::SimpleMath;
-	SetPosition(Vector3::Zero);
+	SetPosition({0,5,0});
 }
 
 void TitlePlayer::Update(float elapsedTime)

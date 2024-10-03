@@ -33,8 +33,7 @@ void Floor::Render()
 	{
 		for (int n = 0; n < 2; n++)
 		{
-			Matrix world = Matrix::CreateScale({ 1,1,1 });
-			world *= Matrix::CreateTranslation(Vector3{ -50 + float(i) * 100 ,1, -50 + float(n) * 100 } + GetPosition());
+			Matrix world = Matrix::CreateTranslation(Vector3{ -50 + float(i) * 100 ,1, -50 + float(n) * 100 } + GetPosition());
 			GetComponent<ModelDraw>()->Render(world);
 		}
 	}
