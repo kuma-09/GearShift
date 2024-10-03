@@ -33,7 +33,7 @@ PlayScene::PlayScene()
     m_timeLimit{},
     m_totalTime{}
 {
-
+    
 }
 
 PlayScene::~PlayScene()
@@ -113,14 +113,8 @@ void PlayScene::Initialize(Game* game)
     m_floor.back()->SetPosition({ -100,0, 100 });
     m_floor.push_back(std::make_unique<Floor>(this));
     m_floor.back()->SetPosition({  100,0, 100 });
+
     m_skyDome = std::make_unique<SkyDome>();
-
-    m_debugString = std::make_unique<DebugString>(
-          m_deviceResources->GetD3DDevice()
-        , m_deviceResources->GetD3DDeviceContext()
-        , L"Resources/Fonts/SegoeUI_18.spritefont");
-    m_debugString->SetColor(DirectX::Colors::Red);
-
 
     m_targetArea = std::make_unique<TargetArea>();
     m_targetArea->Initialize();
@@ -136,13 +130,14 @@ void PlayScene::Update(float elapsedTime)
 {
     using namespace DirectX::SimpleMath;
 
-
+    // ゲームパッドとキーボードの入力情報を取得
     //const auto& gp = m_inputManager->GetGamePadTracker();
     const auto& kb = m_inputManager->GetKeyboardTracker();
 
+    // 経過時間を計算
     m_totalTime += elapsedTime;
-    m_debugString->AddString(std::to_string(m_timeLimit - m_totalTime).c_str());
 
+    // ヒットエフェクトの更新
     for (auto it = m_hitParticle.begin(); it != m_hitParticle.end();)
     {
         if (it->get()->Update())
@@ -155,48 +150,18 @@ void PlayScene::Update(float elapsedTime)
         }
     }
 
-    m_skyDome->Update(elapsedTime);
-
-
+    // プレイヤーの更新
     m_player->Update(elapsedTime);
+
+
     for (auto& floor : m_floor)
     {
-        floor->Update(elapsedTime);
         BoxCollider::CheckHit(m_player.get(), floor.get());
     }
     for (auto& wall : m_wall)
     {
         BoxCollider::CheckHit(m_player.get(), wall.get());
     }
-
-
-
-
-    int inArea = 0;
-    for (auto& enemy : m_Enemy)
-    {
-        enemy->Update(elapsedTime);
-        BoxCollider::CheckHit(m_player.get(), enemy.get());
-        for (auto& floor : m_floor)
-        {
-            BoxCollider::CheckHit(enemy.get(), floor.get());
-        }
-        for (auto& wall : m_wall)
-        {
-            BoxCollider::CheckHit(enemy.get(), wall.get());
-        }
-        if (m_targetArea->Update(m_player.get(), enemy.get()))
-        {
-            inArea++;
-        }
-    }
-
-    if (!inArea)
-    {
-        m_player->SetTarget(nullptr);
-    }
-    
-
 
     for (auto& dropItem : m_dropItem)
     {
@@ -207,6 +172,53 @@ void PlayScene::Update(float elapsedTime)
     {
         wall->Update(elapsedTime);
     }
+
+    std::vector<Enemy*> inAreaEnemy;
+
+    // 体力の無い敵を削除
+    for (auto it = m_Enemy.begin(); it != m_Enemy.end();)
+    {
+        it->get()->Update(elapsedTime);
+        BoxCollider::CheckHit(m_player.get(), it->get());
+
+        for (auto& floor : m_floor)
+        {
+            BoxCollider::CheckHit(it->get(), floor.get());
+        }
+        for (auto& wall : m_wall)
+        {
+            BoxCollider::CheckHit(it->get(), wall.get());
+        }
+
+        if (m_targetArea->Update(m_player.get(), it->get()))
+        {
+            inAreaEnemy.push_back(it->get());
+        }
+        if (it->get()->GetHP() > 0)
+        {
+            it++;
+        }
+        else
+        {
+            RemoveCollider(it->get()->GetComponent<BoxCollider>());
+            it->get()->Finalize();
+            it = m_Enemy.erase(it);
+            m_player->SetTarget(nullptr);
+            if (m_Enemy.empty())
+            {
+                GetGame()->ChangeScene(GetGame()->GetResultScene());
+                return;
+            }
+        }
+    }
+
+    if (inAreaEnemy.empty())
+    {
+        m_player->SetTarget(nullptr);
+    }
+    
+
+
 
     // 当たり判定
     for (auto& collider : GetColliders())
@@ -240,37 +252,12 @@ void PlayScene::Update(float elapsedTime)
         else it->get()->SetHit(false);
     }
 
-
-
-    
-
-    // 体力の無い敵を削除
-    for (auto it = m_Enemy.begin(); it != m_Enemy.end();)
-    {
-        m_targetArea->Update(m_player.get(), it->get());
-        if (it->get()->GetHP() > 0)
-        {
-            it++;
-        }
-        else
-        {
-            RemoveCollider(it->get()->GetComponent<BoxCollider>());
-            it->get()->Finalize();
-            it = m_Enemy.erase(it);
-            m_player->SetTarget(nullptr);
-            if (m_Enemy.empty())
-            {
-                GetGame()->ChangeScene(GetGame()->GetResultScene());
-                return;
-            }
-            break;
-        }
-    }
+    // プレイヤーとターゲットの間に障害物があればロックオン解除
     if (m_player->GetTarget())
     {
         Ray ray = { m_player->GetPosition(),Vector3::Transform(Vector3::Forward,m_player->GetQuaternion()) };
 
-        float n = 0.0f;
+        float n = (m_player->GetPosition() - m_player->GetTarget()->GetPosition()).Length();
 
         for (auto& wall : m_wall)
         {
@@ -279,8 +266,11 @@ void PlayScene::Update(float elapsedTime)
                 m_player->SetTarget(nullptr);
             }
         }
+        
     }
+    
 
+    // HP表示用のUI
     std::vector<float> hp;
     hp.push_back(m_player->GetPart(Part::Head)->GetHP() / m_player->GetPart(Part::Head)->GetMaxHP());
     hp.push_back(m_player->GetPart(Part::BodyTop)->GetHP() / m_player->GetPart(Part::BodyTop)->GetMaxHP());
@@ -329,7 +319,11 @@ void PlayScene::Render()
         dropItem->Render();
     }
 
+    Ray ray = { m_player->GetPosition(),Vector3::Transform(Vector3::Forward,m_player->GetQuaternion()) };
 
+    m_graphics->DrawPrimitivePositionColorBegin(m_graphics->GetViewMatrix(), m_graphics->GetProjectionMatrix(), DirectX::SimpleMath::Matrix::Identity);
+    DX::DrawRay(m_graphics->GetPrimitiveBatchPositionColor(), ray.position,ray.direction,false, DirectX::Colors::Red);
+    m_graphics->DrawPrimitivePositionColorEnd();
 
     for (auto& particle : m_hitParticle)
     {
@@ -337,9 +331,6 @@ void PlayScene::Render()
     }
 
     m_targetArea->Render();
-    //m_debugString->Render(state);
-    
-
     
     m_hpUI->Render();
 

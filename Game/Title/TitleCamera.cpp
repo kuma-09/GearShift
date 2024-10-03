@@ -17,6 +17,7 @@ void TitleCamera::Initialize(GameObject* target)
 
 void TitleCamera::Update(float elapsedTime)
 {
+	_Unreferenced_parameter_(elapsedTime);
 	using namespace DirectX::SimpleMath;
 
 	SetQuaternion(GetQuaternion() * Quaternion::CreateFromYawPitchRoll(3.14 /180, 0, 0));

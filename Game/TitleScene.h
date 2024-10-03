@@ -8,6 +8,7 @@
 #include "Game/Title/TitlePlayer.h"
 #include "Game/Title/TitleCamera.h"
 #include "Game/Object/Floor.h"
+#include "UI/UI.h"
 
 class TitleScene final: public IScene
 {
@@ -25,15 +26,12 @@ private:
 	DX::DeviceResources* m_deviceResources;
 	InputManager* m_inputManager;
 
-	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_texture;		// テクスチャ
-	std::unique_ptr<tito::UserInterface> m_titleLogo;
-	std::unique_ptr<tito::UserInterface> m_backGround;
 	std::unique_ptr<TitleCamera> m_camera;
 	std::unique_ptr<SkyDome> m_skydome;
 	std::unique_ptr<TitlePlayer> m_player;
 	DirectX::Model* m_floorModel;
 	std::vector<DirectX::SimpleMath::Vector3> m_floorPosition;
-
+	std::unique_ptr<UI> m_titleLogo;
 	
 };
 
