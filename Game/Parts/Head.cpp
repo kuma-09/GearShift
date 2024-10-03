@@ -10,6 +10,7 @@ Head::Head()
 	AddComponent<ModelDraw>();
 	AddComponent<BoxCollider>();
 	SetTypeID(TypeID::Head);
+	m_isHit = false;
 }
 
 Head::~Head()

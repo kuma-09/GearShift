@@ -46,6 +46,8 @@ void TitlePlayer::Update(float elapsedTime)
 {
 	using namespace DirectX::SimpleMath;
 
+	UpdateParts(elapsedTime);
+
 	Matrix world = Matrix::Identity;
 	world = Matrix::CreateScale(GetScale());
 	world *= Matrix::CreateFromQuaternion(GetQuaternion());

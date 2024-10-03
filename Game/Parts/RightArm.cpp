@@ -10,6 +10,7 @@ RightArm::RightArm()
 	AddComponent<ModelDraw>();
 	AddComponent<BoxCollider>();
 	SetTypeID(TypeID::RightArm);
+	m_isHit = false;
 }
 
 RightArm::~RightArm()

@@ -19,7 +19,7 @@ void TitleScene::Initialize(Game* game)
     m_graphics->GetScreenSize(x, y);
 
     m_titleLogo = std::make_unique<tito::UserInterface>();
-    m_titleLogo->Create(m_deviceResources, L"Resources/Textures/GearShiftLogo.png", Vector2(x / 2.0f, y / 2.0f), Vector2::One * 2, tito::MIDDLE_CENTER);
+    m_titleLogo->Create(m_deviceResources, L"Resources/Textures/GearShiftLogo.png", Vector2(x / 2.0f, y ), Vector2::One * 2, tito::MIDDLE_CENTER);
     m_titleLogo->SetWindowSize(x, y);
     
     m_skydome = std::make_unique<SkyDome>();
@@ -28,7 +28,7 @@ void TitleScene::Initialize(Game* game)
     
     m_camera = std::make_unique<TitleCamera>();
     m_camera->Initialize(m_player.get());
-    m_camera->SetPosition(Vector3{ 0,0,-20 });
+    m_camera->SetPosition(Vector3{ 0,5,-20 });
     
 }
 

@@ -12,6 +12,7 @@ BodyBottom::BodyBottom()
 	AddComponent<ModelDraw>();
 	AddComponent<BoxCollider>();
 	SetTypeID(Part::BodyBottom);
+	m_isHit = false;
 }
 
 BodyBottom::~BodyBottom()

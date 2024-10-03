@@ -7,6 +7,7 @@
 #include "Game/Object/SkyDome.h"
 #include "Game/Title/TitlePlayer.h"
 #include "Game/Title/TitleCamera.h"
+#include "Game/Object/Floor.h"
 
 class TitleScene final: public IScene
 {
@@ -30,6 +31,7 @@ private:
 	std::unique_ptr<TitleCamera> m_camera;
 	std::unique_ptr<SkyDome> m_skydome;
 	std::unique_ptr<TitlePlayer> m_player;
+	std::unique_ptr<Floor> m_floor;
 
 	
 };

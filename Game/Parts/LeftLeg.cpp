@@ -11,6 +11,7 @@ LeftLeg::LeftLeg()
 	AddComponent<ModelDraw>();
 	AddComponent<BoxCollider>();
 	SetTypeID(Part::LeftLeg);
+	m_isHit = false;
 }
 
 LeftLeg::~LeftLeg()

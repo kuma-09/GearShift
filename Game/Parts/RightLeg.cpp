@@ -10,6 +10,7 @@ RightLeg::RightLeg()
 	AddComponent<ModelDraw>();
 	AddComponent<BoxCollider>();
 	SetTypeID(TypeID::RightLeg);
+	m_isHit = false;
 }
 
 RightLeg::~RightLeg()

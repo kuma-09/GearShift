@@ -10,6 +10,7 @@ BodyTop::BodyTop()
 	AddComponent<ModelDraw>();
 	AddComponent<BoxCollider>();
 	SetTypeID(TypeID::BodyTop);
+	m_isHit = false;
 }
 
 BodyTop::~BodyTop()
