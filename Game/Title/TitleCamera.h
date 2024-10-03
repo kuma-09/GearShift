@@ -11,5 +11,6 @@ public:
 	void Update(float elapsedTime);
 
 private:
+	GameObject* m_target;
 
 };

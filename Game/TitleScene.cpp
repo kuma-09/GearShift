@@ -23,7 +23,12 @@ void TitleScene::Initialize(Game* game)
     m_titleLogo->SetWindowSize(x, y);
     
     m_skydome = std::make_unique<SkyDome>();
+    m_player = std::make_unique<TitlePlayer>(this);
+    m_player->Initialize();
     
+    m_camera = std::make_unique<TitleCamera>();
+    m_camera->Initialize(m_player.get());
+    m_camera->SetPosition(Vector3{ 0,0,-20 });
     
 }
 
@@ -37,11 +42,15 @@ void TitleScene::Update(float elapsedTime)
     const auto& kb = m_inputManager->GetKeyboardTracker();
 
     m_skydome->Update(elapsedTime);
+    m_camera->Update(elapsedTime);
+
+    m_player->Update(elapsedTime);
 
     if (kb->pressed.Space)
     {
         GetGame()->ChangeScene(GetGame()->GetPlayScene());
     }
+
 
 
 }
@@ -53,6 +62,7 @@ void TitleScene::Render()
 
     m_skydome->Render();
     m_titleLogo->Render();
+    m_player->Render();
 
 }
 
