@@ -1,6 +1,6 @@
 #pragma once
 #include "Game/GameObject.h"
-#include "Game/Menu/Menu.h"
+#include "Game/UI/UI.h"
 #include "Game/Parts/Part.h"
 
 class DropItem :public GameObject
@@ -22,7 +22,7 @@ public:
 	void SetHit(bool isHit) { m_isHit = isHit; }
 
 private:
-	std::unique_ptr<Menu> m_menu;
+	std::unique_ptr<UI> m_menu;
 	std::unique_ptr<Part> m_part;
 	const float m_dropItemModelSize = 0.1f;
 	bool m_isHit;

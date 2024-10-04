@@ -3,7 +3,7 @@
 #include "Framework/Graphics.h"
 #include "Framework/InputManager.h"
 #include "Framework/DeviceResources.h"
-#include "Game/Menu/UserInterface.h"
+#include "UI/UI.h"
 
 class Camera;
 
@@ -25,8 +25,8 @@ private:
 	InputManager* m_inputManager;
 
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_texture;		// テクスチャ
-	std::unique_ptr<tito::UserInterface> m_result;
-	std::unique_ptr<tito::UserInterface> m_backGround;
+	std::unique_ptr<UI> m_result;
+	std::unique_ptr<UI> m_backGround;
 	
 };
 

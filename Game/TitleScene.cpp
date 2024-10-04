@@ -15,9 +15,7 @@ void TitleScene::Initialize(Game* game)
     m_inputManager = InputManager::GetInstance();
 
     SetGame(game);
-
-    int x, y;
-    m_graphics->GetScreenSize(x, y);    
+ 
 
     m_titleLogo = std::make_unique<UI>(L"Resources/Textures/GearShiftLogo.png", Vector2{ 0,0 });
     m_titleLogo->Initialize();
@@ -43,8 +41,8 @@ void TitleScene::Initialize(Game* game)
 void TitleScene::Update(float elapsedTime)
 {
     using namespace DirectX::SimpleMath;
-
     
+    // ƒQ[ƒ€‚ð•ªÍ
     //const auto& gp = m_inputManager->GetGamePadTracker();
     const auto& kb = m_inputManager->GetKeyboardTracker();
 

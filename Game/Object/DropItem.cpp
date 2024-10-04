@@ -12,7 +12,7 @@ DropItem::DropItem(IScene* scene, std::unique_ptr<Part> part)
 	AddComponent<ModelDraw>();
 	GetComponent<ModelDraw>()->Initialize(ModelDraw::DropItem);
 
-	m_menu = std::make_unique<Menu>();
+	m_menu = std::make_unique<UI>(L"Resources/Textures/window.png",DirectX::SimpleMath::Vector2::Zero);
 	m_part = std::move(part);
 
 	using namespace DirectX;
@@ -41,10 +41,6 @@ void DropItem::Initialize()
 {
 	using namespace DirectX::SimpleMath;
 
-	int x;
-	int y;
-	Graphics::GetInstance()->GetScreenSize(x, y);
-	m_menu->Initialize(Graphics::GetInstance()->GetDeviceResources(), x, y);
 	SetScale({ m_dropItemModelSize,m_dropItemModelSize,m_dropItemModelSize});
 
 	Matrix world = Matrix::CreateScale(GetScale());
@@ -58,7 +54,6 @@ void DropItem::Update(float elapsedTime)
 	using namespace DirectX::SimpleMath;
 
 	ComponentsUpdate(elapsedTime);
-	m_menu->Update();
 
 	SetQuaternion(GetQuaternion() * Quaternion::CreateFromYawPitchRoll({ 0,1 * 3.14 / 180,0 }));
 
