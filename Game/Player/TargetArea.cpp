@@ -76,8 +76,7 @@ bool TargetArea::Update(Player* player , GameObject* target)
     // ターゲット範囲にいるか
     if ((x * x) + (y * y) <= m_range * m_range)
     {
-        // 範囲にいた敵をターゲットとして適用
-        player->SetTarget(target);
+        //player->SetTarget(target);
         return true;
     }
 

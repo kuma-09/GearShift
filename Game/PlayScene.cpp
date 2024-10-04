@@ -192,7 +192,24 @@ void PlayScene::Update(float elapsedTime)
 
         if (m_targetArea->Update(m_player.get(), it->get()))
         {
-            inAreaEnemy.push_back(it->get());
+
+            Vector3 dir = it->get()->GetPosition() - m_player->GetPosition();
+            dir.Normalize();
+            Ray ray = { m_player->GetPosition(),dir };
+            float n = (m_player->GetPosition() - it->get()->GetPosition()).Length();
+            int i = 0;
+            for (auto& wall : m_wall)
+            {
+                if (ray.Intersects(*wall->GetComponent<BoxCollider>()->GetBoundingBox(), n))
+                {
+                    i++;
+                }
+            }
+
+            if (i == 0)
+            {
+                inAreaEnemy.push_back(it->get());
+            }
         }
         if (it->get()->GetHP() > 0)
         {
@@ -216,7 +233,19 @@ void PlayScene::Update(float elapsedTime)
     {
         m_player->SetTarget(nullptr);
     }
-    
+    else
+    {
+        for (auto enemy : inAreaEnemy)
+        {
+            if (enemy->GetHP() > 0)
+            {
+                m_player->SetTarget(enemy);
+                break;
+            }
+        }
+    }
+
+
 
 
 
@@ -251,23 +280,6 @@ void PlayScene::Update(float elapsedTime)
         }
         else it->get()->SetHit(false);
     }
-
-    // プレイヤーとターゲットの間に障害物があればロックオン解除
-    if (m_player->GetTarget())
-    {
-        Ray ray = { m_player->GetPosition(),Vector3::Transform(Vector3::Forward,m_player->GetQuaternion()) };
-
-        float n = (m_player->GetPosition() - m_player->GetTarget()->GetPosition()).Length();
-
-        for (auto& wall : m_wall)
-        {
-            if (ray.Intersects(*wall->GetComponent<BoxCollider>()->GetBoundingBox(), n))
-            {
-                m_player->SetTarget(nullptr);
-            }
-        }
-        
-    }
     
 
     // HP表示用のUI
@@ -280,6 +292,9 @@ void PlayScene::Update(float elapsedTime)
     hp.push_back(m_player->GetPart(Part::RightLeg)->GetHP() / m_player->GetPart(Part::RightLeg)->GetMaxHP());
 
     m_hpUI->Update(hp);
+
+    OutputDebugString(std::to_wstring(inAreaEnemy.size()).c_str());
+    OutputDebugString(L"\n");
 
 }
 
@@ -312,6 +327,12 @@ void PlayScene::Render()
     {
         m_player->GetTarget()->GetComponent<HPBar>()->Render(m_player->GetTarget()->GetPosition());
         m_player->GetTarget()->GetComponent<ModelDraw>()->OutLineRender();
+
+        Ray ray = { m_player->GetPosition(),m_player->GetTarget()->GetPosition() - m_player->GetPosition()};
+
+        m_graphics->DrawPrimitivePositionColorBegin(m_graphics->GetViewMatrix(), m_graphics->GetProjectionMatrix(), DirectX::SimpleMath::Matrix::Identity);
+        DX::DrawRay(m_graphics->GetPrimitiveBatchPositionColor(), ray.position, ray.direction, false, DirectX::Colors::Red);
+        m_graphics->DrawPrimitivePositionColorEnd();
     }
 
     for (auto& dropItem : m_dropItem)
@@ -319,11 +340,6 @@ void PlayScene::Render()
         dropItem->Render();
     }
 
-    Ray ray = { m_player->GetPosition(),Vector3::Transform(Vector3::Forward,m_player->GetQuaternion()) };
-
-    m_graphics->DrawPrimitivePositionColorBegin(m_graphics->GetViewMatrix(), m_graphics->GetProjectionMatrix(), DirectX::SimpleMath::Matrix::Identity);
-    DX::DrawRay(m_graphics->GetPrimitiveBatchPositionColor(), ray.position,ray.direction,false, DirectX::Colors::Red);
-    m_graphics->DrawPrimitivePositionColorEnd();
 
     for (auto& particle : m_hitParticle)
     {
