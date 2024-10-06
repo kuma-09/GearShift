@@ -30,7 +30,7 @@ Player::Player(IScene* scene)
 
 	AddComponent<Move>();
 	AddComponent<Camera>();
-	//AddComponent<Look>();
+	AddComponent<Look>();
 	AddComponent<BoxCollider>();
 	AddComponent<Gravity>();
 	AddComponent<Emitter>();
@@ -64,7 +64,7 @@ void Player::Initialize()
 
 	GetComponent<BoxCollider>()->SetTypeID(BoxCollider::TypeID::Player);
 	GetComponent<BoxCollider>()->SetSize({ 1,1.5f,1 });
-	//GetComponent<Look>()->SetTarget(this, nullptr);
+	GetComponent<Look>()->SetTarget(this, nullptr);
 	GetComponent<Camera>()->SetTarget(this, nullptr);
 	SetHP(100);
 	GetComponent<HPBar>()->Initialize();
@@ -147,6 +147,7 @@ void Player::SetTarget(GameObject* target)
 {
 	m_target = target;
 	GetComponent<Camera>()->SetTarget(this, target);
+	GetComponent<Look>()->SetTarget(this, target);
 }
 
 void Player::ChangeState(State* state)

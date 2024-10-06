@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Move.h"
+#include "Game/Player/Player.h"
 #include "Game/GameObject.h"
 #include "Game/Components/Camera.h"
 
@@ -67,7 +68,7 @@ void Move::Update(float elapsedTime)
     velocity.Normalize();
     GetOwner()->SetVelocity(velocity / 3);
 
-    if (velocity != Vector3::Zero)
+    if (!static_cast<Player*>(GetOwner())->GetTarget() && velocity != Vector3::Zero)
     {
         velocity.x *= -1;
         quaternion = Quaternion::CreateFromRotationMatrix(Matrix::CreateLookAt(GetOwner()->GetPosition(), GetOwner()->GetPosition() + velocity, Vector3(0,1,0)));
