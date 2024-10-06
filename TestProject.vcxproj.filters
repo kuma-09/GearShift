@@ -103,8 +103,6 @@
     <ClInclude Include="Game\Components\Camera.h" />
     <ClInclude Include="Game\Object\SkyDome.h" />
     <ClInclude Include="Game\Components\Look.h" />
-    <ClInclude Include="Game\Menu\UserInterface.h" />
-    <ClInclude Include="Game\Menu\Menu.h" />
     <ClInclude Include="Game\TitleScene.h" />
     <ClInclude Include="Game\Components\HPBar.h" />
     <ClInclude Include="Game\Particle\HitParticle.h" />
@@ -192,8 +190,6 @@
     <ClCompile Include="Game\Components\Camera.cpp" />
     <ClCompile Include="Game\Object\SkyDome.cpp" />
     <ClCompile Include="Game\Components\Look.cpp" />
-    <ClCompile Include="Game\Menu\Menu.cpp" />
-    <ClCompile Include="Game\Menu\UserInterface.cpp" />
     <ClCompile Include="Game\TitleScene.cpp" />
     <ClCompile Include="Game\Components\HPBar.cpp" />
     <ClCompile Include="Game\Particle\HitParticle.cpp" />

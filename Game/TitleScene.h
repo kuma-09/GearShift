@@ -3,7 +3,6 @@
 #include "Framework/Graphics.h"
 #include "Framework/InputManager.h"
 #include "Framework/DeviceResources.h"
-#include "Game/Menu/UserInterface.h"
 #include "Game/Object/SkyDome.h"
 #include "Game/Title/TitlePlayer.h"
 #include "Game/Title/TitleCamera.h"

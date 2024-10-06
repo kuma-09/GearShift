@@ -63,7 +63,7 @@ void Player::Initialize()
 	}
 
 	GetComponent<BoxCollider>()->SetTypeID(BoxCollider::TypeID::Player);
-	GetComponent<BoxCollider>()->SetSize({ 1,1,1 });
+	GetComponent<BoxCollider>()->SetSize({ 1,1.f,1 });
 	GetComponent<Look>()->SetTarget(this, nullptr);
 	GetComponent<Camera>()->SetTarget(this, nullptr);
 	SetHP(100);

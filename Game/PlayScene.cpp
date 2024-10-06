@@ -156,6 +156,7 @@ void PlayScene::Update(float elapsedTime)
 
     for (auto& floor : m_floor)
     {
+        floor->Update(elapsedTime);
         BoxCollider::CheckHit(m_player.get(), floor.get());
     }
     for (auto& wall : m_wall)
