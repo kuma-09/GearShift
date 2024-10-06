@@ -26,7 +26,7 @@ void TitleScene::Initialize(Game* game)
     
     m_camera = std::make_unique<TitleCamera>();
     m_camera->Initialize(m_player.get());
-    m_camera->SetPosition(Vector3{ 0,5,-20 });
+    m_camera->SetPosition(Vector3{ 0,5,-10 });
     
     m_floorModel = Resources::GetInstance()->GetFloorModel();
 

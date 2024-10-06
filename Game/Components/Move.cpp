@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Move.h"
 #include "Game/GameObject.h"
+#include "Game/Components/Camera.h"
 
 Move::Move()
 {
@@ -30,6 +31,7 @@ void Move::Update(float elapsedTime)
     // 親オブジェクトの向いている方向
     Quaternion quaternion = GetOwner()->GetQuaternion();
     quaternion = Quaternion::CreateFromYawPitchRoll(GetOwner()->GetQuaternion().ToEuler().y, 0, 0);
+    quaternion = Quaternion::CreateFromYawPitchRoll(GetOwner()->GetComponent<Camera>()->GetCameraQuaternion().ToEuler().y, 0, 0);
 
     // 親オブジェクトに渡すベクトル
     Vector3 velocity = Vector3::Zero;
@@ -59,9 +61,19 @@ void Move::Update(float elapsedTime)
     {
         velocity += Vector3::Transform(Vector3::Right * elapsedTime, quaternion);
     }
+    ;
+
 
     velocity.Normalize();
     GetOwner()->SetVelocity(velocity / 3);
+
+    if (velocity != Vector3::Zero)
+    {
+        velocity.x *= -1;
+        quaternion = Quaternion::CreateFromRotationMatrix(Matrix::CreateLookAt(GetOwner()->GetPosition(), GetOwner()->GetPosition() + velocity, Vector3(0,1,0)));
+        GetOwner()->SetQuaternion(Quaternion::Lerp(GetOwner()->GetQuaternion(), quaternion,0.1f));
+    }
+
 }
 
 

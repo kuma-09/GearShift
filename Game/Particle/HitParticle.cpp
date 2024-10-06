@@ -6,10 +6,6 @@
 #include "HitParticle.h"
 #include <cassert>
 
-/*
-	・「using namespace」は下記２つのみ使用を認める
-	参考：現在、就職作品では「using namespace」の使用は認めていない
-*/
 using namespace DirectX;
 using namespace DirectX::SimpleMath;
 

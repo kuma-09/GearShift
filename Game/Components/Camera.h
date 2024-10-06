@@ -17,6 +17,8 @@ public:
 
 	void shake();
 	void SetTarget(GameObject* player, GameObject* enemy);
+	DirectX::SimpleMath::Vector3 GetTargetPosition() { return m_targetPosition; }
+	DirectX::SimpleMath::Quaternion GetCameraQuaternion(){ return m_quaternion; };
 
 
 private:

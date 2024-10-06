@@ -294,9 +294,6 @@ void PlayScene::Update(float elapsedTime)
 
     m_hpUI->Update(hp);
 
-    OutputDebugString(std::to_wstring(inAreaEnemy.size()).c_str());
-    OutputDebugString(L"\n");
-
 }
 
 /// <summary> •`‰æˆ— </summary>

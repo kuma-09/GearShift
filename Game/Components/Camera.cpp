@@ -46,7 +46,7 @@ void Camera::Update(float elapsedTime)
 
 
     // カメラのデフォルトの座標ベクトル
-    DirectX::SimpleMath::Vector3 eye{ 0.0f,1,20 };
+    DirectX::SimpleMath::Vector3 eye{ 0.0f,CAMERA_HEIGHT,CAMERA_DISTANCE };
 
     // ターゲットの向いている方向に追従する
     eye = DirectX::SimpleMath::Vector3::Transform(eye, m_quaternion);
@@ -73,7 +73,7 @@ void Camera::Update(float elapsedTime)
     }
 
     
-    GetOwner()->SetQuaternion(Quaternion::CreateFromYawPitchRoll({ 0 ,m_rotateX ,0 }));
+    //GetOwner()->SetQuaternion(Quaternion::CreateFromYawPitchRoll({ 0 ,m_rotateX ,0 }));
 
     // View行列の更新
     Matrix view = Matrix::CreateLookAt(m_eyePosition, m_targetPosition, Vector3::UnitY);

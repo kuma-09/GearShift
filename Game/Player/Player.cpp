@@ -30,7 +30,7 @@ Player::Player(IScene* scene)
 
 	AddComponent<Move>();
 	AddComponent<Camera>();
-	AddComponent<Look>();
+	//AddComponent<Look>();
 	AddComponent<BoxCollider>();
 	AddComponent<Gravity>();
 	AddComponent<Emitter>();
@@ -44,7 +44,7 @@ Player::Player(IScene* scene)
 
 	for (int i = 0; i < MAX_BULLET_COUNT; i++)
 	{
-		m_bullet[i] = std::make_unique<HomingBullet>(GetScene(), BoxCollider::TypeID::PlayerBullet);
+		m_bullet[i] = std::make_unique<NormalBullet>(GetScene(), BoxCollider::TypeID::PlayerBullet);
 	}
 
 	m_state = m_idol.get();
@@ -63,8 +63,8 @@ void Player::Initialize()
 	}
 
 	GetComponent<BoxCollider>()->SetTypeID(BoxCollider::TypeID::Player);
-	GetComponent<BoxCollider>()->SetSize({ 1,1.f,1 });
-	GetComponent<Look>()->SetTarget(this, nullptr);
+	GetComponent<BoxCollider>()->SetSize({ 1,1.5f,1 });
+	//GetComponent<Look>()->SetTarget(this, nullptr);
 	GetComponent<Camera>()->SetTarget(this, nullptr);
 	SetHP(100);
 	GetComponent<HPBar>()->Initialize();
@@ -80,14 +80,6 @@ void Player::Update(float elapsedTime)
 	auto& mouse = m_inputManager->GetMouseTracker();
 	auto& kb = m_inputManager->GetKeyboardTracker();
 
-	if (m_target)
-	{
-		GetComponent<Look>()->SetTarget(this, m_target);
-	}
-	else
-	{
-		GetComponent<Look>()->SetTarget(this, nullptr);
-	}
 
 	if (mouse->leftButton == mouse->PRESSED || gp->x == gp->PRESSED )
 	{
@@ -142,7 +134,6 @@ void Player::Render()
 		m_bullet[i]->Render();
 	}
 
-	GetComponent<BoxCollider>()->Render();
 	GetComponent<Emitter>()->Render(GetPosition() - DirectX::SimpleMath::Vector3(0, 1,0));
 	RenderParts();
 
