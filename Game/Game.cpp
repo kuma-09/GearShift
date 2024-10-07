@@ -61,8 +61,12 @@ void Game::Initialize(HWND window, int width, int height)
     m_playScene = nullptr;
     m_resultScene = nullptr;
  
+    m_sceneMask = std::make_unique<SceneMask>();
+    m_sceneMask->Open();
 
-    ChangeScene(GetTitleScene());
+    //ChangeScene(GetTitleScene());
+    m_scene = GetTitleScene();
+    m_scene->Initialize(this);
 
 }
 
@@ -86,6 +90,10 @@ void Game::Update(DX::StepTimer const& timer)
 
     m_inputManager->Update();
 
+    if (m_sceneMask->IsClose() || m_sceneMask->IsOpen())
+    {
+        m_sceneMask->Update(elapsedTime);
+    }
 
     // TODO: Add your game logic here.
 
@@ -111,10 +119,11 @@ void Game::Render()
     Clear();
 
     m_deviceResources->PIXBeginEvent(L"Render");
-   
 
     // TODO: Add your rendering code here.
     m_scene->Render();
+
+    m_sceneMask->Render();
 
     m_deviceResources->PIXEndEvent();
 
@@ -254,6 +263,8 @@ void Game::OnDeviceRestored()
 
 void Game::ChangeScene(IScene* scene)
 {
+
+    m_sceneMask->Close();
 
     if (m_scene)
     {

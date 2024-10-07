@@ -10,6 +10,7 @@
 #include "Game/PlayScene.h"
 #include "Game/TitleScene.h"
 #include "Game/ResultScene.h"
+#include "SceneMask.h"
 
 class Graphics;
 class InputManager;
@@ -110,5 +111,7 @@ private:
     std::unique_ptr<PlayScene> m_playScene;
     std::unique_ptr<TitleScene> m_titleScene;
     std::unique_ptr<ResultScene> m_resultScene;
+
+    std::unique_ptr<SceneMask> m_sceneMask;
 
 };

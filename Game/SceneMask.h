@@ -5,7 +5,10 @@ class SceneMask
 {
 public:
 
+	SceneMask();
+
 	void Update(float elapsedTime);
+	void Render();
 
 	const bool IsOpen() { return m_isOpen; }
 	const bool IsClose() { return m_isClose; }
@@ -19,4 +22,11 @@ private:
 	bool m_isClose;
 
 	float m_alpha;
+
+	Graphics* m_graphics;
+
+	std::unique_ptr<DirectX::SpriteBatch> m_spriteBatch;
+
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_texture;
+
 };
