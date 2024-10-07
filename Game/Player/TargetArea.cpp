@@ -23,6 +23,8 @@ TargetArea::TargetArea()
         )
     );
 
+    SetScale(5.f);
+
 }
 
 TargetArea::~TargetArea()
@@ -48,6 +50,8 @@ bool TargetArea::Update(Player* player , GameObject* target)
     int h;
 
     m_graphics->GetScreenSize(w, h);
+
+    SetScale(GetScale() - 0.01f);
 
     w /= 2;
     h /= 2;
@@ -97,10 +101,16 @@ void TargetArea::Render()
     w /= 2;
     h /= 2;
 
+    RECT rect = { 0,0,m_textureSize.x ,m_textureSize.y };
 
     // ‰æ–Ê‚Ì’†S‚É‰~‚ğ•\¦
     m_spriteBatch->Begin();
-    m_spriteBatch->Draw(m_texture.Get(), Vector2(float(w), float(h)) - Vector2(250, 250));
+
+    m_spriteBatch->Draw(m_texture.Get(), Vector2(float(w), float(h)), &rect ,
+        DirectX::Colors::Red, 0.f,
+        Vector2(m_textureSize.x / 2, m_textureSize.y / 2),
+        Vector2(m_scale,m_scale)
+    );
     m_spriteBatch->End();
 }
 

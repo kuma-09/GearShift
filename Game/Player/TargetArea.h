@@ -11,9 +11,12 @@ public:
 	~TargetArea();
 
 	void Initialize();
-	bool Update(Player* plaer ,GameObject* target);
+	bool Update(Player* plaer, GameObject* target);
 	void Render();
 	void Finalize();
+
+	void SetScale(float scale) { m_scale = scale; }
+	float GetScale() { return m_scale; }
 
 private:
 
@@ -21,6 +24,8 @@ private:
 
 	// ターゲット範囲
 	const float m_range = 200;
+
+	const DirectX::SimpleMath::Vector2 m_textureSize = { 500 , 500 };
 
 	// スプライトバッチ
 	std::unique_ptr<DirectX::SpriteBatch> m_spriteBatch;
@@ -33,5 +38,7 @@ private:
 
 	// 画面の中心用の画像
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_texture;
+
+	float m_scale;
 };
 
