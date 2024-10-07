@@ -7,7 +7,7 @@ public:
 
 	SceneMask();
 
-	void Update(float elapsedTime);
+	bool Update(float elapsedTime);
 	void Render();
 
 	const bool IsOpen() { return m_isOpen; }

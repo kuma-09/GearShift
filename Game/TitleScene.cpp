@@ -21,6 +21,7 @@ void TitleScene::Initialize(Game* game)
     m_titleLogo->Initialize();
 
     m_skydome = std::make_unique<SkyDome>();
+    
     m_player = std::make_unique<TitlePlayer>(this);
     m_player->Initialize();
     

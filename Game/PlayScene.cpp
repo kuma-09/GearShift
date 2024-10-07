@@ -197,7 +197,8 @@ void PlayScene::Update(float elapsedTime)
             Vector3 dir = it->get()->GetPosition() - m_player->GetPosition();
             dir.Normalize();
             Ray ray = { m_player->GetPosition(),dir };
-            float n = (m_player->GetPosition() - it->get()->GetPosition()).Length();
+            float n = Vector3::Distance(m_player->GetPosition() ,it->get()->GetPosition()) / 3;
+            
             int i = 0;
             for (auto& wall : m_wall)
             {

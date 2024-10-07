@@ -62,7 +62,6 @@ void Game::Initialize(HWND window, int width, int height)
     m_resultScene = nullptr;
  
     m_sceneMask = std::make_unique<SceneMask>();
-    m_sceneMask->Open();
 
     //ChangeScene(GetTitleScene());
     m_scene = GetTitleScene();
@@ -92,7 +91,30 @@ void Game::Update(DX::StepTimer const& timer)
 
     if (m_sceneMask->IsClose() || m_sceneMask->IsOpen())
     {
-        m_sceneMask->Update(elapsedTime);
+        if (m_sceneMask->Update(elapsedTime))
+        {
+            m_scene->Finalize();
+            if (dynamic_cast<PlayScene*>(m_scene))
+            {
+                m_playScene.reset();
+            }
+            else if (dynamic_cast<TitleScene*>(m_scene))
+            {
+                m_titleScene.reset();
+            }
+            else if (dynamic_cast<ResultScene*>(m_scene))
+            {
+                m_resultScene.reset();
+            }
+            m_scene = nullptr;
+
+            m_scene = m_tmpScene;
+            m_scene->Initialize(this);
+            
+            // イニシャライズで完結するようにしたい
+            m_scene->Update(elapsedTime);
+        }
+        return;
     }
 
     // TODO: Add your game logic here.
@@ -265,27 +287,7 @@ void Game::ChangeScene(IScene* scene)
 {
 
     m_sceneMask->Close();
-
-    if (m_scene)
-    {
-        m_scene->Finalize();
-        if (dynamic_cast<PlayScene*>(m_scene))
-        {
-            m_playScene.reset();
-        }
-        else if (dynamic_cast<TitleScene*>(m_scene))
-        {
-            m_titleScene.reset();
-        }
-        else if (dynamic_cast<ResultScene*>(m_scene))
-        {
-            m_resultScene.reset();
-        }
-        m_scene = nullptr;
-    }
-
-    m_scene = scene;
-    m_scene->Initialize(this);
+    m_tmpScene = scene;
 
 }
 

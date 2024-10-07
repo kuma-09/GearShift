@@ -131,6 +131,7 @@
     <ClInclude Include="Game\UI\UI.h" />
     <ClInclude Include="Game\Particle\HitEffect.h" />
     <ClInclude Include="Game\SceneMask.h" />
+    <ClInclude Include="Game\UI\Menu.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -221,6 +222,7 @@
     <ClCompile Include="Game\UI\UI.cpp" />
     <ClCompile Include="Game\Particle\HitEffect.cpp" />
     <ClCompile Include="Game\SceneMask.cpp" />
+    <ClCompile Include="Game\UI\Menu.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />

@@ -108,6 +108,7 @@ private:
 
 
     IScene* m_scene;
+    IScene* m_tmpScene;
     std::unique_ptr<PlayScene> m_playScene;
     std::unique_ptr<TitleScene> m_titleScene;
     std::unique_ptr<ResultScene> m_resultScene;

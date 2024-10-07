@@ -26,13 +26,13 @@ SceneMask::SceneMask()
 	);
 }
 
-void SceneMask::Update(float elapsedTime)
+bool SceneMask::Update(float elapsedTime)
 {
 	if (m_isOpen)
 	{
 		// フェードイン
 
-		m_alpha -= elapsedTime;
+		m_alpha -= elapsedTime * 2;
 
 		if (m_alpha <= 0)
 		{
@@ -43,14 +43,16 @@ void SceneMask::Update(float elapsedTime)
 	{
 		// フェードアウト
 
-		m_alpha += elapsedTime;
+		m_alpha += elapsedTime * 2;
 
 		if (m_alpha >= 1)
 		{
 			m_isClose = false;
 			Open();
+			return true;
 		}
 	}
+	return false;
 }
 
 void SceneMask::Render()

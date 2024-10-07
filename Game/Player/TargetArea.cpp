@@ -97,6 +97,7 @@ void TargetArea::Render()
     w /= 2;
     h /= 2;
 
+
     // ‰æ–Ê‚Ì’†S‚É‰~‚ð•\Ž¦
     m_spriteBatch->Begin();
     m_spriteBatch->Draw(m_texture.Get(), Vector2(float(w), float(h)) - Vector2(250, 250));
