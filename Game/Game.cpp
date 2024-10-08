@@ -87,6 +87,10 @@ void Game::Update(DX::StepTimer const& timer)
     using namespace DirectX::SimpleMath;
     float elapsedTime = float(timer.GetElapsedSeconds());
 
+    // FPSデバッグ表示
+    //OutputDebugString(std::to_wstring(timer.GetFramesPerSecond()).c_str());
+    //OutputDebugString(L"\n");
+
     m_inputManager->Update();
 
     if (m_sceneMask->IsClose() || m_sceneMask->IsOpen())

@@ -23,7 +23,7 @@ TargetArea::TargetArea()
         )
     );
 
-    SetScale(5.f);
+    SetScale(1.f);
 
 }
 
@@ -51,7 +51,7 @@ bool TargetArea::Update(Player* player , GameObject* target)
 
     m_graphics->GetScreenSize(w, h);
 
-    SetScale(GetScale() - 0.01f);
+    // SetScale(GetScale() - 0.01f);
 
     w /= 2;
     h /= 2;
