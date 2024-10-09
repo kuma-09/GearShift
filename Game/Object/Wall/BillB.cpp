@@ -40,6 +40,6 @@ void BillB::Render()
 {
 	using namespace DirectX::SimpleMath;
 
-	GetComponent<BoxCollider>()->Render();
+	//GetComponent<BoxCollider>()->Render();
 	GetComponent<ModelDraw>()->Render(Matrix::CreateTranslation(Vector3{ GetPosition().x,GetPosition().y - GetScale().y,GetPosition().z }));
 }

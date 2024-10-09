@@ -9,7 +9,7 @@ public:
 
 
 
-	void Initialize(DirectX::SimpleMath::Vector3 pos);
+	void Set(DirectX::SimpleMath::Vector3 pos);
 
 	void Update(float elapsedTime);
 

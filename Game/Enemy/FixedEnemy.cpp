@@ -81,7 +81,7 @@ void FixedEnemy::Render()
 
 	
 
-	GetComponent<BoxCollider>()->Render();
+	//GetComponent<BoxCollider>()->Render();
 }
 
 void FixedEnemy::Finalize()

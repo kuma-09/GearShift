@@ -89,7 +89,7 @@ bool TargetArea::Update(Player* player , GameObject* target)
 
 }
 
-void TargetArea::Render()
+void TargetArea::Render(bool inArea)
 {
     using namespace DirectX::SimpleMath;
 
@@ -105,12 +105,23 @@ void TargetArea::Render()
 
     // ‰æ–Ê‚Ì’†S‚É‰~‚ğ•\¦
     m_spriteBatch->Begin();
+    if (inArea)
+    {
+        m_spriteBatch->Draw(m_texture.Get(), Vector2(float(w), float(h)), &rect,
+            DirectX::Colors::Red, 0.f,
+            Vector2(m_textureSize.x / 2, m_textureSize.y / 2),
+            Vector2(m_scale, m_scale)
+        );
+    }
+    else
+    {
+        m_spriteBatch->Draw(m_texture.Get(), Vector2(float(w), float(h)), &rect,
+            DirectX::Colors::Green, 0.f,
+            Vector2(m_textureSize.x / 2, m_textureSize.y / 2),
+            Vector2(m_scale, m_scale)
+        );
+    }
 
-    m_spriteBatch->Draw(m_texture.Get(), Vector2(float(w), float(h)), &rect ,
-        DirectX::Colors::Red, 0.f,
-        Vector2(m_textureSize.x / 2, m_textureSize.y / 2),
-        Vector2(m_scale,m_scale)
-    );
     m_spriteBatch->End();
 }
 

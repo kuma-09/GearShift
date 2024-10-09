@@ -100,6 +100,14 @@ void PlayScene::Initialize(Game* game)
     m_wall.back()->SetPosition({ -6,9,-20 });
     m_wall.back()->Initialize();
 
+    m_wall.push_back(std::make_unique<BillA>(this));
+    m_wall.back()->SetPosition({ 30,9,40 });
+    m_wall.back()->Initialize();
+
+    m_wall.push_back(std::make_unique<BillB>(this));
+    m_wall.back()->SetPosition({ -14,9,-10 });
+    m_wall.back()->Initialize();
+
 
     m_dropItem.push_back(std::make_unique<DropItem>(this, std::make_unique<BodyTop>()));
     m_dropItem.back()->SetPosition(Vector3(0, 3, 7));
@@ -327,11 +335,11 @@ void PlayScene::Render()
         m_player->GetTarget()->GetComponent<HPBar>()->Render(m_player->GetTarget()->GetPosition());
         m_player->GetTarget()->GetComponent<ModelDraw>()->OutLineRender();
 
-        Ray ray = { m_player->GetPosition(),m_player->GetTarget()->GetPosition() - m_player->GetPosition()};
+        //Ray ray = { m_player->GetPosition(),m_player->GetTarget()->GetPosition() - m_player->GetPosition()};
 
-        m_graphics->DrawPrimitivePositionColorBegin(m_graphics->GetViewMatrix(), m_graphics->GetProjectionMatrix(), DirectX::SimpleMath::Matrix::Identity);
-        DX::DrawRay(m_graphics->GetPrimitiveBatchPositionColor(), ray.position, ray.direction, false, DirectX::Colors::Red);
-        m_graphics->DrawPrimitivePositionColorEnd();
+        //m_graphics->DrawPrimitivePositionColorBegin(m_graphics->GetViewMatrix(), m_graphics->GetProjectionMatrix(), DirectX::SimpleMath::Matrix::Identity);
+        //DX::DrawRay(m_graphics->GetPrimitiveBatchPositionColor(), ray.position, ray.direction, false, DirectX::Colors::Red);
+        //m_graphics->DrawPrimitivePositionColorEnd();
     }
 
     for (auto& dropItem : m_dropItem)
@@ -345,7 +353,7 @@ void PlayScene::Render()
         particle->Render(m_graphics->GetViewMatrix(), m_graphics->GetProjectionMatrix());
     }
 
-    m_targetArea->Render();
+    m_targetArea->Render(m_player->GetTarget());
     
     m_hpUI->Render();
 

@@ -40,7 +40,7 @@ private:
 	const float SHAKE_TIME = 0.1f;
 
 	// ‰æ–Ê—h‚êŒW”
-	const float SHAKE_RATE = 1.5f;
+	const float SHAKE_RATE = 2.0f;
 
 	// ‰æ–Ê—h‚êŒW”
 	float m_shakeRate;

@@ -41,5 +41,5 @@ void Floor::Render()
 
 
 
-	GetComponent<BoxCollider>()->Render();
+	//GetComponent<BoxCollider>()->Render();
 }

@@ -52,7 +52,7 @@ void Camera::Update(float elapsedTime)
     eye = DirectX::SimpleMath::Vector3::Transform(eye, m_quaternion);
 
     // ƒJƒƒ‰À•W‚ðŒvŽZ‚·‚é
-    m_eyePosition += (m_targetPosition + eye - m_eyePosition) ;
+    m_eyePosition += (m_targetPosition + eye - m_eyePosition);
 
     m_shakeTime -= elapsedTime;
     if (m_shakeTime >= 0)
@@ -71,6 +71,7 @@ void Camera::Update(float elapsedTime)
         Vector3 velocity = Vector3::Transform(Vector3::Lerp( Vector3::Zero, { m_shakeRate,m_shakeRate,0 }, m_shakeTime), GetOwner()->GetQuaternion());
         m_targetPosition += velocity;
     }
+
 
     
     //GetOwner()->SetQuaternion(Quaternion::CreateFromYawPitchRoll({ 0 ,m_rotateX ,0 }));

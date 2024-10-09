@@ -24,7 +24,9 @@ private:
 
 private:
 
-	const float SPEED = 2.0f;
+	const float MAX_TIME = 10.0f;
+	float m_totalTime;
+	const float SPEED = 100.0f;
 	const float DIFFUSION = 0.5f;
 
 };

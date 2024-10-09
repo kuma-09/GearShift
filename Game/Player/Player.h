@@ -105,7 +105,7 @@ private:
 	std::unique_ptr<Attack> m_attack;
 
 	// ’e”z—ñ
-	std::unique_ptr<Bullet> m_bullet[MAX_BULLET_COUNT];
+	std::vector<std::unique_ptr<Bullet>> m_bullet;
 
 	std::unique_ptr<DebugString> m_debugString;
 

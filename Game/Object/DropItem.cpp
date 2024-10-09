@@ -68,7 +68,7 @@ void DropItem::Render()
 	GetComponent<ModelDraw>()->Render(GetWorld());
 	if (m_isHit)
 	{
-		m_menu->Render();
+		//m_menu->Render();
 	}
 }
 

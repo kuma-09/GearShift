@@ -27,7 +27,7 @@ void TitleScene::Initialize(Game* game)
     
     m_camera = std::make_unique<TitleCamera>();
     m_camera->Initialize(m_player.get());
-    m_camera->SetPosition(Vector3{ 0,5,-10 });
+    m_camera->SetPosition(Vector3{ 0,3,-5 });
     
     m_floorModel = Resources::GetInstance()->GetFloorModel();
 
@@ -43,7 +43,6 @@ void TitleScene::Update(float elapsedTime)
 {
     using namespace DirectX::SimpleMath;
     
-    // ƒQ[ƒ€‚ð•ªÍ
     //const auto& gp = m_inputManager->GetGamePadTracker();
     const auto& kb = m_inputManager->GetKeyboardTracker();
 

@@ -88,8 +88,8 @@ void Game::Update(DX::StepTimer const& timer)
     float elapsedTime = float(timer.GetElapsedSeconds());
 
     // FPSデバッグ表示
-    //OutputDebugString(std::to_wstring(timer.GetFramesPerSecond()).c_str());
-    //OutputDebugString(L"\n");
+    OutputDebugString(std::to_wstring(timer.GetFramesPerSecond()).c_str());
+    OutputDebugString(L"\n");
 
     m_inputManager->Update();
 
@@ -149,7 +149,11 @@ void Game::Render()
     // TODO: Add your rendering code here.
     m_scene->Render();
 
-    m_sceneMask->Render();
+    if (m_sceneMask->IsClose() || m_sceneMask->IsOpen())
+    {
+        m_sceneMask->Render();
+    }
+
 
     m_deviceResources->PIXEndEvent();
 

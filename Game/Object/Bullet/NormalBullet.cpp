@@ -46,10 +46,9 @@ void NormalBullet::Shot(GameObject* target)
 	GetOwner()->GetQuaternion();
 	SetTarget(target);
 
-	Vector3 predictionPosition = LinePrediction(static_cast<Player*>(target));
-
 	velocity += Vector3::Transform(Vector3::Forward * SPEED, GetOwner()->GetQuaternion());
 
+	m_totalTime = 0;
 
 	SetVelocity(velocity);
 	SetState(BulletState::FLYING);
@@ -75,12 +74,15 @@ void NormalBullet::Update(float elapsedTime)
 
 	ComponentsUpdate(elapsedTime);
 
-	Vector3 velocity = GetPosition() - GetTarget()->GetPosition();
-	velocity.Normalize();
-
-	SetVelocity(velocity * SPEED);
-
-	SetPosition(GetPosition() - GetVelocity());
+	//Vector3 velocity = GetPosition() - GetTarget()->GetPosition();
+	//velocity.Normalize();
+	m_totalTime += elapsedTime;
+	if (m_totalTime >= MAX_TIME)
+	{
+		Hit();
+	}
+	
+	SetPosition(GetPosition() + GetVelocity() * elapsedTime);
 
 	Matrix world = Matrix::CreateScale(GetScale());
 	world *= Matrix::CreateFromQuaternion(GetQuaternion());
@@ -94,7 +96,6 @@ void NormalBullet::Render()
 	{
 		GetComponent<ModelDraw>()->Render(GetWorld());
 	}
-
 }
 
 void NormalBullet::Collision(BoxCollider* collider)

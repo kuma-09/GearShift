@@ -12,7 +12,7 @@ public:
 
 	void Initialize();
 	bool Update(Player* plaer, GameObject* target);
-	void Render();
+	void Render(bool inArea);
 	void Finalize();
 
 	void SetScale(float scale) { m_scale = scale; }
