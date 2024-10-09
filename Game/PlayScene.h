@@ -9,6 +9,7 @@
 #include "Enemy/HomingEnemy.h"
 #include "Game/Object/Wall/Wall.h"
 #include "Game/Object/DropItem.h"
+#include "Game/Object/DropItemB.h"
 #include "Game/Object/SkyDome.h"
 #include "Game/Object/Floor.h"
 

@@ -111,7 +111,9 @@ void PlayScene::Initialize(Game* game)
 
     m_dropItem.push_back(std::make_unique<DropItem>(this, std::make_unique<BodyTop>()));
     m_dropItem.back()->SetPosition(Vector3(0, 3, 7));
-    m_dropItem.back()->Initialize();
+
+    m_dropItem.push_back(std::make_unique<DropItem>(this, std::make_unique<LeftArm>()));
+    m_dropItem.back()->SetPosition(Vector3(6, 3, 9));
 
     m_floor.push_back(std::make_unique<Floor>(this));
     m_floor.back()->SetPosition({ -100,0,-100 });
@@ -205,14 +207,18 @@ void PlayScene::Update(float elapsedTime)
             Vector3 dir = it->get()->GetPosition() - m_player->GetPosition();
             dir.Normalize();
             Ray ray = { m_player->GetPosition(),dir };
-            float n = Vector3::Distance(m_player->GetPosition() ,it->get()->GetPosition()) / 3;
+            //float n = Vector3::Distance(m_player->GetPosition() ,it->get()->GetPosition()) / 3;
+            float n = 1;
             
             int i = 0;
             for (auto& wall : m_wall)
             {
                 if (ray.Intersects(*wall->GetComponent<BoxCollider>()->GetBoundingBox(), n))
                 {
-                    i++;
+                    if (n <= (it->get()->GetPosition() - m_player->GetPosition()).Length())
+                    {
+                        i++;
+                    }
                 }
             }
 

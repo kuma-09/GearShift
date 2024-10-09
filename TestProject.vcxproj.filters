@@ -132,6 +132,8 @@
     <ClInclude Include="Game\Particle\HitEffect.h" />
     <ClInclude Include="Game\SceneMask.h" />
     <ClInclude Include="Game\UI\Menu.h" />
+    <ClInclude Include="Game\Object\DropItemB.h" />
+    <ClInclude Include="Game\Enemy\State\FixedAttackState.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -223,6 +225,8 @@
     <ClCompile Include="Game\Particle\HitEffect.cpp" />
     <ClCompile Include="Game\SceneMask.cpp" />
     <ClCompile Include="Game\UI\Menu.cpp" />
+    <ClCompile Include="Game\Object\DropItemB.cpp" />
+    <ClCompile Include="Game\Enemy\State\FixedAttackState.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />

@@ -1,24 +1,21 @@
 #include "pch.h"
-#include "DropItem.h"
+#include "DropItemB.h"
 #include "Game/Components/ModelDraw.h"
 #include "Game/Components/BoxCollider.h"
 
-DropItem::DropItem(IScene* scene, std::unique_ptr<Part> part)
+DropItemB::DropItemB(IScene* scene, std::unique_ptr<Bullet> part)
 {
 
 	SetScene(scene);
 	AddComponent<BoxCollider>();
 	GetComponent<BoxCollider>()->SetTypeID(BoxCollider::TypeID::DropItem);
-	GetComponent<BoxCollider>()->SetSize(DirectX::SimpleMath::Vector3::One * 2);
 	AddComponent<ModelDraw>();
 	GetComponent<ModelDraw>()->Initialize(ModelDraw::DropItem);
 
 	m_menu = std::make_unique<UI>(L"Resources/Textures/window.png",DirectX::SimpleMath::Vector2::Zero);
-	m_part = std::move(part);
+	m_bullet = std::move(part);
 
 	using namespace DirectX;
-
-	SetScale({ m_dropItemModelSize,m_dropItemModelSize,m_dropItemModelSize });
 
 	// モデルのエフェクト情報を更新する
 	Resources::GetInstance()->GetDropItemModel()->UpdateEffects([](IEffect* effect)
@@ -35,16 +32,16 @@ DropItem::DropItem(IScene* scene, std::unique_ptr<Part> part)
 
 }
 
-DropItem::~DropItem()
+DropItemB::~DropItemB()
 {
 	Finalize();
 }
 
-void DropItem::Initialize()
+void DropItemB::Initialize()
 {
 	using namespace DirectX::SimpleMath;
 
-
+	SetScale({ m_dropItemModelSize,m_dropItemModelSize,m_dropItemModelSize});
 
 	Matrix world = Matrix::CreateScale(GetScale());
 	world *= Matrix::CreateFromQuaternion(GetQuaternion());
@@ -52,7 +49,7 @@ void DropItem::Initialize()
 	SetWorld(world);
 }
 
-void DropItem::Update(float elapsedTime)
+void DropItemB::Update(float elapsedTime)
 {
 	using namespace DirectX::SimpleMath;
 
@@ -66,7 +63,7 @@ void DropItem::Update(float elapsedTime)
 	SetWorld(world);
 }
 
-void DropItem::Render()
+void DropItemB::Render()
 {
 	GetComponent<ModelDraw>()->Render(GetWorld());
 	if (m_isHit)
@@ -75,6 +72,6 @@ void DropItem::Render()
 	}
 }
 
-void DropItem::Finalize()
+void DropItemB::Finalize()
 {
 }

@@ -44,7 +44,7 @@ Player::Player(IScene* scene)
 
 	for (int i = 0; i < MAX_BULLET_COUNT; i++)
 	{
-		m_bullet.push_back(std::make_unique<NormalBullet>(GetScene(), BoxCollider::TypeID::PlayerBullet));
+		m_bullet.push_back(std::make_unique<HomingBullet>(GetScene(), BoxCollider::TypeID::PlayerBullet));
 	}
 
 	m_state = m_idol.get();

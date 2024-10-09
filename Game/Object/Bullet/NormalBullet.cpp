@@ -43,8 +43,8 @@ void NormalBullet::Shot(GameObject* target)
 
 	Vector3 velocity = Vector3::Zero;
 	SetPosition(GetOwner()->GetPosition());
-	GetOwner()->GetQuaternion();
 	SetTarget(target);
+
 
 	velocity += Vector3::Transform(Vector3::Forward * SPEED, GetOwner()->GetQuaternion());
 

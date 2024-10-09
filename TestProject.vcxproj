@@ -199,6 +199,7 @@
     <ClInclude Include="Game\Enemy\HomingEnemy.h" />
     <ClInclude Include="Game\Enemy\State\EnemyAttackState.h" />
     <ClInclude Include="Game\Enemy\State\EnemyMoveState.h" />
+    <ClInclude Include="Game\Enemy\State\FixedAttackState.h" />
     <ClInclude Include="Game\Game.h" />
     <ClInclude Include="Game\GameObject.h" />
     <ClInclude Include="Game\IScene.h" />
@@ -208,6 +209,7 @@
     <ClInclude Include="Game\Object\Bullet\HomingBullet.h" />
     <ClInclude Include="Game\Object\Bullet\NormalBullet.h" />
     <ClInclude Include="Game\Object\DropItem.h" />
+    <ClInclude Include="Game\Object\DropItemB.h" />
     <ClInclude Include="Game\Object\Floor.h" />
     <ClInclude Include="Game\Object\SkyDome.h" />
     <ClInclude Include="Game\Object\Sword.h">
@@ -273,6 +275,7 @@
     <ClCompile Include="Game\Enemy\HomingEnemy.cpp" />
     <ClCompile Include="Game\Enemy\State\EnemyAttackState.cpp" />
     <ClCompile Include="Game\Enemy\State\EnemyMoveState.cpp" />
+    <ClCompile Include="Game\Enemy\State\FixedAttackState.cpp" />
     <ClCompile Include="Game\Game.cpp" />
     <ClCompile Include="Game\GameObject.cpp" />
     <ClCompile Include="Game\Object\Bullet\Bullet.cpp" />
@@ -281,6 +284,7 @@
     <ClCompile Include="Game\Object\Bullet\HomingBullet.cpp" />
     <ClCompile Include="Game\Object\Bullet\NormalBullet.cpp" />
     <ClCompile Include="Game\Object\DropItem.cpp" />
+    <ClCompile Include="Game\Object\DropItemB.cpp" />
     <ClCompile Include="Game\Object\Floor.cpp" />
     <ClCompile Include="Game\Object\SkyDome.cpp" />
     <ClCompile Include="Game\Object\Sword.cpp">
