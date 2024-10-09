@@ -68,7 +68,7 @@ void Head::Render(DirectX::SimpleMath::Matrix world)
 
 	//GetComponent<HPBar>().lock().get()->Render(GetPosition() + DirectX::SimpleMath::Vector3{ 0,2,0 });
 
-	//GetComponent<BoxCollider>().lock().get()->Render();
+	//GetComponent<BoxCollider>()->Render();
 
 }
 

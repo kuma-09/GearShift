@@ -59,7 +59,7 @@ void PlayScene::Initialize(Game* game)
 
     // プレイヤー生成
     m_player = std::make_unique<Player>(this);
-    m_player->SetPosition(Vector3(3, 5, 3));
+    m_player->SetPosition(Vector3(3, 5, 60));
 
     // パーツを装備
     m_player->SetPart(Part::Head, std::make_unique<Head>());
@@ -78,19 +78,19 @@ void PlayScene::Initialize(Game* game)
 
     m_Enemy.push_back(std::make_unique<HomingEnemy>(this));
     m_Enemy.back()->Initialize(m_player.get());
-    m_Enemy.back()->SetPosition(Vector3(2, 5, 3));
+    m_Enemy.back()->SetPosition(Vector3(32, 5, 10));
 
-    m_Enemy.push_back(std::make_unique<HomingEnemy>(this));
-    m_Enemy.back()->Initialize(m_player.get());
-    m_Enemy.back()->SetPosition(Vector3(-4, 2, -5));
+    //m_Enemy.push_back(std::make_unique<HomingEnemy>(this));
+    //m_Enemy.back()->Initialize(m_player.get());
+    //m_Enemy.back()->SetPosition(Vector3(-4, 2, -5));
 
-    m_Enemy.push_back(std::make_unique<FixedEnemy>(this));
-    m_Enemy.back()->Initialize(m_player.get());
-    m_Enemy.back()->SetPosition(Vector3(5, 3, 2));
+    //m_Enemy.push_back(std::make_unique<FixedEnemy>(this));
+    //m_Enemy.back()->Initialize(m_player.get());
+    //m_Enemy.back()->SetPosition(Vector3(5, 3, 2));
 
-    m_Enemy.push_back(std::make_unique<FixedEnemy>(this));
-    m_Enemy.back()->Initialize(m_player.get());
-    m_Enemy.back()->SetPosition(Vector3(10, 1, 2));
+    //m_Enemy.push_back(std::make_unique<FixedEnemy>(this));
+    //m_Enemy.back()->Initialize(m_player.get());
+    //m_Enemy.back()->SetPosition(Vector3(10, 1, 2));
 
     m_wall.push_back(std::make_unique<BillA>(this));
     m_wall.back()->SetPosition({5,9,40});
@@ -207,8 +207,7 @@ void PlayScene::Update(float elapsedTime)
             Vector3 dir = it->get()->GetPosition() - m_player->GetPosition();
             dir.Normalize();
             Ray ray = { m_player->GetPosition(),dir };
-            //float n = Vector3::Distance(m_player->GetPosition() ,it->get()->GetPosition()) / 3;
-            float n = 1;
+            float n = 0;
             
             int i = 0;
             for (auto& wall : m_wall)

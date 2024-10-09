@@ -142,9 +142,8 @@ void HomingBullet::Render()
 	if (GetState() == FLYING)
 	{
 		GetComponent<ModelDraw>()->Render(GetWorld());
-		GetComponent<Emitter>()->Render(GetPosition());
 	}
-
+	GetComponent<Emitter>()->Render(GetPosition());
 }
 
 void HomingBullet::Collision(BoxCollider* collider)

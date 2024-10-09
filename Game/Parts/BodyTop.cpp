@@ -67,6 +67,7 @@ void BodyTop::Render(DirectX::SimpleMath::Matrix world)
 		GetComponent<ModelDraw>()->Render(GetWorld(), DirectX::Colors::Black);
 	}
 
+
 }
 
 void BodyTop::Finalize()

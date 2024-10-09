@@ -44,31 +44,27 @@ void BodyBottom::Update(float elapsedTime)
 	SetWorld(world);
 
 	ComponentsUpdate(elapsedTime);
-
-	m_isHit = false;
 }
 
 void BodyBottom::Render(DirectX::SimpleMath::Matrix world)
 {
 	UNREFERENCED_PARAMETER(world);
 
-
-
-	if (GetHP() > 0)
-	{
-		if (!m_isHit)
-		{
-			GetComponent<ModelDraw>()->Render(GetWorld());
-		}
-		else
-		{
-			GetComponent<ModelDraw>()->Render(GetWorld(),DirectX::Colors::Red);
-		}
-	}
-	else
-	{
-		GetComponent<ModelDraw>()->Render(GetWorld(),DirectX::Colors::Black);
-	}
+	//if (GetHP() > 0)
+	//{
+	//	if (!m_isHit)
+	//	{
+	//		GetComponent<ModelDraw>()->Render(GetWorld());
+	//	}
+	//	else
+	//	{
+	//		GetComponent<ModelDraw>()->Render(GetWorld(),DirectX::Colors::Red);
+	//	}
+	//}
+	//else
+	//{
+	//	GetComponent<ModelDraw>()->Render(GetWorld(),DirectX::Colors::Black);
+	//}
 
 	//GetComponent<HPBar>().lock().get()->Render(GetPosition() + DirectX::SimpleMath::Vector3{ 0,2,0 });
 

@@ -28,7 +28,11 @@ void EnemyMoveState::Update(float elapsedTime)
 
 	float dis = (m_enemy->GetPosition() - m_enemy->GetTarget()->GetPosition()).Length();
 
-	if (dis > 20)
+	if (dis > 40)
+	{
+		m_enemy->SetVelocity({ 0,0,-SPEED });
+	}
+	else if (dis > 20)
 	{
 		m_enemy->ChangeState(m_enemy->GetAttackState());
 	}

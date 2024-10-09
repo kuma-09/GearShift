@@ -106,10 +106,8 @@ void Player::Update(float elapsedTime)
 
 	for (int i = 0; i < MAX_BULLET_COUNT; i++)
 	{
-		if (m_bullet[i]->GetState() == Bullet::FLYING)
-		{
+
 			m_bullet[i]->Update(elapsedTime);
-		}
 	}
 
 	SetPrePosition(GetPosition());
