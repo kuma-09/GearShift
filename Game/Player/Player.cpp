@@ -182,9 +182,12 @@ void Player::Collision(BoxCollider* collider)
 		}
 	}
 	
-	if (collider->GetTypeID() == BoxCollider::Floor || collider->GetTypeID() == BoxCollider::Wall)
+	if (collider->GetTypeID() == BoxCollider::Floor ||
+		collider->GetTypeID() == BoxCollider::Wall  ||
+		collider->GetTypeID() == BoxCollider::Enemy)
 	{
 		SetOnFloor(true);
+		BoxCollider::CheckHit(this, collider->GetOwner());
 	}
 }
 

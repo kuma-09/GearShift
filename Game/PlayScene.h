@@ -62,6 +62,14 @@ public:
 
 	// ヒットエフェクトを生成する関数
 	void CreateHitParticle(DirectX::SimpleMath::Matrix world);
+private:
+
+
+	// 敵を削除
+	std::vector<std::unique_ptr<Enemy>>::iterator RemoveEnemy(std::vector<std::unique_ptr<Enemy>>::iterator it);
+
+	// アイテムを削除
+	void RemoveItem(std::vector<std::unique_ptr<DropItem>>::iterator it);
 
 private:
 

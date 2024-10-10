@@ -118,15 +118,7 @@ void BoxCollider::CheckHit(GameObject* object1, GameObject* object2)
 
 
     // ‰Ÿ‚µ–ß‚·
-
     object1->SetPosition(object1->GetPosition() + pushBackVec);
-
-    Matrix world = Matrix::Identity;
-    world = Matrix::CreateScale(object1->GetScale());
-    world *= Matrix::CreateFromQuaternion(object1->GetQuaternion());
-    world *= Matrix::CreateTranslation(object1->GetPosition());
-
-    object1->SetWorld(world);
     object1->GetComponent<BoxCollider>()->Update(0.0f);
     
 }

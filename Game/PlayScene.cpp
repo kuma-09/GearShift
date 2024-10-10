@@ -59,7 +59,7 @@ void PlayScene::Initialize(Game* game)
 
     // プレイヤー生成
     m_player = std::make_unique<Player>(this);
-    m_player->SetPosition(Vector3(3, 5, 60));
+    m_player->SetPosition(Vector3(3, 5, 10));
 
     // パーツを装備
     m_player->SetPart(Part::Head, std::make_unique<Head>());
@@ -109,7 +109,7 @@ void PlayScene::Initialize(Game* game)
 
 
     m_dropItem.push_back(std::make_unique<DropItem>(this, std::make_unique<BodyTop>()));
-    m_dropItem.back()->SetPosition(Vector3(0, 3, 7));
+    m_dropItem.back()->SetPosition(Vector3(0, 20, 7));
 
     m_dropItem.push_back(std::make_unique<DropItem>(this, std::make_unique<LeftArm>()));
     m_dropItem.back()->SetPosition(Vector3(6, 3, 9));
@@ -162,25 +162,9 @@ void PlayScene::Update(float elapsedTime)
     // プレイヤーの更新
     m_player->Update(elapsedTime);
 
-
-    for (auto& floor : m_floor)
-    {
-        floor->Update(elapsedTime);
-        BoxCollider::CheckHit(m_player.get(), floor.get());
-    }
-    for (auto& wall : m_wall)
-    {
-        BoxCollider::CheckHit(m_player.get(), wall.get());
-    }
-
     for (auto& dropItem : m_dropItem)
     {
         dropItem->Update(elapsedTime);
-    }
-
-    for (auto& wall : m_wall)
-    {
-        wall->Update(elapsedTime);
     }
 
     std::vector<Enemy*> inAreaEnemy;
@@ -189,16 +173,6 @@ void PlayScene::Update(float elapsedTime)
     for (auto it = m_Enemy.begin(); it != m_Enemy.end();)
     {
         it->get()->Update(elapsedTime);
-        BoxCollider::CheckHit(m_player.get(), it->get());
-
-        for (auto& floor : m_floor)
-        {
-            BoxCollider::CheckHit(it->get(), floor.get());
-        }
-        for (auto& wall : m_wall)
-        {
-            BoxCollider::CheckHit(it->get(), wall.get());
-        }
 
         if (m_targetArea->Update(m_player.get(), it->get()))
         {
@@ -231,10 +205,7 @@ void PlayScene::Update(float elapsedTime)
         }
         else
         {
-            RemoveCollider(it->get()->GetComponent<BoxCollider>());
-            it->get()->Finalize();
-            it = m_Enemy.erase(it);
-            m_player->SetTarget(nullptr);
+            it = RemoveEnemy(it);
             if (m_Enemy.empty())
             {
                 GetGame()->ChangeScene(GetGame()->GetResultScene());
@@ -254,7 +225,7 @@ void PlayScene::Update(float elapsedTime)
             if (enemy->GetComponent<HP>()->GetHP() > 0)
             {
                 m_player->SetTarget(enemy);
-                continue;
+                break;
             }
         }
     }
@@ -285,10 +256,7 @@ void PlayScene::Update(float elapsedTime)
             it->get()->SetHit(true);
             if (kb->pressed.X)
             {
-                Part::TypeID typeID = it->get()->GetPartType();
-                m_player->SetPart(typeID, it->get()->GetPart());
-                RemoveCollider(it->get()->GetComponent<BoxCollider>());
-                it = m_dropItem.erase(it);
+                RemoveItem(it);
                 break;
             }
         }
@@ -338,12 +306,6 @@ void PlayScene::Render()
     {
         m_player->GetTarget()->GetComponent<HPBar>()->Render(m_player->GetTarget()->GetPosition());
         m_player->GetTarget()->GetComponent<ModelDraw>()->OutLineRender();
-
-        //Ray ray = { m_player->GetPosition(),m_player->GetTarget()->GetPosition() - m_player->GetPosition()};
-
-        //m_graphics->DrawPrimitivePositionColorBegin(m_graphics->GetViewMatrix(), m_graphics->GetProjectionMatrix(), DirectX::SimpleMath::Matrix::Identity);
-        //DX::DrawRay(m_graphics->GetPrimitiveBatchPositionColor(), ray.position, ray.direction, false, DirectX::Colors::Red);
-        //m_graphics->DrawPrimitivePositionColorEnd();
     }
 
     for (auto& dropItem : m_dropItem)
@@ -413,4 +375,20 @@ void PlayScene::CreateHitParticle(DirectX::SimpleMath::Matrix world)
     }
 
 
+}
+
+std::vector<std::unique_ptr<Enemy>>::iterator PlayScene::RemoveEnemy(std::vector<std::unique_ptr<Enemy>>::iterator it)
+{
+    RemoveCollider(it->get()->GetComponent<BoxCollider>());
+    it->get()->Finalize();
+    m_player->SetTarget(nullptr);
+    return it = m_Enemy.erase(it);
+}
+
+void PlayScene::RemoveItem(std::vector<std::unique_ptr<DropItem>>::iterator it)
+{
+    Part::TypeID typeID = it->get()->GetPartType();
+    m_player->SetPart(typeID, it->get()->GetPart());
+    RemoveCollider(it->get()->GetComponent<BoxCollider>());
+    it = m_dropItem.erase(it);
 }

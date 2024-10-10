@@ -114,4 +114,11 @@ void HomingEnemy::Collision(BoxCollider* collider)
 			bulletObject->Hit();
 		}
 	}
+
+	if (collider->GetTypeID() == BoxCollider::Floor ||
+		collider->GetTypeID() == BoxCollider::Wall)
+	{
+		BoxCollider::CheckHit(this, collider->GetOwner());
+	}
+
 }

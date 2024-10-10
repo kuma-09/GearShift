@@ -23,6 +23,8 @@ public:
 	std::unique_ptr<Part> GetPart() { return std::move(m_part); }
 	void SetHit(bool isHit) { m_isHit = isHit; }
 
+	void Collision(BoxCollider* collider);
+
 private:
 	std::unique_ptr<UI> m_menu;
 	std::unique_ptr<Part> m_part;
