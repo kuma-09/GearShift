@@ -32,7 +32,7 @@ private:
 	std::vector<std::unique_ptr<Particle>> m_particles;
 
 	float m_totalTime;
-	const float m_interval = 0.1f;
+	const float m_interval = 0.05f;
 
 
 };

@@ -88,7 +88,6 @@
     <ClInclude Include="Game\Parts\LeftLeg.h" />
     <ClInclude Include="Game\Parts\RightArm.h" />
     <ClInclude Include="Game\Parts\RightLeg.h" />
-    <ClInclude Include="Game\Parts\BodyBottom.h" />
     <ClInclude Include="Game\Parts\BodyTop.h" />
     <ClInclude Include="Game\Particle\ShaderParticle.h" />
     <ClInclude Include="Game\Components\Gravity.h" />
@@ -134,6 +133,7 @@
     <ClInclude Include="Game\UI\Menu.h" />
     <ClInclude Include="Game\Object\DropItemB.h" />
     <ClInclude Include="Game\Enemy\State\FixedAttackState.h" />
+    <ClInclude Include="Game\Components\HP.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -182,7 +182,6 @@
     <ClCompile Include="Game\Parts\LeftLeg.cpp" />
     <ClCompile Include="Game\Parts\RightArm.cpp" />
     <ClCompile Include="Game\Parts\RightLeg.cpp" />
-    <ClCompile Include="Game\Parts\BodyBottom.cpp" />
     <ClCompile Include="Game\Parts\BodyTop.cpp" />
     <ClCompile Include="Game\Components\Gravity.cpp" />
     <ClCompile Include="Framework\DebugString.cpp" />
@@ -227,6 +226,7 @@
     <ClCompile Include="Game\UI\Menu.cpp" />
     <ClCompile Include="Game\Object\DropItemB.cpp" />
     <ClCompile Include="Game\Enemy\State\FixedAttackState.cpp" />
+    <ClCompile Include="Game\Components\HP.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />

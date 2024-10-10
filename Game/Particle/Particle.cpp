@@ -49,7 +49,11 @@ void Particle::Render(
     billboard._42 = 0;
     billboard._43 = 0;
 
-    billboard *= Matrix::CreateTranslation(m_pos);
+    Matrix world = Matrix::CreateScale(5 - m_lifeTime * 5);
+    world *= Matrix::CreateTranslation(m_pos);
+
+    billboard *= world;
+
 
     m_graphics->DrawPrimitiveBegin(m_graphics->GetViewMatrix(), m_graphics->GetProjectionMatrix(),billboard, {1,1,1,m_lifeTime});
     m_graphics->GetPrimitiveBatch()->DrawQuad(*v1, *v2, *v4,*v3);

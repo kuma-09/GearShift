@@ -189,6 +189,7 @@
     <ClInclude Include="Game\Components\BoxCollider.h" />
     <ClInclude Include="Game\Components\Camera.h" />
     <ClInclude Include="Game\Components\Gravity.h" />
+    <ClInclude Include="Game\Components\HP.h" />
     <ClInclude Include="Game\Components\HPBar.h" />
     <ClInclude Include="Game\Components\IComponent.h" />
     <ClInclude Include="Game\Components\Look.h" />
@@ -227,7 +228,6 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClInclude>
-    <ClInclude Include="Game\Parts\BodyBottom.h" />
     <ClInclude Include="Game\Parts\BodyTop.h" />
     <ClInclude Include="Game\Parts\Head.h" />
     <ClInclude Include="Game\Parts\Part.h" />
@@ -266,6 +266,7 @@
     <ClCompile Include="Game\Components\BoxCollider.cpp" />
     <ClCompile Include="Game\Components\Camera.cpp" />
     <ClCompile Include="Game\Components\Gravity.cpp" />
+    <ClCompile Include="Game\Components\HP.cpp" />
     <ClCompile Include="Game\Components\HPBar.cpp" />
     <ClCompile Include="Game\Components\Look.cpp" />
     <ClCompile Include="Game\Components\ModelDraw.cpp" />
@@ -298,7 +299,6 @@
     <ClCompile Include="Game\Particle\HitEffect.cpp" />
     <ClCompile Include="Game\Particle\HitParticle.cpp" />
     <ClCompile Include="Game\Particle\Particle.cpp" />
-    <ClCompile Include="Game\Parts\BodyBottom.cpp" />
     <ClCompile Include="Game\Parts\BodyTop.cpp" />
     <ClCompile Include="Game\Parts\Head.cpp" />
     <ClCompile Include="Game\Parts\LeftArm.cpp" />

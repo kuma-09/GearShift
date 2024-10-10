@@ -4,6 +4,7 @@
 #include "Game.h"
 
 #include "Framework/Microsoft/DebugDraw.h"
+#include "Game/Components/HP.h"
 #include "Game/Components/Camera.h"
 #include "Game/Components/BoxCollider.h"
 #include "Game/Components/HPBar.h"
@@ -12,7 +13,6 @@
 #include "Game/Parts/Part.h"
 #include "Game/Parts/Head.h"
 #include "Game/Parts/BodyTop.h"
-#include "Game/Parts/BodyBottom.h"
 #include "Game/Parts/LeftArm.h"
 #include "Game/Parts/LeftLeg.h"
 #include "Game/Parts/RightArm.h"
@@ -64,7 +64,6 @@ void PlayScene::Initialize(Game* game)
     // パーツを装備
     m_player->SetPart(Part::Head, std::make_unique<Head>());
     m_player->SetPart(Part::BodyTop,std::make_unique<BodyTop>());
-    m_player->SetPart(Part::BodyBottom, std::make_unique<BodyBottom>());
     m_player->SetPart(Part::LeftArm, std::make_unique<LeftArm>());
     m_player->SetPart(Part::RightArm, std::make_unique<RightArm>());
     m_player->SetPart(Part::LeftLeg,  std::make_unique<LeftLeg>());
@@ -221,12 +220,12 @@ void PlayScene::Update(float elapsedTime)
                 }
             }
 
-            if (i == 0)
+            if (i == 0 && it->get()->GetComponent<HP>()->GetHP() > 0)
             {
                 inAreaEnemy.push_back(it->get());
             }
         }
-        if (it->get()->GetHP() > 0)
+        if (it->get()->GetComponent<HP>()->GetHP() > 0)
         {
             it++;
         }
@@ -252,10 +251,10 @@ void PlayScene::Update(float elapsedTime)
     {
         for (auto enemy : inAreaEnemy)
         {
-            if (enemy->GetHP() > 0)
+            if (enemy->GetComponent<HP>()->GetHP() > 0)
             {
                 m_player->SetTarget(enemy);
-                break;
+                continue;
             }
         }
     }
@@ -299,12 +298,12 @@ void PlayScene::Update(float elapsedTime)
 
     // HP表示用のUI
     std::vector<float> hp;
-    hp.push_back(m_player->GetPart(Part::Head)->GetHP() / m_player->GetPart(Part::Head)->GetMaxHP());
-    hp.push_back(m_player->GetPart(Part::BodyTop)->GetHP() / m_player->GetPart(Part::BodyTop)->GetMaxHP());
-    hp.push_back(m_player->GetPart(Part::LeftArm)->GetHP() / m_player->GetPart(Part::LeftArm)->GetMaxHP());
-    hp.push_back(m_player->GetPart(Part::RightArm)->GetHP() / m_player->GetPart(Part::RightArm)->GetMaxHP());
-    hp.push_back(m_player->GetPart(Part::LeftLeg)->GetHP() / m_player->GetPart(Part::LeftLeg)->GetMaxHP());
-    hp.push_back(m_player->GetPart(Part::RightLeg)->GetHP() / m_player->GetPart(Part::RightLeg)->GetMaxHP());
+    hp.push_back(m_player->GetPart(Part::Head)->GetComponent<HP>()->GetHP() / m_player->GetPart(Part::Head)->GetMaxHP());
+    hp.push_back(m_player->GetPart(Part::BodyTop)->GetComponent<HP>()->GetHP() / m_player->GetPart(Part::BodyTop)->GetMaxHP());
+    hp.push_back(m_player->GetPart(Part::LeftArm)->GetComponent<HP>()->GetHP() / m_player->GetPart(Part::LeftArm)->GetMaxHP());
+    hp.push_back(m_player->GetPart(Part::RightArm)->GetComponent<HP>()->GetHP() / m_player->GetPart(Part::RightArm)->GetMaxHP());
+    hp.push_back(m_player->GetPart(Part::LeftLeg)->GetComponent<HP>()->GetHP() / m_player->GetPart(Part::LeftLeg)->GetMaxHP());
+    hp.push_back(m_player->GetPart(Part::RightLeg)->GetComponent<HP>()->GetHP() / m_player->GetPart(Part::RightLeg)->GetMaxHP());
 
     m_hpUI->Update(hp);
 

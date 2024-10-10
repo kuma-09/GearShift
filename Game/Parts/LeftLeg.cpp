@@ -5,9 +5,11 @@
 #include "Game/Object/Bullet/Bullet.h"
 #include "Game/Components/ModelDraw.h"
 #include "Game/Components/BoxCollider.h"
+#include <Game/Components/HP.h>
 
 LeftLeg::LeftLeg()
 {
+	AddComponent<HP>();
 	AddComponent<ModelDraw>();
 	AddComponent<BoxCollider>();
 	SetTypeID(Part::LeftLeg);
@@ -22,7 +24,7 @@ LeftLeg::~LeftLeg()
 void LeftLeg::Initialize(int hp,IScene* scene)
 {
 	SetScene(scene);
-	SetHP(hp);
+	GetComponent<HP>()->SetHP(hp);
 	SetMaxHP(float(hp));
 	GetComponent<ModelDraw>()->Initialize(ModelDraw::LLeg);
 
@@ -58,7 +60,7 @@ void LeftLeg::Render(DirectX::SimpleMath::Matrix world)
 
 
 
-	if (GetHP() >= 0)
+	if (GetComponent<HP>()->GetHP() >= 0)
 	{
 		if (!m_isHit)
 		{
@@ -93,11 +95,7 @@ void LeftLeg::Collision(BoxCollider* collider)
 		if (bulletObject->GetState() == Bullet::FLYING)
 		{
 			GetOwner()->GetComponent<Camera>()->shake();
-			SetHP(GetHP() - 1);
-			if (GetHP() <= 0)
-			{
-				GetOwner()->SetHP(GetOwner()->GetHP() - 1);
-			}
+			GetComponent<HP>()->SetHP(GetComponent<HP>()->GetHP() - 1);
 			bulletObject->Hit();
 			m_isHit = true;
 		}

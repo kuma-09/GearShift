@@ -4,9 +4,11 @@
 #include "Game/Components/Camera.h"
 #include "Game/Components/ModelDraw.h"
 #include "Game/Components/BoxCollider.h"
+#include <Game/Components/HP.h>
 
 RightLeg::RightLeg()
 {
+	AddComponent<HP>();
 	AddComponent<ModelDraw>();
 	AddComponent<BoxCollider>();
 	SetTypeID(TypeID::RightLeg);
@@ -21,7 +23,7 @@ RightLeg::~RightLeg()
 void RightLeg::Initialize(int hp,IScene* scene)
 {
 	SetScene(scene);
-	SetHP(hp);
+	GetComponent<HP>()->SetHP(hp);
 	SetMaxHP(float(hp));
 	GetComponent<ModelDraw>()->Initialize(ModelDraw::RLeg);
 }
@@ -53,7 +55,7 @@ void RightLeg::Render(DirectX::SimpleMath::Matrix world)
 
 
 
-	if (GetHP() >= 0)
+	if (GetComponent<HP>()->GetHP() >= 0)
 	{
 		if (!m_isHit)
 		{
@@ -84,11 +86,7 @@ void RightLeg::Collision(BoxCollider* collider)
 		if (bulletObject->GetState() == Bullet::FLYING)
 		{
 			GetOwner()->GetComponent<Camera>()->shake();
-			SetHP(GetHP() - 1);
-			if (GetHP() <= 0)
-			{
-				GetOwner()->SetHP(GetOwner()->GetHP() - 1);
-			}
+			GetComponent<HP>()->SetHP(GetComponent<HP>()->GetHP() - 1);
 			bulletObject->Hit();
 			m_isHit = true;
 		}

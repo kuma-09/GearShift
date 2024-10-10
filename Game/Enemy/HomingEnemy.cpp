@@ -2,6 +2,7 @@
 #include "HomingEnemy.h"
 #include <iostream>
 #include <algorithm>
+#include "Game/Components/HP.h"
 #include "Game/Components/Look.h"
 #include "Game/Components/ModelDraw.h"
 #include "Game/Components/BoxCollider.h"
@@ -18,6 +19,7 @@ HomingEnemy::HomingEnemy(IScene* scene)
 {
 	SetScene(scene);
 
+	AddComponent<HP>();
 	AddComponent<Look>();
 	AddComponent<ModelDraw>();
 	AddComponent<BoxCollider>();
@@ -39,7 +41,7 @@ HomingEnemy::~HomingEnemy()
 
 void HomingEnemy::Initialize(GameObject* target)
 {
-	SetHP(10);
+	GetComponent<HP>()->SetHP(10);
 	SetTarget(target);
 	GetComponent<Look>()->SetTarget(this, target);
 	GetComponent<ModelDraw>()->Initialize(ModelDraw::Dice);
@@ -76,7 +78,7 @@ void HomingEnemy::Render()
 	
 	m_bullet->Render();
 	m_state->Render();
-	if (GetHP() <= 0) return;
+	if (GetComponent<HP>()->GetHP() <= 0) return;
 	GetComponent<ModelDraw>()->Render(GetWorld());
 
 	
@@ -107,7 +109,7 @@ void HomingEnemy::Collision(BoxCollider* collider)
 		Bullet* bulletObject = static_cast<Bullet*>(collider->GetOwner());
 		if (bulletObject->GetState() == Bullet::FLYING)
 		{
-			SetHP(GetHP() - 1);
+			GetComponent<HP>()->SetHP(GetComponent<HP>()->GetHP() - 1);
 			static_cast<PlayScene*>(GetScene())->CreateHitParticle(GetWorld());
 			bulletObject->Hit();
 		}

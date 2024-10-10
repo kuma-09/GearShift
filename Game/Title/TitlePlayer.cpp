@@ -11,7 +11,6 @@
 
 #include "Game/Parts/Head.h"
 #include "Game/Parts/BodyTop.h"
-#include "Game/Parts/BodyBottom.h"
 #include "Game/Parts/LeftArm.h"
 #include "Game/Parts/RightArm.h"
 #include "Game/Parts/LeftLeg.h"
@@ -24,7 +23,6 @@ TitlePlayer::TitlePlayer(IScene* scene)
 	SetScene(scene);
 	SetPart(Part::Head, std::make_unique<Head>());
 	SetPart(Part::BodyTop, std::make_unique<BodyTop>());
-	SetPart(Part::BodyBottom, std::make_unique<BodyBottom>());
 	SetPart(Part::LeftArm, std::make_unique<LeftArm>());
 	SetPart(Part::RightArm, std::make_unique<RightArm>());
 	SetPart(Part::LeftLeg, std::make_unique<LeftLeg>());

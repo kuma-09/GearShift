@@ -38,10 +38,6 @@ public:
 	void SetWorld(DirectX::SimpleMath::Matrix world) { m_world = world; }
 	DirectX::SimpleMath::Matrix GetWorld() { return m_world; }
 
-	// HP
-	int GetHP() { return m_hp; }
-	void SetHP(int hp) { m_hp = hp; }
-
 	void UpdateWorld();
 
 	// コンポーネントを追加

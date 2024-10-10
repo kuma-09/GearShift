@@ -4,9 +4,11 @@
 #include "Game/Object/Bullet/Bullet.h"
 #include "Game/Components/ModelDraw.h"
 #include "Game/Components/BoxCollider.h"
+#include <Game/Components/HP.h>
 
 BodyTop::BodyTop()
 {
+	AddComponent<HP>();
 	AddComponent<ModelDraw>();
 	AddComponent<BoxCollider>();
 	SetTypeID(TypeID::BodyTop);
@@ -22,7 +24,7 @@ BodyTop::~BodyTop()
 void BodyTop::Initialize(int hp,IScene* scene)
 {
 	SetScene(scene);
-	SetHP(hp);
+	GetComponent<HP>()->SetHP(hp);
 	SetMaxHP(float(hp));
 	GetComponent<ModelDraw>()->Initialize(ModelDraw::BodyTop);
 }
@@ -51,7 +53,7 @@ void BodyTop::Render(DirectX::SimpleMath::Matrix world)
 {
 	UNREFERENCED_PARAMETER(world);
 
-	if (GetHP() > 0)
+	if (GetComponent<HP>()->GetHP() > 0)
 	{
 		if (!m_isHit)
 		{
@@ -77,17 +79,13 @@ void BodyTop::Finalize()
 void BodyTop::Collision(BoxCollider* collider)
 {
 	// ÉpÅ[ÉcÇ∆ÇÃìñÇΩÇËîªíË
-	if (GetComponent<BoxCollider>()->GetBoundingBox()->Intersects(*collider->GetBoundingBox()) && GetHP() > 0)
+	if (GetComponent<BoxCollider>()->GetBoundingBox()->Intersects(*collider->GetBoundingBox()) &&  GetComponent<HP>()->GetHP() > 0)
 	{
 		Bullet* bulletObject = static_cast<Bullet*>(collider->GetOwner());
 		if (bulletObject->GetState() == Bullet::FLYING)
 		{
 			GetOwner()->GetComponent<Camera>()->shake();
-			SetHP(GetHP() - 1);
-			if (GetHP() <= 0)
-			{
-				GetOwner()->SetHP(GetOwner()->GetHP() - 1);
-			}
+			GetComponent<HP>()->SetHP(GetComponent<HP>()->GetHP() - 1);
 			bulletObject->Hit();
 			m_isHit = true;
 		}

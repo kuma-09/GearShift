@@ -9,7 +9,6 @@
 #include "Game/Components/Camera.h"
 #include "Game/Components/Look.h"
 
-#include "Game/Particle/Emitter.h"
 
 #include "Game/Player/State/Idol.h"
 #include "Game/Player/State/Jump.h"
@@ -18,6 +17,7 @@
 #include "Game/Player/State/Attack.h"
 #include "Game/Object/Bullet/NormalBullet.h"
 #include "Game/Object/Bullet/HomingBullet.h"
+#include <Game/Components/HP.h>
 
 
 
@@ -28,12 +28,12 @@ Player::Player(IScene* scene)
 
 	m_inputManager = InputManager::GetInstance();
 
+	AddComponent<HP>();
 	AddComponent<Move>();
 	AddComponent<Camera>();
 	AddComponent<Look>();
 	AddComponent<BoxCollider>();
 	AddComponent<Gravity>();
-	AddComponent<Emitter>();
 	AddComponent<HPBar>();
 
 	m_idol = std::make_unique<Idol>(this);
@@ -66,7 +66,7 @@ void Player::Initialize()
 	GetComponent<BoxCollider>()->SetSize({ 1,1.5f,1 });
 	GetComponent<Look>()->SetTarget(this, nullptr);
 	GetComponent<Camera>()->SetTarget(this, nullptr);
-	SetHP(100);
+	GetComponent<HP>()->SetHP(100);
 	GetComponent<HPBar>()->Initialize();
 	SetOnFloor(false);
 
@@ -132,7 +132,6 @@ void Player::Render()
 		m_bullet[i]->Render();
 	}
 
-	GetComponent<Emitter>()->Render(GetPosition() - DirectX::SimpleMath::Vector3(0, 1,0));
 	RenderParts();
 
 }
@@ -176,7 +175,6 @@ void Player::Collision(BoxCollider* collider)
 		{
 			GetPart(Part::Head)->Collision(collider);
 			GetPart(Part::BodyTop)->Collision(collider);
-			GetPart(Part::BodyBottom)->Collision(collider);
 			GetPart(Part::LeftArm)->Collision(collider);
 			GetPart(Part::RightArm)->Collision(collider);
 			GetPart(Part::LeftLeg)->Collision(collider);

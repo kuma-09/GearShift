@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "HPBar.h"
+#include "HP.h"
 #include "Game/GameObject.h"
-
 
 
 HPBar::HPBar()
@@ -23,7 +23,7 @@ HPBar::~HPBar()
 
 void HPBar::Initialize()
 {
-    m_maxHp = GetOwner()->GetHP();
+    m_maxHp = GetOwner()->GetComponent<HP>()->GetHP();
 }
 
 void HPBar::Update(float elapsedTime)
@@ -35,9 +35,9 @@ void HPBar::Update(float elapsedTime)
 
     float barSize = 0;
 
-    if (GetOwner()->GetHP())
+    if (GetOwner()->GetComponent<HP>()->GetHP())
     {
-        barSize =  (float)GetOwner()->GetHP() / (float)m_maxHp;
+        barSize =  (float)GetOwner()->GetComponent<HP>()->GetHP() / (float)m_maxHp;
         barSize *= 4;
         barSize = std::max(barSize, 0.0f);
     }
