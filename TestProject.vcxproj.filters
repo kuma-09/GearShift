@@ -134,6 +134,8 @@
     <ClInclude Include="Game\Object\DropItemB.h" />
     <ClInclude Include="Game\Enemy\State\FixedAttackState.h" />
     <ClInclude Include="Game\Components\HP.h" />
+    <ClInclude Include="Framework\DepthStencil.h" />
+    <ClInclude Include="Framework\RenderTexture.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -227,6 +229,8 @@
     <ClCompile Include="Game\Object\DropItemB.cpp" />
     <ClCompile Include="Game\Enemy\State\FixedAttackState.cpp" />
     <ClCompile Include="Game\Components\HP.cpp" />
+    <ClCompile Include="Framework\DepthStencil.cpp" />
+    <ClCompile Include="Framework\RenderTexture.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />
@@ -244,16 +248,21 @@
   <ItemGroup>
     <None Include="packages.config" />
     <None Include="Resources\Models\robot.sdkmesh" />
-    <None Include="Resources\Shaders\UI.hlsli" />
     <None Include=".gitignore" />
+    <None Include="Shaders\SM_Common.hlsli" />
+    <None Include="Shaders\UI.hlsli" />
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="Resources\Shaders\PS.hlsl" />
-    <FxCompile Include="Resources\Shaders\VS.hlsl" />
-    <FxCompile Include="Resources\Shaders\UIGS.hlsl" />
-    <FxCompile Include="Resources\Shaders\UIPS.hlsl" />
-    <FxCompile Include="Resources\Shaders\UIVS.hlsl" />
-    <FxCompile Include="Resources\Shaders\OutLineVS.hlsl" />
-    <FxCompile Include="Resources\Shaders\OutLinePS.hlsl" />
+    <FxCompile Include="Shaders\OutLinePS.hlsl" />
+    <FxCompile Include="Shaders\OutLineVS.hlsl" />
+    <FxCompile Include="Shaders\PS.hlsl" />
+    <FxCompile Include="Shaders\SM_PS_Depth.hlsl" />
+    <FxCompile Include="Shaders\SM_VS_Depth.hlsl" />
+    <FxCompile Include="Shaders\UIGS.hlsl" />
+    <FxCompile Include="Shaders\UIPS.hlsl" />
+    <FxCompile Include="Shaders\UIVS.hlsl" />
+    <FxCompile Include="Shaders\VS.hlsl" />
+    <FxCompile Include="Shaders\SM_PS.hlsl" />
+    <FxCompile Include="Shaders\SM_VS.hlsl" />
   </ItemGroup>
 </Project>

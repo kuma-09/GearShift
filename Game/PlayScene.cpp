@@ -254,11 +254,9 @@ void PlayScene::Update(float elapsedTime)
                 *it->get()->GetComponent<BoxCollider>()->GetBoundingBox()))
         {
             it->get()->SetHit(true);
-            if (kb->pressed.X)
-            {
+
                 RemoveItem(it);
                 break;
-            }
         }
         else it->get()->SetHit(false);
     }

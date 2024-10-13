@@ -27,7 +27,7 @@ void TitleCamera::Update(float elapsedTime)
 	
 	Vector3 position = { world._41, world._42, world._43 };
 
-	Matrix view = Matrix::CreateLookAt(position, m_target->GetPosition(), Vector3::Up);
+	Matrix view = Matrix::CreateLookAt(position, Vector3::Zero, Vector3::Up);
 
 	Graphics::GetInstance()->SetViewMatrix(view);
 }

@@ -32,6 +32,11 @@ SkyDome::~SkyDome()
 
 }
 
+void SkyDome::Initialize(DirectX::SimpleMath::Vector3 pos)
+{
+	SetWorld(DirectX::SimpleMath::Matrix::CreateTranslation(pos));
+}
+
 void SkyDome::Update(float elapsedTime)
 {
 

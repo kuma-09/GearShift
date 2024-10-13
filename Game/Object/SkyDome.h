@@ -8,6 +8,7 @@ public:
 	SkyDome();
 	~SkyDome();
 
+	void Initialize(DirectX::SimpleMath::Vector3 pos);
 	void Update(float elapsedTime);
 	void Render();
 

@@ -189,6 +189,11 @@ void Player::Collision(BoxCollider* collider)
 		SetOnFloor(true);
 		BoxCollider::CheckHit(this, collider->GetOwner());
 	}
+
+	if (collider->GetTypeID() == BoxCollider::DropItem)
+	{
+
+	}
 }
 
 void Player::Reload()
