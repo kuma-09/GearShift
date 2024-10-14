@@ -60,7 +60,7 @@ float4 main(Input pin) : SV_TARGET0
     }
   
     // テクスチャ色とディフューズ色を掛ける 
-    float4 color = diffuse;
+    float4 color = Texture.Sample(Sampler, pin.TexCoord) * diffuse;
 
 
     return color;
