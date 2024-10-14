@@ -77,7 +77,6 @@ void Emitter::Render(DirectX::SimpleMath::Vector3 pos)
 
     for (auto& particle : m_particles)
     {
-        float size = 1 - particle->GetLifeTime();
         particle->Render(&m_vertices[0], &m_vertices[1], &m_vertices[2], &m_vertices[3], m_texture);
     }
 }

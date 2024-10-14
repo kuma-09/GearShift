@@ -141,7 +141,7 @@ void PlayScene::Update(float elapsedTime)
 
     // ゲームパッドとキーボードの入力情報を取得
     //const auto& gp = m_inputManager->GetGamePadTracker();
-    const auto& kb = m_inputManager->GetKeyboardTracker();
+    //const auto& kb = m_inputManager->GetKeyboardTracker();
 
     // 経過時間を計算
     m_totalTime += elapsedTime;

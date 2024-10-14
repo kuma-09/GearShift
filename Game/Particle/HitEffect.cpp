@@ -18,7 +18,8 @@ void HitEffect::Update(float elapsedTime)
 
 void HitEffect::Render(DirectX::SimpleMath::Matrix view, DirectX::SimpleMath::Matrix proj)
 {
-	
+	UNREFERENCED_PARAMETER(view);
+	UNREFERENCED_PARAMETER(proj);
 }
 
 void HitEffect::Finalize()

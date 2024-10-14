@@ -44,7 +44,6 @@ void HitParticle::Initialize(Vector3 pos, Vector3 vel)
 
 	auto device =  Graphics::GetInstance()->GetDeviceResources()->GetD3DDevice();
 	auto context = Graphics::GetInstance()->GetDeviceResources()->GetD3DDeviceContext();
-	auto states = Graphics::GetInstance()->GetCommonStates();
 
 
 

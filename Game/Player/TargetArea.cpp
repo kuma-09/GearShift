@@ -42,6 +42,8 @@ bool TargetArea::Update(Player* player , GameObject* target)
 {
     using namespace DirectX::SimpleMath;
 
+    UNREFERENCED_PARAMETER(player);
+
     Matrix view = m_graphics->GetViewMatrix();
     Matrix proj = m_graphics->GetProjectionMatrix();
 
@@ -101,7 +103,7 @@ void TargetArea::Render(bool inArea)
     w /= 2;
     h /= 2;
 
-    RECT rect = { 0,0,m_textureSize.x ,m_textureSize.y };
+    RECT rect = { 0,0,int(m_textureSize.x) ,int(m_textureSize.y) };
 
     // ‰æ–Ê‚Ì’†S‚É‰~‚ğ•\¦
     m_spriteBatch->Begin();
