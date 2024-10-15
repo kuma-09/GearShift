@@ -4,7 +4,7 @@
 #include "Framework/Resources.h"
 #include "Framework/InputManager.h"
 #include "Framework/DeviceResources.h"
-#include "Shader/ShadowMap.h"
+#include "Shader/Shadow.h"
 
 class TestScene final : public IScene
 {
@@ -24,7 +24,7 @@ private:
 	InputManager* m_inputManager;
 
 	std::unique_ptr<DirectX::SpriteBatch> m_spriteBatch;
+	std::unique_ptr<Shadow> m_shadow;
 
-	std::unique_ptr<Imase::ShadowMap> m_shadowMap;
 
 };

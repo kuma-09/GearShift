@@ -19,7 +19,10 @@ public:
 
 	void Begin();
 	void Render(DirectX::SimpleMath::Vector3 pos);
+	void Draw();
 	void End();
+
+	ID3D11ShaderResourceView* GetSRV() { return m_srv; }
 
 private:
 
@@ -60,6 +63,7 @@ private:
 
 	// ピクセルシェーダー
 	Microsoft::WRL::ComPtr<ID3D11PixelShader> m_PS;
+	Microsoft::WRL::ComPtr<ID3D11PixelShader> m_PS_Tex;
 
 private:
 	// 定数バッファ-------------

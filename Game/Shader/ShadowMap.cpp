@@ -9,7 +9,6 @@
 #include "pch.h"
 #include "ShadowMap.h"
 #include "VertexTypes.h"
-#include "ReadData.h"
 
 using namespace DirectX;
 using namespace DirectX::SimpleMath;

@@ -32,7 +32,7 @@ void Shadow::Initialize()
     auto context = m_graphics->GetDeviceResources()->GetD3DDeviceContext();
 
     // ライトの位置
-    m_lightPosition = Vector3{ 100,200,-200 };
+    m_lightPosition = Vector3{ 0,5,-5 };
 
     // ライトの回転
     m_lightRotate = Quaternion::CreateFromYawPitchRoll(
@@ -77,6 +77,7 @@ void Shadow::Initialize()
     BinaryFile ps_depth = BinaryFile::LoadFile(L"Resources/Shaders/SM_PS_Depth.cso");
     BinaryFile vs = BinaryFile::LoadFile(L"Resources/Shaders/SM_VS.cso");
     BinaryFile ps = BinaryFile::LoadFile(L"Resources/Shaders/SM_PS.cso");
+    BinaryFile ps_tex = BinaryFile::LoadFile(L"Resources/Shaders/SM_PS_Tex.cso");
 
     //	インプットレイアウトの作成
     device->CreateInputLayout(&INPUT_LAYOUT[0],
@@ -102,6 +103,11 @@ void Shadow::Initialize()
     // ピクセルシェーダーの作成（シャドウマップ用）
     DX::ThrowIfFailed(
         device->CreatePixelShader(ps.GetData(), ps.GetSize(), nullptr, m_PS.ReleaseAndGetAddressOf())
+    );
+
+    // ピクセルシェーダーの作成（シャドウマップ用）
+    DX::ThrowIfFailed(
+        device->CreatePixelShader(ps_tex.GetData(), ps_tex.GetSize(), nullptr, m_PS_Tex.ReleaseAndGetAddressOf())
     );
 
     // サンプラーの作成（シャドウマップ用）
@@ -185,32 +191,12 @@ void Shadow::RenderDepth(DirectX::SimpleMath::Vector3 pos)
     using namespace DirectX;
     using namespace DirectX::SimpleMath;
 
-    // ライトの方向
-    SimpleMath::Vector3 lightDir = SimpleMath::Vector3::Transform(SimpleMath::Vector3(0.0f, 0.0f, 1.0f), m_lightRotate);
-
-    // ビュー行列を作成
-    auto view = SimpleMath::Matrix::CreateLookAt(
-        m_lightPosition,
-        m_lightPosition + lightDir,
-        SimpleMath::Vector3::UnitY
-    );
-
-    // 射影行列を作成
-    auto proj = SimpleMath::Matrix::CreatePerspectiveFieldOfView(
-        XMConvertToRadians(m_lightTheta), 1.0f, 0.1f, 1000.0f);
-
     auto context = m_graphics->GetDeviceResources()->GetD3DDeviceContext();
-    auto state = m_graphics->GetCommonStates();
 
-    Matrix world = Matrix::CreateTranslation(pos);
-
-    Resources::GetInstance()->GetCubeModel()->Draw(context, *state, world, view, proj, false, [&]()
-        {
-            //	インプットレイアウトの登録
-            context->IASetInputLayout(m_inputLayout.Get());
-            context->VSSetShader(m_VS_Depth.Get(), nullptr, 0);
-            context->PSSetShader(m_PS_Depth.Get(), nullptr, 0);
-        });
+    //	インプットレイアウトの登録
+    context->IASetInputLayout(m_inputLayout.Get());
+    context->VSSetShader(m_VS_Depth.Get(), nullptr, 0);
+    context->PSSetShader(m_PS_Depth.Get(), nullptr, 0);
 
 }
 
@@ -252,28 +238,6 @@ void Shadow::Render(DirectX::SimpleMath::Vector3 pos)
     auto view = m_graphics->GetViewMatrix();
     auto proj = m_graphics->GetProjectionMatrix();
 
-    Resources::GetInstance()->GetCubeModel()->Draw(context, *state, world, view, proj, false);
-    {
-        // 定数バッファの設定
-        ID3D11Buffer* cbuf[] = { m_CBuffer.Get(),m_CBuffer2.Get() };
-        context->VSSetConstantBuffers(1, 1, cbuf);
-        context->PSSetConstantBuffers(1, 2, cbuf);
-
-        // 作成したシャドウマップをリソースとして設定
-        context->PSSetShaderResources(1, 1, &m_srv);
-
-        // テクスチャサンプラーの設定
-        ID3D11SamplerState* samplers[] = { state->LinearWrap(), m_shadowMapSampler.Get() };
-        context->PSSetSamplers(0, 2, samplers);
-
-        //	インプットレイアウトの登録
-        context->IASetInputLayout(m_inputLayout.Get());
-
-        // シェーダーの設定
-        context->VSSetShader(m_VS.Get(), nullptr, 0);
-        context->PSSetShader(m_PS.Get(), nullptr, 0);
-    }
-
     //床の描画
     Resources::GetInstance()->GetFloorModel()->Draw(context, *state, Matrix::Identity, view, proj, false, [&]()
         {
@@ -294,10 +258,44 @@ void Shadow::Render(DirectX::SimpleMath::Vector3 pos)
 
             // シェーダーの設定
             context->VSSetShader(m_VS.Get(), nullptr, 0);
-            context->PSSetShader(m_PS.Get(), nullptr, 0);
+            context->PSSetShader(m_PS_Tex.Get(), nullptr, 0);
         }
     );
 
+    //Resources::GetInstance()->GetCubeModel()->Draw(context, *state, world, view, proj, false);
+    //{
+
+    //}
+
+
+}
+
+void Shadow::Draw()
+{
+    using namespace DirectX;
+    using namespace DirectX::SimpleMath;
+
+    auto context = m_graphics->GetDeviceResources()->GetD3DDeviceContext();
+    auto state = m_graphics->GetCommonStates();
+
+    // 定数バッファの設定
+    ID3D11Buffer* cbuf[] = { m_CBuffer.Get(),m_CBuffer2.Get() };
+    context->VSSetConstantBuffers(1, 1, cbuf);
+    context->PSSetConstantBuffers(1, 2, cbuf);
+
+    // 作成したシャドウマップをリソースとして設定
+    context->PSSetShaderResources(1, 1, &m_srv);
+
+    // テクスチャサンプラーの設定
+    ID3D11SamplerState* samplers[] = { state->LinearWrap(), m_shadowMapSampler.Get() };
+    context->PSSetSamplers(0, 2, samplers);
+
+    //	インプットレイアウトの登録
+    context->IASetInputLayout(m_inputLayout.Get());
+
+    // シェーダーの設定
+    context->VSSetShader(m_VS.Get(), nullptr, 0);
+    context->PSSetShader(m_PS.Get(), nullptr, 0);
 }
 
 void Shadow::End()

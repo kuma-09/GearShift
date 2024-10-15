@@ -20,5 +20,9 @@ Output main(VS_INPUT input)
     // 頂点の位置を投影空間へ
     output.Position = mul(input.Position, WorldViewProj);
     
+    // 頂点の位置をワールド空間へ
+    output.Position = mul(input.Position, World);
+    output.Position = mul(output.Position, LightViewProj);
+    
     return output;
 }
