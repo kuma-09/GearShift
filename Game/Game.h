@@ -10,6 +10,7 @@
 #include "Game/PlayScene.h"
 #include "Game/TitleScene.h"
 #include "Game/ResultScene.h"
+#include "Game/TestScene.h"
 #include "SceneMask.h"
 
 class Graphics;
@@ -86,6 +87,16 @@ public:
         return m_resultScene.get();
     }
 
+    TestScene* GetTestScene()
+    {
+        if (m_resultScene)
+        {
+            return m_testScene.get();
+        }
+        m_testScene = std::make_unique<TestScene>();
+        return m_testScene.get();
+    }
+
 private:
 
     void Update(DX::StepTimer const& timer);
@@ -112,6 +123,7 @@ private:
     std::unique_ptr<PlayScene> m_playScene;
     std::unique_ptr<TitleScene> m_titleScene;
     std::unique_ptr<ResultScene> m_resultScene;
+    std::unique_ptr<TestScene> m_testScene;
 
     std::unique_ptr<SceneMask> m_sceneMask;
 

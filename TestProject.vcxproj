@@ -247,9 +247,14 @@
     <ClInclude Include="Game\SceneMask.h" />
     <ClInclude Include="Game\Shader\Shader.h" />
     <ClInclude Include="Game\Shader\Shadow.h" />
+    <ClInclude Include="Game\Shader\ShadowMap.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="Game\State.h" />
     <ClInclude Include="Game\PlayScene.h" />
     <ClInclude Include="Game\ResultScene.h" />
+    <ClInclude Include="Game\TestScene.h" />
     <ClInclude Include="Game\TitleScene.h" />
     <ClInclude Include="Game\Title\TitleCamera.h" />
     <ClInclude Include="Game\Title\TitlePlayer.h" />
@@ -322,6 +327,11 @@
     <ClCompile Include="Game\SceneMask.cpp" />
     <ClCompile Include="Game\Shader\Shader.cpp" />
     <ClCompile Include="Game\Shader\Shadow.cpp" />
+    <ClCompile Include="Game\Shader\ShadowMap.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="Game\TestScene.cpp" />
     <ClCompile Include="Game\TitleScene.cpp" />
     <ClCompile Include="Game\Title\TitleCamera.cpp" />
     <ClCompile Include="Game\Title\TitlePlayer.cpp" />
