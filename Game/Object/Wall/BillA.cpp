@@ -26,8 +26,7 @@ void BillA::Initialize()
 	GetComponent<BoxCollider>()->GetBoundingBox()->Center = GetPosition();
 
 	Matrix world = Matrix::Identity;
-	world *= Matrix::CreateScale(GetScale());
-	world *= Matrix::CreateTranslation(GetPosition());
+	world *= Matrix::CreateTranslation(Vector3{ GetPosition().x,GetPosition().y - GetScale().y,GetPosition().z });
 	SetWorld(world);
 }
 
@@ -36,10 +35,15 @@ void BillA::Update(float elapsedtime)
 	UNREFERENCED_PARAMETER(elapsedtime);
 }
 
+void BillA::CreateShadow()
+{
+	GetComponent<ModelDraw>()->CreateShadow();
+}
+
 void BillA::Render()
 {
 	using namespace DirectX::SimpleMath;
 
 	//GetComponent<BoxCollider>()->Render();
-	GetComponent<ModelDraw>()->Render(Matrix::CreateTranslation(Vector3{ GetPosition().x,GetPosition().y - GetScale().y,GetPosition().z}));
+	GetComponent<ModelDraw>()->Render(false);
 }

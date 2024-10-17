@@ -49,4 +49,8 @@ void Resources::LoadResource(Graphics* graphics)
 		nullptr,
 		m_greenTexture.GetAddressOf()
 	);
+
+	// ‰e
+	m_shadow = std::make_unique<Shadow>();
+	m_shadow->Initialize();
 }

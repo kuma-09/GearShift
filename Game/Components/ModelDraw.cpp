@@ -83,8 +83,39 @@ void ModelDraw::Render(DirectX::SimpleMath::Matrix world)
 	auto view = m_graphics->GetViewMatrix();
 	auto projection = m_graphics->GetProjectionMatrix();
 
-	m_model->Draw(context, *state, world, view, projection);
+	m_model->Draw(context, *state, world, view, projection, false, [&]
+	{
+		Resources::GetInstance()->GetShadow()->Draw(true);
+	});
 
+}
+
+void ModelDraw::Render(bool texture)
+{
+	auto context = m_graphics->GetDeviceResources()->GetD3DDeviceContext();
+	auto state = m_graphics->GetCommonStates();
+	auto view = m_graphics->GetViewMatrix();
+	auto projection = m_graphics->GetProjectionMatrix();
+	auto world = GetOwner()->GetWorld();
+
+	m_model->Draw(context, *state, world, view, projection, false, [&]
+	{
+		Resources::GetInstance()->GetShadow()->Draw(texture);
+	});
+}
+
+void ModelDraw::CreateShadow()
+{
+	auto context = m_graphics->GetDeviceResources()->GetD3DDeviceContext();
+	auto state = m_graphics->GetCommonStates();
+	auto view = m_graphics->GetViewMatrix();
+	auto projection = m_graphics->GetProjectionMatrix();
+	auto world = GetOwner()->GetWorld();
+
+	m_model->Draw(context, *state, world, view, projection, false, [&]
+		{
+			Resources::GetInstance()->GetShadow()->RenderDepth();
+		});
 }
 
 void ModelDraw::Render(DirectX::SimpleMath::Matrix world, DirectX::XMVECTORF32 color)

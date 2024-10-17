@@ -69,6 +69,11 @@ void DropItem::Update(float elapsedTime)
 	SetWorld(world);
 }
 
+void DropItem::CreateShadow()
+{
+	GetComponent<ModelDraw>()->CreateShadow();
+}
+
 void DropItem::Render()
 {
 	GetComponent<ModelDraw>()->Render(GetWorld());

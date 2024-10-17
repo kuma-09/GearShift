@@ -9,5 +9,6 @@ public:
 
 	void Initialize() ;
 	void Update(float elapsedtime);
+	void CreateShadow();
 	void Render();
 };

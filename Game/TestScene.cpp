@@ -57,13 +57,13 @@ void TestScene::Render()
 
     Resources::GetInstance()->GetCubeModel()->Draw(context, *state, Matrix::Identity, view, proj, false, [&]()
         {
-            m_shadow->RenderDepth({ 0,0,0 });
+            m_shadow->RenderDepth();
         }
     );
 
     Resources::GetInstance()->GetCubeModel()->Draw(context, *state, Matrix::CreateTranslation({0,0,3}), view, proj, false, [&]()
         {
-            m_shadow->RenderDepth({ 0,0,3 });
+            m_shadow->RenderDepth();
         }
     );
 
@@ -71,15 +71,14 @@ void TestScene::Render()
     m_shadow->EndDepth();
 
     
-    m_shadow->End();
-    m_shadow->Render({ 0,0,2 });
+
 
     Resources::GetInstance()->GetCubeModel()->Draw(context, *state, Matrix::CreateTranslation({0,0,2}), view, proj, false, [&]()
         {
-            m_shadow->Draw();
+            m_shadow->Draw(false);
         }
     );
-
+    m_shadow->End();
 
 }
 

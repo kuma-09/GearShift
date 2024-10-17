@@ -11,7 +11,8 @@ public:
 
 	virtual void Initialize(int hp, IScene* scene) = 0;
 	virtual void Update(float elapsedTime) = 0;
-	virtual void Render(DirectX::SimpleMath::Matrix world) = 0;
+	virtual void CreateShadow(); 
+	virtual void Render();
 
 	// e‚ğw’è
 	void SetOwner(GameObject* a_pObject)

@@ -16,6 +16,7 @@ public:
 	
 	void Initialize();
 	void Update(float elapsedTime);
+	void CreateShadow();
 	void Render();
 	void Finalize();
 

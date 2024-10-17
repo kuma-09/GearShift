@@ -32,6 +32,8 @@ public:
 	void Initialize(ModelType type);
 	void Update(float elapsedTime);
 	void Render(DirectX::SimpleMath::Matrix world);
+	void Render(bool texture);
+	void CreateShadow();
 	void Render(DirectX::SimpleMath::Matrix world, DirectX::XMVECTORF32 color);
 	void OutLineRender();
 	void Finalize();

@@ -309,6 +309,7 @@
     <ClCompile Include="Game\Parts\Head.cpp" />
     <ClCompile Include="Game\Parts\LeftArm.cpp" />
     <ClCompile Include="Game\Parts\LeftLeg.cpp" />
+    <ClCompile Include="Game\Parts\Part.cpp" />
     <ClCompile Include="Game\Parts\RightArm.cpp" />
     <ClCompile Include="Game\Parts\RightLeg.cpp" />
     <ClCompile Include="Game\Player\BoostGage.cpp" />

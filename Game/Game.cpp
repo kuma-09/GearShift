@@ -65,7 +65,7 @@ void Game::Initialize(HWND window, int width, int height)
     m_sceneMask = std::make_unique<SceneMask>();
 
     //ChangeScene(GetTitleScene());
-    m_scene = GetTestScene();
+    m_scene = GetTitleScene();
     m_scene->Initialize(this);
 
 }

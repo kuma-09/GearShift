@@ -109,7 +109,7 @@ void PlayScene::Initialize(Game* game)
 
 
     m_dropItem.push_back(std::make_unique<DropItem>(this, std::make_unique<BodyTop>()));
-    m_dropItem.back()->SetPosition(Vector3(0, 20, 7));
+    m_dropItem.back()->SetPosition(Vector3(0, 20, 20));
 
     m_dropItem.push_back(std::make_unique<DropItem>(this, std::make_unique<LeftArm>()));
     m_dropItem.back()->SetPosition(Vector3(6, 3, 9));
@@ -280,46 +280,93 @@ void PlayScene::Render()
 {
     using namespace DirectX::SimpleMath;
 
-    m_skyDome->Render();
+    auto context = m_graphics->GetDeviceResources()->GetD3DDeviceContext();
+    auto state = m_graphics->GetCommonStates();
+    auto view = m_graphics->GetViewMatrix();
+    auto projection = m_graphics->GetProjectionMatrix();
+    auto world = Matrix::CreateTranslation(0, 2,50);
 
-    for (auto& floor: m_floor)
+    Resources::GetInstance()->GetShadow()->BeginDepth();
+
+    for (auto& wall : m_wall)
     {
-        floor->Render();
+        wall->CreateShadow();
     }
+
+    for (auto& dropItem : m_dropItem)
+    {
+        dropItem->CreateShadow();
+    }
+
+    m_player->CreateShadow();
+
+    Resources::GetInstance()->GetShadow()->EndDepth();
+
     for (auto& wall : m_wall)
     {
         wall->Render();
     }
 
-    m_player->Render();
-
-
-
-    for (auto& enemy: m_Enemy)
+    for (auto& floor: m_floor)
     {
-        enemy->Render();
+        floor->Render();
     }
 
-    if (m_player->GetTarget())
-    {
-        m_player->GetTarget()->GetComponent<HPBar>()->Render(m_player->GetTarget()->GetPosition());
-        m_player->GetTarget()->GetComponent<ModelDraw>()->OutLineRender();
-    }
+    Resources::GetInstance()->GetCubeModel()->Draw(context, *state, world, view, projection, false, [&]
+        {
+            Resources::GetInstance()->GetShadow()->Draw(false);
+        }
+    );
 
     for (auto& dropItem : m_dropItem)
     {
         dropItem->Render();
     }
 
+    m_player->Render();
 
-    for (auto& particle : m_hitParticle)
-    {
-        particle->Render(m_graphics->GetViewMatrix(), m_graphics->GetProjectionMatrix());
-    }
+    Resources::GetInstance()->GetShadow()->End();
 
-    m_targetArea->Render(m_player->GetTarget());
-    
-    m_hpUI->Render();
+    //m_skyDome->Render();
+
+    //for (auto& floor: m_floor)
+    //{
+    //    floor->Render();
+    //}
+    //for (auto& wall : m_wall)
+    //{
+    //    wall->Render();
+    //}
+
+    //m_player->Render();
+
+
+
+    //for (auto& enemy: m_Enemy)
+    //{
+    //    enemy->Render();
+    //}
+
+    //if (m_player->GetTarget())
+    //{
+    //    m_player->GetTarget()->GetComponent<HPBar>()->Render(m_player->GetTarget()->GetPosition());
+    //    m_player->GetTarget()->GetComponent<ModelDraw>()->OutLineRender();
+    //}
+
+    //for (auto& dropItem : m_dropItem)
+    //{
+    //    dropItem->Render();
+    //}
+
+
+    //for (auto& particle : m_hitParticle)
+    //{
+    //    particle->Render(m_graphics->GetViewMatrix(), m_graphics->GetProjectionMatrix());
+    //}
+
+    //m_targetArea->Render(m_player->GetTarget());
+    //
+    //m_hpUI->Render();
 
 }
 

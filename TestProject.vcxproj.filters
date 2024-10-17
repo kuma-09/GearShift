@@ -137,7 +137,6 @@
     <ClInclude Include="Framework\DepthStencil.h" />
     <ClInclude Include="Framework\RenderTexture.h" />
     <ClInclude Include="Game\Shader\Shadow.h" />
-    <ClInclude Include="Game\Shader\ShadowMap.h" />
     <ClInclude Include="Game\TestScene.h" />
   </ItemGroup>
   <ItemGroup>
@@ -235,8 +234,8 @@
     <ClCompile Include="Framework\DepthStencil.cpp" />
     <ClCompile Include="Framework\RenderTexture.cpp" />
     <ClCompile Include="Game\Shader\Shadow.cpp" />
-    <ClCompile Include="Game\Shader\ShadowMap.cpp" />
     <ClCompile Include="Game\TestScene.cpp" />
+    <ClCompile Include="Game\Parts\Part.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />

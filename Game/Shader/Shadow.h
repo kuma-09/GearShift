@@ -12,14 +12,11 @@ public:
 	~Shadow();
 
 	void Initialize();
-	void Update();
 	void BeginDepth();
-	void RenderDepth(DirectX::SimpleMath::Vector3 pos);
+	void RenderDepth();
 	void EndDepth();
 
-	void Begin();
-	void Render(DirectX::SimpleMath::Vector3 pos);
-	void Draw();
+	void Draw(bool texture);
 	void End();
 
 	ID3D11ShaderResourceView* GetSRV() { return m_srv; }
@@ -97,7 +94,7 @@ private:
 
 	// シャドウマップテクスチャ---
 	// シャドウマップのサイズ
-	static const int SHADOWMAP_SIZE = 1024;
+	static const int SHADOWMAP_SIZE = 4096;
 
 	// シャドウマップ用（レンダーテクスチャ）
 	std::unique_ptr<DX::RenderTexture> m_shadowMapRT;

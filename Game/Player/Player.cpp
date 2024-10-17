@@ -123,6 +123,14 @@ void Player::Update(float elapsedTime)
 
 }
 
+void Player::CreateShadow()
+{
+	for (auto& pair : m_pPart)
+	{
+		pair.second->CreateShadow();
+	}
+}
+
 void Player::Render()
 {
 	m_state->Render();

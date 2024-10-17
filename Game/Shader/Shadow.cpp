@@ -32,11 +32,11 @@ void Shadow::Initialize()
     auto context = m_graphics->GetDeviceResources()->GetD3DDeviceContext();
 
     // ライトの位置
-    m_lightPosition = Vector3{ 0,5,-5 };
+    m_lightPosition = Vector3{ 0,100,0 };
 
     // ライトの回転
     m_lightRotate = Quaternion::CreateFromYawPitchRoll(
-        XMConvertToRadians(0.0f), XMConvertToRadians(45.0f), 0.0f);
+        XMConvertToRadians(0.0f), XMConvertToRadians(90.0f), 0.0f);
 
     m_lightTheta = 100.0f;
 
@@ -123,10 +123,6 @@ void Shadow::Initialize()
 
 }
 
-void Shadow::Update()
-{
-}
-
 void Shadow::BeginDepth()
 {
     using namespace DirectX;
@@ -184,9 +180,10 @@ void Shadow::BeginDepth()
 
     // GPUが定数バッファに対してのアクセスを許可する
     context->Unmap(m_CBuffer.Get(), 0);
+
 }
 
-void Shadow::RenderDepth(DirectX::SimpleMath::Vector3 pos)
+void Shadow::RenderDepth()
 {
     using namespace DirectX;
     using namespace DirectX::SimpleMath;
@@ -222,55 +219,7 @@ void Shadow::EndDepth()
     context->RSSetViewports(1, &viewport);
 }
 
-void Shadow::Begin()
-{
-}
-
-void Shadow::Render(DirectX::SimpleMath::Vector3 pos)
-{
-    using namespace DirectX;
-    using namespace DirectX::SimpleMath;
-
-    auto context = m_graphics->GetDeviceResources()->GetD3DDeviceContext();
-    auto state = m_graphics->GetCommonStates();
-
-    auto world = Matrix::CreateTranslation(pos);
-    auto view = m_graphics->GetViewMatrix();
-    auto proj = m_graphics->GetProjectionMatrix();
-
-    //床の描画
-    Resources::GetInstance()->GetFloorModel()->Draw(context, *state, Matrix::Identity, view, proj, false, [&]()
-        {
-            // 定数バッファの設定
-            ID3D11Buffer* cbuf[] = { m_CBuffer.Get(),m_CBuffer2.Get() };
-            context->VSSetConstantBuffers(1, 1, cbuf);
-            context->PSSetConstantBuffers(1, 2, cbuf);
-
-            // 作成したシャドウマップをリソースとして設定
-            context->PSSetShaderResources(1, 1, &m_srv);
-
-            // テクスチャサンプラーの設定
-            ID3D11SamplerState* samplers[] = { state->LinearWrap(), m_shadowMapSampler.Get() };
-            context->PSSetSamplers(0, 2, samplers);
-
-            //	インプットレイアウトの登録
-            context->IASetInputLayout(m_inputLayout.Get());
-
-            // シェーダーの設定
-            context->VSSetShader(m_VS.Get(), nullptr, 0);
-            context->PSSetShader(m_PS_Tex.Get(), nullptr, 0);
-        }
-    );
-
-    //Resources::GetInstance()->GetCubeModel()->Draw(context, *state, world, view, proj, false);
-    //{
-
-    //}
-
-
-}
-
-void Shadow::Draw()
+void Shadow::Draw(bool texture)
 {
     using namespace DirectX;
     using namespace DirectX::SimpleMath;
@@ -295,14 +244,31 @@ void Shadow::Draw()
 
     // シェーダーの設定
     context->VSSetShader(m_VS.Get(), nullptr, 0);
-    context->PSSetShader(m_PS.Get(), nullptr, 0);
+    if (texture)
+    {
+        context->PSSetShader(m_PS_Tex.Get(), nullptr, 0);
+    }
+    else
+    {
+        context->PSSetShader(m_PS.Get(), nullptr, 0);
+    }
 }
 
 void Shadow::End()
 {
+    using namespace DirectX::SimpleMath;
+
     auto context = m_graphics->GetDeviceResources()->GetD3DDeviceContext();
+    auto state = m_graphics->GetCommonStates();
+    auto view = m_graphics->GetViewMatrix();
+    auto proj = m_graphics->GetProjectionMatrix();
+
+    Matrix world = Matrix::CreateFromQuaternion(m_lightRotate);
+    world *= Matrix::CreateTranslation(m_lightPosition);
 
     // リソースの割り当てを解除する（shadowMapRT）
     ID3D11ShaderResourceView* nullsrv[] = { nullptr };
     context->PSSetShaderResources(1, 1, nullsrv);
+
+    Resources::GetInstance()->GetCubeModel()->Draw(context, *state, world, view, proj);
 }

@@ -15,7 +15,7 @@ struct Input
 };
 
 // マッハバンド対策
-#define SHADOW_EPSILON 0.0005f
+#define SHADOW_EPSILON 0.00025f
 
 float4 main(Input pin) : SV_TARGET0
 {
@@ -35,7 +35,7 @@ float4 main(Input pin) : SV_TARGET0
         float2 uv = pin.LightPosPS.xy * float2(0.5f, -0.5f) + 0.5f;
 
         // シャドウマップの深度値とライト空間のピクセルのZ値を比較して影になるか調べる
-        float percentLit = ShadowMapTexture.SampleCmpLevelZero(ShadowMapSampler, uv, pin.LightPosPS.z - SHADOW_EPSILON).x;
+        float percentLit = ShadowMapTexture.SampleCmpLevelZero(ShadowMapSampler, uv, pin.LightPosPS.z /*- SHADOW_EPSILON*/).x;
  
         // ------------------------------------------------------------------------------- //
         // ディフューズ
@@ -48,10 +48,26 @@ float4 main(Input pin) : SV_TARGET0
         float3 dotL = saturate(dot(-lightDir, worldNormal));
 
         // ライトによる明るさを求める
-        float3 lightAmount = percentLit * (1.0f - LightAmbient) + LightAmbient;
+        float3 lightAmount = dotL * percentLit * (1.0f - LightAmbient) + LightAmbient;
 
         // ディフューズ色を求める 
-        diffuse = float4(lightAmount, 1.0f) * DiffuseColor;
+        diffuse = float4(DiffuseColor.rgb * lightAmount, DiffuseColor.a);
+
+        // ------------------------------------------------------------------------------- //
+        // スペキュラ
+        // ------------------------------------------------------------------------------- //
+    
+        // 視線ベクトル
+        float3 eyeVector = normalize(EyePosition - pin.PositionWS.xyz);
+
+        // ハーフベクトル
+        float3 halfVector = normalize(eyeVector - lightDir);
+
+        // スペキュラの影響割合を内積を使い求める
+        float dotH = saturate(dot(halfVector, worldNormal));
+
+        // スペキュラパワーを指数として使いハイライトのかかり具合を調整
+        specular = pow(dotH, SpecularPower) * dotL * SpecularColor * percentLit;
     }
     else
     {
@@ -62,6 +78,9 @@ float4 main(Input pin) : SV_TARGET0
     // テクスチャ色とディフューズ色を掛ける 
     float4 color = Texture.Sample(Sampler, pin.TexCoord) * diffuse;
 
+    // スペキュラを加える
+    color.rgb += specular * diffuse.a;
 
     return color;
 }
+

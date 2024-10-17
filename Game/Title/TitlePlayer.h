@@ -49,7 +49,7 @@ public:
 	void RenderParts() {
 		for (auto& pair : m_pPart)
 		{
-			pair.second->Render(GetWorld());
+			pair.second->Render();
 		}
 	}
 

@@ -4,6 +4,7 @@
 
 #include "Model.h"
 #include "Graphics.h"
+#include "Game/Shader/Shadow.h"
 
 // Resourcesクラスを定義する
 class Resources
@@ -28,6 +29,8 @@ public:
 
 	// テクスチャを取得
 	ID3D11ShaderResourceView* GetGreenTexture() { return m_greenTexture.Get(); }
+
+	Shadow* GetShadow() { return m_shadow.get(); }
 public:
 	Resources(Resources&&) = default;
 	Resources& operator= (Resources&&) = default;
@@ -69,6 +72,9 @@ private:
 
 	// テクスチャ
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_greenTexture;
+
+	// 影
+	std::unique_ptr<Shadow> m_shadow;
 };
 
 #endif		// RESOURCES_DEFINED
