@@ -18,6 +18,7 @@ public:
 
 	void Initialize(GameObject* target);
 	void Update(float elapsedTime);
+	void CreateShader();
 	void Render();
 	void Finalize();
 

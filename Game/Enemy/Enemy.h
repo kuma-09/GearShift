@@ -17,6 +17,7 @@ public:
 
 	virtual void Initialize(GameObject* target) = 0;
 	virtual void Update(float elapsedTime) = 0;
+	virtual void CreateShader() = 0;
 	virtual void Render() = 0;
 	virtual void Finalize() = 0;
 

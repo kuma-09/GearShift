@@ -73,6 +73,11 @@ void HomingEnemy::Update(float elapsedTime)
 	SetWorld(world);
 }
 
+void HomingEnemy::CreateShader()
+{
+	GetComponent<ModelDraw>()->CreateShadow();
+}
+
 void HomingEnemy::Render()
 {
 	

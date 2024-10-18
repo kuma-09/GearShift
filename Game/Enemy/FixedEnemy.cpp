@@ -73,9 +73,13 @@ void FixedEnemy::Update(float elapsedTime)
 	SetWorld(world);
 }
 
-void FixedEnemy::Render()
+void FixedEnemy::CreateShader()
 {
-	
+	GetComponent<ModelDraw>()->CreateShadow();
+}
+
+void FixedEnemy::Render()
+{	
 	m_bullet->Render();
 	m_state->Render();
 	if (GetComponent<HP>()->GetHP() <= 0) return;

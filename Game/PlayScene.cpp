@@ -293,6 +293,11 @@ void PlayScene::Render()
         wall->CreateShadow();
     }
 
+    for (auto& enemy: m_Enemy)
+    {
+        enemy->CreateShader();
+    }
+
     for (auto& dropItem : m_dropItem)
     {
         dropItem->CreateShadow();
@@ -305,6 +310,11 @@ void PlayScene::Render()
     for (auto& wall : m_wall)
     {
         wall->Render();
+    }
+
+    for (auto& enemy : m_Enemy)
+    {
+        enemy->Render();
     }
 
     for (auto& floor: m_floor)
@@ -325,49 +335,22 @@ void PlayScene::Render()
 
     m_player->Render();
 
+    if (m_player->GetTarget())
+    {
+        m_player->GetTarget()->GetComponent<HPBar>()->Render(m_player->GetTarget()->GetPosition());
+        m_player->GetTarget()->GetComponent<ModelDraw>()->OutLineRender();
+    }
+
+    for (auto& particle : m_hitParticle)
+    {
+        particle->Render(m_graphics->GetViewMatrix(), m_graphics->GetProjectionMatrix());
+    }
+
+    m_targetArea->Render(m_player->GetTarget());
+
+    m_hpUI->Render();
+
     Resources::GetInstance()->GetShadow()->End();
-
-    //m_skyDome->Render();
-
-    //for (auto& floor: m_floor)
-    //{
-    //    floor->Render();
-    //}
-    //for (auto& wall : m_wall)
-    //{
-    //    wall->Render();
-    //}
-
-    //m_player->Render();
-
-
-
-    //for (auto& enemy: m_Enemy)
-    //{
-    //    enemy->Render();
-    //}
-
-    //if (m_player->GetTarget())
-    //{
-    //    m_player->GetTarget()->GetComponent<HPBar>()->Render(m_player->GetTarget()->GetPosition());
-    //    m_player->GetTarget()->GetComponent<ModelDraw>()->OutLineRender();
-    //}
-
-    //for (auto& dropItem : m_dropItem)
-    //{
-    //    dropItem->Render();
-    //}
-
-
-    //for (auto& particle : m_hitParticle)
-    //{
-    //    particle->Render(m_graphics->GetViewMatrix(), m_graphics->GetProjectionMatrix());
-    //}
-
-    //m_targetArea->Render(m_player->GetTarget());
-    //
-    //m_hpUI->Render();
-
 }
 
 /// <summary> I—¹ˆ— </summary>

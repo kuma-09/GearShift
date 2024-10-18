@@ -5,6 +5,7 @@
 
 void Part::CreateShadow()
 {
+	GetComponent<ModelDraw>()->CreateShadow();
 }
 
 void Part::Render()
