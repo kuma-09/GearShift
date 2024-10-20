@@ -31,6 +31,7 @@ cbuffer Parameters : register(b1)
     float4 LightPos : packoffset(c4);
     float3 LightDir : packoffset(c5);
     float3 LightAmbient : packoffset(c6);
+    float4 Color : packoffset(c7);
 };
 
 // 追加する定数バッファ（頻繁に更新されないもの）

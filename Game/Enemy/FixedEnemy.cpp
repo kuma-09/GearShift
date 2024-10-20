@@ -83,7 +83,7 @@ void FixedEnemy::Render()
 	m_bullet->Render();
 	m_state->Render();
 	if (GetComponent<HP>()->GetHP() <= 0) return;
-	GetComponent<ModelDraw>()->Render(GetWorld());
+	GetComponent<ModelDraw>()->Render(true);
 }
 
 void FixedEnemy::Finalize()

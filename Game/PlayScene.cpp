@@ -124,6 +124,7 @@ void PlayScene::Initialize(Game* game)
     m_floor.back()->SetPosition({  100,0, 100 });
 
     m_skyDome = std::make_unique<SkyDome>();
+    m_skyDome->Initialize(Vector3::Zero);
 
     m_targetArea = std::make_unique<TargetArea>();
     m_targetArea->Initialize();
@@ -165,6 +166,10 @@ void PlayScene::Update(float elapsedTime)
     for (auto& dropItem : m_dropItem)
     {
         dropItem->Update(elapsedTime);
+    }
+    for (auto& floor : m_floor)
+    {
+        floor->Update(elapsedTime);
     }
 
     std::vector<Enemy*> inAreaEnemy;
@@ -307,6 +312,8 @@ void PlayScene::Render()
 
     Resources::GetInstance()->GetShadow()->EndDepth();
 
+    m_skyDome->Render();
+
     for (auto& wall : m_wall)
     {
         wall->Render();
@@ -322,18 +329,12 @@ void PlayScene::Render()
         floor->Render();
     }
 
-    Resources::GetInstance()->GetCubeModel()->Draw(context, *state, world, view, projection, false, [&]
-        {
-            Resources::GetInstance()->GetShadow()->Draw(false);
-        }
-    );
-
     for (auto& dropItem : m_dropItem)
     {
         dropItem->Render();
     }
 
-    m_player->Render();
+
 
     if (m_player->GetTarget())
     {
@@ -345,6 +346,8 @@ void PlayScene::Render()
     {
         particle->Render(m_graphics->GetViewMatrix(), m_graphics->GetProjectionMatrix());
     }
+
+    m_player->Render();
 
     m_targetArea->Render(m_player->GetTarget());
 

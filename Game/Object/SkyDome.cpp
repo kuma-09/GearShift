@@ -34,7 +34,10 @@ SkyDome::~SkyDome()
 
 void SkyDome::Initialize(DirectX::SimpleMath::Vector3 pos)
 {
-	SetWorld(DirectX::SimpleMath::Matrix::CreateTranslation(pos));
+	auto world = DirectX::SimpleMath::Matrix::CreateScale(0.5f);
+	world *= DirectX::SimpleMath::Matrix::CreateTranslation(pos);
+
+	SetWorld(world);
 }
 
 void SkyDome::Update(float elapsedTime)
@@ -53,7 +56,7 @@ void SkyDome::Render()
 	
 	Resources::GetInstance()->GetSkyDome()->Draw(context, *state, GetWorld(), view, projection, false, [&]()
 		{
-			context->RSSetState(state->CullNone());
+			context->RSSetState(state->CullClockwise());
 		}
 	);
 }

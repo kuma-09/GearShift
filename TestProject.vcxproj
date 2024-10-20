@@ -178,6 +178,7 @@
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Framework\Audio.h" />
     <ClInclude Include="Framework\BinaryFile.h" />
     <ClInclude Include="Framework\DebugString.h" />
     <ClInclude Include="Framework\DepthStencil.h" />
@@ -260,6 +261,7 @@
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Framework\Audio.cpp" />
     <ClCompile Include="Framework\BinaryFile.cpp" />
     <ClCompile Include="Framework\DebugString.cpp" />
     <ClCompile Include="Framework\DepthStencil.cpp" />

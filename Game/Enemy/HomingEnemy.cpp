@@ -84,11 +84,11 @@ void HomingEnemy::Render()
 	m_bullet->Render();
 	m_state->Render();
 	if (GetComponent<HP>()->GetHP() <= 0) return;
-	GetComponent<ModelDraw>()->Render(GetWorld());
+	GetComponent<ModelDraw>()->Render(false);
 
 	
 
-	//GetComponent<BoxCollider>().lock().get()->Render();
+	//GetComponent<BoxCollider>()->Render();
 }
 
 void HomingEnemy::Finalize()

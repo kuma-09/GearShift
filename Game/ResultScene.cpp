@@ -14,7 +14,7 @@ ResultScene::ResultScene()
     int x, y;
     m_graphics->GetScreenSize(x, y);
 
-    m_result = std::make_unique<UI>(L"Resources/Textures/StageClear.png", Vector2(x / 2.f, y / 2.f));
+    m_result = std::make_unique<UI>(L"Resources/Textures/StageClear.png", Vector2(x / 3.f, y / 3.f));
     m_backGround = std::make_unique<UI>(L"Resources/Textures/haguruma.png", Vector2::Zero);
 }
 

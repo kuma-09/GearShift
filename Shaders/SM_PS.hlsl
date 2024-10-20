@@ -15,7 +15,7 @@ struct Input
 };
 
 // マッハバンド対策
-#define SHADOW_EPSILON 0.00025f
+#define SHADOW_EPSILON 0.00001f
 
 float4 main(Input pin) : SV_TARGET0
 {
@@ -76,7 +76,7 @@ float4 main(Input pin) : SV_TARGET0
     }
   
     // テクスチャ色とディフューズ色を掛ける 
-    float4 color =  diffuse;
+    float4 color = Color * diffuse;
 
     // スペキュラを加える
     color.rgb += specular * diffuse.a;

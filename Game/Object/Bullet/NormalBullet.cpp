@@ -45,8 +45,12 @@ void NormalBullet::Shot(GameObject* target)
 	SetPosition(GetOwner()->GetPosition());
 	SetTarget(target);
 
+	velocity = GetTarget()->GetPosition() - GetPosition();
+	velocity.Normalize();
 
-	velocity += Vector3::Transform(Vector3::Forward * SPEED, GetOwner()->GetQuaternion());
+	velocity *= SPEED;
+
+	//velocity += Vector3::Transform(Vector3::Forward * SPEED, GetOwner()->GetQuaternion());
 
 	m_totalTime = 0;
 
@@ -94,7 +98,7 @@ void NormalBullet::Render()
 {
 	if (GetState() == FLYING)
 	{
-		GetComponent<ModelDraw>()->Render(GetWorld());
+		GetComponent<ModelDraw>()->Render(false);
 	}
 }
 

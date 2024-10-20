@@ -65,7 +65,7 @@ void DropItemB::Update(float elapsedTime)
 
 void DropItemB::Render()
 {
-	GetComponent<ModelDraw>()->Render(GetWorld());
+	GetComponent<ModelDraw>()->Render(true);
 	if (m_isHit)
 	{
 		//m_menu->Render();

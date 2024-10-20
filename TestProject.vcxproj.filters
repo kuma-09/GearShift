@@ -138,6 +138,7 @@
     <ClInclude Include="Framework\RenderTexture.h" />
     <ClInclude Include="Game\Shader\Shadow.h" />
     <ClInclude Include="Game\TestScene.h" />
+    <ClInclude Include="Framework\Audio.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -236,6 +237,7 @@
     <ClCompile Include="Game\Shader\Shadow.cpp" />
     <ClCompile Include="Game\TestScene.cpp" />
     <ClCompile Include="Game\Parts\Part.cpp" />
+    <ClCompile Include="Framework\Audio.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />

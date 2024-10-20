@@ -76,7 +76,7 @@ void DropItem::CreateShadow()
 
 void DropItem::Render()
 {
-	GetComponent<ModelDraw>()->Render(GetWorld());
+	GetComponent<ModelDraw>()->Render(true);
 	if (m_isHit)
 	{
 		//m_menu->Render();

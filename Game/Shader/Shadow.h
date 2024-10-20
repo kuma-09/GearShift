@@ -16,7 +16,7 @@ public:
 	void RenderDepth();
 	void EndDepth();
 
-	void Draw(bool texture);
+	void Draw(bool texture,DirectX::XMVECTORF32 color = DirectX::Colors::White);
 	void End();
 
 	ID3D11ShaderResourceView* GetSRV() { return m_srv; }
@@ -71,6 +71,7 @@ private:
 		DirectX::XMVECTOR lightPosition;	// ライトの位置
 		DirectX::XMVECTOR lightDirection;	// ライトの方向
 		DirectX::XMVECTOR lightAmbient;		// ライトの環境光
+		DirectX::XMVECTOR color;			// モデルの色
 	};
 
 	// 定数バッファの構造体

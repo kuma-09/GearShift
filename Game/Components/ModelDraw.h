@@ -31,15 +31,12 @@ public:
 
 	void Initialize(ModelType type);
 	void Update(float elapsedTime);
-	void Render(DirectX::SimpleMath::Matrix world);
-	void Render(bool texture);
+	void Render(bool texture = false, DirectX::XMVECTORF32 color = DirectX::Colors::White);
+	void Render(DirectX::SimpleMath::Matrix worldbool, bool texture = false, DirectX::XMVECTORF32 color = DirectX::Colors::White);
 	void CreateShadow();
-	void Render(DirectX::SimpleMath::Matrix world, DirectX::XMVECTORF32 color);
 	void OutLineRender();
 	void Finalize();
 
-private:
-	void SetColor(DirectX::XMVECTORF32 color);
 private:
 	Graphics* m_graphics;
 	std::unique_ptr<DirectX::BasicEffect> m_effect;

@@ -49,24 +49,22 @@ void BodyTop::Update(float elapsedTime)
 	m_isHit = false;
 }
 
-void BodyTop::Render(DirectX::SimpleMath::Matrix world)
+void BodyTop::Render()
 {
-	UNREFERENCED_PARAMETER(world);
-
 	if (GetComponent<HP>()->GetHP() > 0)
 	{
 		if (!m_isHit)
 		{
-			GetComponent<ModelDraw>()->Render(GetWorld());
+			GetComponent<ModelDraw>()->Render(false);
 		}
 		else
 		{
-			GetComponent<ModelDraw>()->Render(GetWorld(), DirectX::Colors::Red);
+			GetComponent<ModelDraw>()->Render(false,DirectX::Colors::Red);
 		}
 	}
 	else
 	{
-		GetComponent<ModelDraw>()->Render(GetWorld(), DirectX::Colors::Black);
+		GetComponent<ModelDraw>()->Render(false, DirectX::Colors::Black);
 	}
 
 

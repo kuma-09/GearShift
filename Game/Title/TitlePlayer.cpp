@@ -37,7 +37,7 @@ TitlePlayer::~TitlePlayer()
 void TitlePlayer::Initialize()
 {
 	using namespace DirectX::SimpleMath;
-	SetPosition({0,2.5f,0});
+	SetPosition({0,2.3f,0});
 }
 
 void TitlePlayer::Update(float elapsedTime)
@@ -53,6 +53,14 @@ void TitlePlayer::Update(float elapsedTime)
 
 	SetWorld(world);
 
+}
+
+void TitlePlayer::CreateShadow()
+{
+	for (auto& pair : m_pPart)
+	{
+		pair.second->CreateShadow();
+	}
 }
 
 void TitlePlayer::Render()

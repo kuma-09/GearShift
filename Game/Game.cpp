@@ -115,11 +115,7 @@ void Game::Update(DX::StepTimer const& timer)
 
             m_scene = m_tmpScene;
             m_scene->Initialize(this);
-            
-            // イニシャライズで完結するようにしたい
-            m_scene->Update(elapsedTime);
         }
-        return;
     }
 
     // TODO: Add your game logic here.

@@ -76,21 +76,7 @@ void ModelDraw::Update(float elapsedTime)
 	
 }
 
-void ModelDraw::Render(DirectX::SimpleMath::Matrix world)
-{
-	auto context = m_graphics->GetDeviceResources()->GetD3DDeviceContext();
-	auto state = m_graphics->GetCommonStates();
-	auto view = m_graphics->GetViewMatrix();
-	auto projection = m_graphics->GetProjectionMatrix();
-
-	m_model->Draw(context, *state, world, view, projection, false, [&]
-	{
-		Resources::GetInstance()->GetShadow()->Draw(true);
-	});
-
-}
-
-void ModelDraw::Render(bool texture)
+void ModelDraw::Render(bool texture, DirectX::XMVECTORF32 color)
 {
 	auto context = m_graphics->GetDeviceResources()->GetD3DDeviceContext();
 	auto state = m_graphics->GetCommonStates();
@@ -99,8 +85,21 @@ void ModelDraw::Render(bool texture)
 	auto world = GetOwner()->GetWorld();
 
 	m_model->Draw(context, *state, world, view, projection, false, [&]
+		{
+			Resources::GetInstance()->GetShadow()->Draw(texture, color);
+		});
+}
+
+void ModelDraw::Render(DirectX::SimpleMath::Matrix world, bool texture, DirectX::XMVECTORF32 color)
+{
+	auto context = m_graphics->GetDeviceResources()->GetD3DDeviceContext();
+	auto state = m_graphics->GetCommonStates();
+	auto view = m_graphics->GetViewMatrix();
+	auto projection = m_graphics->GetProjectionMatrix();
+
+	m_model->Draw(context, *state, world, view, projection, false, [&]
 	{
-		Resources::GetInstance()->GetShadow()->Draw(texture);
+		Resources::GetInstance()->GetShadow()->Draw(texture,color);
 	});
 }
 
@@ -118,19 +117,6 @@ void ModelDraw::CreateShadow()
 		});
 }
 
-void ModelDraw::Render(DirectX::SimpleMath::Matrix world, DirectX::XMVECTORF32 color)
-{
-
-	auto context    = m_graphics->GetDeviceResources()->GetD3DDeviceContext();
-	auto state      = m_graphics->GetCommonStates();
-	auto view       = m_graphics->GetViewMatrix();
-	auto projection = m_graphics->GetProjectionMatrix();
-
-	m_model->Draw(context, *state, world, view, projection, false, [&]()
-	{
-		SetColor(color);
-	});
-}
 
 void ModelDraw::OutLineRender()
 {
@@ -150,18 +136,4 @@ void ModelDraw::OutLineRender()
 void ModelDraw::Finalize()
 {
 
-}
-
-void ModelDraw::SetColor(DirectX::XMVECTORF32 color)
-{
-	if (!m_effect)
-	{
-		m_effect = std::make_unique<DirectX::BasicEffect>(m_graphics->GetDeviceResources()->GetD3DDevice());
-	}
-
-	m_effect->SetDiffuseColor(color);
-	m_effect->SetView(m_graphics->GetViewMatrix());
-	m_effect->SetProjection(m_graphics->GetProjectionMatrix());
-	m_effect->SetWorld(GetOwner()->GetWorld());
-	m_effect->Apply(m_graphics->GetDeviceResources()->GetD3DDeviceContext());
 }

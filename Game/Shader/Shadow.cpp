@@ -32,11 +32,11 @@ void Shadow::Initialize()
     auto context = m_graphics->GetDeviceResources()->GetD3DDeviceContext();
 
     // ライトの位置
-    m_lightPosition = Vector3{ 0,100,0 };
+    m_lightPosition = Vector3{ 0,100, -30 };
 
     // ライトの回転
     m_lightRotate = Quaternion::CreateFromYawPitchRoll(
-        XMConvertToRadians(0.0f), XMConvertToRadians(90.0f), 0.0f);
+        XMConvertToRadians(0.0f), XMConvertToRadians(80.0f), 0.0f);
 
     m_lightTheta = 100.0f;
 
@@ -132,20 +132,6 @@ void Shadow::BeginDepth()
     auto state = m_graphics->GetCommonStates();
 
 
-    // ライトの方向
-    SimpleMath::Vector3 lightDir = SimpleMath::Vector3::Transform(SimpleMath::Vector3(0.0f, 0.0f, 1.0f), m_lightRotate);
-
-    // ビュー行列を作成
-    auto view = SimpleMath::Matrix::CreateLookAt(
-        m_lightPosition,
-        m_lightPosition + lightDir,
-        SimpleMath::Vector3::UnitY
-    );
-
-    // 射影行列を作成
-    auto proj = SimpleMath::Matrix::CreatePerspectiveFieldOfView(
-        XMConvertToRadians(m_lightTheta), 1.0f, 0.1f, 1000.0f);
-
     m_rtv = m_shadowMapRT->GetRenderTargetView();
     m_srv = m_shadowMapRT->GetShaderResourceView();
     m_dsv = m_shadowMapDS->GetDepthStencilView();
@@ -163,23 +149,7 @@ void Shadow::BeginDepth()
     D3D11_VIEWPORT vp = { 0.0f, 0.0f, SHADOWMAP_SIZE, SHADOWMAP_SIZE, 0.0f, 1.0f };
     context->RSSetViewports(1, &vp);
 
-    D3D11_MAPPED_SUBRESOURCE mappedResource;
 
-
-    // GPUが定数バッファに対してアクセスを行わないようにする
-    context->Map(m_CBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
-
-    ConstantBuffer cbuffer = {};
-    SimpleMath::Matrix m = view * proj;
-    cbuffer.lightViewProj = XMMatrixTranspose(m);
-    cbuffer.lightPosition = m_lightPosition;
-    cbuffer.lightDirection = lightDir;
-    cbuffer.lightAmbient = SimpleMath::Color(0.3f, 0.3f, 0.3f);
-
-    *static_cast<ConstantBuffer*>(mappedResource.pData) = cbuffer;
-
-    // GPUが定数バッファに対してのアクセスを許可する
-    context->Unmap(m_CBuffer.Get(), 0);
 
 }
 
@@ -219,13 +189,45 @@ void Shadow::EndDepth()
     context->RSSetViewports(1, &viewport);
 }
 
-void Shadow::Draw(bool texture)
+void Shadow::Draw(bool texture, DirectX::XMVECTORF32 color)
 {
     using namespace DirectX;
     using namespace DirectX::SimpleMath;
 
     auto context = m_graphics->GetDeviceResources()->GetD3DDeviceContext();
     auto state = m_graphics->GetCommonStates();
+
+    // ライトの方向
+    SimpleMath::Vector3 lightDir = SimpleMath::Vector3::Transform(SimpleMath::Vector3(0.0f, 0.0f, 1.0f), m_lightRotate);
+
+    // ビュー行列を作成
+    auto view = SimpleMath::Matrix::CreateLookAt(
+        m_lightPosition,
+        m_lightPosition + lightDir,
+        SimpleMath::Vector3::UnitY
+    );
+
+    // 射影行列を作成
+    auto proj = SimpleMath::Matrix::CreatePerspectiveFieldOfView(
+        XMConvertToRadians(m_lightTheta), 1.0f, 0.1f, 1000.0f);
+
+    D3D11_MAPPED_SUBRESOURCE mappedResource;
+
+    // GPUが定数バッファに対してアクセスを行わないようにする
+    context->Map(m_CBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+
+    ConstantBuffer cbuffer = {};
+    SimpleMath::Matrix m = view * proj;
+    cbuffer.lightViewProj = XMMatrixTranspose(m);
+    cbuffer.lightPosition = m_lightPosition;
+    cbuffer.lightDirection = lightDir;
+    cbuffer.lightAmbient = SimpleMath::Color(0.3f, 0.3f, 0.3f);
+    cbuffer.color = color;
+
+    *static_cast<ConstantBuffer*>(mappedResource.pData) = cbuffer;
+
+    // GPUが定数バッファに対してのアクセスを許可する
+    context->Unmap(m_CBuffer.Get(), 0);
 
     // 定数バッファの設定
     ID3D11Buffer* cbuf[] = { m_CBuffer.Get(),m_CBuffer2.Get() };

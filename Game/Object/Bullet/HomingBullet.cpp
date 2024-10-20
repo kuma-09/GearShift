@@ -141,7 +141,7 @@ void HomingBullet::Render()
 {
 	if (GetState() == FLYING)
 	{
-		GetComponent<ModelDraw>()->Render(GetWorld());
+		GetComponent<ModelDraw>()->Render(false);
 	}
 	GetComponent<Emitter>()->Render(GetPosition());
 }
