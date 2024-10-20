@@ -25,9 +25,7 @@ float4 main(Input pin) : SV_TARGET0
     // ライトの向きを求める
     float3 lightDir = normalize(pin.PositionWS.xyz - LightPos.xyz);
 
-    // スポットライトの範囲内か？
-    if (dot(lightDir, LightDir) > fCosTheta)
-    {
+
         // 正規化デバイス座標にする
         pin.LightPosPS.xyz /= pin.LightPosPS.w;
 
@@ -68,12 +66,6 @@ float4 main(Input pin) : SV_TARGET0
 
         // スペキュラパワーを指数として使いハイライトのかかり具合を調整
         specular = pow(dotH, SpecularPower) * dotL * SpecularColor * percentLit;
-    }
-    else
-    {
-        // スポットライトの外
-        diffuse = float4(LightAmbient, 1.0f) * DiffuseColor;
-    }
   
     // テクスチャ色とディフューズ色を掛ける 
     float4 color = Texture.Sample(Sampler, pin.TexCoord) * Color * diffuse;
