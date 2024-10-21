@@ -3,16 +3,21 @@
 
 std::unique_ptr<Audio> Audio::m_audio = nullptr;
 
+Audio::Audio()
+{
+
+}
+
 Audio::~Audio()
 {
 
 }
 
-Audio* const Audio::GetInstance()
+Audio* Audio::GetInstance()
 {
 	if (m_audio == nullptr)
 	{
-		//m_audio.reset(new Audio());
+		m_audio.reset(new Audio());
 	}
 	return m_audio.get();
 }

@@ -10,8 +10,8 @@ class Audio
 public:
 	// デストラクタ
 	~Audio();
-	// Resoucesクラスのインスタンスを取得する
-	static Audio* const GetInstance();
+	// Audioクラスのインスタンスを取得する
+	static Audio* GetInstance();
 
 private:
 	// コンストラクタ
