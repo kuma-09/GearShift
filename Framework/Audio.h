@@ -13,6 +13,14 @@ public:
 	// Audioクラスのインスタンスを取得する
 	static Audio* GetInstance();
 
+	// 音声ファイルを読み込み
+	void LoadSoundFile();
+
+	void Update();
+
+	void PlaySoundSE_Rocket();
+	void PlaySoundSE_Hit();
+
 private:
 	// コンストラクタ
 	Audio();
@@ -31,9 +39,13 @@ private:
 
 	// オーディオ関連
 	std::unique_ptr<DirectX::AudioEngine> m_audioEngine;
-	std::unique_ptr<DirectX::SoundEffect> m_soundEffectSE;
+	std::unique_ptr<DirectX::SoundEffect> m_rocketLauncherSE;
+	std::unique_ptr<DirectX::SoundEffect> m_hitSE;
 	std::unique_ptr<DirectX::SoundEffect> m_soundEffectBGM;
 	std::unique_ptr<DirectX::SoundEffectInstance> m_soundEffectInstanceBGM;
+
+	float m_bgmVolume = 0.1f;
+	float m_seVolume = 0.5f;
 };
 
 #endif

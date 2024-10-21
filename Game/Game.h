@@ -16,6 +16,7 @@
 class Graphics;
 class InputManager;
 class Resources;
+class Audio;
 
 
 // A basic game implementation that creates a D3D11 device and
@@ -116,6 +117,7 @@ private:
     DX::DeviceResources* m_deviceResources;
     InputManager* m_inputManager;
     Resources* m_resources;
+    Audio* m_audio;
 
 
     IScene* m_scene;

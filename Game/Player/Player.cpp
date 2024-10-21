@@ -19,6 +19,7 @@
 #include "Game/Object/Bullet/HomingBullet.h"
 #include <Game/Components/HP.h>
 
+#include "Framework/Audio.h"
 
 
 Player::Player(IScene* scene)
@@ -172,6 +173,7 @@ void Player::Shot()
 		if (m_bullet[i]->GetState() == Bullet::BulletState::UNUSED && m_target)
 		{
 			m_bullet[i]->Shot(m_target);
+			Audio::GetInstance()->PlaySoundSE_Rocket();
 			break;
 		}
 	}

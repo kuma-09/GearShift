@@ -6,6 +6,8 @@
 #include "Game/Player/Player.h"
 #include "random"
 
+#include "Framework/Audio.h"
+
 HomingBullet::HomingBullet(IScene* scene, BoxCollider::TypeID id)
 {
 	SetScene(scene);
@@ -104,6 +106,8 @@ void HomingBullet::Hit()
 
 	SetVelocity(Vector3::Zero);
 	SetState(BulletState::USED);
+
+	Audio::GetInstance()->PlaySoundSE_Hit();
 }
 
 void HomingBullet::Update(float elapsedTime)
