@@ -17,13 +17,14 @@ TargetArea::TargetArea()
     DX::ThrowIfFailed(
         CreateWICTextureFromFile(
             device,
-            L"Resources/Textures/Circle.png",
+            L"Resources/Textures/3.png",
             nullptr,
             m_texture.ReleaseAndGetAddressOf()
         )
     );
 
-    SetScale(1.f);
+    SetScale(5.f);
+    m_rotate = 0;
 
 }
 
@@ -46,6 +47,8 @@ bool TargetArea::Update(Player* player , GameObject* target)
 
     Matrix view = m_graphics->GetViewMatrix();
     Matrix proj = m_graphics->GetProjectionMatrix();
+
+    m_scale = lerp(m_scale, SCALE, 0.05f);
 
     // ビューポート行列（スクリーン行列）の作成
     int w;
@@ -109,16 +112,20 @@ void TargetArea::Render(bool inArea)
     m_spriteBatch->Begin();
     if (inArea)
     {
+        m_rotate = lerp(m_rotate, 0, 0.1f);
         m_spriteBatch->Draw(m_texture.Get(), Vector2(float(w), float(h)), &rect,
-            DirectX::Colors::Red, 0.f,
+            DirectX::Colors::Red,
+            DirectX::XMConvertToRadians(m_rotate),
             Vector2(m_textureSize.x / 2, m_textureSize.y / 2),
             Vector2(m_scale, m_scale)
         );
     }
     else
     {
+        m_rotate++;
         m_spriteBatch->Draw(m_texture.Get(), Vector2(float(w), float(h)), &rect,
-            DirectX::Colors::Green, 0.f,
+            DirectX::Colors::CadetBlue,
+            DirectX::XMConvertToRadians(m_rotate),
             Vector2(m_textureSize.x / 2, m_textureSize.y / 2),
             Vector2(m_scale, m_scale)
         );

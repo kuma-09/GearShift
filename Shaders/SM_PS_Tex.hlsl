@@ -15,7 +15,7 @@ struct Input
 };
 
 // マッハバンド対策
-#define SHADOW_EPSILON 0.00001f
+#define SHADOW_EPSILON 0.000005f
 
 float4 main(Input pin) : SV_TARGET0
 {
@@ -33,7 +33,7 @@ float4 main(Input pin) : SV_TARGET0
         float2 uv = pin.LightPosPS.xy * float2(0.5f, -0.5f) + 0.5f;
 
         // シャドウマップの深度値とライト空間のピクセルのZ値を比較して影になるか調べる
-        float percentLit = ShadowMapTexture.SampleCmpLevelZero(ShadowMapSampler, uv, pin.LightPosPS.z - SHADOW_EPSILON).x;
+    float percentLit = ShadowMapTexture.SampleCmpLevelZero(ShadowMapSampler, uv, pin.LightPosPS.z - SHADOW_EPSILON).x;
  
         // ------------------------------------------------------------------------------- //
         // ディフューズ

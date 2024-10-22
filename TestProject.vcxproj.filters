@@ -258,6 +258,7 @@
     <None Include=".gitignore" />
     <None Include="Shaders\SM_Common.hlsli" />
     <None Include="Shaders\UI.hlsli" />
+    <None Include="Shaders\Burner.hlsli" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Shaders\OutLinePS.hlsl" />
@@ -272,5 +273,7 @@
     <FxCompile Include="Shaders\SM_PS.hlsl" />
     <FxCompile Include="Shaders\SM_VS.hlsl" />
     <FxCompile Include="Shaders\SM_PS_Tex.hlsl" />
+    <FxCompile Include="Shaders\BurnerVS.hlsl" />
+    <FxCompile Include="Shaders\BurnerPS.hlsl" />
   </ItemGroup>
 </Project>

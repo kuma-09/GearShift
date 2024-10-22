@@ -426,7 +426,7 @@ void PlayScene::CreateHitParticle(DirectX::SimpleMath::Matrix world)
 
         float velocityX = (float)HitParticle::get_rand(-10, 10) / 100.0f;
         float velocityY = (float)HitParticle::get_rand(-10, 10) / 100.0f;
-        float velocityZ = (float)HitParticle::get_rand(-10, 10) / 100.0f;
+        float velocityZ = (float)HitParticle::get_rand(5, 20) / 100.0f;
 
         m_hitParticle.push_back(std::make_unique<HitParticle>());
         m_hitParticle.back()->Initialize(pos, Vector3(velocityX, velocityY, velocityZ));

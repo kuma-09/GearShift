@@ -39,6 +39,12 @@ private:
 	// ‰æ–Ê‚Ì’†S—p‚Ì‰æ‘œ
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_texture;
 
+	const float SCALE = 1.0f;
 	float m_scale;
+	float m_rotate;
+
+	float lerp(float start, float end, float t) {
+		return (1 - t) * start + t * end;
+	}
 };
 

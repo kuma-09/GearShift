@@ -23,8 +23,8 @@ private:
 	DX::DeviceResources* m_deviceResources;
 	InputManager* m_inputManager;
 
-	std::unique_ptr<DirectX::SpriteBatch> m_spriteBatch;
-	std::unique_ptr<Shadow> m_shadow;
-
+	Microsoft::WRL::ComPtr<ID3D11InputLayout> m_inputLayout;
+	Microsoft::WRL::ComPtr<ID3D11VertexShader> m_vs;
+	Microsoft::WRL::ComPtr<ID3D11PixelShader> m_ps;
 
 };

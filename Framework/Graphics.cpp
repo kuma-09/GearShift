@@ -63,7 +63,6 @@ void Graphics::Initialize()
 	m_primitiveBatchPositionColor = std::make_unique<DirectX::PrimitiveBatch<DirectX::VertexPositionColor>>(m_context);
 	// 入力レイアウトを生成する
 	m_basicEffect->SetVertexColorEnabled(true);
-	// テクスチャを無効にする
 	m_basicEffect->SetTextureEnabled(true);
 	m_basicEffect->SetLightingEnabled(false);
 

@@ -1,6 +1,14 @@
 #include "pch.h"
 #include "TestScene.h"
+#include "Framework/BinaryFile.h"
 
+/// <summary>
+/// インプットレイアウト
+/// </summary>
+const std::vector<D3D11_INPUT_ELEMENT_DESC> INPUT_LAYOUT =
+{
+    { "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0,  D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+};
 
 TestScene::TestScene()
 {
@@ -13,8 +21,6 @@ TestScene::TestScene()
     auto device = m_graphics->GetDeviceResources()->GetD3DDevice();
     auto context = m_graphics->GetDeviceResources()->GetD3DDeviceContext();
 
-    m_spriteBatch = std::make_unique<DirectX::SpriteBatch>(context);
-    m_shadow = std::make_unique<Shadow>();
 
 }
 
@@ -25,12 +31,32 @@ void TestScene::Initialize(Game* game)
 
     SetGame(game);
 
+    auto device = m_graphics->GetDeviceResources()->GetD3DDevice();
+
     Matrix view = Matrix::CreateLookAt(Vector3(3, 5, -10),
         Vector3::Zero, Vector3::Up);
 
     m_graphics->SetViewMatrix(view);
 
-    m_shadow->Initialize();
+
+    BinaryFile vs = BinaryFile::LoadFile(L"Resources/Shaders/BurnerVS.cso");
+    BinaryFile ps = BinaryFile::LoadFile(L"Resources/Shaders/BurnerPS.cso");
+
+    // 頂点シェーダーの作成
+    DX::ThrowIfFailed(
+        device->CreateVertexShader(vs.GetData(), vs.GetSize(), nullptr, m_vs.ReleaseAndGetAddressOf())
+    );
+    // ピクセルシェーダーの作成
+    DX::ThrowIfFailed(
+        device->CreatePixelShader(ps.GetData(), ps.GetSize(), nullptr, m_ps.ReleaseAndGetAddressOf())
+    );
+
+
+    //	インプットレイアウトの作成
+    device->CreateInputLayout(&INPUT_LAYOUT[0],
+        static_cast<UINT>(INPUT_LAYOUT.size()),
+        vs.GetData(), vs.GetSize(),
+        m_inputLayout.GetAddressOf());
 
 }
 
@@ -53,32 +79,13 @@ void TestScene::Render()
     auto view = m_graphics->GetViewMatrix();
     auto proj = m_graphics->GetProjectionMatrix();
 
-    m_shadow->BeginDepth();
-
-    Resources::GetInstance()->GetCubeModel()->Draw(context, *state, Matrix::Identity, view, proj, false, [&]()
+    Resources::GetInstance()->GetCubeModel()->Draw(context, *state, Matrix::Identity, view, proj, false, [&]
         {
-            m_shadow->RenderDepth();
-        }
-    );
+            context->IASetInputLayout(m_inputLayout.Get());
+            context->VSSetShader(m_vs.Get(), nullptr, 0);
+            context->PSSetShader(m_ps.Get(), nullptr, 0);
+        });
 
-    Resources::GetInstance()->GetCubeModel()->Draw(context, *state, Matrix::CreateTranslation({0,0,3}), view, proj, false, [&]()
-        {
-            m_shadow->RenderDepth();
-        }
-    );
-
-
-    m_shadow->EndDepth();
-
-    
-
-
-    Resources::GetInstance()->GetCubeModel()->Draw(context, *state, Matrix::CreateTranslation({0,0,2}), view, proj, false, [&]()
-        {
-            m_shadow->Draw(false);
-        }
-    );
-    m_shadow->End();
 
 }
 
