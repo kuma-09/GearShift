@@ -20,6 +20,7 @@
 
 #include "Game/Object/Wall/BillA.h"
 #include "Game/Object/Wall/BillB.h"
+#include "Game/Object/Bullet/HomingBullet.h"
 
 #include "Game/Particle/HitParticle.h"
 
@@ -114,6 +115,9 @@ void PlayScene::Initialize(Game* game)
     m_dropItem.push_back(std::make_unique<DropItem>(this, std::make_unique<LeftArm>()));
     m_dropItem.back()->SetPosition(Vector3(6, 3, 9));
 
+    m_dropItemB.push_back(std::make_unique<DropItemB>(this, std::make_unique<HomingBullet>(this,BoxCollider::PlayerBullet)));
+    m_dropItemB.back()->SetPosition(Vector3(10, 3, 20));
+
     m_floor.push_back(std::make_unique<Floor>(this));
     m_floor.back()->SetPosition({ -100,0,-100 });
     m_floor.push_back(std::make_unique<Floor>(this));
@@ -164,6 +168,10 @@ void PlayScene::Update(float elapsedTime)
     m_player->Update(elapsedTime);
 
     for (auto& dropItem : m_dropItem)
+    {
+        dropItem->Update(elapsedTime);
+    }
+    for (auto& dropItem : m_dropItemB)
     {
         dropItem->Update(elapsedTime);
     }
@@ -265,6 +273,21 @@ void PlayScene::Update(float elapsedTime)
         }
         else it->get()->SetHit(false);
     }
+
+    // プレイヤーがドロップアイテムに触れている時
+    for (auto it = m_dropItemB.begin(); it != m_dropItemB.end(); it++)
+    {
+        if (m_player->GetComponent<BoxCollider>()->
+            GetBoundingBox()->Intersects(
+                *it->get()->GetComponent<BoxCollider>()->GetBoundingBox()))
+        {
+            it->get()->SetHit(true);
+
+            RemoveItemB(it);
+            break;
+        }
+        else it->get()->SetHit(false);
+    }
     
 
     // HP表示用のUI
@@ -330,6 +353,10 @@ void PlayScene::Render()
     }
 
     for (auto& dropItem : m_dropItem)
+    {
+        dropItem->Render();
+    }
+    for (auto& dropItem : m_dropItemB)
     {
         dropItem->Render();
     }
@@ -422,4 +449,11 @@ void PlayScene::RemoveItem(std::vector<std::unique_ptr<DropItem>>::iterator it)
     m_player->SetPart(typeID, it->get()->GetPart());
     RemoveCollider(it->get()->GetComponent<BoxCollider>());
     it = m_dropItem.erase(it);
+}
+
+void PlayScene::RemoveItemB(std::vector<std::unique_ptr<DropItemB>>::iterator it)
+{
+    //m_player->AddWepon(it);
+    RemoveCollider(it->get()->GetComponent<BoxCollider>());
+    it = m_dropItemB.erase(it);
 }

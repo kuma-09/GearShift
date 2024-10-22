@@ -37,14 +37,21 @@ void Camera::Update(float elapsedTime)
     m_rotateX -= mouse.x * 0.001f;
     m_rotateY -= mouse.y * 0.001f;
 
-
+    if (m_rotateY >= 1.f)
+    {
+        m_rotateY = 1.f;
+    }
+    else if(m_rotateY <= -1.f)
+    {
+        m_rotateY = -1.f;
+    }
 
     m_quaternion = Quaternion::CreateFromYawPitchRoll({ m_rotateY ,m_rotateX ,0 });
 
     m_targetPosition += (m_player->GetPosition() - m_targetPosition);
 
-
-
+    OutputDebugString(std::to_wstring(m_rotateY).c_str());
+    OutputDebugString(L"\n");
     // カメラのデフォルトの座標ベクトル
     DirectX::SimpleMath::Vector3 eye{ 0.0f,CAMERA_HEIGHT,CAMERA_DISTANCE };
 

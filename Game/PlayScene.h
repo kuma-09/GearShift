@@ -70,10 +70,11 @@ private:
 
 	// アイテムを削除
 	void RemoveItem(std::vector<std::unique_ptr<DropItem>>::iterator it);
+	void RemoveItemB(std::vector<std::unique_ptr<DropItemB>>::iterator it);
 
 private:
 
-
+	
 	Graphics* m_graphics;
 	DX::DeviceResources* m_deviceResources;
 	InputManager* m_inputManager;
@@ -86,6 +87,7 @@ private:
 	std::vector<std::unique_ptr<Wall>> m_wall;
 	// アイテム配列
 	std::vector<std::unique_ptr<DropItem>> m_dropItem;
+	std::vector<std::unique_ptr<DropItemB>> m_dropItemB;
 	// スカイドーム
 	std::unique_ptr<SkyDome> m_skyDome;
 	// 床

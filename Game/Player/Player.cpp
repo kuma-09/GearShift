@@ -45,8 +45,10 @@ Player::Player(IScene* scene)
 
 	for (int i = 0; i < MAX_BULLET_COUNT; i++)
 	{
-		m_bullet.push_back(std::make_unique<HomingBullet>(GetScene(), BoxCollider::TypeID::PlayerBullet));
+		m_defaultBullet.push_back(std::make_unique<NormalBullet>(GetScene(), BoxCollider::TypeID::PlayerBullet));
 	}
+
+	m_exBullet.clear();
 
 	m_state = m_idol.get();
 }
@@ -58,9 +60,9 @@ Player::~Player()
 
 void Player::Initialize()
 {
-	for (int i = 0; i < MAX_BULLET_COUNT; i++)
+	for (auto& bullet: m_defaultBullet)
 	{
-		m_bullet[i]->Initalize(this);
+		bullet->Initalize(this);
 	}
 
 	GetComponent<BoxCollider>()->SetTypeID(BoxCollider::TypeID::Player);
@@ -105,10 +107,9 @@ void Player::Update(float elapsedTime)
 
 	m_state->Update(elapsedTime);
 
-	for (int i = 0; i < MAX_BULLET_COUNT; i++)
+	for (auto& bullet: m_defaultBullet)
 	{
-
-			m_bullet[i]->Update(elapsedTime);
+			bullet->Update(elapsedTime);
 	}
 
 	SetPrePosition(GetPosition());
@@ -126,10 +127,7 @@ void Player::Update(float elapsedTime)
 
 void Player::CreateShadow()
 {
-	for (auto& pair : m_pPart)
-	{
-		pair.second->CreateShadow();
-	}
+	CreateShadows();
 }
 
 void Player::Render()
@@ -138,7 +136,7 @@ void Player::Render()
 
 	for (int i = 0; i < MAX_BULLET_COUNT; i++)
 	{
-		m_bullet[i]->Render();
+		m_defaultBullet[i]->Render();
 	}
 
 	RenderParts();
@@ -168,13 +166,28 @@ void Player::ChangeState(State* state)
 void Player::Shot()
 {
 
-	for (int i = 0; i < MAX_BULLET_COUNT; i++)
+	if (m_exBullet.empty())
 	{
-		if (m_bullet[i]->GetState() == Bullet::BulletState::UNUSED && m_target)
+		for (auto& bullet: m_defaultBullet)
 		{
-			m_bullet[i]->Shot(m_target);
-			Audio::GetInstance()->PlaySoundSE_Rocket();
-			break;
+			if (bullet->GetState() == Bullet::BulletState::UNUSED && m_target)
+			{
+				bullet->Shot(m_target);
+				Audio::GetInstance()->PlaySoundSE_Rocket();
+				break;
+			}
+		}
+	}
+	else
+	{
+		for (auto& bullet: m_exBullet)
+		{
+			if (bullet->GetState() == Bullet::BulletState::UNUSED && m_target)
+			{
+				bullet->Shot(m_target);
+				Audio::GetInstance()->PlaySoundSE_Rocket();
+				break;
+			}
 		}
 	}
 }
@@ -212,6 +225,6 @@ void Player::Reload()
 {
 	for (int i = 0; i < MAX_BULLET_COUNT; i++)
 	{
-		m_bullet[i]->Initalize(this);
+		m_defaultBullet[i]->Initalize(this);
 	}
 }

@@ -20,6 +20,7 @@ public:
 	const DirectX::GamePad::State& GetGamePadState() const { return m_gamepadState; }
 	// ゲームパッドのステートトラッカーを取得する
 	const std::unique_ptr<DirectX::GamePad::ButtonStateTracker>& GetGamePadTracker() const { return m_gamepadTracker; }
+
 private:
 	// コンストラクタ
 	InputManager();

@@ -65,11 +65,7 @@ void DropItemB::Update(float elapsedTime)
 
 void DropItemB::Render()
 {
-	GetComponent<ModelDraw>()->Render(true);
-	if (m_isHit)
-	{
-		//m_menu->Render();
-	}
+	GetComponent<ModelDraw>()->Render(true,DirectX::Colors::Red);
 }
 
 void DropItemB::Finalize()

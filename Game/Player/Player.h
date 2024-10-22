@@ -5,6 +5,7 @@
 #include "Game/State.h"
 #include "Framework/DebugString.h"
 #include "Game/Player/BoostGage.h"
+#include "Game/Object/Bullet/Bullet.h"
 
 #include <map>
 
@@ -76,7 +77,26 @@ public:
 		}
 	}
 
+	void CreateShadows()
+	{
+		for (auto& pair : m_pPart)
+		{
+			pair.second->CreateShadow();
+		}
+	}
+
 	void Collision(BoxCollider* collider);
+	
+	void AddWepon(std::vector<std::unique_ptr<Bullet>> bullets)
+	{
+
+		m_exBullet = std::move(bullets);
+
+		for (auto& bullet: m_exBullet)
+		{
+			bullet->Initalize(this);
+		}
+	}
 
 private:
 	void Reload();
@@ -93,7 +113,7 @@ private:
 	std::unordered_map<Part::TypeID, std::unique_ptr<Part>> m_pPart;
 
 	// 弾の最大数
-	static const int MAX_BULLET_COUNT = 50;
+	static const int MAX_BULLET_COUNT = 10;
 
 	// 一フレーム前の座標
 	DirectX::SimpleMath::Vector3 m_prePosition;
@@ -106,9 +126,9 @@ private:
 	std::unique_ptr<Attack> m_attack;
 
 	// 弾配列
-	std::vector<std::unique_ptr<Bullet>> m_bullet;
-
-	std::unique_ptr<DebugString> m_debugString;
+	std::vector<std::unique_ptr<Bullet>> m_defaultBullet;
+	// 追加の弾配列
+	std::vector<std::unique_ptr<Bullet>> m_exBullet;
 
 	bool m_onFloor;
 
