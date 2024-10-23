@@ -9,7 +9,7 @@ private:
 
 
 public:
-	DropItemB(IScene* scene, std::unique_ptr<Bullet> part);
+	DropItemB(IScene* scene, std::vector<std::unique_ptr<Bullet>> wepons);
 	~DropItemB();
 	
 	void Initialize();
@@ -17,12 +17,12 @@ public:
 	void Render();
 	void Finalize();
 
-	std::unique_ptr<Bullet> GetPart() { return std::move(m_bullet); }
+	std::vector<std::unique_ptr<Bullet>> GetPart() { return std::move(m_bullet); }
 	void SetHit(bool isHit) { m_isHit = isHit; }
 
 private:
 	std::unique_ptr<UI> m_menu;
-	std::unique_ptr<Bullet> m_bullet;
+	std::vector<std::unique_ptr<Bullet>> m_bullet;
 	const float m_dropItemModelSize = 0.1f;
 	bool m_isHit;
 };

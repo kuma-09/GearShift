@@ -12,6 +12,7 @@
 #include "Game/ResultScene.h"
 #include "Game/TestScene.h"
 #include "SceneMask.h"
+#include "Framework/DebugString.h"
 
 class Graphics;
 class InputManager;
@@ -126,6 +127,7 @@ private:
     std::unique_ptr<TitleScene> m_titleScene;
     std::unique_ptr<ResultScene> m_resultScene;
     std::unique_ptr<TestScene> m_testScene;
+    std::unique_ptr<DebugString> m_debugString;
 
     std::unique_ptr<SceneMask> m_sceneMask;
 

@@ -45,7 +45,7 @@ Player::Player(IScene* scene)
 
 	for (int i = 0; i < MAX_BULLET_COUNT; i++)
 	{
-		m_defaultBullet.push_back(std::make_unique<NormalBullet>(GetScene(), BoxCollider::TypeID::PlayerBullet));
+		m_defaultBullet.emplace_back(std::make_unique<NormalBullet>(GetScene(), BoxCollider::TypeID::PlayerBullet));
 	}
 
 	m_exBullet.clear();
@@ -111,6 +111,13 @@ void Player::Update(float elapsedTime)
 	{
 			bullet->Update(elapsedTime);
 	}
+	if (!m_exBullet.empty())
+	{
+		for (auto& bullet : m_exBullet) 
+		{
+			bullet->Update(elapsedTime);
+		}
+	}
 
 	SetPrePosition(GetPosition());
 	SetPosition(GetPosition() + GetVelocity());
@@ -134,9 +141,16 @@ void Player::Render()
 {
 	m_state->Render();
 
-	for (int i = 0; i < MAX_BULLET_COUNT; i++)
+	for (auto& bullet : m_defaultBullet)
 	{
-		m_defaultBullet[i]->Render();
+		bullet->Render();
+	}
+	if (!m_exBullet.empty())
+	{
+		for (auto& bullet : m_exBullet)
+		{
+			bullet->Render();
+		}
 	}
 
 	RenderParts();
@@ -180,6 +194,7 @@ void Player::Shot()
 	}
 	else
 	{
+		int usedCount = 0;
 		for (auto& bullet: m_exBullet)
 		{
 			if (bullet->GetState() == Bullet::BulletState::UNUSED && m_target)
@@ -188,6 +203,18 @@ void Player::Shot()
 				Audio::GetInstance()->PlaySoundSE_Rocket();
 				break;
 			}
+			else
+			{
+				usedCount++;
+			}
+		}
+		if (m_exBullet.size() == usedCount)
+		{
+			for (auto& bullet: m_exBullet)
+			{
+				bullet.release();
+			}
+			m_exBullet.clear();
 		}
 	}
 }

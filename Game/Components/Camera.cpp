@@ -50,8 +50,7 @@ void Camera::Update(float elapsedTime)
 
     m_targetPosition += (m_player->GetPosition() - m_targetPosition);
 
-    OutputDebugString(std::to_wstring(m_rotateY).c_str());
-    OutputDebugString(L"\n");
+
     // カメラのデフォルトの座標ベクトル
     DirectX::SimpleMath::Vector3 eye{ 0.0f,CAMERA_HEIGHT,CAMERA_DISTANCE };
 

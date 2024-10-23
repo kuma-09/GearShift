@@ -39,7 +39,7 @@ public:
 	// ボックスコライダーを追加
 	void AddCollider(BoxCollider* collider)
 	{
-		m_pBoxCollider.push_back(collider);
+		m_pBoxCollider.emplace_back(collider);
 	}
 
 	// コライダーを削除する
@@ -102,9 +102,6 @@ private:
 
 	// ボックスコライダーをまとめた配列
 	std::vector<BoxCollider*> m_pBoxCollider;
-
-	// デバッグ文字
-	std::unique_ptr<DebugString> m_debugString;
 
 	// ヒットエフェクト
 	std::vector<std::unique_ptr<HitParticle>> m_hitParticle;

@@ -72,59 +72,65 @@ void PlayScene::Initialize(Game* game)
 
     m_player->Initialize();
 
-    m_Enemy.push_back(std::make_unique<HomingEnemy>(this));
+    m_Enemy.emplace_back(std::make_unique<HomingEnemy>(this));
     m_Enemy.back()->Initialize(m_player.get());
     m_Enemy.back()->SetPosition(Vector3(0, 5, 0));
 
-    m_Enemy.push_back(std::make_unique<HomingEnemy>(this));
+    m_Enemy.emplace_back(std::make_unique<HomingEnemy>(this));
     m_Enemy.back()->Initialize(m_player.get());
     m_Enemy.back()->SetPosition(Vector3(32, 5, 10));
 
-    //m_Enemy.push_back(std::make_unique<HomingEnemy>(this));
+    //m_Enemy.emplace_back(std::make_unique<HomingEnemy>(this));
     //m_Enemy.back()->Initialize(m_player.get());
     //m_Enemy.back()->SetPosition(Vector3(-4, 2, -5));
 
-    //m_Enemy.push_back(std::make_unique<FixedEnemy>(this));
+    //m_Enemy.emplace_back(std::make_unique<FixedEnemy>(this));
     //m_Enemy.back()->Initialize(m_player.get());
     //m_Enemy.back()->SetPosition(Vector3(5, 3, 2));
 
-    //m_Enemy.push_back(std::make_unique<FixedEnemy>(this));
+    //m_Enemy.emplace_back(std::make_unique<FixedEnemy>(this));
     //m_Enemy.back()->Initialize(m_player.get());
     //m_Enemy.back()->SetPosition(Vector3(10, 1, 2));
 
-    m_wall.push_back(std::make_unique<BillA>(this));
+    m_wall.emplace_back(std::make_unique<BillA>(this));
     m_wall.back()->SetPosition({5,9,40});
     m_wall.back()->Initialize();
 
-    m_wall.push_back(std::make_unique<BillB>(this));
+    m_wall.emplace_back(std::make_unique<BillB>(this));
     m_wall.back()->SetPosition({ -6,9,-20 });
     m_wall.back()->Initialize();
 
-    m_wall.push_back(std::make_unique<BillA>(this));
+    m_wall.emplace_back(std::make_unique<BillA>(this));
     m_wall.back()->SetPosition({ 30,9,40 });
     m_wall.back()->Initialize();
 
-    m_wall.push_back(std::make_unique<BillB>(this));
+    m_wall.emplace_back(std::make_unique<BillB>(this));
     m_wall.back()->SetPosition({ -14,9,-10 });
     m_wall.back()->Initialize();
 
 
-    m_dropItem.push_back(std::make_unique<DropItem>(this, std::make_unique<BodyTop>()));
+    m_dropItem.emplace_back(std::make_unique<DropItem>(this, std::make_unique<BodyTop>()));
     m_dropItem.back()->SetPosition(Vector3(0, 20, 20));
 
-    m_dropItem.push_back(std::make_unique<DropItem>(this, std::make_unique<LeftArm>()));
+    m_dropItem.emplace_back(std::make_unique<DropItem>(this, std::make_unique<LeftArm>()));
     m_dropItem.back()->SetPosition(Vector3(6, 3, 9));
 
-    m_dropItemB.push_back(std::make_unique<DropItemB>(this, std::make_unique<HomingBullet>(this,BoxCollider::PlayerBullet)));
-    m_dropItemB.back()->SetPosition(Vector3(10, 3, 20));
+    //std::vector<std::unique_ptr<Bullet>> bullets;
+    //for (int i = 0; i < 10; i++)
+    //{
+    //    bullets.emplace_back(std::make_unique<HomingBullet>(this, BoxCollider::PlayerBullet));
+    //}
 
-    m_floor.push_back(std::make_unique<Floor>(this));
+    //m_dropItemB.emplace_back(std::make_unique<DropItemB>(this, std::move(bullets)));
+    //m_dropItemB.back()->SetPosition(Vector3(10, 3, 20));
+
+    m_floor.emplace_back(std::make_unique<Floor>(this));
     m_floor.back()->SetPosition({ -100,0,-100 });
-    m_floor.push_back(std::make_unique<Floor>(this));
+    m_floor.emplace_back(std::make_unique<Floor>(this));
     m_floor.back()->SetPosition({  100,0,-100 });
-    m_floor.push_back(std::make_unique<Floor>(this));
+    m_floor.emplace_back(std::make_unique<Floor>(this));
     m_floor.back()->SetPosition({ -100,0, 100 });
-    m_floor.push_back(std::make_unique<Floor>(this));
+    m_floor.emplace_back(std::make_unique<Floor>(this));
     m_floor.back()->SetPosition({  100,0, 100 });
 
     m_skyDome = std::make_unique<SkyDome>();
@@ -209,7 +215,7 @@ void PlayScene::Update(float elapsedTime)
 
             if (i == 0 && it->get()->GetComponent<HP>()->GetHP() > 0)
             {
-                inAreaEnemy.push_back(it->get());
+                inAreaEnemy.emplace_back(it->get());
             }
         }
         if (it->get()->GetComponent<HP>()->GetHP() > 0)
@@ -283,6 +289,7 @@ void PlayScene::Update(float elapsedTime)
         {
             it->get()->SetHit(true);
 
+            m_player->AddWepon(it->get()->GetPart());
             RemoveItemB(it);
             break;
         }
@@ -292,12 +299,12 @@ void PlayScene::Update(float elapsedTime)
 
     // HP•\Ž¦—p‚ÌUI
     std::vector<float> hp;
-    hp.push_back(m_player->GetPart(Part::Head)->GetComponent<HP>()->GetHP() / m_player->GetPart(Part::Head)->GetMaxHP());
-    hp.push_back(m_player->GetPart(Part::BodyTop)->GetComponent<HP>()->GetHP() / m_player->GetPart(Part::BodyTop)->GetMaxHP());
-    hp.push_back(m_player->GetPart(Part::LeftArm)->GetComponent<HP>()->GetHP() / m_player->GetPart(Part::LeftArm)->GetMaxHP());
-    hp.push_back(m_player->GetPart(Part::RightArm)->GetComponent<HP>()->GetHP() / m_player->GetPart(Part::RightArm)->GetMaxHP());
-    hp.push_back(m_player->GetPart(Part::LeftLeg)->GetComponent<HP>()->GetHP() / m_player->GetPart(Part::LeftLeg)->GetMaxHP());
-    hp.push_back(m_player->GetPart(Part::RightLeg)->GetComponent<HP>()->GetHP() / m_player->GetPart(Part::RightLeg)->GetMaxHP());
+    hp.emplace_back(m_player->GetPart(Part::Head)->GetComponent<HP>()->GetHP() / m_player->GetPart(Part::Head)->GetMaxHP());
+    hp.emplace_back(m_player->GetPart(Part::BodyTop)->GetComponent<HP>()->GetHP() / m_player->GetPart(Part::BodyTop)->GetMaxHP());
+    hp.emplace_back(m_player->GetPart(Part::LeftArm)->GetComponent<HP>()->GetHP() / m_player->GetPart(Part::LeftArm)->GetMaxHP());
+    hp.emplace_back(m_player->GetPart(Part::RightArm)->GetComponent<HP>()->GetHP() / m_player->GetPart(Part::RightArm)->GetMaxHP());
+    hp.emplace_back(m_player->GetPart(Part::LeftLeg)->GetComponent<HP>()->GetHP() / m_player->GetPart(Part::LeftLeg)->GetMaxHP());
+    hp.emplace_back(m_player->GetPart(Part::RightLeg)->GetComponent<HP>()->GetHP() / m_player->GetPart(Part::RightLeg)->GetMaxHP());
 
     m_hpUI->Update(hp);
 
@@ -428,7 +435,7 @@ void PlayScene::CreateHitParticle(DirectX::SimpleMath::Matrix world)
         float velocityY = (float)HitParticle::get_rand(-10, 10) / 100.0f;
         float velocityZ = (float)HitParticle::get_rand(5, 20) / 100.0f;
 
-        m_hitParticle.push_back(std::make_unique<HitParticle>());
+        m_hitParticle.emplace_back(std::make_unique<HitParticle>());
         m_hitParticle.back()->Initialize(pos, Vector3(velocityX, velocityY, velocityZ));
     }
 

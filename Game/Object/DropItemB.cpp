@@ -3,9 +3,8 @@
 #include "Game/Components/ModelDraw.h"
 #include "Game/Components/BoxCollider.h"
 
-DropItemB::DropItemB(IScene* scene, std::unique_ptr<Bullet> part)
+DropItemB::DropItemB(IScene* scene, std::vector<std::unique_ptr<Bullet>> wepons)
 {
-
 	SetScene(scene);
 	AddComponent<BoxCollider>();
 	GetComponent<BoxCollider>()->SetTypeID(BoxCollider::TypeID::DropItem);
@@ -13,7 +12,7 @@ DropItemB::DropItemB(IScene* scene, std::unique_ptr<Bullet> part)
 	GetComponent<ModelDraw>()->Initialize(ModelDraw::DropItem);
 
 	m_menu = std::make_unique<UI>(L"Resources/Textures/window.png",DirectX::SimpleMath::Vector2::Zero);
-	m_bullet = std::move(part);
+	m_bullet = std::move(wepons);
 
 	using namespace DirectX;
 

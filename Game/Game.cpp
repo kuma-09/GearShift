@@ -67,6 +67,10 @@ void Game::Initialize(HWND window, int width, int height)
  
     m_sceneMask = std::make_unique<SceneMask>();
 
+    m_debugString = std::make_unique<DebugString>(m_graphics->GetDeviceResources()->GetD3DDevice(),
+        m_graphics->GetDeviceResources()->GetD3DDeviceContext(),
+        L"Resources/Fonts/SegoeUI_18.spritefont");
+
     //ChangeScene(GetTitleScene());
     m_scene = GetTitleScene();
     m_scene->Initialize(this);
@@ -122,6 +126,8 @@ void Game::Update(DX::StepTimer const& timer)
 
     m_scene->Update(elapsedTime);
 
+    m_debugString->AddString(std::to_string(m_timer.GetFramesPerSecond()).c_str());
+
     elapsedTime;
 
 }
@@ -151,6 +157,7 @@ void Game::Render()
         m_sceneMask->Render();
     }
 
+    m_debugString->Render(m_graphics->GetCommonStates());
 
     m_deviceResources->PIXEndEvent();
 
