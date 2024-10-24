@@ -6,6 +6,8 @@
 #include "Game/Components/ModelDraw.h"
 #include <random>
 
+#include "Framework/Audio.h"
+
 NormalBullet::NormalBullet(IScene* scene, BoxCollider::TypeID id)
 {
 	SetScene(scene);
@@ -13,7 +15,7 @@ NormalBullet::NormalBullet(IScene* scene, BoxCollider::TypeID id)
 	AddComponent<ModelDraw>();
 	GetComponent<BoxCollider>()->SetTypeID(id);
 	GetComponent<BoxCollider>()->SetSize({ 0.5f,0.5f,0.5f });
-	SetScale({ 0.5f,0.5f,0.5f });
+	SetScale({ 0.25f,0.25f,0.25f });
 }
 
 NormalBullet::~NormalBullet()
@@ -27,7 +29,7 @@ void NormalBullet::Initalize(GameObject* object)
 
 	SetOwner(object);
 
-	GetComponent<ModelDraw>()->Initialize(ModelDraw::Cube);
+	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetCubeModel());
 
 	Vector3 velocity = Vector3::Zero;
 	SetPosition(Vector3::Zero);
@@ -57,19 +59,23 @@ void NormalBullet::Shot(GameObject* target)
 	SetVelocity(velocity);
 	SetState(BulletState::FLYING);
 
-
 }
 
 void NormalBullet::Hit()
 {
 	using namespace DirectX::SimpleMath;
 
-	Vector3 velocity = Vector3::Zero;
-	SetPosition(Vector3::Zero);
-	SetQuaternion(Quaternion::Identity);
+	if (GetState() == BulletState::FLYING)
+	{
+		Vector3 velocity = Vector3::Zero;
+		SetPosition(Vector3::Zero);
+		SetQuaternion(Quaternion::Identity);
 
-	SetVelocity(Vector3::Zero);
-	SetState(BulletState::USED);
+		SetVelocity(Vector3::Zero);
+		SetState(BulletState::USED);
+
+		Audio::GetInstance()->PlaySoundSE_Hit();
+	}
 }
 
 void NormalBullet::Update(float elapsedTime)

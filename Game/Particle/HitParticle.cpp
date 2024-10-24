@@ -96,7 +96,6 @@ bool HitParticle::Update()
 {
 	m_pos += m_vel;
 	ALPHA -= 0.02f;
-	RG	  += 0.01f;
 	if (ALPHA < 0.3f)
 	{
 		return true;
@@ -138,7 +137,7 @@ void HitParticle::Render(Matrix view, Matrix projection)
 	m_basicEffect->SetView(view);				// ビュー行列
 	m_basicEffect->SetProjection(projection);	// 射影行列
 	m_basicEffect->SetTexture(m_texture.Get());	// テクスチャ
-	m_basicEffect->SetColorAndAlpha(Vector4(1.f, 1.f, 0.f, ALPHA));
+	m_basicEffect->SetColorAndAlpha(Vector4(1.f, 0.5f, 0.f, ALPHA));
 
 
 

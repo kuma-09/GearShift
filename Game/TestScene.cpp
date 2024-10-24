@@ -58,12 +58,22 @@ void TestScene::Initialize(Game* game)
         vs.GetData(), vs.GetSize(),
         m_inputLayout.GetAddressOf());
 
+    m_effect = std::make_unique<HitEffect>();
+    m_effect->Set(Vector3::Zero);
+    m_time = 0;
 }
 
 
 void TestScene::Update(float elapsedTime)
 {
-    UNREFERENCED_PARAMETER(elapsedTime);
+    m_time+= elapsedTime;
+    if (m_time >= 0.5f)
+    {
+        m_effect->Set(DirectX::SimpleMath::Vector3(rand() % 2, rand() % 2, rand() % 2));
+        m_time = 0;
+    }
+
+    m_effect->Update(elapsedTime);
 
 }
 
@@ -86,6 +96,7 @@ void TestScene::Render()
             context->PSSetShader(m_ps.Get(), nullptr, 0);
         });
 
+    m_effect->Render(view, proj);
 
 }
 

@@ -20,6 +20,7 @@
 #include <Game/Components/HP.h>
 
 #include "Framework/Audio.h"
+#include "Game/PlayScene.h"
 
 
 Player::Player(IScene* scene)
@@ -154,6 +155,7 @@ void Player::Render()
 	}
 
 	RenderParts();
+
 
 	//GetComponent<BoxCollider>()->Render();
 

@@ -11,25 +11,7 @@ public:
 	ModelDraw();
 	~ModelDraw();
 
-	enum ModelType
-	{
-		Player,
-		Head,
-		BodyTop,
-		BodyBottom,
-		LArm,
-		RArm,
-		LLeg,
-		RLeg,
-		Dice,
-		Cube,
-		Floor,
-		BillA,
-		BillB,
-		DropItem
-	};
-
-	void Initialize(ModelType type);
+	void Initialize(DirectX::Model* model);
 	void Update(float elapsedTime);
 	void Render(bool texture = false, DirectX::XMVECTORF32 color = DirectX::Colors::White);
 	void Render(DirectX::SimpleMath::Matrix worldbool, bool texture = false, DirectX::XMVECTORF32 color = DirectX::Colors::White);

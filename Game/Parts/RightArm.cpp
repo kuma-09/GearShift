@@ -25,7 +25,7 @@ void RightArm::Initialize(int hp,IScene* scene)
 	SetScene(scene);
 	GetComponent<HP>()->SetHP(hp);
 	SetMaxHP(float(hp));
-	GetComponent<ModelDraw>()->Initialize(ModelDraw::RArm);
+	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetrArmModel());
 }
 
 void RightArm::Update(float elapsedTime)

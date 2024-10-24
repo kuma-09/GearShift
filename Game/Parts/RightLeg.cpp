@@ -25,7 +25,7 @@ void RightLeg::Initialize(int hp,IScene* scene)
 	SetScene(scene);
 	GetComponent<HP>()->SetHP(hp);
 	SetMaxHP(float(hp));
-	GetComponent<ModelDraw>()->Initialize(ModelDraw::RLeg);
+	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetrLegModel());
 }
 
 void RightLeg::Update(float elapsedTime)

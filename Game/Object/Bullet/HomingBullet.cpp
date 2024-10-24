@@ -16,7 +16,7 @@ HomingBullet::HomingBullet(IScene* scene, BoxCollider::TypeID id)
 	AddComponent<Emitter>();
 	GetComponent<BoxCollider>()->SetTypeID(id);
 	GetComponent<BoxCollider>()->SetSize({ 0.1f,0.1f,0.1f });
-	GetComponent<ModelDraw>()->Initialize(ModelDraw::Cube);
+	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetCubeModel());
 	SetScale({ 0.1f,0.1f,0.1f });
 	SetState(BulletState::UNUSED);
 }
@@ -101,14 +101,17 @@ void HomingBullet::Hit()
 {
 	using namespace DirectX::SimpleMath;
 
-	Vector3 velocity = Vector3::Zero;
-	SetPosition(Vector3::Zero);
-	SetQuaternion(Quaternion::Identity);
+	if (GetState() == BulletState::FLYING)
+	{
+		Vector3 velocity = Vector3::Zero;
+		SetPosition(Vector3::Zero);
+		SetQuaternion(Quaternion::Identity);
 
-	SetVelocity(Vector3::Zero);
-	SetState(BulletState::USED);
+		SetVelocity(Vector3::Zero);
+		SetState(BulletState::USED);
 
-	Audio::GetInstance()->PlaySoundSE_Hit();
+		Audio::GetInstance()->PlaySoundSE_Hit();
+	}
 }
 
 void HomingBullet::Update(float elapsedTime)

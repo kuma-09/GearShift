@@ -44,7 +44,7 @@ void HomingEnemy::Initialize(GameObject* target)
 	GetComponent<HP>()->SetHP(10);
 	SetTarget(target);
 	GetComponent<Look>()->SetTarget(this, target);
-	GetComponent<ModelDraw>()->Initialize(ModelDraw::Dice);
+	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetDiceModel());
 	GetComponent<BoxCollider>()->SetTypeID(BoxCollider::TypeID::Enemy);
 	GetComponent<BoxCollider>()->SetSize({1,1,1});
 	GetComponent<HPBar>()->Initialize();

@@ -25,7 +25,7 @@ void Head::Initialize(int hp,IScene* scene)
 	SetScene(scene);
 	GetComponent<HP>()->SetHP(hp);
 	SetMaxHP(float(hp));
-	GetComponent<ModelDraw>()->Initialize(ModelDraw::Head);
+	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetHeadModel());
 }
 
 void Head::Update(float elapsedTime)

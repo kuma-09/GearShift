@@ -9,7 +9,7 @@ DropItemB::DropItemB(IScene* scene, std::vector<std::unique_ptr<Bullet>> wepons)
 	AddComponent<BoxCollider>();
 	GetComponent<BoxCollider>()->SetTypeID(BoxCollider::TypeID::DropItem);
 	AddComponent<ModelDraw>();
-	GetComponent<ModelDraw>()->Initialize(ModelDraw::DropItem);
+	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetDropItemModel());
 
 	m_bullet = std::move(wepons);
 

@@ -26,7 +26,7 @@ void BodyTop::Initialize(int hp,IScene* scene)
 	SetScene(scene);
 	GetComponent<HP>()->SetHP(hp);
 	SetMaxHP(float(hp));
-	GetComponent<ModelDraw>()->Initialize(ModelDraw::BodyTop);
+	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetBodyTopModel());
 }
 
 void BodyTop::Update(float elapsedTime)

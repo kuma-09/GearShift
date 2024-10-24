@@ -26,7 +26,7 @@ void LeftLeg::Initialize(int hp,IScene* scene)
 	SetScene(scene);
 	GetComponent<HP>()->SetHP(hp);
 	SetMaxHP(float(hp));
-	GetComponent<ModelDraw>()->Initialize(ModelDraw::LLeg);
+	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetlLegModel());
 
 }
 

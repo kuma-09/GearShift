@@ -65,6 +65,7 @@ public:
 
 	// ヒットエフェクトを生成する関数
 	void CreateHitParticle(DirectX::SimpleMath::Matrix world);
+	void CreateHitParticle(DirectX::SimpleMath::Matrix world,DirectX::SimpleMath::Quaternion rotate);
 private:
 
 	void CreateShadow();

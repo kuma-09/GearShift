@@ -26,6 +26,7 @@ public:
 	DirectX::Model* GetBillAModel()		 { return m_billA.get(); }
 	DirectX::Model* GetBillBModel()		 { return m_billB.get(); }
 	DirectX::Model* GetDropItemModel()	 { return m_dropItem.get(); }
+	DirectX::Model* GetBulletModel()	 { return m_bullet.get(); }
 
 	// テクスチャを取得
 	ID3D11ShaderResourceView* GetGreenTexture() { return m_greenTexture.Get(); }
@@ -69,6 +70,7 @@ private:
 	std::unique_ptr<DirectX::Model> m_billA;
 	std::unique_ptr<DirectX::Model> m_billB;
 	std::unique_ptr<DirectX::Model> m_dropItem;
+	std::unique_ptr<DirectX::Model> m_bullet;
 
 	// テクスチャ
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_greenTexture;

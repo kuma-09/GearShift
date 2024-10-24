@@ -17,57 +17,9 @@ ModelDraw::~ModelDraw()
 	Finalize();
 }
 
-void ModelDraw::Initialize(ModelType type)
+void ModelDraw::Initialize(DirectX::Model* model)
 {
-	Resources* resources = Resources::GetInstance();
-
-	switch (type)
-	{
-	case ModelDraw::Player:
-		m_model = resources->GetPlayerModel();
-	case ModelDraw::Head:
-		m_model = resources->GetHeadModel();
-		break;
-	case ModelDraw::BodyTop:
-		m_model = resources->GetBodyTopModel();
-		break;
-	case ModelDraw::BodyBottom:
-		m_model = resources->GetBodyBottomModel();
-		break;
-	case ModelDraw::LArm:
-		m_model = resources->GetlArmModel();
-		break;
-	case ModelDraw::RArm:
-		m_model = resources->GetrArmModel();
-		break;
-	case ModelDraw::LLeg:
-		m_model = resources->GetlLegModel();
-		break;
-	case ModelDraw::RLeg:
-		m_model = resources->GetrLegModel();
-		break;
-	case ModelDraw::Dice:
-		m_model = resources->GetDiceModel();
-		break;
-	case ModelDraw::Cube:
-		m_model = resources->GetCubeModel();
-		break;
-	case ModelDraw::Floor:
-		m_model = resources->GetFloorModel();
-		break;
-	case ModelDraw::BillA:
-		m_model = resources->GetBillAModel();
-		break;
-	case ModelDraw::BillB:
-		m_model = resources->GetBillBModel();
-		break;
-	case ModelDraw::DropItem:
-		m_model = resources->GetDropItemModel();
-		break;
-	default:
-		m_model = nullptr;
-		break;
-	}
+	m_model = model;
 }
 
 void ModelDraw::Update(float elapsedTime)

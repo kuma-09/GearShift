@@ -24,7 +24,7 @@ void Sword::Initalize(GameObject* object)
 	using namespace DirectX::SimpleMath;
 
 	m_owner = object;
-	GetComponent<ModelDraw>()->Initialize(ModelDraw::Cube);
+	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetCubeModel());
 
 	Vector3 velocity = Vector3::Zero;
 	SetPosition(Vector3::Zero);

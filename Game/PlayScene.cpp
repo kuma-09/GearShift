@@ -402,6 +402,25 @@ void PlayScene::CreateHitParticle(DirectX::SimpleMath::Matrix world)
 
 }
 
+void PlayScene::CreateHitParticle(DirectX::SimpleMath::Matrix world, DirectX::SimpleMath::Quaternion rotate)
+{
+    using namespace DirectX::SimpleMath;
+
+    int particleValue = HitParticle::get_rand(5, 20);
+    Vector3 pos = { world._41,world._42,world._43 };
+
+    for (int i = 0; i < particleValue; i++)
+    {
+
+        float velocityX = (float)HitParticle::get_rand(-10, 10) / 1000.0f;
+        float velocityY = (float)HitParticle::get_rand(-10, 10) / 1000.0f;
+        float velocityZ = (float)HitParticle::get_rand(-30, 30) / 1000.0f;
+
+        m_hitParticle.emplace_back(std::make_unique<HitParticle>());
+        m_hitParticle.back()->Initialize(pos, Vector3::Transform({ velocityX,velocityY,velocityZ }, rotate));
+    }
+}
+
 /// <summary>
 /// 影用のテクスチャを作成
 /// </summary>

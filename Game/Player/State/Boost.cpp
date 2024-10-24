@@ -3,6 +3,7 @@
 #include "Idol.h"
 #include "Jump.h"
 #include "Game/Components/Gravity.h"
+#include "Game/PlayScene.h"
 
 
 Boost::Boost(Player* player)
@@ -29,6 +30,7 @@ void Boost::Update(float elapsedTime)
 	m_totalTime -= elapsedTime;
 	
 	m_player->SetVelocity(Vector3(m_velocity.x * m_boostPower * m_totalTime,0, m_velocity.z * m_boostPower * m_totalTime));
+	static_cast<PlayScene*>(m_player->GetScene())->CreateHitParticle(m_player->GetWorld(), m_player->GetQuaternion());
 
 	if (m_totalTime <= m_boostTime / 2)
 	{

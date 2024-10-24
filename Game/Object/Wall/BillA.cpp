@@ -20,7 +20,7 @@ void BillA::Initialize()
 {
 	using namespace DirectX::SimpleMath;
 
-	GetComponent<ModelDraw>()->Initialize(ModelDraw::BillA);
+	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetBillAModel());
 	SetScale({ 10, 8, 6 });
 	GetComponent<BoxCollider>()->SetSize(GetScale());
 	GetComponent<BoxCollider>()->GetBoundingBox()->Center = GetPosition();

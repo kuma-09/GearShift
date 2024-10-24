@@ -12,7 +12,7 @@ Floor::Floor(IScene* scene)
 	AddComponent<ModelDraw>();
 	GetComponent<BoxCollider>()->SetSize({ 100, 1, 100 });
 	GetComponent<BoxCollider>()->SetTypeID(BoxCollider::Floor);
-	GetComponent<ModelDraw>()->Initialize(ModelDraw::Floor);
+	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetFloorModel());
 	SetPosition({ 0,-1,0 });
 	
 	Matrix world = Matrix::CreateScale({ 50,1,50 });

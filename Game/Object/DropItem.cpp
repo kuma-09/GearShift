@@ -13,7 +13,7 @@ DropItem::DropItem(IScene* scene, std::unique_ptr<Part> part)
 	GetComponent<BoxCollider>()->SetTypeID(BoxCollider::TypeID::DropItem);
 	GetComponent<BoxCollider>()->SetSize(DirectX::SimpleMath::Vector3::One * 2);
 	AddComponent<ModelDraw>();
-	GetComponent<ModelDraw>()->Initialize(ModelDraw::DropItem);
+	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetDropItemModel());
 
 	m_part = std::move(part);
 

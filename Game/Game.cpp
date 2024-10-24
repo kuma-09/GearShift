@@ -128,10 +128,10 @@ void Game::Update(DX::StepTimer const& timer)
     }
 
     // TODO: Add your game logic here.
-
+    m_debugString->AddString(std::to_string(m_timer.GetFramesPerSecond()).c_str());
     m_scene->Update(elapsedTime);
 
-    m_debugString->AddString(std::to_string(m_timer.GetFramesPerSecond()).c_str());
+
 
     elapsedTime;
 
@@ -151,7 +151,6 @@ void Game::Render()
     }
 
     Clear();
-
     m_deviceResources->PIXBeginEvent(L"Render");
 
     // TODO: Add your rendering code here.
