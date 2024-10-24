@@ -203,7 +203,6 @@ void Player::Shot()
 				Audio::GetInstance()->PlaySoundSE_Rocket();
 				break;
 			}
-			else
 			{
 				usedCount++;
 			}
@@ -212,7 +211,7 @@ void Player::Shot()
 		{
 			for (auto& bullet: m_exBullet)
 			{
-				bullet.release();
+				bullet.reset();
 			}
 			m_exBullet.clear();
 		}

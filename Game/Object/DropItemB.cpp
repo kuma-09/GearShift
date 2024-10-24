@@ -11,10 +11,11 @@ DropItemB::DropItemB(IScene* scene, std::vector<std::unique_ptr<Bullet>> wepons)
 	AddComponent<ModelDraw>();
 	GetComponent<ModelDraw>()->Initialize(ModelDraw::DropItem);
 
-	m_menu = std::make_unique<UI>(L"Resources/Textures/window.png",DirectX::SimpleMath::Vector2::Zero);
 	m_bullet = std::move(wepons);
 
 	using namespace DirectX;
+
+	SetScale({ m_dropItemModelSize,m_dropItemModelSize,m_dropItemModelSize });
 
 	// モデルのエフェクト情報を更新する
 	Resources::GetInstance()->GetDropItemModel()->UpdateEffects([](IEffect* effect)
@@ -60,6 +61,11 @@ void DropItemB::Update(float elapsedTime)
 	world *= Matrix::CreateFromQuaternion(GetQuaternion());
 	world *= Matrix::CreateTranslation(GetPosition());
 	SetWorld(world);
+}
+
+void DropItemB::CreateShadow()
+{
+	GetComponent<ModelDraw>()->CreateShadow();
 }
 
 void DropItemB::Render()

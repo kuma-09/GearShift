@@ -11,7 +11,7 @@ class ResultScene final: public IScene
 {
 public:
 	ResultScene();
-
+	~ResultScene();
 	void Initialize(Game* game) override;
 	
 	void Update(float elapsedTime) override;

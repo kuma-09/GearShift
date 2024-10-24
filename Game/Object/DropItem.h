@@ -27,9 +27,7 @@ public:
 	void Collision(BoxCollider* collider);
 
 private:
-	std::unique_ptr<UI> m_menu;
 	std::unique_ptr<Part> m_part;
-	std::unique_ptr<Bullet> m_bullet;
 	const float m_dropItemModelSize = 0.1f;
 	bool m_isHit;
 };

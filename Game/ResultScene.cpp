@@ -18,6 +18,11 @@ ResultScene::ResultScene()
     m_backGround = std::make_unique<UI>(L"Resources/Textures/haguruma.png", Vector2::Zero);
 }
 
+ResultScene::~ResultScene()
+{
+    
+}
+
 void ResultScene::Initialize(Game* game)
 {
     using namespace DirectX;

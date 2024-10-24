@@ -23,6 +23,7 @@ HomingBullet::HomingBullet(IScene* scene, BoxCollider::TypeID id)
 
 HomingBullet::~HomingBullet()
 {
+
 }
 
 void HomingBullet::Initalize(GameObject* object)

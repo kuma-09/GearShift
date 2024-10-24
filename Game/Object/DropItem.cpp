@@ -15,7 +15,6 @@ DropItem::DropItem(IScene* scene, std::unique_ptr<Part> part)
 	AddComponent<ModelDraw>();
 	GetComponent<ModelDraw>()->Initialize(ModelDraw::DropItem);
 
-	m_menu = std::make_unique<UI>(L"Resources/Textures/window.png",DirectX::SimpleMath::Vector2::Zero);
 	m_part = std::move(part);
 
 	using namespace DirectX;

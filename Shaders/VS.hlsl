@@ -35,14 +35,10 @@ PS_INPUT main(VS_INPUT input)
     
     float3 pos = input.Pos + input.Normal;
     
-    
     output.Pos = mul(float4(pos , 1.0f), matWorld);
     
     output.Pos = mul(output.Pos, matView);
     output.Pos = mul(output.Pos, matProj);
-
-    
-
 
     // テクスチャ座標の渡し方は変更がないため、そのままコピー
     output.Tex = input.Tex;

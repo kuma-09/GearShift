@@ -80,18 +80,6 @@ void PlayScene::Initialize(Game* game)
     m_Enemy.back()->Initialize(m_player.get());
     m_Enemy.back()->SetPosition(Vector3(32, 5, 10));
 
-    //m_Enemy.emplace_back(std::make_unique<HomingEnemy>(this));
-    //m_Enemy.back()->Initialize(m_player.get());
-    //m_Enemy.back()->SetPosition(Vector3(-4, 2, -5));
-
-    //m_Enemy.emplace_back(std::make_unique<FixedEnemy>(this));
-    //m_Enemy.back()->Initialize(m_player.get());
-    //m_Enemy.back()->SetPosition(Vector3(5, 3, 2));
-
-    //m_Enemy.emplace_back(std::make_unique<FixedEnemy>(this));
-    //m_Enemy.back()->Initialize(m_player.get());
-    //m_Enemy.back()->SetPosition(Vector3(10, 1, 2));
-
     m_wall.emplace_back(std::make_unique<BillA>(this));
     m_wall.back()->SetPosition({5,9,40});
     m_wall.back()->Initialize();
@@ -112,17 +100,17 @@ void PlayScene::Initialize(Game* game)
     m_dropItem.emplace_back(std::make_unique<DropItem>(this, std::make_unique<BodyTop>()));
     m_dropItem.back()->SetPosition(Vector3(0, 20, 20));
 
-    m_dropItem.emplace_back(std::make_unique<DropItem>(this, std::make_unique<LeftArm>()));
-    m_dropItem.back()->SetPosition(Vector3(6, 3, 9));
+    //m_dropItem.emplace_back(std::make_unique<DropItem>(this, std::make_unique<LeftArm>()));
+    //m_dropItem.back()->SetPosition(Vector3(6, 3, 9));
 
-    //std::vector<std::unique_ptr<Bullet>> bullets;
-    //for (int i = 0; i < 10; i++)
-    //{
-    //    bullets.emplace_back(std::make_unique<HomingBullet>(this, BoxCollider::PlayerBullet));
-    //}
+    std::vector<std::unique_ptr<Bullet>> bullets;
+    for (int i = 0; i < 10; i++)
+    {
+        bullets.emplace_back(std::make_unique<HomingBullet>(this, BoxCollider::PlayerBullet));
+    }
 
-    //m_dropItemB.emplace_back(std::make_unique<DropItemB>(this, std::move(bullets)));
-    //m_dropItemB.back()->SetPosition(Vector3(10, 3, 20));
+    m_dropItemB.emplace_back(std::make_unique<DropItemB>(this, std::move(bullets)));
+    m_dropItemB.back()->SetPosition(Vector3(10, 3, 20));
 
     m_floor.emplace_back(std::make_unique<Floor>(this));
     m_floor.back()->SetPosition({ -100,0,-100 });
@@ -192,7 +180,6 @@ void PlayScene::Update(float elapsedTime)
     for (auto it = m_Enemy.begin(); it != m_Enemy.end();)
     {
         it->get()->Update(elapsedTime);
-
         if (m_targetArea->Update(m_player.get(), it->get()))
         {
 
@@ -313,52 +300,22 @@ void PlayScene::Update(float elapsedTime)
 /// <summary> 描画処理 </summary>
 void PlayScene::Render()
 {
-    using namespace DirectX::SimpleMath;
 
-    auto context = m_graphics->GetDeviceResources()->GetD3DDeviceContext();
-    auto state = m_graphics->GetCommonStates();
-    auto view = m_graphics->GetViewMatrix();
-    auto projection = m_graphics->GetProjectionMatrix();
-    auto world = Matrix::CreateTranslation(0, 2,50);
-
-    Resources::GetInstance()->GetShadow()->BeginDepth();
-
-    for (auto& wall : m_wall)
-    {
-        wall->CreateShadow();
-    }
-
-    for (auto& enemy: m_Enemy)
-    {
-        enemy->CreateShader();
-    }
-
-    for (auto& dropItem : m_dropItem)
-    {
-        dropItem->CreateShadow();
-    }
-
-    m_player->CreateShadow();
-
-    Resources::GetInstance()->GetShadow()->EndDepth();
+    CreateShadow();
 
     m_skyDome->Render();
-
     for (auto& wall : m_wall)
     {
         wall->Render();
     }
-
     for (auto& enemy : m_Enemy)
     {
         enemy->Render();
     }
-
     for (auto& floor: m_floor)
     {
         floor->Render();
     }
-
     for (auto& dropItem : m_dropItem)
     {
         dropItem->Render();
@@ -367,26 +324,22 @@ void PlayScene::Render()
     {
         dropItem->Render();
     }
-
-
-
     if (m_player->GetTarget())
     {
         m_player->GetTarget()->GetComponent<HPBar>()->Render(m_player->GetTarget()->GetPosition());
         m_player->GetTarget()->GetComponent<ModelDraw>()->OutLineRender();
     }
-
     for (auto& particle : m_hitParticle)
     {
         particle->Render(m_graphics->GetViewMatrix(), m_graphics->GetProjectionMatrix());
     }
-
     m_player->Render();
 
+    // UI
     m_targetArea->Render(m_player->GetTarget());
-
     m_hpUI->Render();
 
+    // リソースの解除＆ライトをキューブで描画
     Resources::GetInstance()->GetShadow()->End();
 }
 
@@ -407,6 +360,13 @@ void PlayScene::Finalize()
         dropItem.reset();
     }
     m_dropItem.clear();
+
+    for (auto& dropItem : m_dropItemB)
+    {
+        dropItem.reset();
+    }
+    m_dropItemB.clear();
+
 
     for (auto& hitParticle: m_hitParticle)
     {
@@ -442,9 +402,40 @@ void PlayScene::CreateHitParticle(DirectX::SimpleMath::Matrix world)
 
 }
 
+/// <summary>
+/// 影用のテクスチャを作成
+/// </summary>
+void PlayScene::CreateShadow()
+{
+    Resources::GetInstance()->GetShadow()->BeginDepth();
+
+    for (auto& wall : m_wall)
+    {
+        wall->CreateShadow();
+    }
+
+    for (auto& enemy : m_Enemy)
+    {
+        enemy->CreateShader();
+    }
+
+    for (auto& dropItem : m_dropItem)
+    {
+        dropItem->CreateShadow();
+    }
+    for (auto& dropItem : m_dropItemB)
+    {
+        dropItem->CreateShadow();
+    }
+
+    m_player->CreateShadow();
+
+    Resources::GetInstance()->GetShadow()->EndDepth();
+}
+
 std::vector<std::unique_ptr<Enemy>>::iterator PlayScene::RemoveEnemy(std::vector<std::unique_ptr<Enemy>>::iterator it)
 {
-    RemoveCollider(it->get()->GetComponent<BoxCollider>());
+    //RemoveCollider(it->get()->GetComponent<BoxCollider>());
     it->get()->Finalize();
     m_player->SetTarget(nullptr);
     return it = m_Enemy.erase(it);
@@ -454,13 +445,13 @@ void PlayScene::RemoveItem(std::vector<std::unique_ptr<DropItem>>::iterator it)
 {
     Part::TypeID typeID = it->get()->GetPartType();
     m_player->SetPart(typeID, it->get()->GetPart());
-    RemoveCollider(it->get()->GetComponent<BoxCollider>());
+    //RemoveCollider(it->get()->GetComponent<BoxCollider>());
     it = m_dropItem.erase(it);
 }
 
 void PlayScene::RemoveItemB(std::vector<std::unique_ptr<DropItemB>>::iterator it)
 {
     //m_player->AddWepon(it);
-    RemoveCollider(it->get()->GetComponent<BoxCollider>());
+    //RemoveCollider(it->get()->GetComponent<BoxCollider>());
     it = m_dropItemB.erase(it);
 }

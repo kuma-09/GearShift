@@ -27,12 +27,12 @@ void TitleScene::Initialize(Game* game)
     m_skydome = std::make_unique<SkyDome>();
     m_skydome->Initialize({ 0,-20,0 });
     
-    m_player = std::make_unique<TitlePlayer>(this);
-    m_player->Initialize();
+    //m_player = std::make_unique<TitlePlayer>(this);
+    //m_player->Initialize();
 
     
     m_camera = std::make_unique<TitleCamera>();
-    m_camera->Initialize(m_player.get());
+    m_camera->Initialize(m_skydome.get());
     m_camera->SetPosition(Vector3{ 0,5,-5 });
 
 
@@ -48,7 +48,7 @@ void TitleScene::Update(float elapsedTime)
 
     m_skydome->Update(elapsedTime);
     m_camera->Update(elapsedTime);
-    m_player->Update(elapsedTime);
+    //m_player->Update(elapsedTime);
 
     if (kb->pressed.Space)
     {
@@ -70,11 +70,11 @@ void TitleScene::Render()
 
 
     Resources::GetInstance()->GetShadow()->BeginDepth();
-    m_player->CreateShadow();
+    //m_player->CreateShadow();
     Resources::GetInstance()->GetShadow()->EndDepth();
 
     m_skydome->Render();
-    m_player->Render();
+    //m_player->Render();
     for (int i = 0; i < 2; i++)
     {
         for (int n = 0; n < 2; n++)

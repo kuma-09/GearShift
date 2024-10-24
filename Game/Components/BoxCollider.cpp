@@ -15,7 +15,10 @@ BoxCollider::BoxCollider()
 
 BoxCollider::~BoxCollider()
 {
-
+    if (GetOwner()->GetScene())
+    {
+        static_cast<PlayScene*>(GetOwner()->GetScene())->RemoveCollider(this);
+    }
 }
 
 void BoxCollider::Initialize()

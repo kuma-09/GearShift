@@ -14,6 +14,7 @@ public:
 	
 	void Initialize();
 	void Update(float elapsedTime);
+	void CreateShadow();
 	void Render();
 	void Finalize();
 
@@ -21,7 +22,6 @@ public:
 	void SetHit(bool isHit) { m_isHit = isHit; }
 
 private:
-	std::unique_ptr<UI> m_menu;
 	std::vector<std::unique_ptr<Bullet>> m_bullet;
 	const float m_dropItemModelSize = 0.1f;
 	bool m_isHit;

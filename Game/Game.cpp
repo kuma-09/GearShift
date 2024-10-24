@@ -98,6 +98,11 @@ void Game::Update(DX::StepTimer const& timer)
     m_inputManager->Update();
     m_audio->Update();
 
+    if (m_inputManager->GetKeyboardTracker()->pressed.Escape)
+    {
+        ExitGame();
+    }
+
     if (m_sceneMask->IsClose() || m_sceneMask->IsOpen())
     {
         if (m_sceneMask->Update(elapsedTime))

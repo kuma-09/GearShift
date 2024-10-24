@@ -54,7 +54,10 @@ public:
 			}
 			it++;
 		}
-		m_pBoxCollider.erase(m_pBoxCollider.begin() + it);
+		if (m_pBoxCollider.size() > it)
+		{
+			m_pBoxCollider.erase(m_pBoxCollider.begin() + it);
+		}
 	}
 
 	// ボックスコライダーの配列を取得
@@ -64,6 +67,7 @@ public:
 	void CreateHitParticle(DirectX::SimpleMath::Matrix world);
 private:
 
+	void CreateShadow();
 
 	// 敵を削除
 	std::vector<std::unique_ptr<Enemy>>::iterator RemoveEnemy(std::vector<std::unique_ptr<Enemy>>::iterator it);
@@ -92,17 +96,12 @@ private:
 	std::unique_ptr<SkyDome> m_skyDome;
 	// 床
 	std::vector<std::unique_ptr<Floor>>   m_floor;
-
 	// ターゲット範囲
 	std::unique_ptr<TargetArea> m_targetArea;
-
 	// HPの表示UI
 	std::unique_ptr<HPUI> m_hpUI;
-
-
 	// ボックスコライダーをまとめた配列
 	std::vector<BoxCollider*> m_pBoxCollider;
-
 	// ヒットエフェクト
 	std::vector<std::unique_ptr<HitParticle>> m_hitParticle;
 
