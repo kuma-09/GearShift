@@ -34,7 +34,7 @@ void BodyTop::Update(float elapsedTime)
 	using namespace DirectX::SimpleMath;
 
 
-	Vector3 pos{ 0.0f,1.0f,0.0f };
+	Vector3 pos{ 0.0f,0.9f,0.0f };
 	SetPosition(GetOwner()->GetPosition() + Vector3::Transform(pos, GetOwner()->GetQuaternion()));
 
 	Matrix world = Matrix::Identity;
