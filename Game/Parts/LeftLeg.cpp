@@ -6,12 +6,14 @@
 #include "Game/Components/ModelDraw.h"
 #include "Game/Components/BoxCollider.h"
 #include <Game/Components/HP.h>
+#include <Game/Particle/Emitter.h>
 
 LeftLeg::LeftLeg()
 {
 	AddComponent<HP>();
 	AddComponent<ModelDraw>();
 	AddComponent<BoxCollider>();
+	AddComponent<Emitter>();
 	SetTypeID(Part::LeftLeg);
 	m_isHit = false;
 }
@@ -27,7 +29,7 @@ void LeftLeg::Initialize(int hp,IScene* scene)
 	GetComponent<HP>()->SetHP(hp);
 	SetMaxHP(float(hp));
 	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetlLegModel());
-
+	GetComponent<Emitter>()->Initialize(L"Resources/Textures/smoke_white.png");
 }
 
 void LeftLeg::Update(float elapsedTime)
@@ -36,12 +38,14 @@ void LeftLeg::Update(float elapsedTime)
 
 	ComponentsUpdate(elapsedTime);
 
+
+	Quaternion quaternion = GetOwner()->GetQuaternion();
 	Vector3 pos{ -0.5f,-0.2f,-0.0f };
-	SetPosition(GetOwner()->GetPosition() + Vector3::Transform(pos, GetOwner()->GetQuaternion()));
+	SetPosition(GetOwner()->GetPosition() + Vector3::Transform(pos, quaternion));
 
 	Matrix world = Matrix::Identity;
 	world = Matrix::CreateScale(GetScale());
-	world *= Matrix::CreateFromQuaternion(GetOwner()->GetQuaternion());
+	world *= Matrix::CreateFromQuaternion(quaternion);
 	world *= Matrix::CreateTranslation(GetPosition());
 
 	SetWorld(world);
@@ -65,7 +69,7 @@ void LeftLeg::Render()
 	{
 		GetComponent<ModelDraw>()->Render(false, DirectX::Colors::Black);
 	}
-
+	GetComponent<Emitter>()->Render(GetPosition());
 }
 
 void LeftLeg::Finalize()

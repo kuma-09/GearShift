@@ -13,7 +13,7 @@ public:
 	Emitter();
 	~Emitter();
 
-	void Initialize();
+	void Initialize(const wchar_t* path, float size = 1.0f, float interval = 0.05f);
 
 	void Update(float elapsedTime);
 
@@ -32,7 +32,7 @@ private:
 	std::vector<std::unique_ptr<Particle>> m_particles;
 
 	float m_totalTime;
-	const float m_interval = 0.05f;
+	float m_interval;
 
 
 };

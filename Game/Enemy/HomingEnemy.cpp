@@ -29,7 +29,7 @@ HomingEnemy::HomingEnemy(IScene* scene)
 	
 	SetEnemyAttack(std::make_unique<EnemyAttackState>(this));
 	SetEnemyMove(std::make_unique<EnemyMoveState>(this));
-	SetScale({ 0.1f,0.1f,0.1f });
+	SetScale({ 0.05f,0.05f,0.05f });
 
 	m_state = GetMoveState();
 }

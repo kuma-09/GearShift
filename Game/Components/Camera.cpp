@@ -48,7 +48,7 @@ void Camera::Update(float elapsedTime)
 
     m_quaternion = Quaternion::CreateFromYawPitchRoll({ m_rotateY ,m_rotateX ,0 });
 
-    m_targetPosition += (m_player->GetPosition() - m_targetPosition);
+
 
 
     // カメラのデフォルトの座標ベクトル
@@ -56,6 +56,10 @@ void Camera::Update(float elapsedTime)
 
     // ターゲットの向いている方向に追従する
     eye = DirectX::SimpleMath::Vector3::Transform(eye, m_quaternion);
+
+    //Vector3::Transform(Vector3{ 0,1.5,0 }, GetOwner()->GetQuaternion()) * 2
+
+    m_targetPosition += (m_player->GetPosition() - m_targetPosition);
 
     // カメラ座標を計算する
     m_eyePosition += (m_targetPosition + eye - m_eyePosition);
