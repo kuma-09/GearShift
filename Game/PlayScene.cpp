@@ -308,6 +308,11 @@ void PlayScene::Render()
     {
         wall->Render();
     }
+    if (m_player->GetTarget())
+    {
+        m_player->GetTarget()->GetComponent<HPBar>()->Render(m_player->GetTarget()->GetPosition());
+        m_player->GetTarget()->GetComponent<ModelDraw>()->OutLineRender();
+    }
     for (auto& enemy : m_Enemy)
     {
         enemy->Render();
@@ -323,11 +328,6 @@ void PlayScene::Render()
     for (auto& dropItem : m_dropItemB)
     {
         dropItem->Render();
-    }
-    if (m_player->GetTarget())
-    {
-        m_player->GetTarget()->GetComponent<HPBar>()->Render(m_player->GetTarget()->GetPosition());
-        m_player->GetTarget()->GetComponent<ModelDraw>()->OutLineRender();
     }
     for (auto& particle : m_hitParticle)
     {

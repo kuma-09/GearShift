@@ -44,8 +44,8 @@ private:
 	std::unique_ptr<DirectX::SoundEffect> m_soundEffectBGM;
 	std::unique_ptr<DirectX::SoundEffectInstance> m_soundEffectInstanceBGM;
 
-	float m_bgmVolume = 0.1f;
-	float m_seVolume = 0.5f;
+	float m_bgmVolume = 0.01f;
+	float m_seVolume = 0.1f;
 };
 
 #endif

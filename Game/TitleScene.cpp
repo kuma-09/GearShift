@@ -88,6 +88,8 @@ void TitleScene::Render()
         }
     }
 
+    Resources::GetInstance()->GetlLegModel()->Draw(context, *state, Matrix::CreateTranslation(0,3,0), view, proj);
+
     Resources::GetInstance()->GetShadow()->End();
     m_titleLogo->Render();
 

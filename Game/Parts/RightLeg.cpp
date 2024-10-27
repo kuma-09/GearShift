@@ -34,10 +34,8 @@ void RightLeg::Update(float elapsedTime)
 
 	ComponentsUpdate(elapsedTime);
 
-	SetPosition(GetOwner()->GetPosition() 
-		+ Matrix::CreateFromQuaternion(GetOwner()->GetQuaternion()).Right() * 0.4f 
-		+ Matrix::CreateFromQuaternion(GetOwner()->GetQuaternion()).Down()  * 0.1f);
-
+	Vector3 pos{ 0.5f,-0.2f,-0.0f };
+	SetPosition(GetOwner()->GetPosition() + Vector3::Transform(pos, GetOwner()->GetQuaternion()));
 
 
 	Matrix world = Matrix::Identity;

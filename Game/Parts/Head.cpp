@@ -32,8 +32,8 @@ void Head::Update(float elapsedTime)
 {
 	using namespace DirectX::SimpleMath;
 
-	SetPosition(GetOwner()->GetPosition() 
-		+ Matrix::CreateFromQuaternion(GetOwner()->GetQuaternion()).Up() * 1.3f);
+	Vector3 pos{ 0.0f,1.85f,0.0f };
+	SetPosition(GetOwner()->GetPosition() + Vector3::Transform(pos, GetOwner()->GetQuaternion()));
 
 	Matrix world = Matrix::Identity;
 	world = Matrix::CreateScale(GetScale());

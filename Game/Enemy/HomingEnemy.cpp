@@ -29,6 +29,7 @@ HomingEnemy::HomingEnemy(IScene* scene)
 	
 	SetEnemyAttack(std::make_unique<EnemyAttackState>(this));
 	SetEnemyMove(std::make_unique<EnemyMoveState>(this));
+	SetScale({ 0.1f,0.1f,0.1f });
 
 	m_state = GetMoveState();
 }
@@ -84,7 +85,7 @@ void HomingEnemy::Render()
 	m_bullet->Render();
 	m_state->Render();
 	if (GetComponent<HP>()->GetHP() <= 0) return;
-	GetComponent<ModelDraw>()->Render(false);
+	GetComponent<ModelDraw>()->Render(true);
 
 	
 

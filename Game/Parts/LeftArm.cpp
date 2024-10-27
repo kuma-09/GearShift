@@ -32,9 +32,11 @@ void LeftArm::Update(float elapsedTime)
 {
 	using namespace DirectX::SimpleMath;
 
-	SetPosition(GetOwner()->GetPosition() 
-		+ Matrix::CreateFromQuaternion(GetOwner()->GetQuaternion()).Right() * -0.6f
-		+ Matrix::CreateFromQuaternion(GetOwner()->GetQuaternion()).Up()    *  0.9f);
+	ComponentsUpdate(elapsedTime);
+
+	SetPosition(GetOwner()->GetPosition()
+		+ Matrix::CreateFromQuaternion(GetOwner()->GetQuaternion()).Right() * -0.7f
+		+ Matrix::CreateFromQuaternion(GetOwner()->GetQuaternion()).Up() * 0.9f);
 
 	Matrix world = Matrix::Identity;
 	world = Matrix::CreateScale(GetScale());
@@ -42,8 +44,6 @@ void LeftArm::Update(float elapsedTime)
 	world *= Matrix::CreateTranslation(GetPosition());
 
 	SetWorld(world);
-
-	ComponentsUpdate(elapsedTime);
 	m_isHit = false;
 }
 

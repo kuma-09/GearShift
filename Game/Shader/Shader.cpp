@@ -118,7 +118,7 @@ void Shader::OutlineRenderStart(DirectX::SimpleMath::Matrix world, DirectX::Simp
 	ID3D11BlendState* blendState = states->NonPremultiplied();
 	context->OMSetBlendState(blendState, nullptr, 0xFFFFFFFF);
 	context->OMSetDepthStencilState(states->DepthDefault(), 0);
-	context->RSSetState(states->CullClockwise());
+	context->RSSetState(states->CullCounterClockwise());
 
 	//	シェーダをセットする
 	context->VSSetShader(m_vertexShader.Get(), nullptr, 0);

@@ -36,14 +36,8 @@ void LeftLeg::Update(float elapsedTime)
 
 	ComponentsUpdate(elapsedTime);
 
-	Vector3 pos{ 0,-0.4f,1.0f };
-	//SetPosition(GetPosition() + Vector3::Transform(pos, GetOwner()->GetQuaternion()));
-
-
-
-	SetPosition(GetOwner()->GetPosition()
-		+ Matrix::CreateFromQuaternion(GetOwner()->GetQuaternion()).Right() * -0.4f
-		+ Matrix::CreateFromQuaternion(GetOwner()->GetQuaternion()).Down()  *  0.1f);
+	Vector3 pos{ -0.5f,-0.2f,-0.0f };
+	SetPosition(GetOwner()->GetPosition() + Vector3::Transform(pos, GetOwner()->GetQuaternion()));
 
 	Matrix world = Matrix::Identity;
 	world = Matrix::CreateScale(GetScale());

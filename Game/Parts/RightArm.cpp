@@ -35,7 +35,7 @@ void RightArm::Update(float elapsedTime)
 	ComponentsUpdate(elapsedTime);
 
 	SetPosition(GetOwner()->GetPosition() 
-		+ Matrix::CreateFromQuaternion(GetOwner()->GetQuaternion()).Right() *  0.6f
+		+ Matrix::CreateFromQuaternion(GetOwner()->GetQuaternion()).Right() *  0.7f
 		+ Matrix::CreateFromQuaternion(GetOwner()->GetQuaternion()).Up()    *  0.9f);
 
 	Matrix world = Matrix::Identity;
