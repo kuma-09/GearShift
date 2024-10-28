@@ -18,5 +18,7 @@ public:
 private:
 	InputManager* m_inputManager;
 	DirectX::SimpleMath::Vector3 m_velocity;
+
+	const float MAX_SPEED = 1.0f;
 };
 

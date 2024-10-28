@@ -7,7 +7,7 @@
 Move::Move()
 {
 	m_inputManager = InputManager::GetInstance();
-    m_velocity = DirectX::SimpleMath::Vector3::Zero;
+
 }
 
 Move::~Move()
@@ -47,35 +47,34 @@ void Move::Update(float elapsedTime)
 
     if (kb.W)
     {
-        m_velocity += Vector3::Forward * 0.05f;
+        m_velocity += Vector3::Forward * 0.025f;
     }
     if (kb.S)
     {
-        m_velocity += Vector3::Backward * 0.05f;
+        m_velocity += Vector3::Backward * 0.025f;
     }
     if (kb.A)
     {
-        m_velocity += Vector3::Left * 0.05f;
+        m_velocity += Vector3::Left * 0.025f;
     }
     if (kb.D)
     {
-        m_velocity += Vector3::Right * 0.05f;
+        m_velocity += Vector3::Right * 0.025;
     };
+    m_velocity = Vector3::Lerp(m_velocity, Vector3::Zero, elapsedTime);
 
-    m_velocity.Normalize();
-    m_velocity /= 3;
+    //m_velocity.Normalize();
     GetOwner()->SetVelocity(Vector3::Transform(m_velocity, quaternion));
 
     if (!static_cast<Player*>(GetOwner())->GetTarget() && m_velocity != Vector3::Zero)
     {
         Vector3 velocity = GetOwner()->GetVelocity();
         velocity.x *= -1;
-        quaternion = Quaternion::CreateFromRotationMatrix(Matrix::CreateLookAt(GetOwner()->GetPosition(), GetOwner()->GetPosition() + velocity, Vector3(0,1,0)));
+        quaternion = Quaternion::CreateFromRotationMatrix(Matrix::CreateLookAt(GetOwner()->GetPosition(), GetOwner()->GetPosition() + Vector3::Transform(Vector3::Forward,GetOwner()->GetQuaternion()), Vector3(0, 1, 0)));
         GetOwner()->SetQuaternion(Quaternion::Lerp(GetOwner()->GetQuaternion(), quaternion,0.1f));
     }
 
 }
-
 
 void Move::Finalize()
 {

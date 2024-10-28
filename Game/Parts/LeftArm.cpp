@@ -34,13 +34,13 @@ void LeftArm::Update(float elapsedTime)
 
 	ComponentsUpdate(elapsedTime);
 
-	SetPosition(GetOwner()->GetPosition()
-		+ Matrix::CreateFromQuaternion(GetOwner()->GetQuaternion()).Right() * -0.7f
-		+ Matrix::CreateFromQuaternion(GetOwner()->GetQuaternion()).Up() * 0.9f);
+	Quaternion quaternion = GetOwner()->GetQuaternion();
+	Vector3 pos{ -0.6f, 0.9f, 0.0f };
+	SetPosition(GetOwner()->GetPosition() + Vector3::Transform(pos, quaternion));
 
 	Matrix world = Matrix::Identity;
 	world = Matrix::CreateScale(GetScale());
-	world *= Matrix::CreateFromQuaternion(GetOwner()->GetQuaternion());
+	world *= Matrix::CreateFromQuaternion(quaternion);
 	world *= Matrix::CreateTranslation(GetPosition());
 
 	SetWorld(world);
