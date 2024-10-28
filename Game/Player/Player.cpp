@@ -99,6 +99,12 @@ void Player::Update(float elapsedTime)
 
 	ComponentsUpdate(elapsedTime);
 
+	Vector3 velocity = GetComponent<Move>()->GetVelocity();
+	Quaternion quaternion = Quaternion::CreateFromYawPitchRoll({ 0,0,-velocity.x / 5});
+	if (!m_target)
+	{
+		SetQuaternion(Quaternion::CreateFromYawPitchRoll(GetQuaternion().ToEuler().y, GetQuaternion().ToEuler().x, quaternion.ToEuler().z));
+	}
 	if (GetOnFloor())
 	{
 		SetVelocity({ GetVelocity().x, 0, GetVelocity().z });

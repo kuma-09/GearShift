@@ -31,7 +31,7 @@ private:
 	const float CAMERA_DISTANCE     =  10.f;
 
 	// カメラの追従係数
-	const float CAMERA_EYE_RATE     = 0.05f;
+	const float CAMERA_EYE_RATE     = 0.5f;
 
 	// ターゲットに対しての係数
 	const float CAMERA_TARGET_RATE  =  0.1f;

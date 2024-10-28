@@ -35,42 +35,49 @@ void Move::Update(float elapsedTime)
     quaternion = Quaternion::CreateFromYawPitchRoll(GetOwner()->GetQuaternion().ToEuler().y, 0, 0);
     quaternion = Quaternion::CreateFromYawPitchRoll(GetOwner()->GetComponent<Camera>()->GetCameraQuaternion().ToEuler().y, 0, 0);
 
-    // 親オブジェクトに渡すベクトル
+    
+    bool isMove = false;
     if (gpState.thumbSticks.leftY != 0)
     {
         m_velocity += input;
+        isMove = true;
     }
     if (gpState.thumbSticks.leftX != 0)
     {
         m_velocity += input;
+        isMove = true;
     }
 
     if (kb.W)
     {
-        m_velocity += Vector3::Forward * 0.025f;
+        m_velocity += Vector3::Forward * 0.05f;
+        isMove = true;
     }
     if (kb.S)
     {
-        m_velocity += Vector3::Backward * 0.025f;
+        m_velocity += Vector3::Backward * 0.05f;
+        isMove = true;
     }
     if (kb.A)
     {
-        m_velocity += Vector3::Left * 0.025f;
+        m_velocity += Vector3::Left * 0.05f;
+        isMove = true;
     }
     if (kb.D)
     {
-        m_velocity += Vector3::Right * 0.025;
+        m_velocity += Vector3::Right * 0.05f;
+        isMove = true;
     };
-    m_velocity = Vector3::Lerp(m_velocity, Vector3::Zero, elapsedTime);
+    m_velocity = Vector3::Lerp(m_velocity, Vector3::Zero, 0.1f);
 
     //m_velocity.Normalize();
     GetOwner()->SetVelocity(Vector3::Transform(m_velocity, quaternion));
 
-    if (!static_cast<Player*>(GetOwner())->GetTarget() && m_velocity != Vector3::Zero)
+    if (!static_cast<Player*>(GetOwner())->GetTarget() && isMove)
     {
         Vector3 velocity = GetOwner()->GetVelocity();
         velocity.x *= -1;
-        quaternion = Quaternion::CreateFromRotationMatrix(Matrix::CreateLookAt(GetOwner()->GetPosition(), GetOwner()->GetPosition() + Vector3::Transform(Vector3::Forward,GetOwner()->GetQuaternion()), Vector3(0, 1, 0)));
+        quaternion = Quaternion::CreateFromRotationMatrix(Matrix::CreateLookAt(GetOwner()->GetPosition(), GetOwner()->GetPosition() + velocity, Vector3(0, 1, 0)));
         GetOwner()->SetQuaternion(Quaternion::Lerp(GetOwner()->GetQuaternion(), quaternion,0.1f));
     }
 

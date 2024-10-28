@@ -80,6 +80,10 @@ void PlayScene::Initialize(Game* game)
     m_Enemy.back()->Initialize(m_player.get());
     m_Enemy.back()->SetPosition(Vector3(32, 5, 10));
 
+    m_Enemy.emplace_back(std::make_unique<FixedEnemy>(this));
+    m_Enemy.back()->Initialize(m_player.get());
+    m_Enemy.back()->SetPosition(Vector3(50, 5, 10));
+
     m_wall.emplace_back(std::make_unique<BillA>(this));
     m_wall.back()->SetPosition({5,9,40});
     m_wall.back()->Initialize();

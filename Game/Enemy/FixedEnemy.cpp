@@ -7,6 +7,7 @@
 #include "Game/Components/ModelDraw.h"
 #include "Game/Components/BoxCollider.h"
 #include "Game/Components/HPBar.h"
+#include "Game/Components/Gravity.h"
 #include "Game/Object/Bullet/FixedEnemyBullet.h"
 #include "Game/PlayScene.h"
 
@@ -21,6 +22,7 @@ FixedEnemy::FixedEnemy(IScene* scene)
 
 	AddComponent<HP>();
 	AddComponent<Look>();
+	AddComponent<Gravity>();
 	AddComponent<ModelDraw>();
 	AddComponent<BoxCollider>();
 	AddComponent<HPBar>();
@@ -29,6 +31,7 @@ FixedEnemy::FixedEnemy(IScene* scene)
 	
 	SetEnemyAttack(std::make_unique<EnemyAttackState>(this));
 	SetEnemyMove(std::make_unique<EnemyMoveState>(this));
+	SetScale({ 0.05f,0.05f,0.05f });
 
 	m_state = GetMoveState();
 }
@@ -55,10 +58,10 @@ void FixedEnemy::Initialize(GameObject* target)
 void FixedEnemy::Update(float elapsedTime)
 {
 	using namespace DirectX::SimpleMath;
-
+	m_state->Update(elapsedTime);
 	ComponentsUpdate(elapsedTime);
 
-	m_state->Update(elapsedTime);
+
 
 	m_bullet->Update(elapsedTime);
 
@@ -84,6 +87,7 @@ void FixedEnemy::Render()
 	m_state->Render();
 	if (GetComponent<HP>()->GetHP() <= 0) return;
 	GetComponent<ModelDraw>()->Render(true);
+	GetComponent<BoxCollider>()->Render();
 }
 
 void FixedEnemy::Finalize()
@@ -113,5 +117,10 @@ void FixedEnemy::Collision(BoxCollider* collider)
 			static_cast<PlayScene*>(GetScene())->CreateHitParticle(GetWorld());
 			bulletObject->Hit();
 		}
+	}
+	if (collider->GetTypeID() == BoxCollider::Floor ||
+		collider->GetTypeID() == BoxCollider::Wall)
+	{
+		BoxCollider::CheckHit(this, collider->GetOwner());
 	}
 }

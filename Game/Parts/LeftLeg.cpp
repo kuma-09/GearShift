@@ -47,9 +47,9 @@ void LeftLeg::Update(float elapsedTime)
 	Matrix world = Matrix::Identity;
 	world = Matrix::CreateScale(GetScale());
 
-	world *= Matrix::CreateTranslation({ 0,-1,0 });
+	world *= Matrix::CreateTranslation({ 0,-0.5f,0 });
 	world *= Matrix::CreateFromYawPitchRoll({velocity.z,0,-velocity.x});
-	world *= Matrix::CreateTranslation({ 0,1,0 });
+	world *= Matrix::CreateTranslation({ 0,0.5f,0 });
 
 	world *= Matrix::CreateFromQuaternion(quaternion);
 	world *= Matrix::CreateTranslation(GetPosition());
