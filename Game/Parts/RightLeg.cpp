@@ -4,6 +4,7 @@
 #include "Game/Components/Camera.h"
 #include "Game/Components/ModelDraw.h"
 #include "Game/Components/BoxCollider.h"
+#include "Game/Components/Move.h"
 #include <Game/Components/HP.h>
 
 RightLeg::RightLeg()
@@ -34,13 +35,21 @@ void RightLeg::Update(float elapsedTime)
 
 	ComponentsUpdate(elapsedTime);
 
+	Quaternion quaternion = GetOwner()->GetQuaternion();
 	Vector3 pos{ 0.5f,-0.2f,-0.0f };
-	SetPosition(GetOwner()->GetPosition() + Vector3::Transform(pos, GetOwner()->GetQuaternion()));
+	Vector3 velocity = GetOwner()->GetComponent<Move>()->GetVelocity() / 3;
+	//velocity = Vector3::Transform(velocity, quaternion);
+	SetPosition(GetOwner()->GetPosition() + Vector3::Transform(pos, quaternion));
 
 
 	Matrix world = Matrix::Identity;
 	world = Matrix::CreateScale(GetScale());
-	world *= Matrix::CreateFromQuaternion(GetOwner()->GetQuaternion());
+
+	world *= Matrix::CreateTranslation({ 0,-1,0 });
+	world *= Matrix::CreateFromYawPitchRoll({ velocity.z * 2,0,-velocity.x });
+	world *= Matrix::CreateTranslation({ 0,1,0 });
+
+	world *= Matrix::CreateFromQuaternion(quaternion);
 	world *= Matrix::CreateTranslation(GetPosition());
 
 	SetWorld(world);

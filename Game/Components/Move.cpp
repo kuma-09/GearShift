@@ -7,6 +7,7 @@
 Move::Move()
 {
 	m_inputManager = InputManager::GetInstance();
+    m_velocity = DirectX::SimpleMath::Vector3::Zero;
 }
 
 Move::~Move()
@@ -35,41 +36,39 @@ void Move::Update(float elapsedTime)
     quaternion = Quaternion::CreateFromYawPitchRoll(GetOwner()->GetComponent<Camera>()->GetCameraQuaternion().ToEuler().y, 0, 0);
 
     // 親オブジェクトに渡すベクトル
-    Vector3 velocity = Vector3::Zero;
-
     if (gpState.thumbSticks.leftY != 0)
     {
-        velocity += Vector3::Transform(input,quaternion);
+        m_velocity += input;
     }
     if (gpState.thumbSticks.leftX != 0)
     {
-        velocity += Vector3::Transform(input, quaternion);
+        m_velocity += input;
     }
 
     if (kb.W)
     {
-        velocity += Vector3::Transform(Vector3::Forward * elapsedTime, quaternion);
+        m_velocity += Vector3::Forward * 0.05f;
     }
     if (kb.S)
     {
-        velocity += Vector3::Transform(Vector3::Backward * elapsedTime, quaternion);
+        m_velocity += Vector3::Backward * 0.05f;
     }
     if (kb.A)
     {
-        velocity += Vector3::Transform(Vector3::Left * elapsedTime, quaternion);
+        m_velocity += Vector3::Left * 0.05f;
     }
     if (kb.D)
     {
-        velocity += Vector3::Transform(Vector3::Right * elapsedTime, quaternion);
-    }
-    ;
+        m_velocity += Vector3::Right * 0.05f;
+    };
 
+    m_velocity.Normalize();
+    m_velocity /= 3;
+    GetOwner()->SetVelocity(Vector3::Transform(m_velocity, quaternion));
 
-    velocity.Normalize();
-    GetOwner()->SetVelocity(velocity / 3);
-
-    if (!static_cast<Player*>(GetOwner())->GetTarget() && velocity != Vector3::Zero)
+    if (!static_cast<Player*>(GetOwner())->GetTarget() && m_velocity != Vector3::Zero)
     {
+        Vector3 velocity = GetOwner()->GetVelocity();
         velocity.x *= -1;
         quaternion = Quaternion::CreateFromRotationMatrix(Matrix::CreateLookAt(GetOwner()->GetPosition(), GetOwner()->GetPosition() + velocity, Vector3(0,1,0)));
         GetOwner()->SetQuaternion(Quaternion::Lerp(GetOwner()->GetQuaternion(), quaternion,0.1f));
@@ -81,4 +80,9 @@ void Move::Update(float elapsedTime)
 void Move::Finalize()
 {
 
+}
+
+DirectX::SimpleMath::Vector3 Move::GetVelocity()
+{
+    return m_velocity;
 }

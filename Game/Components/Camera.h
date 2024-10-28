@@ -28,7 +28,7 @@ private:
 	const float CAMERA_HEIGHT	    =  2.5f;
 
 	// ƒJƒƒ‰‚Ì‹——£
-	const float CAMERA_DISTANCE     =  5.0f;
+	const float CAMERA_DISTANCE     =  10.0f;
 
 	// ƒJƒƒ‰‚Ì’Ç]ŒW”
 	const float CAMERA_EYE_RATE     = 0.05f;

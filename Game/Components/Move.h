@@ -13,7 +13,10 @@ public:
 	void Update(float elapsedTime);
 	void Finalize();
 
+	DirectX::SimpleMath::Vector3 GetVelocity();
+
 private:
 	InputManager* m_inputManager;
+	DirectX::SimpleMath::Vector3 m_velocity;
 };
 
