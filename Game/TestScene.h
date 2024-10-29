@@ -4,8 +4,8 @@
 #include "Framework/Resources.h"
 #include "Framework/InputManager.h"
 #include "Framework/DeviceResources.h"
-#include "Shader/Shadow.h"
-#include "Game/Particle/HitEffect.h"
+#include "Particle/HitEffect.h"
+#include "UI/CircleGage.h"
 
 class TestScene final : public IScene
 {
@@ -28,6 +28,7 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11VertexShader> m_vs;
 	Microsoft::WRL::ComPtr<ID3D11PixelShader> m_ps;
 	std::unique_ptr<HitEffect> m_effect;
+	std::unique_ptr<CircleGage> m_gage;
 
 	float m_time;
 

@@ -1,27 +1,25 @@
 #include "pch.h"
-#include "BoostGage.h"
-#include "Framework/Graphics.h"
+#include "CircleGage.h"
 #include "Framework/BinaryFile.h"
 
 ///	<summary>
 ///	インプットレイアウト
 ///	</summary>
-const std::vector<D3D11_INPUT_ELEMENT_DESC> BoostGage::INPUT_LAYOUT =
+const std::vector<D3D11_INPUT_ELEMENT_DESC> CircleGage::INPUT_LAYOUT =
 {
 	{ "POSITION",	0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 	{ "TEXCOORD",	0, DXGI_FORMAT_R32G32_FLOAT, 0, sizeof(DirectX::SimpleMath::Vector3) + sizeof(DirectX::SimpleMath::Vector4), D3D11_INPUT_PER_VERTEX_DATA, 0 },
 };
 
-BoostGage::BoostGage()
-{
-	m_boostPoint = 100;
-}
-
-BoostGage::~BoostGage()
+CircleGage::CircleGage()
 {
 }
 
-void BoostGage::Initialize()
+CircleGage::~CircleGage()
+{
+}
+
+void CircleGage::Initialize()
 {
 	using namespace DirectX;
 	using namespace DirectX::SimpleMath;
@@ -31,18 +29,19 @@ void BoostGage::Initialize()
 
 	m_batch = std::make_unique<DirectX::PrimitiveBatch<DirectX::VertexPositionColorTexture>>(m_graphics->GetDeviceResources()->GetD3DDeviceContext());
 
-
+	m_vertex[0] = { Vector3(-1 ,  1, 0),Vector4::One, Vector2(0.0f, 0.0f) };		//左上
+	m_vertex[1] = { Vector3( 1 ,  1, 0),Vector4::One, Vector2(1.0f, 0.0f) };		//右上
+	m_vertex[2] = { Vector3(-1 , -1, 0),Vector4::One, Vector2(0.0f, 1.0f) };	//左下
+	m_vertex[3] = { Vector3( 1 , -1, 0),Vector4::One, Vector2(1.0f, 1.0f) };		//右下
 
 	//	コンパイルされたシェーダファイルを読み込み
-	BinaryFile VSData = BinaryFile::LoadFile(L"Resources/Shaders/CircleVS.cso");
-	BinaryFile PSData = BinaryFile::LoadFile(L"Resources/Shaders/CirclePS.cso");
+	//BinaryFile VSData = BinaryFile::LoadFile(L"Resources/Shaders/CircleVS.cso");
+	//BinaryFile PSData = BinaryFile::LoadFile(L"Resources/Shaders/CirclePS.cso");
 
-	DirectX::CreateWICTextureFromFile(m_graphics->GetDeviceResources()->GetD3DDevice(), L"Resources/Textures/Circle.png", nullptr, m_texture.ReleaseAndGetAddressOf());
+	BinaryFile VSData = BinaryFile::LoadFile(L"Resources/Shaders/NormalGageVS.cso");
+	BinaryFile PSData = BinaryFile::LoadFile(L"Resources/Shaders/NormalGagePS.cso");
 
-	m_vertex[0] = { Vector3(-0.4f , -0.5f, 0),Vector4::One, Vector2(0.0f, 0.0f) };		//左上
-	m_vertex[1] = { Vector3( 0.4f , -0.5f, 0),Vector4::One, Vector2(1.0f, 0.0f) };		//右上
-	m_vertex[2] = { Vector3(-0.4f , -0.9f, 0),Vector4::One, Vector2(0.0f, 1.0f) };	//左下
-	m_vertex[3] = { Vector3( 0.4f , -0.9f, 0),Vector4::One, Vector2(1.0f, 1.0f) };		//右下
+	DirectX::CreateWICTextureFromFile(m_graphics->GetDeviceResources()->GetD3DDevice(), L"Resources/Textures/haguruma.png", nullptr, m_texture.ReleaseAndGetAddressOf());
 
 	//	インプットレイアウトの作成
 	device->CreateInputLayout(&INPUT_LAYOUT[0],
@@ -64,24 +63,27 @@ void BoostGage::Initialize()
 	bd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
 	bd.CPUAccessFlags = 0;
 	device->CreateBuffer(&bd, nullptr, &m_CBuffer);
+
+	m_rotate = 0;
 }
 
-void BoostGage::Update()
+void CircleGage::Update()
 {
-	if (m_boostPoint <= 0)
+	m_rotate += 0.1f;
+	if (m_rotate >= 100)
 	{
-		m_boostPoint = 100;
+		m_rotate = 0;
 	}
 }
 
-void BoostGage::Render()
+void CircleGage::Render()
 {
 	auto context = m_graphics->GetDeviceResources()->GetD3DDeviceContext();
 	auto state = m_graphics->GetCommonStates();
 
 	//	シェーダーに渡す追加のバッファを作成する。(ConstBuffer）
 	ConstBuffer cbuff;
-	cbuff.rotate = DirectX::XMConvertToRadians(360) - DirectX::XMConvertToRadians(360 * (m_boostPoint / 100));
+	cbuff.rotate = 50 / 100;
 
 	//	受け渡し用バッファの内容更新(ConstBufferからID3D11Bufferへの変換）
 	context->UpdateSubresource(m_CBuffer.Get(), 0, NULL, &cbuff, 0, 0);

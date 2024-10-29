@@ -1,19 +1,15 @@
 #pragma once
 #include "Framework/Graphics.h"
 
-class BoostGage
+class CircleGage
 {
 public:
-	BoostGage();
-	~BoostGage();
+	CircleGage();
+	~CircleGage();
 
 	void Initialize();
 	void Update();
 	void Render();
-
-
-	float GetBoostPoint() { return m_boostPoint; }
-	void UseBoostPoint(float usePoint) { m_boostPoint -= usePoint; }
 
 private:
 
@@ -42,5 +38,7 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11VertexShader> m_vertexShader;
 	Microsoft::WRL::ComPtr<ID3D11PixelShader> m_pixelShader;
 
-	float m_boostPoint;
+	float m_rotate;
+
 };
+

@@ -22,6 +22,8 @@
 #include "Framework/Audio.h"
 #include "Game/PlayScene.h"
 
+#include "BoostGage.h"
+
 
 Player::Player(IScene* scene)
 	:m_target{}
@@ -74,6 +76,9 @@ void Player::Initialize()
 	GetComponent<HPBar>()->Initialize();
 	SetOnFloor(false);
 
+	m_boostGage = std::make_unique<BoostGage>();
+	m_boostGage->Initialize();
+
 
 }
 
@@ -84,6 +89,7 @@ void Player::Update(float elapsedTime)
 	auto& mouse = m_inputManager->GetMouseTracker();
 	auto& kb = m_inputManager->GetKeyboardTracker();
 
+	m_boostGage->Update();
 
 	if (mouse->leftButton == mouse->PRESSED || gp->x == gp->PRESSED )
 	{
@@ -161,7 +167,7 @@ void Player::Render()
 	}
 
 	RenderParts();
-
+	m_boostGage->Render();
 
 	//GetComponent<BoxCollider>()->Render();
 

@@ -16,6 +16,7 @@ class Attack;
 class Bullet;
 class NormalBullet;
 class HomingBullet;
+class BoostGage;
 
 class Player : public GameObject
 {
@@ -98,6 +99,8 @@ public:
 		}
 	}
 
+	void UseBoostGage() { m_boostGage->UseBoostPoint(1); }
+
 private:
 	void Reload();
 
@@ -124,6 +127,8 @@ private:
 	std::unique_ptr<Jump> m_jump;
 	std::unique_ptr<Boost> m_boost;
 	std::unique_ptr<Attack> m_attack;
+
+	std::unique_ptr<BoostGage> m_boostGage;
 
 	// ’e”z—ñ
 	std::vector<std::unique_ptr<Bullet>> m_defaultBullet;

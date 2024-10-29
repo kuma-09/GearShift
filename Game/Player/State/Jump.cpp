@@ -29,7 +29,6 @@ void Jump::Update(float elapsedTime)
 
 	const auto& kbState = InputManager::GetInstance()->GetKeyboardState();
 	const auto& mouse = InputManager::GetInstance()->GetMouseTracker();
-
 	if (m_player->GetVelocity().y < 0)
 	{
 		m_player->GetComponent<Gravity>()->Reset();
@@ -37,6 +36,7 @@ void Jump::Update(float elapsedTime)
 	}
 	if (kbState.Space)
 	{
+		m_player->UseBoostGage();
 		m_player->GetComponent<Gravity>()->Reset();
 	}
 	if (mouse->rightButton == mouse->PRESSED)

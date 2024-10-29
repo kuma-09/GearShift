@@ -20,6 +20,8 @@ TestScene::TestScene()
 
     auto device = m_graphics->GetDeviceResources()->GetD3DDevice();
     auto context = m_graphics->GetDeviceResources()->GetD3DDeviceContext();
+    m_gage = std::make_unique<CircleGage>();
+    m_gage->Initialize();
 
 
 }
@@ -73,7 +75,8 @@ void TestScene::Update(float elapsedTime)
         m_time = 0;
     }
 
-    m_effect->Update(elapsedTime);
+    //m_effect->Update(elapsedTime);
+    m_gage->Update();
 
 }
 
@@ -89,14 +92,15 @@ void TestScene::Render()
     auto view = m_graphics->GetViewMatrix();
     auto proj = m_graphics->GetProjectionMatrix();
 
-    Resources::GetInstance()->GetCubeModel()->Draw(context, *state, Matrix::Identity, view, proj, false, [&]
-        {
-            context->IASetInputLayout(m_inputLayout.Get());
-            context->VSSetShader(m_vs.Get(), nullptr, 0);
-            context->PSSetShader(m_ps.Get(), nullptr, 0);
-        });
+    //Resources::GetInstance()->GetCubeModel()->Draw(context, *state, Matrix::Identity, view, proj, false, [&]
+    //    {
+    //        context->IASetInputLayout(m_inputLayout.Get());
+    //        context->VSSetShader(m_vs.Get(), nullptr, 0);
+    //        context->PSSetShader(m_ps.Get(), nullptr, 0);
+    //    });
 
-    m_effect->Render(view, proj);
+    //m_effect->Render(view, proj);
+    m_gage->Render();
 
 }
 
