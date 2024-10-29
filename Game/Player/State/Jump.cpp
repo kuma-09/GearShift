@@ -29,17 +29,19 @@ void Jump::Update(float elapsedTime)
 
 	const auto& kbState = InputManager::GetInstance()->GetKeyboardState();
 	const auto& mouse = InputManager::GetInstance()->GetMouseTracker();
+	const auto& gpState = InputManager::GetInstance()->GetGamePadState();
+	const auto& gpTracker = InputManager::GetInstance()->GetGamePadTracker();
 	if (m_player->GetVelocity().y < 0)
 	{
 		m_player->GetComponent<Gravity>()->Reset();
 		m_player->ChangeState(m_player->GetIdol());
 	}
-	if (kbState.Space)
+	if (kbState.Space || gpState.buttons.a)
 	{
 		m_player->UseBoostGage();
 		m_player->GetComponent<Gravity>()->Reset();
 	}
-	if (mouse->rightButton == mouse->PRESSED)
+	if (mouse->rightButton == mouse->PRESSED || gpTracker->b == gpTracker->PRESSED)
 	{
 		m_player->ChangeState(m_player->GetBoost());
 	}

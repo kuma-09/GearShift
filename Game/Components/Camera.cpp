@@ -4,6 +4,8 @@
 
 Camera::Camera()
 {
+    m_inputManager = InputManager::GetInstance();
+
     m_targetPosition = DirectX::SimpleMath::Vector3::One;
     m_eyePosition = DirectX::SimpleMath::Vector3::Zero;
     m_quaternion = DirectX::SimpleMath::Quaternion::Identity;
@@ -32,10 +34,16 @@ void Camera::Update(float elapsedTime)
 
     UNREFERENCED_PARAMETER(elapsedTime);
     
-    auto mouse = InputManager::GetInstance()->GetMouseState();
+    const auto& mouse = m_inputManager->GetMouseState();
+    const auto& gpState = m_inputManager->GetGamePadState();
+
+    // パッドの入力情報
+    Vector2 input = Vector2(gpState.thumbSticks.rightX, -gpState.thumbSticks.rightY) * elapsedTime;
 
     m_rotateX -= mouse.x * 0.001f;
     m_rotateY -= mouse.y * 0.001f;
+    m_rotateX -= input.x * 2;
+    m_rotateY -= input.y * 2;
 
     if (m_rotateY >= 1.f)
     {
@@ -78,16 +86,17 @@ void Camera::Update(float elapsedTime)
         }
         Vector3 velocity = Vector3::Transform(Vector3::Lerp( Vector3::Zero, { m_shakeRate,m_shakeRate,0 }, m_shakeTime), GetOwner()->GetQuaternion());
         m_targetPosition += velocity;
+        // View行列の更新
+        Matrix view = Matrix::CreateLookAt(m_eyePosition, m_targetPosition, Vector3::UnitY);
+        m_graphics->SetViewMatrix(view);
+        m_targetPosition -= velocity;
     }
-
-
-    
-    //GetOwner()->SetQuaternion(Quaternion::CreateFromYawPitchRoll({ 0 ,m_rotateX ,0 }));
-
-    // View行列の更新
-    Matrix view = Matrix::CreateLookAt(m_eyePosition, m_targetPosition, Vector3::UnitY);
-    m_graphics->SetViewMatrix(view);
-
+    else
+    {
+        // View行列の更新
+        Matrix view = Matrix::CreateLookAt(m_eyePosition, m_targetPosition, Vector3::UnitY);
+        m_graphics->SetViewMatrix(view);
+    }
 }
 
 void Camera::Render()

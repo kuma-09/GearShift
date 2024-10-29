@@ -29,13 +29,15 @@ void Idol::Update(float elapsedTime)
 
 	const auto& kb = InputManager::GetInstance()->GetKeyboardTracker();
 	const auto& mouse = InputManager::GetInstance()->GetMouseTracker();
+	const auto& gpState = InputManager::GetInstance()->GetGamePadState();
+	const auto& gpTracker = InputManager::GetInstance()->GetGamePadTracker();
 
-	if (kb->IsKeyPressed(DirectX::Keyboard::Space))
+	if (kb->IsKeyPressed(DirectX::Keyboard::Space) || gpTracker->a == gpTracker->PRESSED)
 	{
 		m_player->ChangeState(m_player->GetJump());
 	}
 
-	if (mouse->rightButton == mouse->PRESSED)
+	if (mouse->rightButton == mouse->PRESSED || gpTracker->b == gpTracker->PRESSED)
 	{
 		m_player->ChangeState(m_player->GetBoost());
 	}

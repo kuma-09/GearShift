@@ -80,6 +80,7 @@ void BoostGage::Render()
 	ConstBuffer cbuff;
 	cbuff.rotate = DirectX::XMConvertToRadians(360) - DirectX::XMConvertToRadians(360 * (m_boostPoint / 100));
 
+
 	//	受け渡し用バッファの内容更新(ConstBufferからID3D11Bufferへの変換）
 	context->UpdateSubresource(m_CBuffer.Get(), 0, NULL, &cbuff, 0, 0);
 

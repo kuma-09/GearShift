@@ -40,7 +40,7 @@ private:
 	const float SHAKE_TIME = 0.1f;
 
 	// ‰æ–Ê—h‚êŒW”
-	const float SHAKE_RATE = 2.0f;
+	const float SHAKE_RATE = 1.0f;
 
 	// ‰æ–Ê—h‚êŒW”
 	float m_shakeRate;
@@ -48,7 +48,7 @@ private:
 	// ‰æ–Ê—h‚êŒo‰ßŠÔ
 	float m_shakeTime;
 
-	
+	InputManager* m_inputManager;
 
 	GameObject* m_player;
 	GameObject* m_enemy;
