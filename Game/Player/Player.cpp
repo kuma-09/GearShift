@@ -248,10 +248,10 @@ void Player::Collision(BoxCollider* collider)
 	}
 	
 	if (collider->GetTypeID() == BoxCollider::Floor ||
-		collider->GetTypeID() == BoxCollider::Wall  ||
-		collider->GetTypeID() == BoxCollider::Enemy)
+		collider->GetTypeID() == BoxCollider::Wall)
 	{
 		SetOnFloor(true);
+		m_boostGage->SetBoostPoint(1.0f);
 		BoxCollider::CheckHit(this, collider->GetOwner());
 	}
 

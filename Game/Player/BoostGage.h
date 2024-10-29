@@ -11,9 +11,12 @@ public:
 	void Update();
 	void Render();
 
+	void SetMaxBoostPoint(float point) { m_maxBoostPoint = point; }
+	float GetMaxBoostPoint() { return m_maxBoostPoint; }
 
+	void SetBoostPoint(float point) { m_boostPoint = std::min(m_boostPoint + point,m_maxBoostPoint); }
 	float GetBoostPoint() { return m_boostPoint; }
-	void UseBoostPoint(float usePoint) { m_boostPoint -= usePoint; }
+	void UseBoostPoint(float usePoint) { m_boostPoint = std::max(0.0f,m_boostPoint - usePoint); }
 
 private:
 
@@ -42,5 +45,6 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11VertexShader> m_vertexShader;
 	Microsoft::WRL::ComPtr<ID3D11PixelShader> m_pixelShader;
 
+	float m_maxBoostPoint;
 	float m_boostPoint;
 };

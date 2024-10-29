@@ -15,6 +15,7 @@ const std::vector<D3D11_INPUT_ELEMENT_DESC> BoostGage::INPUT_LAYOUT =
 BoostGage::BoostGage()
 {
 	m_boostPoint = 100;
+	m_maxBoostPoint = 100;
 }
 
 BoostGage::~BoostGage()
@@ -68,10 +69,6 @@ void BoostGage::Initialize()
 
 void BoostGage::Update()
 {
-	if (m_boostPoint <= 0)
-	{
-		m_boostPoint = 100;
-	}
 }
 
 void BoostGage::Render()
