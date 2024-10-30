@@ -86,8 +86,8 @@ void BoostGage::Render()
 
 	//	シェーダーにバッファを渡す
 	ID3D11Buffer* cb[1] = { m_CBuffer.Get() };
-	context->VSSetConstantBuffers(1, 1, cb);
-	context->PSSetConstantBuffers(1, 1, cb);
+	context->VSSetConstantBuffers(0, 1, cb);
+	context->PSSetConstantBuffers(0, 1, cb);
 
 	//	半透明描画指定
 	ID3D11BlendState* blendstate = state->NonPremultiplied();

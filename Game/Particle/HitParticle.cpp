@@ -68,9 +68,9 @@ void HitParticle::Initialize(Vector3 pos, Vector3 vel)
 	
 
 	m_vertices[0] = {Vector3( 0.0f, 0.0f, 0.0f) ,Vector2(0.0f,0.0f)};
-	m_vertices[1] = {Vector3( 0.5f, 0.0f, 0.0f) ,Vector2(1.0f,0.0f)};
-	m_vertices[2] = {Vector3( 0.0f, 0.5f, 0.0f) ,Vector2(0.0f,1.0f)};
-	m_vertices[3] = {Vector3( 0.5f, 0.5f, 0.0f) ,Vector2(1.0f,1.0f)};
+	m_vertices[1] = {Vector3( 0.25f, 0.0f, 0.0f) ,Vector2(1.0f,0.0f)};
+	m_vertices[2] = {Vector3( 0.0f, 0.25f, 0.0f) ,Vector2(0.0f,1.0f)};
+	m_vertices[3] = {Vector3( 0.25f, 0.25f, 0.0f) ,Vector2(1.0f,1.0f)};
 	m_pos = pos;
 	m_vel = vel;
 	// 色とアルファ値を初期化
@@ -137,7 +137,7 @@ void HitParticle::Render(Matrix view, Matrix projection)
 	m_basicEffect->SetView(view);				// ビュー行列
 	m_basicEffect->SetProjection(projection);	// 射影行列
 	m_basicEffect->SetTexture(m_texture.Get());	// テクスチャ
-	m_basicEffect->SetColorAndAlpha(Vector4(1.f, 0.5f, 0.f, ALPHA));
+	m_basicEffect->SetColorAndAlpha(Vector4(0.5f, 0.7f, 1.f, ALPHA));
 
 
 

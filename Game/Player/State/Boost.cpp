@@ -20,7 +20,8 @@ Boost::~Boost()
 void Boost::Initialize()
 {
 	m_totalTime = m_boostTime;
-	m_velocity = m_player->GetVelocity();
+	m_velocity = { m_player->GetVelocity().x,m_player->GetVelocity().z };
+	m_velocity.Normalize();
 	m_player->UseBoostGage();
 }
 
@@ -30,7 +31,9 @@ void Boost::Update(float elapsedTime)
 
 	m_totalTime -= elapsedTime;
 	
-	m_player->SetVelocity(Vector3(m_velocity.x * m_boostPower * m_totalTime,0, m_velocity.z * m_boostPower * m_totalTime));
+
+	
+	m_player->SetVelocity(Vector3(m_velocity.x * m_boostPower * m_totalTime,0, m_velocity.y * m_boostPower * m_totalTime));
 	static_cast<PlayScene*>(m_player->GetScene())->CreateHitParticle(m_player->GetWorld(), m_player->GetQuaternion());
 	m_player->UseBoostGage();
 	if (m_totalTime <= m_boostTime / 2)

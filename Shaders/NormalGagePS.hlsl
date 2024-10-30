@@ -1,8 +1,7 @@
-cbuffer ConstBuffer : register(b1)
+cbuffer ConstBuffer : register(b0)
 {
     float value;
 };
-
 
 struct PS_INPUT
 {

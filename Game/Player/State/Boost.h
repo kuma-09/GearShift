@@ -20,13 +20,13 @@ private:
 	Player* m_player;
 
 	// ブーストする力
-	float m_boostPower = 10.0f;
+	float m_boostPower = 2.5f;
 
 	// ブースト時間
 	float m_boostTime = 0.5f;
 
 	// ブースト開始時進んでいた方向
-	DirectX::SimpleMath::Vector3 m_velocity;
+	DirectX::SimpleMath::Vector2 m_velocity;
 
 	// のこりのブースト時間
 	float m_totalTime;

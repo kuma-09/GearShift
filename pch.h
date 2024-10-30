@@ -70,6 +70,7 @@
 #include <DirectXHelpers.h>
 #include <DDSTextureLoader.h>
 #include <GeometricPrimitive.h>
+#include <PostProcess.h>
 
 #ifdef _DEBUG
 #include <dxgidebug.h>

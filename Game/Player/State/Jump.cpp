@@ -38,12 +38,18 @@ void Jump::Update(float elapsedTime)
 	}
 	if (kbState.Space || gpState.buttons.a)
 	{
-		m_player->UseBoostGage();
-		m_player->GetComponent<Gravity>()->Reset();
+		if (m_player->GetBoostPoint() >= 0)
+		{
+			m_player->UseBoostGage();
+			m_player->GetComponent<Gravity>()->Reset();
+		}
 	}
 	if (mouse->rightButton == mouse->PRESSED || gpTracker->b == gpTracker->PRESSED)
 	{
-		m_player->ChangeState(m_player->GetBoost());
+		if (m_player->GetBoostPoint())
+		{
+			m_player->ChangeState(m_player->GetBoost());
+		}
 	}
 
 }

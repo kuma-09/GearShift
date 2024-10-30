@@ -26,46 +26,46 @@ float4 main(Input pin) : SV_TARGET0
     float3 lightDir = normalize(pin.PositionWS.xyz - LightPos.xyz);
 
 
-        // 正規化デバイス座標にする
-        pin.LightPosPS.xyz /= pin.LightPosPS.w;
+    // 正規化デバイス座標にする
+    pin.LightPosPS.xyz /= pin.LightPosPS.w;
 
-        // 参照するシャドウマップのUV値を求める
-        float2 uv = pin.LightPosPS.xy * float2(0.5f, -0.5f) + 0.5f;
+    // 参照するシャドウマップのUV値を求める
+    float2 uv = pin.LightPosPS.xy * float2(0.5f, -0.5f) + 0.5f;
 
-        // シャドウマップの深度値とライト空間のピクセルのZ値を比較して影になるか調べる
-        float percentLit = ShadowMapTexture.SampleCmpLevelZero(ShadowMapSampler, uv, pin.LightPosPS.z - SHADOW_EPSILON).x;
+    // シャドウマップの深度値とライト空間のピクセルのZ値を比較して影になるか調べる
+    float percentLit = ShadowMapTexture.SampleCmpLevelZero(ShadowMapSampler, uv, pin.LightPosPS.z - SHADOW_EPSILON).x;
  
-        // ------------------------------------------------------------------------------- //
-        // ディフューズ
-        // ------------------------------------------------------------------------------- //
+    // ------------------------------------------------------------------------------- //
+    // ディフューズ
+    // ------------------------------------------------------------------------------- //
  
-        // 法線を正規化
-        float3 worldNormal = normalize(pin.NormalWS);
+    // 法線を正規化
+    float3 worldNormal = normalize(pin.NormalWS);
 
-        // 光の強さを内積から算出する
-        float3 dotL = saturate(dot(-lightDir, worldNormal));
+    // 光の強さを内積から算出する
+    float3 dotL = saturate(dot(-lightDir, worldNormal));
 
-        // ライトによる明るさを求める
-        float3 lightAmount = dotL * percentLit * (1.0f - LightAmbient) + LightAmbient;
+    // ライトによる明るさを求める
+    float3 lightAmount = dotL * percentLit * (1.0f - LightAmbient) + LightAmbient;
 
-        // ディフューズ色を求める 
-        diffuse = float4(DiffuseColor.rgb * lightAmount, DiffuseColor.a);
+    // ディフューズ色を求める 
+    diffuse = float4(DiffuseColor.rgb * lightAmount, DiffuseColor.a);
 
-        // ------------------------------------------------------------------------------- //
-        // スペキュラ
-        // ------------------------------------------------------------------------------- //
+    // ------------------------------------------------------------------------------- //
+    // スペキュラ
+    // ------------------------------------------------------------------------------- //
     
-        // 視線ベクトル
-        float3 eyeVector = normalize(EyePosition - pin.PositionWS.xyz);
+    // 視線ベクトル
+    float3 eyeVector = normalize(EyePosition - pin.PositionWS.xyz);
 
-        // ハーフベクトル
-        float3 halfVector = normalize(eyeVector - lightDir);
+    // ハーフベクトル
+    float3 halfVector = normalize(eyeVector - lightDir);
 
-        // スペキュラの影響割合を内積を使い求める
-        float dotH = saturate(dot(halfVector, worldNormal));
+    // スペキュラの影響割合を内積を使い求める
+    float dotH = saturate(dot(halfVector, worldNormal));
 
-        // スペキュラパワーを指数として使いハイライトのかかり具合を調整
-        specular = pow(dotH, SpecularPower) * dotL * SpecularColor * percentLit;
+    // スペキュラパワーを指数として使いハイライトのかかり具合を調整
+    specular = pow(dotH, SpecularPower) * dotL * SpecularColor * percentLit;
 
   
     // テクスチャ色とディフューズ色を掛ける 

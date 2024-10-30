@@ -47,4 +47,5 @@ private:
 
 	float m_maxBoostPoint;
 	float m_boostPoint;
+	float m_tmpPoint;
 };

@@ -34,12 +34,18 @@ void Idol::Update(float elapsedTime)
 
 	if (kb->IsKeyPressed(DirectX::Keyboard::Space) || gpTracker->a == gpTracker->PRESSED)
 	{
-		m_player->ChangeState(m_player->GetJump());
+		if (m_player->GetBoostPoint())
+		{
+			m_player->ChangeState(m_player->GetJump());
+		}
+		
 	}
-
 	if (mouse->rightButton == mouse->PRESSED || gpTracker->b == gpTracker->PRESSED)
 	{
-		m_player->ChangeState(m_player->GetBoost());
+		if (m_player->GetBoostPoint())
+		{
+			m_player->ChangeState(m_player->GetBoost());
+		}
 	}
 }
 

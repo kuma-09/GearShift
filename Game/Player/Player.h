@@ -44,6 +44,8 @@ public:
 	void ChangeState(State* state);
 	void Shot();
 
+	float GetBoostPoint();
+
 	// パーツをセット
 	void SetPart(const Part::TypeID& partType, std::unique_ptr<Part> part)
 	{

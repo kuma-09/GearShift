@@ -101,7 +101,10 @@ void Player::Update(float elapsedTime)
 		Reload();
 	}
 
-
+	if (dynamic_cast<Idol*>(m_state))
+	{
+		m_boostGage->SetBoostPoint(0.5f);
+	}
 
 	ComponentsUpdate(elapsedTime);
 
@@ -232,6 +235,11 @@ void Player::Shot()
 	}
 }
 
+float Player::GetBoostPoint()
+{
+	return m_boostGage->GetBoostPoint();
+}
+
 void Player::Collision(BoxCollider* collider)
 {
 	if (collider->GetTypeID() == BoxCollider::EnemyBullet)
@@ -251,7 +259,7 @@ void Player::Collision(BoxCollider* collider)
 		collider->GetTypeID() == BoxCollider::Wall)
 	{
 		SetOnFloor(true);
-		m_boostGage->SetBoostPoint(1.0f);
+		m_boostGage->SetBoostPoint(0.5f);
 		BoxCollider::CheckHit(this, collider->GetOwner());
 	}
 

@@ -53,6 +53,9 @@ void PlayScene::Initialize(Game* game)
     m_deviceResources = m_graphics->GetDeviceResources();
     m_inputManager = InputManager::GetInstance();
 
+    auto device = m_graphics->GetDeviceResources()->GetD3DDevice();
+    auto context = m_graphics->GetDeviceResources()->GetD3DDeviceContext();
+
     SetGame(game);
 
     m_timeLimit = 180.0f;
@@ -134,6 +137,40 @@ void PlayScene::Initialize(Game* game)
 
     m_hpUI = std::make_unique<HPUI>();
 
+    // レンダーテクスチャの作成（シーン全体）
+    m_offscreenRT_Bloom = std::make_unique<DX::RenderTexture>(DXGI_FORMAT_B8G8R8A8_UNORM);
+    m_offscreenRT_Bloom->SetDevice(device);
+    RECT rect = m_graphics->GetDeviceResources()->GetOutputSize();
+    m_offscreenRT_Bloom->SetWindow(rect);
+
+    m_offscreenRT = std::make_unique<DX::RenderTexture>(DXGI_FORMAT_B8G8R8A8_UNORM);
+    m_offscreenRT->SetDevice(device);
+    m_offscreenRT->SetWindow(rect);
+
+    m_offscreenRT_Normal = std::make_unique<DX::RenderTexture>(DXGI_FORMAT_B8G8R8A8_UNORM);
+    m_offscreenRT_Normal->SetDevice(device);
+    m_offscreenRT_Normal->SetWindow(rect);
+
+    // レンダーテクスチャの作成（ブルーム用）
+    rect.right /= 2;
+    rect.bottom /= 2;
+
+    m_blur1RT = std::make_unique<DX::RenderTexture>(DXGI_FORMAT_B8G8R8A8_UNORM);
+    m_blur1RT->SetDevice(device);
+    m_blur1RT->SetWindow(rect);
+
+    m_blur2RT = std::make_unique<DX::RenderTexture>(DXGI_FORMAT_B8G8R8A8_UNORM);
+    m_blur2RT->SetDevice(device);
+    m_blur2RT->SetWindow(rect);
+
+    // ベーシックポストプロセスの作成
+    m_basicPostProcess = std::make_unique<BasicPostProcess>(device);
+
+    // デュアルポストプロセスの作成
+    m_dualPostProcess = std::make_unique<DualPostProcess>(device);
+    m_dualPostProcess2 = std::make_unique<DualPostProcess>(device);
+
+    m_spriteBatch = std::make_unique<DirectX::SpriteBatch>(context);
 }
 
 /// <summary> 更新処理 </summary>
@@ -304,27 +341,48 @@ void PlayScene::Update(float elapsedTime)
 /// <summary> 描画処理 </summary>
 void PlayScene::Render()
 {
+    using namespace DirectX;
+    auto context = m_graphics->GetDeviceResources()->GetD3DDeviceContext();
+
+    // 画面のサイズを取得
+    RECT rect = m_graphics->GetDeviceResources()->GetOutputSize();
+
+    auto renderTarget = m_graphics->GetDeviceResources()->GetRenderTargetView();
+    auto depthStencil = m_graphics->GetDeviceResources()->GetDepthStencilView();
+    auto offscreenRTV_Bloom = m_offscreenRT_Bloom->GetRenderTargetView();
+    auto offscreenSRV_Bloom = m_offscreenRT_Bloom->GetShaderResourceView();
+    auto offscreenRTV = m_offscreenRT->GetRenderTargetView();
+    auto offscreenSRV = m_offscreenRT->GetShaderResourceView();
+    auto offscreenRTV_Normal = m_offscreenRT_Normal->GetRenderTargetView();
+    auto offscreenSRV_Normal = m_offscreenRT_Normal->GetShaderResourceView();
 
     CreateShadow();
 
+
+    // -------------------------------------------------------------------------- //
+// レンダーターゲットを変更（offscreenRT）
+// -------------------------------------------------------------------------- //
+    context->ClearDepthStencilView(depthStencil, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
+    context->ClearRenderTargetView(m_offscreenRT_Normal->GetRenderTargetView(), Colors::Black);
+    context->OMSetRenderTargets(1, &offscreenRTV_Normal, depthStencil);
+    // -------------------------------------------------------------------------- //
+
     m_skyDome->Render();
+
     for (auto& wall : m_wall)
     {
         wall->Render();
     }
-    if (m_player->GetTarget())
+    for (auto& floor : m_floor)
     {
-        m_player->GetTarget()->GetComponent<HPBar>()->Render(m_player->GetTarget()->GetPosition());
-        m_player->GetTarget()->GetComponent<ModelDraw>()->OutLineRender();
+        floor->Render();
     }
+    m_player->Render();
     for (auto& enemy : m_Enemy)
     {
         enemy->Render();
     }
-    for (auto& floor: m_floor)
-    {
-        floor->Render();
-    }
+
     for (auto& dropItem : m_dropItem)
     {
         dropItem->Render();
@@ -333,18 +391,119 @@ void PlayScene::Render()
     {
         dropItem->Render();
     }
-    for (auto& particle : m_hitParticle)
+    if (m_player->GetTarget())
     {
-        particle->Render(m_graphics->GetViewMatrix(), m_graphics->GetProjectionMatrix());
+        m_player->GetTarget()->GetComponent<HPBar>()->Render(m_player->GetTarget()->GetPosition());
+        m_player->GetTarget()->GetComponent<ModelDraw>()->OutLineRender();
     }
-    m_player->Render();
+
 
     // UI
     m_targetArea->Render(m_player->GetTarget());
     m_hpUI->Render();
 
+    // -------------------------------------------------------------------------- //
+    // レンダーターゲットを変更（offscreenRT）
+    // -------------------------------------------------------------------------- //
+    context->ClearRenderTargetView(m_offscreenRT_Bloom->GetRenderTargetView(), Colors::Black);
+    context->OMSetRenderTargets(1, &offscreenRTV_Bloom, depthStencil);
+    // -------------------------------------------------------------------------- //
+    for (auto& particle : m_hitParticle)
+    {
+        particle->Render(m_graphics->GetViewMatrix(), m_graphics->GetProjectionMatrix());
+    }
+
     // リソースの解除＆ライトをキューブで描画
     Resources::GetInstance()->GetShadow()->End();
+
+    // -------------------------------------------------------------------------- //
+// Pass1 offscreen → blur1 明るい部分を抽出する
+// -------------------------------------------------------------------------- //
+    auto blur1RTV = m_blur1RT->GetRenderTargetView();
+    auto blur1SRV = m_blur1RT->GetShaderResourceView();
+
+    // レンダーターゲットをblur1に変更する
+
+    context->OMSetRenderTargets(1, &blur1RTV, nullptr);
+    ID3D11ShaderResourceView* nullsrv[] = { nullptr };
+    context->PSSetShaderResources(1, 1, nullsrv);
+
+    // ビューポートを変更する
+    D3D11_VIEWPORT vp_blur =
+    { 0.0f, 0.0f, rect.right / 2.0f, rect.bottom / 2.0f, 0.0f, 1.0f };
+    context->RSSetViewports(1, &vp_blur);
+
+    m_basicPostProcess->SetEffect(BasicPostProcess::BloomExtract);
+    m_basicPostProcess->SetBloomExtractParameter(0.25f);
+    m_basicPostProcess->SetSourceTexture(offscreenSRV_Bloom);
+    m_basicPostProcess->Process(context);
+
+
+    // -------------------------------------------------------------------------- //
+    // Pass2 blur1 → blur2 横にぼかす
+    // -------------------------------------------------------------------------- //
+    auto blur2RTV = m_blur2RT->GetRenderTargetView();
+    auto blur2SRV = m_blur2RT->GetShaderResourceView();
+
+    // レンダーターゲットをblur2に変更する
+    context->OMSetRenderTargets(1, &blur2RTV, nullptr);
+
+    m_basicPostProcess->SetEffect(BasicPostProcess::BloomBlur);
+    m_basicPostProcess->SetBloomBlurParameters(true, 4.0f, 1.0f);
+    m_basicPostProcess->SetSourceTexture(blur1SRV);
+    m_basicPostProcess->Process(context);
+
+    // -------------------------------------------------------------------------- //
+    // Pass3 blur2 → blur1 縦にぼかす
+    // -------------------------------------------------------------------------- //
+
+    // レンダーターゲットをblur1に変更する
+    context->OMSetRenderTargets(1, &blur1RTV, nullptr);
+    m_basicPostProcess->SetEffect(BasicPostProcess::BloomBlur);
+    m_basicPostProcess->SetBloomBlurParameters(false, 4.0f, 1.0f);
+    m_basicPostProcess->SetSourceTexture(blur2SRV);
+    m_basicPostProcess->Process(context);
+
+
+
+    // -------------------------------------------------------------------------- //
+    // Pass4 offscreen + blur1 → バックバッファ
+    // -------------------------------------------------------------------------- //
+    // -------------------------------------------------------------------------- //
+    // レンダーターゲットとビューポートを元に戻す
+    // -------------------------------------------------------------------------- //
+    context->ClearRenderTargetView(offscreenRTV, Colors::Black);
+    context->ClearDepthStencilView(depthStencil, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
+
+    context->OMSetRenderTargets(1, &offscreenRTV, depthStencil);
+    auto const viewport = m_graphics->GetDeviceResources()->GetScreenViewport();
+    context->RSSetViewports(1, &viewport);
+
+    ////// -------------------------------------------------------------------------- //
+    m_dualPostProcess->SetEffect(DualPostProcess::BloomCombine);
+    m_dualPostProcess->SetBloomCombineParameters(10.0f, 1.0f, 0.0f, 1.0f);
+    m_dualPostProcess->SetSourceTexture(offscreenSRV_Bloom);
+    m_dualPostProcess->SetSourceTexture2(blur1SRV);
+    m_dualPostProcess->Process(context);
+
+
+    context->ClearRenderTargetView(renderTarget, Colors::Black);
+    context->ClearDepthStencilView(depthStencil, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
+    context->OMSetRenderTargets(1, &renderTarget, depthStencil);
+
+
+    m_dualPostProcess->SetEffect(DualPostProcess::Merge);
+    m_dualPostProcess->SetMergeParameters(1, 1 );
+    m_dualPostProcess->SetSourceTexture(offscreenSRV_Normal);
+    m_dualPostProcess->SetSourceTexture2(offscreenSRV);
+    m_dualPostProcess->Process(context);
+
+
+
+    //m_spriteBatch->Begin();
+    ////m_spriteBatch->Draw(offscreenSRV, DirectX::SimpleMath::Vector2::Zero);
+    //m_spriteBatch->End();
+
 }
 
 /// <summary> 終了処理 </summary>
@@ -410,7 +569,7 @@ void PlayScene::CreateHitParticle(DirectX::SimpleMath::Matrix world, DirectX::Si
 {
     using namespace DirectX::SimpleMath;
 
-    int particleValue = HitParticle::get_rand(5, 20);
+    int particleValue = HitParticle::get_rand(1, 5);
     Vector3 pos = { world._41,world._42,world._43 };
 
     for (int i = 0; i < particleValue; i++)
@@ -421,7 +580,7 @@ void PlayScene::CreateHitParticle(DirectX::SimpleMath::Matrix world, DirectX::Si
         float velocityZ = (float)HitParticle::get_rand(-30, 30) / 1000.0f;
 
         m_hitParticle.emplace_back(std::make_unique<HitParticle>());
-        m_hitParticle.back()->Initialize(pos, Vector3::Transform({ velocityX,velocityY,velocityZ }, rotate));
+        m_hitParticle.back()->Initialize(pos, Vector3::Transform({ velocityX,velocityY,0 }, rotate));
     }
 }
 
