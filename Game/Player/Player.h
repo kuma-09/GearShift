@@ -17,6 +17,7 @@ class Bullet;
 class NormalBullet;
 class HomingBullet;
 class BoostGage;
+class BulletGage;
 
 class Player : public GameObject
 {
@@ -45,6 +46,8 @@ public:
 	void Shot();
 
 	float GetBoostPoint();
+	int GetBulletSize();
+	int GetMaxBulletSize();
 
 	// パーツをセット
 	void SetPart(const Part::TypeID& partType, std::unique_ptr<Part> part)
@@ -131,6 +134,7 @@ private:
 	std::unique_ptr<Attack> m_attack;
 
 	std::unique_ptr<BoostGage> m_boostGage;
+	std::unique_ptr<BulletGage> m_bulletGage;
 
 	// 弾配列
 	std::vector<std::unique_ptr<Bullet>> m_defaultBullet;

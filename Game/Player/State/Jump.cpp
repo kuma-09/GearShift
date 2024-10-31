@@ -4,6 +4,7 @@
 #include "Boost.h"
 #include "Attack.h"
 #include "Game/Components/Gravity.h"
+#include "Game/PlayScene.h"
 
 
 Jump::Jump(Player* player)
@@ -31,6 +32,9 @@ void Jump::Update(float elapsedTime)
 	const auto& mouse = InputManager::GetInstance()->GetMouseTracker();
 	const auto& gpState = InputManager::GetInstance()->GetGamePadState();
 	const auto& gpTracker = InputManager::GetInstance()->GetGamePadTracker();
+
+	static_cast<PlayScene*>(m_player->GetScene())->CreateHitParticle(m_player->GetWorld(), m_player->GetQuaternion());
+
 	if (m_player->GetVelocity().y < 0)
 	{
 		m_player->GetComponent<Gravity>()->Reset();

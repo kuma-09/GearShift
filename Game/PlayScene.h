@@ -14,6 +14,7 @@
 #include "Game/Object/Floor.h"
 
 #include "Game/Player/TargetArea.h"
+#include "Shader/PostProcess.h"
 
 #include "Framework/DebugString.h"
 
@@ -111,24 +112,6 @@ private:
 	// 残り時間
 	float m_timeLimit;
 	
+	std::unique_ptr<PostProcess> m_postProcess;
 
-	// ポストプロセス用
-	// レンダーテクスチャ(シーン全体)
-	std::unique_ptr<DX::RenderTexture> m_offscreenRT;
-	std::unique_ptr<DX::RenderTexture> m_offscreenRT_Bloom;
-	std::unique_ptr<DX::RenderTexture> m_offscreenRT_Normal;
-
-	// レンダーテクスチャ(ブルーム用)
-	std::unique_ptr<DX::RenderTexture> m_blur1RT;
-	std::unique_ptr<DX::RenderTexture> m_blur2RT;
-
-	// スプライトバッチ
-	std::unique_ptr<DirectX::SpriteBatch> m_spriteBatch;
-
-	// ベーシックポストプロセス
-	std::unique_ptr<DirectX::BasicPostProcess> m_basicPostProcess;
-
-	// デュアルポストプロセス
-	std::unique_ptr<DirectX::DualPostProcess> m_dualPostProcess;
-	std::unique_ptr<DirectX::DualPostProcess> m_dualPostProcess2;
 };

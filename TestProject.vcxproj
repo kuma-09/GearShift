@@ -239,6 +239,7 @@
     <ClInclude Include="Game\Parts\RightArm.h" />
     <ClInclude Include="Game\Parts\RightLeg.h" />
     <ClInclude Include="Game\Player\BoostGage.h" />
+    <ClInclude Include="Game\Player\BulletGage.h" />
     <ClInclude Include="Game\Player\Player.h" />
     <ClInclude Include="Game\Player\State\Attack.h" />
     <ClInclude Include="Game\Player\State\Boost.h" />
@@ -246,6 +247,7 @@
     <ClInclude Include="Game\Player\State\Jump.h" />
     <ClInclude Include="Game\Player\TargetArea.h" />
     <ClInclude Include="Game\SceneMask.h" />
+    <ClInclude Include="Game\Shader\PostProcess.h" />
     <ClInclude Include="Game\Shader\Shader.h" />
     <ClInclude Include="Game\Shader\Shadow.h" />
     <ClInclude Include="Game\State.h" />
@@ -316,6 +318,7 @@
     <ClCompile Include="Game\Parts\RightArm.cpp" />
     <ClCompile Include="Game\Parts\RightLeg.cpp" />
     <ClCompile Include="Game\Player\BoostGage.cpp" />
+    <ClCompile Include="Game\Player\BulletGage.cpp" />
     <ClCompile Include="Game\Player\Player.cpp" />
     <ClCompile Include="Game\Player\State\Attack.cpp" />
     <ClCompile Include="Game\Player\State\Boost.cpp" />
@@ -325,6 +328,7 @@
     <ClCompile Include="Game\PlayScene.cpp" />
     <ClCompile Include="Game\ResultScene.cpp" />
     <ClCompile Include="Game\SceneMask.cpp" />
+    <ClCompile Include="Game\Shader\PostProcess.cpp" />
     <ClCompile Include="Game\Shader\Shader.cpp" />
     <ClCompile Include="Game\Shader\Shadow.cpp" />
     <ClCompile Include="Game\TestScene.cpp" />
@@ -392,6 +396,22 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)/Resources/Shaders/%(Filename).cso</ObjectFileOutput>
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)/Resources/Shaders/%(Filename).cso</ObjectFileOutput>
+    </FxCompile>
+    <FxCompile Include="Shaders\NoisePS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)/Resources/Shaders/%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)/Resources/Shaders/%(Filename).cso</ObjectFileOutput>
+    </FxCompile>
+    <FxCompile Include="Shaders\NoiseVS.hlsl">
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)/Resources/Shaders/%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)/Resources/Shaders/%(Filename).cso</ObjectFileOutput>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
     <FxCompile Include="Shaders\NormalGagePS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>

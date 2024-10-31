@@ -23,6 +23,7 @@
 #include "Game/PlayScene.h"
 
 #include "BoostGage.h"
+#include "BulletGage.h"
 
 
 Player::Player(IScene* scene)
@@ -79,7 +80,8 @@ void Player::Initialize()
 	m_boostGage = std::make_unique<BoostGage>();
 	m_boostGage->Initialize();
 
-
+	m_bulletGage = std::make_unique<BulletGage>();
+	m_bulletGage->Initialize();
 }
 
 void Player::Update(float elapsedTime)
@@ -90,6 +92,9 @@ void Player::Update(float elapsedTime)
 	auto& kb = m_inputManager->GetKeyboardTracker();
 
 	m_boostGage->Update();
+
+	m_bulletGage->SetBoostPoint(GetBulletSize());
+	m_bulletGage->SetMaxBoostPoint(GetMaxBulletSize());
 
 	if (mouse->leftButton == mouse->PRESSED || gp->x == gp->PRESSED )
 	{
@@ -170,8 +175,8 @@ void Player::Render()
 	}
 
 	RenderParts();
-	m_boostGage->Render();
-
+	//m_boostGage->Render();
+	m_bulletGage->Render();
 	//GetComponent<BoxCollider>()->Render();
 
 }
@@ -238,6 +243,24 @@ void Player::Shot()
 float Player::GetBoostPoint()
 {
 	return m_boostGage->GetBoostPoint();
+}
+
+int Player::GetBulletSize()
+{
+	int value = 0;
+	for (auto& bullet: m_defaultBullet)
+	{
+		if (bullet->GetState() == Bullet::UNUSED)
+		{
+			value++;
+		}
+	}
+	return value;
+}
+
+int Player::GetMaxBulletSize()
+{
+	return m_defaultBullet.size();
 }
 
 void Player::Collision(BoxCollider* collider)

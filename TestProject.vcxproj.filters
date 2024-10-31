@@ -140,6 +140,8 @@
     <ClInclude Include="Game\TestScene.h" />
     <ClInclude Include="Framework\Audio.h" />
     <ClInclude Include="Game\UI\CircleGage.h" />
+    <ClInclude Include="Game\Shader\PostProcess.h" />
+    <ClInclude Include="Game\Player\BulletGage.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -240,6 +242,8 @@
     <ClCompile Include="Game\Parts\Part.cpp" />
     <ClCompile Include="Framework\Audio.cpp" />
     <ClCompile Include="Game\UI\CircleGage.cpp" />
+    <ClCompile Include="Game\Shader\PostProcess.cpp" />
+    <ClCompile Include="Game\Player\BulletGage.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />
@@ -281,5 +285,7 @@
     <FxCompile Include="Shaders\CircleVS.hlsl" />
     <FxCompile Include="Shaders\NormalGageVS.hlsl" />
     <FxCompile Include="Shaders\NormalGagePS.hlsl" />
+    <FxCompile Include="Shaders\NoisePS.hlsl" />
+    <FxCompile Include="Shaders\NoiseVS.hlsl" />
   </ItemGroup>
 </Project>
