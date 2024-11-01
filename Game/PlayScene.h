@@ -21,6 +21,7 @@
 class Camera;
 class HPUI;
 class HitParticle;
+class HitEffect;
 
 
 class PlayScene final: public IScene
@@ -37,36 +38,10 @@ public:
 	
 	void Finalize() override;
 
-	// ボックスコライダーを追加
-	void AddCollider(BoxCollider* collider)
-	{
-		m_pBoxCollider.emplace_back(collider);
-	}
-
-	// コライダーを削除する
-	void RemoveCollider(BoxCollider* collider)
-	{
-		int it = 0;
-		for (auto boxColliders : m_pBoxCollider)
-		{
-			if (boxColliders == collider)
-			{
-				break;
-			}
-			it++;
-		}
-		if (m_pBoxCollider.size() > it)
-		{
-			m_pBoxCollider.erase(m_pBoxCollider.begin() + it);
-		}
-	}
-
-	// ボックスコライダーの配列を取得
-	std::vector<BoxCollider*> GetColliders() { return m_pBoxCollider; }
-
 	// ヒットエフェクトを生成する関数
 	void CreateHitParticle(DirectX::SimpleMath::Matrix world);
 	void CreateHitParticle(DirectX::SimpleMath::Matrix world,DirectX::SimpleMath::Quaternion rotate);
+	void CreateHitEffect(DirectX::SimpleMath::Vector3 pos);
 private:
 
 	void CreateShadow();
@@ -102,10 +77,11 @@ private:
 	std::unique_ptr<TargetArea> m_targetArea;
 	// HPの表示UI
 	std::unique_ptr<HPUI> m_hpUI;
-	// ボックスコライダーをまとめた配列
-	std::vector<BoxCollider*> m_pBoxCollider;
-	// ヒットエフェクト
+	// ヒットパーティクル
 	std::vector<std::unique_ptr<HitParticle>> m_hitParticle;
+	// 撃破エフェクト
+	std::unique_ptr<HitEffect> m_hitEffect;
+
 
 	// 経過時間
 	float m_totalTime;

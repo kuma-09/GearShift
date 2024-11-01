@@ -7,7 +7,7 @@
 Move::Move()
 {
 	m_inputManager = InputManager::GetInstance();
-
+    m_velocity = DirectX::SimpleMath::Vector3::Zero;
 }
 
 Move::~Move()

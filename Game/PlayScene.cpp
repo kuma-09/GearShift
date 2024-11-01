@@ -139,6 +139,9 @@ void PlayScene::Initialize(Game* game)
 
     m_hpUI = std::make_unique<HPUI>();
 
+    m_hitEffect = std::make_unique<HitEffect>();
+    m_hitEffect->Initialize();
+
 }
 
 /// <summary> 更新処理 </summary>
@@ -166,6 +169,7 @@ void PlayScene::Update(float elapsedTime)
             it++;
         }
     }
+    m_hitEffect->Update(elapsedTime);
 
     // プレイヤーの更新
     m_player->Update(elapsedTime);
@@ -220,6 +224,7 @@ void PlayScene::Update(float elapsedTime)
         }
         else
         {
+            
             it = RemoveEnemy(it);
             if (m_Enemy.empty())
             {
@@ -345,20 +350,28 @@ void PlayScene::Render()
         m_player->GetTarget()->GetComponent<HPBar>()->Render(m_player->GetTarget()->GetPosition());
         m_player->GetTarget()->GetComponent<ModelDraw>()->OutLineRender();
     }
-
+    for (auto& particle : m_hitParticle)
+    {
+        particle->Render(m_graphics->GetViewMatrix(), m_graphics->GetProjectionMatrix());
+    }
+    m_hitEffect->Render();
 
     // UI
     m_targetArea->Render(m_player->GetTarget());
     m_hpUI->Render();
 
+    // Bloom-------------------------------------
     m_postProcess->BeginBloom();
     for (auto& particle : m_hitParticle)
     {
         particle->Render(m_graphics->GetViewMatrix(), m_graphics->GetProjectionMatrix());
     }
 
+    m_targetArea->Render(m_player->GetTarget());
     // リソースの解除＆ライトをキューブで描画
     Resources::GetInstance()->GetShadow()->End();
+
+    //-------------------------------------------
 
     m_postProcess->combinationRT();
 
@@ -367,7 +380,7 @@ void PlayScene::Render()
 /// <summary> 終了処理 </summary>
 void PlayScene::Finalize()
 {
-    m_pBoxCollider.clear();
+    GetColliders().clear();
     m_player.reset();
 
     for (auto& enemy: m_Enemy)
@@ -440,6 +453,11 @@ void PlayScene::CreateHitParticle(DirectX::SimpleMath::Matrix world, DirectX::Si
         m_hitParticle.emplace_back(std::make_unique<HitParticle>());
         m_hitParticle.back()->Initialize(pos, Vector3::Transform({ velocityX,velocityY,0 }, rotate));
     }
+}
+
+void PlayScene::CreateHitEffect(DirectX::SimpleMath::Vector3 pos)
+{
+    m_hitEffect->Set(pos);
 }
 
 /// <summary>

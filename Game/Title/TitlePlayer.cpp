@@ -27,6 +27,7 @@ TitlePlayer::TitlePlayer(IScene* scene)
 	SetPart(Part::RightArm, std::make_unique<RightArm>());
 	SetPart(Part::LeftLeg, std::make_unique<LeftLeg>());
 	SetPart(Part::RightLeg, std::make_unique<RightLeg>());
+	AddComponent<Move>();
 }
 
 TitlePlayer::~TitlePlayer()
@@ -37,7 +38,6 @@ TitlePlayer::~TitlePlayer()
 void TitlePlayer::Initialize()
 {
 	using namespace DirectX::SimpleMath;
-	SetPosition({0,2.3f,0});
 }
 
 void TitlePlayer::Update(float elapsedTime)
@@ -47,8 +47,6 @@ void TitlePlayer::Update(float elapsedTime)
 	UpdateParts(elapsedTime);
 
 	Matrix world = Matrix::Identity;
-	world = Matrix::CreateScale(GetScale());
-	world *= Matrix::CreateFromQuaternion(GetQuaternion());
 	world *= Matrix::CreateTranslation(GetPosition());
 
 	SetWorld(world);

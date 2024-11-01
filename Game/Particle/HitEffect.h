@@ -9,12 +9,12 @@ class HitEffect
 public:
 
 
-
+	void Initialize();
 	void Set(DirectX::SimpleMath::Vector3 pos);
 
 	void Update(float elapsedTime);
 
-	void Render(DirectX::SimpleMath::Matrix view, DirectX::SimpleMath::Matrix proj);
+	void Render();
 
 	void Finalize();
 

@@ -179,7 +179,7 @@ void PostProcess::combinationRT()
     context->RSSetViewports(1, &vp_blur);
 
     m_basicPostProcess->SetEffect(BasicPostProcess::BloomExtract);
-    m_basicPostProcess->SetBloomExtractParameter(0.25f);
+    m_basicPostProcess->SetBloomExtractParameter(0.5f);
     m_basicPostProcess->SetSourceTexture(offscreenSRV_Bloom);
     m_basicPostProcess->Process(context);
 
@@ -226,7 +226,7 @@ void PostProcess::combinationRT()
 
     ////// -------------------------------------------------------------------------- //
     m_dualPostProcess->SetEffect(DualPostProcess::BloomCombine);
-    m_dualPostProcess->SetBloomCombineParameters(10.0f, 1.0f, 0.0f, 1.0f);
+    m_dualPostProcess->SetBloomCombineParameters(5.0f, 1.0f, 1.0f, 1.0f);
     m_dualPostProcess->SetSourceTexture(offscreenSRV_Bloom);
     m_dualPostProcess->SetSourceTexture2(blur1SRV);
     m_dualPostProcess->Process(context);

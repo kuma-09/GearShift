@@ -29,7 +29,6 @@ void Resources::LoadResource(Graphics* graphics)
 	m_player	 = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\old_robot\\Robot.sdkmesh",       *graphics->GetFX());
 	m_head		 = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\old_robot\\Head.sdkmesh",        *graphics->GetFX());
 	m_bodyTop	 = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\old_robot\\Body.sdkmesh",     *graphics->GetFX());
-	//m_bodyBottom = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\bodyBottom.sdkmesh",  *graphics->GetFX());
 	m_lArm		 = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\old_robot\\LeftArm.sdkmesh",        *graphics->GetFX());
 	m_rArm		 = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\old_robot\\RightArm.sdkmesh",        *graphics->GetFX());
 	m_lLeg		 = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\old_robot\\LeftLeg.sdkmesh",        *graphics->GetFX());

@@ -17,7 +17,7 @@ BoxCollider::~BoxCollider()
 {
     if (GetOwner()->GetScene())
     {
-        static_cast<PlayScene*>(GetOwner()->GetScene())->RemoveCollider(this);
+        GetOwner()->GetScene()->RemoveCollider(this);
     }
 }
 
@@ -55,7 +55,7 @@ void BoxCollider::SetSize(DirectX::SimpleMath::Vector3 size)
 void BoxCollider::SetTypeID(TypeID id)
 {
     m_typeID = id;
-    static_cast<PlayScene*>(GetOwner()->GetScene())->AddCollider(this);
+    GetOwner()->GetScene()->AddCollider(this);
 }
 
 /// <summary>

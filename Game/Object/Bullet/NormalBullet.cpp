@@ -2,6 +2,7 @@
 #include "NormalBullet.h"
 #include "Game/Enemy/Enemy.h"
 #include "Game/Player/Player.h"
+#include "Game/PlayScene.h"
 #include "Game/Components/BoxCollider.h"
 #include "Game/Components/ModelDraw.h"
 #include <random>
@@ -67,6 +68,7 @@ void NormalBullet::Hit()
 
 	if (GetState() == BulletState::FLYING)
 	{
+		static_cast<PlayScene*>(GetOwner()->GetScene())->CreateHitEffect(GetPosition());
 		Vector3 velocity = Vector3::Zero;
 		SetPosition(Vector3::Zero);
 		SetQuaternion(Quaternion::Identity);
@@ -112,7 +114,8 @@ void NormalBullet::Collision(BoxCollider* collider)
 {
 	if (GetState() == FLYING)
 	{
-		if (collider->GetTypeID() == BoxCollider::Wall)
+		if (collider->GetTypeID() == BoxCollider::Wall ||
+			collider->GetTypeID() == BoxCollider::Floor)
 		{
 			Hit();
 		}

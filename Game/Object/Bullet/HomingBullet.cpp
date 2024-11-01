@@ -2,7 +2,7 @@
 #include "HomingBullet.h"
 #include "Game/Components/BoxCollider.h"
 #include "Game/Components/ModelDraw.h"
-#include "Game/Particle/Emitter.h"
+#include "Game/PlayScene.h"
 #include "Game/Player/Player.h"
 #include "random"
 
@@ -104,6 +104,7 @@ void HomingBullet::Hit()
 
 	if (GetState() == BulletState::FLYING)
 	{
+		static_cast<PlayScene*>(GetOwner()->GetScene())->CreateHitEffect(GetPosition());
 		Vector3 velocity = Vector3::Zero;
 		SetPosition(Vector3::Zero);
 		SetQuaternion(Quaternion::Identity);
