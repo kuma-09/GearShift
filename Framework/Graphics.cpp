@@ -154,8 +154,8 @@ void Graphics::DrawPrimitiveBegin(const DirectX::SimpleMath::Matrix& view, const
 void Graphics::DrawPrimitiveBegin(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& projection, const DirectX::SimpleMath::Matrix& world, const DirectX::SimpleMath::Vector4 color)
 {
 	m_context->OMSetBlendState(m_commonStates->NonPremultiplied(), nullptr, 0xFFFFFFFF);
-	m_context->OMSetDepthStencilState(m_commonStates->DepthNone(), 0);
-	m_context->RSSetState(m_commonStates->CullNone());
+	m_context->OMSetDepthStencilState(m_commonStates->DepthRead(), 0);
+	m_context->RSSetState(m_commonStates->CullCounterClockwise());
 	//m_context->RSSetState(m_rasterrizeState.Get());
 
 	// ƒrƒ…[s—ñ‚ğİ’è‚·‚é

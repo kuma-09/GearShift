@@ -49,11 +49,6 @@ void HitEffect::Set(DirectX::SimpleMath::Vector3 pos)
 	}
 
 
-
-
-
-
-
 	m_u = 0;
 	m_v = 0;
 }

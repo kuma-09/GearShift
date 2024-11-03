@@ -131,8 +131,12 @@ void HomingBullet::Update(float elapsedTime)
 
 		
 		acceleration += (diff - m_velocity * m_period) * 2.f / (m_period * m_period);
-		
 
+		if (acceleration.Length() >= 300.0f)
+		{
+			acceleration.Normalize();
+			acceleration *= 300.0f;
+		}
 
 		m_period -= elapsedTime;
 
@@ -140,7 +144,7 @@ void HomingBullet::Update(float elapsedTime)
 		m_position += m_velocity * elapsedTime;
 		SetPosition(m_position);
 	}
-
+	
 	Matrix world = Matrix::CreateScale(GetScale());
 	world *= Matrix::CreateFromQuaternion(GetQuaternion());
 	world *= Matrix::CreateTranslation(GetPosition());
@@ -158,5 +162,12 @@ void HomingBullet::Render()
 
 void HomingBullet::Collision(BoxCollider* collider)
 {
-	UNREFERENCED_PARAMETER(collider);
+	if (GetState() == FLYING)
+	{
+		if (collider->GetTypeID() == BoxCollider::Wall ||
+			collider->GetTypeID() == BoxCollider::Floor)
+		{
+			Hit();
+		}
+	}
 }

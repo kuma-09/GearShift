@@ -8,6 +8,7 @@
 #include "Game/Components/BoxCollider.h"
 #include "Game/Components/HPBar.h"
 #include "Game/Object/Bullet/EnemyBullet.h"
+#include "Game/Object/Bullet/HomingBullet.h"
 #include "Game/PlayScene.h"
 
 #include "Game/Enemy/State/EnemyAttackState.h"
@@ -25,7 +26,7 @@ HomingEnemy::HomingEnemy(IScene* scene)
 	AddComponent<BoxCollider>();
 	AddComponent<HPBar>();
 
-	m_bullet = std::make_unique<EnemyBullet>(GetScene(), BoxCollider::TypeID::EnemyBullet);
+	m_bullet = std::make_unique<HomingBullet>(GetScene(), BoxCollider::TypeID::EnemyBullet);
 	
 	SetEnemyAttack(std::make_unique<EnemyAttackState>(this));
 	SetEnemyMove(std::make_unique<EnemyMoveState>(this));

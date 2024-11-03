@@ -32,7 +32,7 @@ Game::Game() noexcept(false)
 
 Game::~Game()
 {
-
+    
 }
 
 // Initialize the Direct3D resources required to run.

@@ -332,11 +332,7 @@ void PlayScene::Render()
     {
         floor->Render();
     }
-    m_player->Render();
-    for (auto& enemy : m_Enemy)
-    {
-        enemy->Render();
-    }
+
     for (auto& dropItem : m_dropItem)
     {
         dropItem->Render();
@@ -355,6 +351,11 @@ void PlayScene::Render()
         particle->Render(m_graphics->GetViewMatrix(), m_graphics->GetProjectionMatrix());
     }
     m_hitEffect->Render();
+    m_player->Render();
+    for (auto& enemy : m_Enemy)
+    {
+        enemy->Render();
+    }
 
     // UI
     m_targetArea->Render(m_player->GetTarget());
