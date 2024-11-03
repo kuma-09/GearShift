@@ -39,6 +39,7 @@ public:
 	void Finalize() override;
 
 	// ヒットエフェクトを生成する関数
+	void SetNoise();
 	void CreateHitParticle(DirectX::SimpleMath::Matrix world);
 	void CreateHitParticle(DirectX::SimpleMath::Matrix world,DirectX::SimpleMath::Quaternion rotate);
 	void CreateHitEffect(DirectX::SimpleMath::Vector3 pos);

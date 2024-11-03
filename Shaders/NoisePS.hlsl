@@ -1,3 +1,8 @@
+cbuffer ConstBuffer : register(b1)
+{
+    float time;
+}
+
 struct VS_INPUT
 {
     float3 pos : POSITION;
@@ -15,7 +20,10 @@ SamplerState samLinear : register(s0);
 
 float4 main(PS_INPUT input) : SV_TARGET
 {
-	//ƒgƒ€‚Ì‰æ‘œ•\Ž¦
+    
+    input.tex.x += sin(time * 3.14f) / 100 * sin(input.pos.y);
+    
+    
     float4 output = tex.Sample(samLinear, input.tex);
     
     return output;

@@ -1,24 +1,10 @@
-//	C++から受け取るデータ
-cbuffer ConstBuffer	: register(b0)
-{
-	matrix matWorld;
-	matrix matView;
-	matrix matProj;
-	float4 diffuse;
 
-};
-
-//	このシェーダが受け取る引数の内容
 struct VS_INPUT
 {
     float3 Pos : POSITION;
 	float2 Tex : TEXCOORD;
-    float3 Normal: NORMAL;
-    float3 Tangent: TANGENT;
-    float3 BiNormal: BINORMAL;
 };
 
-//	ピクセルシェーダへ渡す引数の内容。returnする値となる
 struct PS_INPUT
 {
 	float4 Pos : SV_POSITION;
@@ -32,15 +18,9 @@ PS_INPUT main(VS_INPUT input)
 
 
     //// 頂点座標の変換
-    
-    float3 pos = input.Pos + input.Normal;
-    
-    output.Pos = mul(float4(pos , 1.0f), matWorld);
-    
-    output.Pos = mul(output.Pos, matView);
-    output.Pos = mul(output.Pos, matProj);
+    output.Pos = float4(input.Pos, 1);
 
-    // テクスチャ座標の渡し方は変更がないため、そのままコピー
+    // テクスチャ座標はそのまま
     output.Tex = input.Tex;
 
 

@@ -23,6 +23,18 @@ private:
 	static const std::vector<D3D11_INPUT_ELEMENT_DESC> INPUT_LAYOUT;
 	Microsoft::WRL::ComPtr<ID3D11InputLayout> m_inputLayout;
 
+	// 定数バッファ
+	struct ConstantBuffer
+	{
+		float time;
+		float pad[3];
+	};
+
+	Microsoft::WRL::ComPtr<ID3D11Buffer> m_constantBuffer;
+
+	// 頂点情報
+	DirectX::VertexPositionTexture m_vertex[4];
+
 	// ポストプロセス用
 	// レンダーテクスチャ(シーン全体)
 	std::unique_ptr<DX::RenderTexture> m_offscreenRT;
@@ -34,8 +46,8 @@ private:
 	std::unique_ptr<DX::RenderTexture> m_blur1RT;
 	std::unique_ptr<DX::RenderTexture> m_blur2RT;
 
-	// スプライトバッチ
-	std::unique_ptr<DirectX::SpriteBatch> m_spriteBatch;
+	// プリミティブバッチ
+	std::unique_ptr<DirectX::PrimitiveBatch<DirectX::VertexPositionTexture>> m_batch;
 
 	// ベーシックポストプロセス
 	std::unique_ptr<DirectX::BasicPostProcess> m_basicPostProcess;
@@ -43,11 +55,15 @@ private:
 	// デュアルポストプロセス
 	std::unique_ptr<DirectX::DualPostProcess> m_dualPostProcess;
 
-	Microsoft::WRL::ComPtr<ID3D11PixelShader> m_noisePS;
+	// 通常時のシェーダー
+	Microsoft::WRL::ComPtr<ID3D11VertexShader> m_VS;
+	Microsoft::WRL::ComPtr<ID3D11PixelShader> m_PS;
+	// 被弾時のノイズシェーダー
 	Microsoft::WRL::ComPtr<ID3D11VertexShader> m_noiseVS;
+	Microsoft::WRL::ComPtr<ID3D11PixelShader> m_noisePS;
 
 	bool m_isNoise;
 	float m_nowTime;
-	const float m_maxNoiseTime = 1.0f;
+	const float m_maxNoiseTime = 0.5f;
 
 };

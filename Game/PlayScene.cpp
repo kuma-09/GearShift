@@ -245,7 +245,6 @@ void PlayScene::Update(float elapsedTime)
             if (enemy->GetComponent<HP>()->GetHP() > 0)
             {
                 m_player->SetTarget(enemy);
-                m_postProcess->SetNoise(true);
                 break;
             }
         }
@@ -409,6 +408,11 @@ void PlayScene::Finalize()
     }
     m_hitParticle.clear();
     
+}
+
+void PlayScene::SetNoise()
+{
+    m_postProcess->SetNoise(true);
 }
 
 /// <summary> ヒットエフェクトを生成する関数 </summary>

@@ -7,7 +7,7 @@
 #include "Game/Components/BoxCollider.h"
 #include "Game/Components/Move.h"
 #include <Game/Components/HP.h>
-#include <Game/Particle/Emitter.h>
+#include "Game/PlayScene.h"
 
 LeftLeg::LeftLeg()
 {
@@ -92,6 +92,7 @@ void LeftLeg::Collision(BoxCollider* collider)
 			GetOwner()->GetComponent<Camera>()->shake();
 			GetComponent<HP>()->SetHP(GetComponent<HP>()->GetHP() - 1);
 			bulletObject->Hit();
+			static_cast<PlayScene*>(GetOwner()->GetScene())->SetNoise();
 			m_isHit = true;
 		}
 	}

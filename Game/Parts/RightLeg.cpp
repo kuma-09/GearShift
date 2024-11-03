@@ -6,6 +6,7 @@
 #include "Game/Components/BoxCollider.h"
 #include "Game/Components/Move.h"
 #include <Game/Components/HP.h>
+#include "Game/PlayScene.h"
 
 RightLeg::RightLeg()
 {
@@ -91,6 +92,7 @@ void RightLeg::Collision(BoxCollider* collider)
 			GetOwner()->GetComponent<Camera>()->shake();
 			GetComponent<HP>()->SetHP(GetComponent<HP>()->GetHP() - 1);
 			bulletObject->Hit();
+			static_cast<PlayScene*>(GetOwner()->GetScene())->SetNoise();
 			m_isHit = true;
 		}
 	}

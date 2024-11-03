@@ -23,6 +23,7 @@ PostProcess::~PostProcess()
 void PostProcess::Initialize()
 {
     using namespace DirectX;
+    using namespace DirectX::SimpleMath;
 
     auto device = m_graphics->GetDeviceResources()->GetD3DDevice();
     auto context = m_graphics->GetDeviceResources()->GetD3DDeviceContext();
@@ -63,10 +64,19 @@ void PostProcess::Initialize()
     // デュアルポストプロセスの作成
     m_dualPostProcess = std::make_unique<DualPostProcess>(device);
 
-    m_spriteBatch = std::make_unique<DirectX::SpriteBatch>(context);
+    // プリミティブバッチの作成
+    m_batch = std::make_unique<DirectX::PrimitiveBatch<DirectX::VertexPositionTexture>>(context);
 
-    BinaryFile vs = BinaryFile::LoadFile(L"Resources/Shaders/NoiseVS.cso");
-    BinaryFile ps = BinaryFile::LoadFile(L"Resources/Shaders/NoisePS.cso");
+    m_vertex[0] = { Vector3(-1.0f , 1.0f,0), Vector2(0, 0) };	//左上
+    m_vertex[1] = { Vector3( 1.0f , 1.0f,0), Vector2(1, 0) };	//右上
+    m_vertex[2] = { Vector3(-1.0f ,-1.0f,0), Vector2(0, 1) };	//左下
+    m_vertex[3] = { Vector3( 1.0f ,-1.0f,0), Vector2(1, 1) };	//右下
+
+
+    BinaryFile vs = BinaryFile::LoadFile(L"Resources/Shaders/VS.cso");
+    BinaryFile ps = BinaryFile::LoadFile(L"Resources/Shaders/PS.cso");
+    BinaryFile noisevs = BinaryFile::LoadFile(L"Resources/Shaders/NoiseVS.cso");
+    BinaryFile noiseps = BinaryFile::LoadFile(L"Resources/Shaders/NoisePS.cso");
 
     //	インプットレイアウトの作成
     device->CreateInputLayout(&INPUT_LAYOUT[0],
@@ -76,12 +86,29 @@ void PostProcess::Initialize()
     );
 
     DX::ThrowIfFailed(
-        device->CreateVertexShader(vs.GetData(), vs.GetSize(), nullptr, m_noiseVS.ReleaseAndGetAddressOf())
+        device->CreateVertexShader(vs.GetData(), vs.GetSize(), nullptr, m_VS.ReleaseAndGetAddressOf())
     );
 
     DX::ThrowIfFailed(
-        device->CreatePixelShader(ps.GetData(), ps.GetSize(), nullptr, m_noisePS.ReleaseAndGetAddressOf())
+        device->CreatePixelShader(ps.GetData(), ps.GetSize(), nullptr, m_PS.ReleaseAndGetAddressOf())
     );
+
+    DX::ThrowIfFailed(
+        device->CreateVertexShader(noisevs.GetData(), noisevs.GetSize(), nullptr, m_noiseVS.ReleaseAndGetAddressOf())
+    );
+
+    DX::ThrowIfFailed(
+        device->CreatePixelShader(noiseps.GetData(), noiseps.GetSize(), nullptr, m_noisePS.ReleaseAndGetAddressOf())
+    );
+
+    // 定数バッファの作成
+    D3D11_BUFFER_DESC bufferDesc = {};
+    bufferDesc.ByteWidth = static_cast<UINT>(sizeof(ConstantBuffer));	// 確保するサイズ（16の倍数で設定する）
+    // GPU (読み取り専用) と CPU (書き込み専用) の両方からアクセスできるリソース
+    bufferDesc.Usage = D3D11_USAGE_DYNAMIC;
+    bufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;	// 定数バッファとして扱う
+    bufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;	// CPUが内容を変更できるようにする
+    DX::ThrowIfFailed(device->CreateBuffer(&bufferDesc, nullptr, m_constantBuffer.ReleaseAndGetAddressOf()));
 
     m_isNoise = false;
     m_nowTime = 0;
@@ -144,6 +171,7 @@ void PostProcess::BeginBloom()
 void PostProcess::combinationRT()
 {
     using namespace DirectX;
+    using namespace DirectX::SimpleMath;
 
     auto context = m_graphics->GetDeviceResources()->GetD3DDeviceContext();
 
@@ -247,25 +275,49 @@ void PostProcess::combinationRT()
     context->ClearDepthStencilView(depthStencil, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
     context->OMSetRenderTargets(1, &renderTarget, depthStencil);
 
-    //auto state = m_graphics->GetCommonStates();
+    auto state = m_graphics->GetCommonStates();
 
-    //if (m_isNoise)
-    //{
-    //    m_spriteBatch->Begin(SpriteSortMode_Deferred,
-    //        nullptr, state->LinearWrap(), nullptr, nullptr, [&]
-    //        {
-    //            context->IASetInputLayout(m_inputLayout.Get());
-    //            context->PSSetShaderResources(0, 1, &finalSRV);
-    //            context->VSSetShader(m_noiseVS.Get(), nullptr, 0);
-    //            context->PSSetShader(m_noisePS.Get(), nullptr, 0);
-    //        }
-    //    );
-    //}
-    //else
-    //{
+    if (!m_isNoise)
+    {
+        ID3D11SamplerState* sampler[1] = { state->LinearWrap() };
+        context->PSSetSamplers(0, 1, sampler);
+        context->RSSetState(state->CullNone());
+        context->IASetInputLayout(m_inputLayout.Get());
+        context->PSSetShaderResources(0, 1, &finalSRV);
+        context->VSSetShader(m_VS.Get(), nullptr, 0);
+        context->PSSetShader(m_PS.Get(), nullptr, 0);
+    }
+    else
+    {
+        // 定数バッファを更新
+        D3D11_MAPPED_SUBRESOURCE mappedResource;
 
-    //}
-    m_spriteBatch->Begin();
-    m_spriteBatch->Draw(finalSRV, DirectX::SimpleMath::Vector2::Zero);
-    m_spriteBatch->End();
+        // GPUが定数バッファに対してアクセスを行わないようにする
+        context->Map(m_constantBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+
+        // 定数バッファを更新
+        ConstantBuffer cb = {};
+        cb.time = m_nowTime / m_maxNoiseTime;
+
+        *static_cast<ConstantBuffer*>(mappedResource.pData) = cb;
+
+        // GPUが定数バッファに対してのアクセスを許可する
+        context->Unmap(m_constantBuffer.Get(), 0);
+
+        // ピクセルシェーダ使用する定数バッファを設定
+        ID3D11Buffer* cbuf_ps[] = { m_constantBuffer.Get() };
+        context->PSSetConstantBuffers(1, 1, cbuf_ps);	// スロット０はDirectXTKが使用しているのでスロット１を使用する
+
+        ID3D11SamplerState* sampler[1] = { state->LinearWrap() };
+        context->PSSetSamplers(0, 1, sampler);
+        context->RSSetState(state->CullNone());
+        context->IASetInputLayout(m_inputLayout.Get());
+        context->PSSetShaderResources(0, 1, &finalSRV);
+        context->VSSetShader(m_noiseVS.Get(), nullptr, 0);
+        context->PSSetShader(m_noisePS.Get(), nullptr, 0);
+    }
+
+    m_batch->Begin();
+    m_batch->DrawQuad(m_vertex[0], m_vertex[1], m_vertex[3], m_vertex[2]);
+    m_batch->End();
 }

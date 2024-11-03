@@ -5,6 +5,7 @@
 #include "Game/Components/ModelDraw.h"
 #include "Game/Components/BoxCollider.h"
 #include <Game/Components/HP.h>
+#include "Game/PlayScene.h"
 
 LeftArm::LeftArm()
 {
@@ -82,6 +83,7 @@ void LeftArm::Collision(BoxCollider* collider)
 			GetOwner()->GetComponent<Camera>()->shake();
 			GetComponent<HP>()->SetHP(GetComponent<HP>()->GetHP() - 1);
 			bulletObject->Hit();
+			static_cast<PlayScene*>(GetOwner()->GetScene())->SetNoise();
 			m_isHit = true;
 		}
 	}
