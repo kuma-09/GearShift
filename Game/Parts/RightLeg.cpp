@@ -13,6 +13,7 @@ RightLeg::RightLeg()
 	AddComponent<HP>();
 	AddComponent<ModelDraw>();
 	AddComponent<BoxCollider>();
+	AddComponent<Emitter>();
 	SetTypeID(TypeID::RightLeg);
 	m_isHit = false;
 }
@@ -28,19 +29,23 @@ void RightLeg::Initialize(int hp,IScene* scene)
 	GetComponent<HP>()->SetHP(hp);
 	SetMaxHP(float(hp));
 	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetrLegModel());
+	GetComponent<BoxCollider>()->SetSize({ 0.3f,0.8f,0.3f });
+	GetComponent<BoxCollider>()->SetInitalePosition({ 0,-0.4f,0 });
+	GetComponent<Emitter>()->Initialize(L"Resources/Textures/block.png", 0.1f, 0.05f, 0.2f);
 }
 
 void RightLeg::Update(float elapsedTime)
 {
 	using namespace DirectX::SimpleMath;
 
-	ComponentsUpdate(elapsedTime);
+
 
 	Quaternion quaternion = GetOwner()->GetQuaternion();
 	Vector3 pos{ 0.4f,-0.2f,-0.0f };
 	Vector3 velocity = GetOwner()->GetComponent<Move>()->GetVelocity() / 3;
 	//velocity = Vector3::Transform(velocity, quaternion);
 	SetPosition(GetOwner()->GetPosition() + Vector3::Transform(pos, quaternion));
+	SetVelocity(GetOwner()->GetVelocity());
 
 
 	Matrix world = Matrix::Identity;
@@ -54,6 +59,9 @@ void RightLeg::Update(float elapsedTime)
 	world *= Matrix::CreateTranslation(GetPosition());
 
 	SetWorld(world);
+
+	ComponentsUpdate(elapsedTime);
+
 	m_isHit = false;
 }
 
@@ -74,7 +82,11 @@ void RightLeg::Render()
 	{
 		GetComponent<ModelDraw>()->Render(false, DirectX::Colors::Black);
 	}
-
+	if (static_cast<Player*>(GetOwner())->GetOnFloor())
+	{
+		GetComponent<Emitter>()->Render(GetPosition() - DirectX::SimpleMath::Vector3{ 0,1,0 });
+	}
+	GetComponent<BoxCollider>()->Render();
 }
 
 void RightLeg::Finalize()

@@ -26,6 +26,7 @@ public:
 	void Finalize();
 
 	void SetSize(DirectX::SimpleMath::Vector3 size);
+	void SetInitalePosition(DirectX::SimpleMath::Vector3 pos);
 
 	DirectX::BoundingBox* GetBoundingBox() { return m_boudingBox.get(); }
 
@@ -38,5 +39,6 @@ private:
 	Graphics* m_graphics;
 	TypeID m_typeID;
 	std::unique_ptr<DirectX::BoundingBox> m_boudingBox;
+	DirectX::SimpleMath::Vector3 m_initalePosition;
 };
 

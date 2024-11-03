@@ -11,6 +11,7 @@ BoxCollider::BoxCollider()
 	m_boudingBox = std::make_unique<DirectX::BoundingBox>();
 	m_boudingBox->Center = DirectX::SimpleMath::Vector3::Zero;
 	m_boudingBox->Extents = DirectX::SimpleMath::Vector3(0.5f, 0.5f, 0.5f);
+    m_initalePosition = DirectX::SimpleMath::Vector3::Zero;
 }
 
 BoxCollider::~BoxCollider()
@@ -29,7 +30,7 @@ void BoxCollider::Initialize()
 void BoxCollider::Update(float elapsedTime)
 {
     UNREFERENCED_PARAMETER(elapsedTime);
-	m_boudingBox->Center = GetOwner()->GetPosition();
+	m_boudingBox->Center = GetOwner()->GetPosition() + m_initalePosition;
 }
 
 void BoxCollider::Render()
@@ -50,6 +51,11 @@ void BoxCollider::Finalize()
 void BoxCollider::SetSize(DirectX::SimpleMath::Vector3 size)
 {
 	m_boudingBox->Extents = size;
+}
+
+void BoxCollider::SetInitalePosition(DirectX::SimpleMath::Vector3 pos)
+{
+    m_initalePosition = pos;
 }
 
 void BoxCollider::SetTypeID(TypeID id)

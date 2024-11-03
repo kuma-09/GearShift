@@ -27,6 +27,7 @@ void Head::Initialize(int hp,IScene* scene)
 	GetComponent<HP>()->SetHP(hp);
 	SetMaxHP(float(hp));
 	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetHeadModel());
+	GetComponent<BoxCollider>()->SetSize({ 0.3f,0.3f,0.3f });
 }
 
 void Head::Update(float elapsedTime)
@@ -64,7 +65,7 @@ void Head::Render()
 	{
 		GetComponent<ModelDraw>()->Render(false, DirectX::Colors::Black);
 	}
-
+	GetComponent<BoxCollider>()->Render();
 }
 
 void Head::Finalize()

@@ -2,7 +2,7 @@
 #include "Particle.h"
 #include "cmath"
 
-void Particle::Initialize(DirectX::SimpleMath::Vector3 pos)
+void Particle::Initialize(DirectX::SimpleMath::Vector3 pos, float lifeTime)
 {
 	using namespace DirectX::SimpleMath;
 	using namespace DirectX;
@@ -15,7 +15,7 @@ void Particle::Initialize(DirectX::SimpleMath::Vector3 pos)
 
     m_pos = pos;
 
-    m_lifeTime = 1;
+    m_lifeTime = lifeTime;
 }
 
 void Particle::Update(float elapseTime)

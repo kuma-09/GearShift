@@ -84,7 +84,7 @@ void Camera::Update(float elapsedTime)
             m_shakeRate += elapsedTime;
             m_shakeRate *= -1.0f;
         }
-        Vector3 velocity = Vector3::Transform(Vector3::Lerp( Vector3::Zero, { m_shakeRate,m_shakeRate,0 }, m_shakeTime), GetOwner()->GetQuaternion());
+        Vector3 velocity = Vector3::Transform(Vector3::Lerp( Vector3::Zero, { m_shakeRate,m_shakeRate,0 }, m_shakeTime), m_player->GetQuaternion());
         m_targetPosition += velocity;
         // Views—ñ‚ÌXV
         Matrix view = Matrix::CreateLookAt(m_eyePosition, m_targetPosition, Vector3::UnitY);

@@ -38,12 +38,16 @@ void BoostGage::Initialize()
 	BinaryFile VSData = BinaryFile::LoadFile(L"Resources/Shaders/CircleVS.cso");
 	BinaryFile PSData = BinaryFile::LoadFile(L"Resources/Shaders/CirclePS.cso");
 
-	DirectX::CreateWICTextureFromFile(m_graphics->GetDeviceResources()->GetD3DDevice(), L"Resources/Textures/Circle.png", nullptr, m_texture.ReleaseAndGetAddressOf());
+	DirectX::CreateWICTextureFromFile(m_graphics->GetDeviceResources()->GetD3DDevice(), L"Resources/Textures/BulletCircle.png", nullptr, m_texture.ReleaseAndGetAddressOf());
 
-	m_vertex[0] = { Vector3(-0.4f , -0.5f, 0),Vector4::One, Vector2(0.0f, 0.0f) };		//左上
-	m_vertex[1] = { Vector3( 0.4f , -0.5f, 0),Vector4::One, Vector2(1.0f, 0.0f) };		//右上
-	m_vertex[2] = { Vector3(-0.4f , -0.9f, 0),Vector4::One, Vector2(0.0f, 1.0f) };	//左下
-	m_vertex[3] = { Vector3( 0.4f , -0.9f, 0),Vector4::One, Vector2(1.0f, 1.0f) };		//右下
+	RECT rect = m_graphics->GetDeviceResources()->GetOutputSize();
+	float aspectX = float(rect.right) / float(rect.bottom);
+	float aspectY = float(rect.bottom) / float(rect.right);
+
+	m_vertex[0] = { Vector3(-0.75f , -0.75f * aspectX, 0),Vector4::One, Vector2(0.0f, 0.0f) };		//左上
+	m_vertex[1] = { Vector3( 0.75f , -0.75f * aspectX, 0),Vector4::One, Vector2(1.0f, 0.0f) };		//右上
+	m_vertex[2] = { Vector3(-0.75f ,  0.75f * aspectX, 0),Vector4::One, Vector2(0.0f, 1.0f) };		//左下
+	m_vertex[3] = { Vector3( 0.75f ,  0.75f * aspectX, 0),Vector4::One, Vector2(1.0f, 1.0f) };		//右下
 
 	//	インプットレイアウトの作成
 	device->CreateInputLayout(&INPUT_LAYOUT[0],
@@ -78,7 +82,7 @@ void BoostGage::Render()
 
 	//	シェーダーに渡す追加のバッファを作成する。(ConstBuffer）
 	ConstBuffer cbuff;
-	cbuff.rotate = DirectX::XMConvertToRadians(360) - DirectX::XMConvertToRadians(360 * (m_boostPoint / 100));
+	cbuff.rotate = DirectX::XMConvertToRadians(90) - DirectX::XMConvertToRadians(90 * (m_boostPoint / 100));
 
 
 	//	受け渡し用バッファの内容更新(ConstBufferからID3D11Bufferへの変換）

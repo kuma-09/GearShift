@@ -60,20 +60,8 @@ void FixedEnemy::Update(float elapsedTime)
 	using namespace DirectX::SimpleMath;
 	m_state->Update(elapsedTime);
 	ComponentsUpdate(elapsedTime);
-
-
-
 	m_bullet->Update(elapsedTime);
 
-	// À•W‚ÌˆÚ“®
-	SetPosition(GetPosition() + Vector3::Transform(GetVelocity(), GetQuaternion()));
-
-	Matrix world = Matrix::Identity;
-	world = Matrix::CreateScale(GetScale());
-	world *= Matrix::CreateFromQuaternion(GetQuaternion());
-	world *= Matrix::CreateTranslation(GetPosition());
-
-	SetWorld(world);
 }
 
 void FixedEnemy::CreateShader()
@@ -83,9 +71,19 @@ void FixedEnemy::CreateShader()
 
 void FixedEnemy::Render()
 {	
+	using namespace DirectX::SimpleMath;
+
 	m_bullet->Render();
 	m_state->Render();
 	if (GetComponent<HP>()->GetHP() <= 0) return;
+	// À•W‚ÌˆÚ“®
+	SetPosition(GetPosition() + Vector3::Transform(GetVelocity(), GetQuaternion()));
+	Matrix world = Matrix::Identity;
+	world = Matrix::CreateScale(GetScale());
+	world *= Matrix::CreateFromQuaternion(GetQuaternion());
+	world *= Matrix::CreateTranslation(GetPosition());
+
+	SetWorld(world);
 	GetComponent<ModelDraw>()->Render(true);
 	GetComponent<BoxCollider>()->Render();
 }
@@ -122,5 +120,6 @@ void FixedEnemy::Collision(BoxCollider* collider)
 		collider->GetTypeID() == BoxCollider::Wall)
 	{
 		BoxCollider::CheckHit(this, collider->GetOwner());
+
 	}
 }

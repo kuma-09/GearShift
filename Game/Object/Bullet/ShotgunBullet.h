@@ -3,12 +3,12 @@
 
 class Player;
 
-class NormalBullet :public Bullet
+class ShotgunBullet :public Bullet
 {
 public:
 
-	NormalBullet(IScene* scene, BoxCollider::TypeID id);
-	~NormalBullet();
+	ShotgunBullet(IScene* scene, BoxCollider::TypeID id);
+	~ShotgunBullet();
 	void Initalize(GameObject* object);
 	void Shot(GameObject* target);
 	void Hit();

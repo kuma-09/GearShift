@@ -27,13 +27,15 @@ void RightArm::Initialize(int hp,IScene* scene)
 	GetComponent<HP>()->SetHP(hp);
 	SetMaxHP(float(hp));
 	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetrArmModel());
+	GetComponent<BoxCollider>()->SetSize({ 0.3f,0.5f,0.3f });
+	GetComponent<BoxCollider>()->SetInitalePosition({ 0,-0.3f,0 });
 }
 
 void RightArm::Update(float elapsedTime)
 {
 	using namespace DirectX::SimpleMath;
 
-	ComponentsUpdate(elapsedTime);
+
 
 	Quaternion quaternion = GetOwner()->GetQuaternion();
 	Vector3 pos{ 0.6f, 0.9f, 0.0f };
@@ -45,6 +47,9 @@ void RightArm::Update(float elapsedTime)
 	world *= Matrix::CreateTranslation(GetPosition());
 
 	SetWorld(world);
+
+	ComponentsUpdate(elapsedTime);
+
 	m_isHit = false;
 }
 
@@ -65,7 +70,7 @@ void RightArm::Render()
 	{
 		GetComponent<ModelDraw>()->Render(false, DirectX::Colors::Black);
 	}
-
+	GetComponent<BoxCollider>()->Render();
 }
 
 void RightArm::Finalize()

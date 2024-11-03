@@ -8,7 +8,7 @@ class Particle
 {
 public:
 
-	void Initialize(DirectX::SimpleMath::Vector3 pos);
+	void Initialize(DirectX::SimpleMath::Vector3 pos,float lifeTime = 1.0f);
 
 	void Update(float elapsedTime);
 

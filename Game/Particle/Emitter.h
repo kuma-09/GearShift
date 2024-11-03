@@ -13,7 +13,7 @@ public:
 	Emitter();
 	~Emitter();
 
-	void Initialize(const wchar_t* path, float size = 1.0f, float interval = 0.05f);
+	void Initialize(const wchar_t* path, float size = 1.0f, float interval = 0.05f, float lifeTime = 1.0f);
 
 	void Update(float elapsedTime);
 
@@ -33,6 +33,7 @@ private:
 
 	float m_totalTime;
 	float m_interval;
+	float m_lifeTime;
 
 
 };

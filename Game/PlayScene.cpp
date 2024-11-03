@@ -345,16 +345,18 @@ void PlayScene::Render()
         m_player->GetTarget()->GetComponent<HPBar>()->Render(m_player->GetTarget()->GetPosition());
         m_player->GetTarget()->GetComponent<ModelDraw>()->OutLineRender();
     }
-    for (auto& particle : m_hitParticle)
-    {
-        particle->Render(m_graphics->GetViewMatrix(), m_graphics->GetProjectionMatrix());
-    }
-    m_hitEffect->Render();
+
     m_player->Render();
     for (auto& enemy : m_Enemy)
     {
         enemy->Render();
     }
+
+    for (auto& particle : m_hitParticle)
+    {
+        particle->Render(m_graphics->GetViewMatrix(), m_graphics->GetProjectionMatrix());
+    }
+    m_hitEffect->Render();
 
     // Bloom-------------------------------------
     m_postProcess->BeginBloom();

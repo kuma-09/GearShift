@@ -28,6 +28,9 @@ void BodyTop::Initialize(int hp,IScene* scene)
 	GetComponent<HP>()->SetHP(hp);
 	SetMaxHP(float(hp));
 	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetBodyTopModel());
+	GetComponent<BoxCollider>()->SetSize({ 0.3f,0.5f,0.3f });
+	GetComponent<BoxCollider>()->SetInitalePosition({ 0,0.5f,0 });
+	
 }
 
 void BodyTop::Update(float elapsedTime)
@@ -37,6 +40,7 @@ void BodyTop::Update(float elapsedTime)
 
 	Vector3 pos{ 0.0f,0.0f,0.0f };
 	SetPosition(GetOwner()->GetPosition() + Vector3::Transform(pos, GetOwner()->GetQuaternion()));
+	GetComponent<BoxCollider>()->Update(elapsedTime);
 
 	Matrix world = Matrix::Identity;
 	world = Matrix::CreateScale(GetScale());
@@ -68,7 +72,7 @@ void BodyTop::Render()
 		GetComponent<ModelDraw>()->Render(false, DirectX::Colors::Black);
 	}
 
-
+	GetComponent<BoxCollider>()->Render();
 }
 
 void BodyTop::Finalize()

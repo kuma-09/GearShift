@@ -17,7 +17,7 @@ HomingBullet::HomingBullet(IScene* scene, BoxCollider::TypeID id)
 	GetComponent<BoxCollider>()->SetTypeID(id);
 	GetComponent<BoxCollider>()->SetSize({ 0.1f,0.1f,0.1f });
 	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetCubeModel());
-	GetComponent<Emitter>()->Initialize(L"Resources/Textures/smoke_white.png");
+	GetComponent<Emitter>()->Initialize(L"Resources/Textures/smoke_white_big.png");
 	SetScale({ 0.1f,0.1f,0.1f });
 	SetState(BulletState::UNUSED);
 }

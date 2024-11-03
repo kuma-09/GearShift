@@ -68,7 +68,7 @@ void Move::Update(float elapsedTime)
         m_velocity += Vector3::Right * 0.05f;
         isMove = true;
     };
-    m_velocity = Vector3::Lerp(m_velocity, Vector3::Zero, 0.1f);
+    m_velocity = Vector3::Lerp(m_velocity, Vector3::Zero, 0.1f) * MAX_SPEED;
 
     //m_velocity.Normalize();
     GetOwner()->SetVelocity(Vector3::Transform(m_velocity, quaternion));

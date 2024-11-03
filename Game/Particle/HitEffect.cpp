@@ -85,7 +85,7 @@ void HitEffect::Render()
 	ID3D11SamplerState* sampler = states->PointWrap();	// or PointWrap()
 	context->PSSetSamplers(0, 1, &sampler);
 	context->OMSetDepthStencilState(states->DepthRead(), 0);		// 深度バッファ/ステンシルバッファ
-	context->RSSetState(states->CullCounterClockwise());						// カリング
+	context->RSSetState(states->CullNone());						// カリング
 	context->IASetInputLayout(m_inputLayout.Get());					// 入力レイアウト
 
 
@@ -125,6 +125,8 @@ void HitEffect::Render()
 		//m_vertices[1] = { Vector3( 3.0f , 3.0f,0),  Vector2(u[x + 1], v[y]) };	//右上
 		//m_vertices[2] = { Vector3(-3.0f ,-3.0f,0), Vector2(u[x],     v[y + 1]) };	//左下
 		//m_vertices[3] = { Vector3( 3.0f ,-3.0f,0),  Vector2(u[x + 1], v[y + 1]) };	//右下
+
+		
 
 		m_vertices[0] = { Vector3(-3.0f , 3.0f,0), Vector2( 0, 0) };	//左上
 		m_vertices[1] = { Vector3( 3.0f , 3.0f,0), Vector2( 1, 0) };	//右上

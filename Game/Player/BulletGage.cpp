@@ -46,7 +46,7 @@ void BulletGage::Initialize()
 
 	m_vertex[0] = { Vector3(-0.8f , -0.8f * aspectX, 0),Vector4::One, Vector2(0.0f, 0.0f) };		//左上
 	m_vertex[1] = { Vector3( 0.8f , -0.8f * aspectX, 0),Vector4::One, Vector2(1.0f, 0.0f) };		//右上
-	m_vertex[2] = { Vector3(-0.8f ,  0.8f * aspectX, 0),Vector4::One, Vector2(0.0f, 1.0f) };	//左下
+	m_vertex[2] = { Vector3(-0.8f ,  0.8f * aspectX, 0),Vector4::One, Vector2(0.0f, 1.0f) };		//左下
 	m_vertex[3] = { Vector3( 0.8f ,  0.8f * aspectX, 0),Vector4::One, Vector2(1.0f, 1.0f) };		//右下
 
 	//	インプットレイアウトの作成

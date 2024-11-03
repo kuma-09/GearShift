@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "NormalBullet.h"
+#include "ShotgunBullet.h"
 #include "Game/Enemy/Enemy.h"
 #include "Game/Player/Player.h"
 #include "Game/PlayScene.h"
@@ -9,7 +9,7 @@
 
 #include "Framework/Audio.h"
 
-NormalBullet::NormalBullet(IScene* scene, BoxCollider::TypeID id)
+ShotgunBullet::ShotgunBullet(IScene* scene, BoxCollider::TypeID id)
 {
 	SetScene(scene);
 	AddComponent<BoxCollider>();
@@ -19,12 +19,12 @@ NormalBullet::NormalBullet(IScene* scene, BoxCollider::TypeID id)
 	SetScale({ 0.25f,0.25f,0.25f });
 }
 
-NormalBullet::~NormalBullet()
+ShotgunBullet::~ShotgunBullet()
 {
 
 }
 
-void NormalBullet::Initalize(GameObject* object)
+void ShotgunBullet::Initalize(GameObject* object)
 {
 	using namespace DirectX::SimpleMath;
 
@@ -40,7 +40,7 @@ void NormalBullet::Initalize(GameObject* object)
 	SetState(BulletState::UNUSED);
 }
 
-void NormalBullet::Shot(GameObject* target)
+void ShotgunBullet::Shot(GameObject* target)
 {
 	using namespace DirectX::SimpleMath;
 
@@ -62,7 +62,7 @@ void NormalBullet::Shot(GameObject* target)
 
 }
 
-void NormalBullet::Hit()
+void ShotgunBullet::Hit()
 {
 	using namespace DirectX::SimpleMath;
 
@@ -80,7 +80,7 @@ void NormalBullet::Hit()
 	}
 }
 
-void NormalBullet::Update(float elapsedTime)
+void ShotgunBullet::Update(float elapsedTime)
 {
 	using namespace DirectX::SimpleMath;
 
@@ -93,7 +93,7 @@ void NormalBullet::Update(float elapsedTime)
 	{
 		Hit();
 	}
-	
+
 	SetPosition(GetPosition() + GetVelocity() * elapsedTime);
 
 	Matrix world = Matrix::CreateScale(GetScale());
@@ -102,7 +102,7 @@ void NormalBullet::Update(float elapsedTime)
 	SetWorld(world);
 }
 
-void NormalBullet::Render()
+void ShotgunBullet::Render()
 {
 	if (GetState() == FLYING)
 	{
@@ -110,7 +110,7 @@ void NormalBullet::Render()
 	}
 }
 
-void NormalBullet::Collision(BoxCollider* collider)
+void ShotgunBullet::Collision(BoxCollider* collider)
 {
 	if (GetState() == FLYING)
 	{

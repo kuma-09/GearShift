@@ -18,7 +18,7 @@ Emitter::~Emitter()
 
 }
 
-void Emitter::Initialize(const wchar_t* path, float size,float interval)
+void Emitter::Initialize(const wchar_t* path, float size,float interval, float lifeTime)
 {
     using namespace DirectX::SimpleMath;
     using namespace DirectX;
@@ -42,6 +42,7 @@ void Emitter::Initialize(const wchar_t* path, float size,float interval)
 
     m_totalTime = 0;
     m_interval = interval;
+    m_lifeTime = lifeTime;
 }
 
 void Emitter::Update(float elapseTime)
@@ -69,7 +70,7 @@ void Emitter::Render(DirectX::SimpleMath::Vector3 pos)
     {
         m_totalTime = 0;
         m_particles.push_back(std::make_unique<Particle>());
-        m_particles.back()->Initialize(pos);
+        m_particles.back()->Initialize(pos,m_lifeTime);
     }
 
 

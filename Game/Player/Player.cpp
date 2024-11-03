@@ -70,7 +70,7 @@ void Player::Initialize()
 	}
 
 	GetComponent<BoxCollider>()->SetTypeID(BoxCollider::TypeID::Player);
-	GetComponent<BoxCollider>()->SetSize({ 1,1.25f,1 });
+	GetComponent<BoxCollider>()->SetSize({ 1,1.45f,1 });
 	GetComponent<Look>()->SetTarget(this, nullptr);
 	GetComponent<Camera>()->SetTarget(this, nullptr);
 	GetComponent<HP>()->SetHP(100);
@@ -183,7 +183,7 @@ void Player::Render()
 void Player::RenderPlayerUI()
 {
 	m_boostGage->Render();
-	m_bulletGage->Render();
+	//m_bulletGage->Render();
 }
 
 void Player::Finalize()
@@ -283,10 +283,14 @@ void Player::Collision(BoxCollider* collider)
 		}
 	}
 	
-	if (collider->GetTypeID() == BoxCollider::Floor ||
-		collider->GetTypeID() == BoxCollider::Wall)
+	if (collider->GetTypeID() == BoxCollider::Floor)
 	{
 		SetOnFloor(true);
+		m_boostGage->SetBoostPoint(0.5f);
+		BoxCollider::CheckHit(this, collider->GetOwner());
+	}
+	if (collider->GetTypeID() == BoxCollider::Wall)
+	{
 		m_boostGage->SetBoostPoint(0.5f);
 		BoxCollider::CheckHit(this, collider->GetOwner());
 	}
