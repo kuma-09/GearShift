@@ -175,10 +175,15 @@ void Player::Render()
 	}
 
 	RenderParts();
-	//m_boostGage->Render();
-	m_bulletGage->Render();
+
 	//GetComponent<BoxCollider>()->Render();
 
+}
+
+void Player::RenderPlayerUI()
+{
+	m_boostGage->Render();
+	m_bulletGage->Render();
 }
 
 void Player::Finalize()

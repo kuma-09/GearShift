@@ -356,10 +356,6 @@ void PlayScene::Render()
         enemy->Render();
     }
 
-    // UI
-    m_targetArea->Render(m_player->GetTarget());
-    m_hpUI->Render();
-
     // Bloom-------------------------------------
     m_postProcess->BeginBloom();
     for (auto& particle : m_hitParticle)
@@ -367,13 +363,18 @@ void PlayScene::Render()
         particle->Render(m_graphics->GetViewMatrix(), m_graphics->GetProjectionMatrix());
     }
 
-    m_targetArea->Render(m_player->GetTarget());
+    //m_targetArea->Render(m_player->GetTarget());
     // リソースの解除＆ライトをキューブで描画
     Resources::GetInstance()->GetShadow()->End();
 
     //-------------------------------------------
 
     m_postProcess->combinationRT();
+
+    // UI
+    m_targetArea->Render(m_player->GetTarget());
+    m_hpUI->Render();
+    m_player->RenderPlayerUI();
 
 }
 
@@ -420,8 +421,6 @@ void PlayScene::SetNoise()
 void PlayScene::CreateHitParticle(DirectX::SimpleMath::Matrix world)
 {
     using namespace DirectX::SimpleMath;
-
-
 
     int particleValue = HitParticle::get_rand(5, 10);
     Vector3 pos = { world._41,world._42,world._43 };

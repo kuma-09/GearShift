@@ -29,6 +29,7 @@ public:
 	void Update(float elapsedTime);
 	void CreateShadow();
 	void Render();
+	void RenderPlayerUI();
 	void Finalize();
 
 	Idol* GetIdol() { return m_idol.get(); }
@@ -67,29 +68,6 @@ public:
 		return nullptr;
 	}
 
-	// パーツをまとめて更新
-	void UpdateParts(float elapsedTime) {
-		for (auto& pair : m_pPart) 
-		{
-			pair.second->Update(elapsedTime);
-		}
-	}
-
-	// パーツをまとめて描画
-	void RenderParts() {
-		for (auto& pair : m_pPart) 
-		{
-			pair.second->Render();
-		}
-	}
-
-	void CreateShadows()
-	{
-		for (auto& pair : m_pPart)
-		{
-			pair.second->CreateShadow();
-		}
-	}
 
 	void Collision(BoxCollider* collider);
 	
@@ -109,7 +87,29 @@ public:
 private:
 	void Reload();
 
+	// パーツをまとめて更新
+	void UpdateParts(float elapsedTime) {
+		for (auto& pair : m_pPart)
+		{
+			pair.second->Update(elapsedTime);
+		}
+	}
 
+	// パーツをまとめて描画
+	void RenderParts() {
+		for (auto& pair : m_pPart)
+		{
+			pair.second->Render();
+		}
+	}
+
+	void CreateShadows()
+	{
+		for (auto& pair : m_pPart)
+		{
+			pair.second->CreateShadow();
+		}
+	}
 private:
 
 	InputManager* m_inputManager;

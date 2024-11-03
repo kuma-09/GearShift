@@ -95,7 +95,7 @@ void HitEffect::Render()
 	{
 		// 各種変換
 		Matrix world = Matrix::CreateScale(1.0f * (0.1f + posLife.second));
-		world *= Matrix::CreateTranslation(posLife.first + Vector3{0,posLife.second * 5,0});
+		world *= Matrix::CreateTranslation(posLife.first + Vector3{0,posLife.second,0});
 
 		// ワールド行列を更新する
 		Matrix billboardMat = view.Invert();
