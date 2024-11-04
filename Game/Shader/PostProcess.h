@@ -58,12 +58,17 @@ private:
 	// 通常時のシェーダー
 	Microsoft::WRL::ComPtr<ID3D11VertexShader> m_VS;
 	Microsoft::WRL::ComPtr<ID3D11PixelShader> m_PS;
+	// ミッション開始時のノイズシェーダー
+	Microsoft::WRL::ComPtr<ID3D11VertexShader> m_startVS;
+	Microsoft::WRL::ComPtr<ID3D11PixelShader> m_startPS;
 	// 被弾時のノイズシェーダー
 	Microsoft::WRL::ComPtr<ID3D11VertexShader> m_noiseVS;
 	Microsoft::WRL::ComPtr<ID3D11PixelShader> m_noisePS;
-
+	
+	bool m_isStartNoise;
 	bool m_isNoise;
 	float m_nowTime;
+	const float m_maxStartNoiseTime = 1.0f;
 	const float m_maxNoiseTime = 0.5f;
 
 };

@@ -44,6 +44,9 @@ FixedEnemy::~FixedEnemy()
 
 void FixedEnemy::Initialize(GameObject* target)
 {
+	using namespace DirectX::SimpleMath;
+
+
 	GetComponent<HP>()->SetHP(10);
 	SetTarget(target);
 	GetComponent<Look>()->SetTarget(this, target);
@@ -53,14 +56,21 @@ void FixedEnemy::Initialize(GameObject* target)
 	GetComponent<HPBar>()->Initialize();
 	m_bullet->Initalize(this);
 	m_state->Initialize();
+	Matrix world = Matrix::Identity;
+	world = Matrix::CreateScale(GetScale());
+	world *= Matrix::CreateFromQuaternion(GetQuaternion());
+	world *= Matrix::CreateTranslation(GetPosition());
+
+	SetWorld(world);
 }
 
 void FixedEnemy::Update(float elapsedTime)
 {
 	using namespace DirectX::SimpleMath;
+
 	m_state->Update(elapsedTime);
-	ComponentsUpdate(elapsedTime);
 	m_bullet->Update(elapsedTime);
+	ComponentsUpdate(elapsedTime);
 
 }
 
@@ -75,7 +85,6 @@ void FixedEnemy::Render()
 
 	m_bullet->Render();
 	m_state->Render();
-	if (GetComponent<HP>()->GetHP() <= 0) return;
 	// À•W‚ÌˆÚ“®
 	SetPosition(GetPosition() + Vector3::Transform(GetVelocity(), GetQuaternion()));
 	Matrix world = Matrix::Identity;
@@ -84,6 +93,7 @@ void FixedEnemy::Render()
 	world *= Matrix::CreateTranslation(GetPosition());
 
 	SetWorld(world);
+	if (GetComponent<HP>()->GetHP() <= 0) return;
 	GetComponent<ModelDraw>()->Render(true);
 	GetComponent<BoxCollider>()->Render();
 }

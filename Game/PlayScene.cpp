@@ -25,6 +25,7 @@
 #include "Game/Particle/HitParticle.h"
 
 #include "UI/HPUI.h"
+#include "Game/Animation/StartAnimation.h"
 
 PlayScene::PlayScene()
     :
@@ -76,16 +77,19 @@ void PlayScene::Initialize(Game* game)
     m_player->Initialize();
 
     m_Enemy.emplace_back(std::make_unique<HomingEnemy>(this));
-    m_Enemy.back()->Initialize(m_player.get());
     m_Enemy.back()->SetPosition(Vector3(0, 5, 0));
+    m_Enemy.back()->Initialize(m_player.get());
+
 
     m_Enemy.emplace_back(std::make_unique<HomingEnemy>(this));
-    m_Enemy.back()->Initialize(m_player.get());
     m_Enemy.back()->SetPosition(Vector3(32, 5, 10));
+    m_Enemy.back()->Initialize(m_player.get());
+
 
     m_Enemy.emplace_back(std::make_unique<FixedEnemy>(this));
-    m_Enemy.back()->Initialize(m_player.get());
     m_Enemy.back()->SetPosition(Vector3(50, 5, 10));
+    m_Enemy.back()->Initialize(m_player.get());
+
 
     m_wall.emplace_back(std::make_unique<BillA>(this));
     m_wall.back()->SetPosition({5,9,40});
@@ -142,6 +146,9 @@ void PlayScene::Initialize(Game* game)
     m_hitEffect = std::make_unique<HitEffect>();
     m_hitEffect->Initialize();
 
+    m_startAnimation = std::make_unique<StartAnimation>();
+    m_startAnimation->Initialize();
+
 }
 
 /// <summary> 更新処理 </summary>
@@ -154,9 +161,14 @@ void PlayScene::Update(float elapsedTime)
     //const auto& gp = m_inputManager->GetGamePadTracker();
     //const auto& kb = m_inputManager->GetKeyboardTracker();
 
+
+
     // 経過時間を計算
     m_totalTime += elapsedTime;
     m_postProcess->Update(elapsedTime);
+
+
+
     // ヒットエフェクトの更新
     for (auto it = m_hitParticle.begin(); it != m_hitParticle.end();)
     {
@@ -189,50 +201,57 @@ void PlayScene::Update(float elapsedTime)
 
     std::vector<Enemy*> inAreaEnemy;
 
-    // 体力の無い敵を削除
-    for (auto it = m_Enemy.begin(); it != m_Enemy.end();)
+    if (!m_startAnimation->Update(elapsedTime))
     {
-        it->get()->Update(elapsedTime);
-        if (m_targetArea->Update(m_player.get(), it->get()))
+        // 体力の無い敵を削除
+        for (auto it = m_Enemy.begin(); it != m_Enemy.end();)
         {
-
-            Vector3 dir = it->get()->GetPosition() - m_player->GetPosition();
-            dir.Normalize();
-            Ray ray = { m_player->GetPosition(),dir };
-            float n = 0;
-            
-            int i = 0;
-            for (auto& wall : m_wall)
+            it->get()->Update(elapsedTime);
+            if (m_targetArea->Update(m_player.get(), it->get()))
             {
-                if (ray.Intersects(*wall->GetComponent<BoxCollider>()->GetBoundingBox(), n))
+
+                Vector3 dir = it->get()->GetPosition() - m_player->GetPosition();
+                dir.Normalize();
+                Ray ray = { m_player->GetPosition(),dir };
+                float n = 0;
+
+                int i = 0;
+                for (auto& wall : m_wall)
                 {
-                    if (n <= (it->get()->GetPosition() - m_player->GetPosition()).Length())
+                    if (ray.Intersects(*wall->GetComponent<BoxCollider>()->GetBoundingBox(), n))
                     {
-                        i++;
+                        if (n <= (it->get()->GetPosition() - m_player->GetPosition()).Length())
+                        {
+                            i++;
+                        }
                     }
                 }
-            }
 
-            if (i == 0 && it->get()->GetComponent<HP>()->GetHP() > 0)
-            {
-                inAreaEnemy.emplace_back(it->get());
+                if (i == 0 && it->get()->GetComponent<HP>()->GetHP() > 0)
+                {
+                    inAreaEnemy.emplace_back(it->get());
+                }
             }
-        }
-        if (it->get()->GetComponent<HP>()->GetHP() > 0)
-        {
-            it++;
-        }
-        else
-        {
-            
-            it = RemoveEnemy(it);
-            if (m_Enemy.empty())
+            if (it->get()->GetComponent<HP>()->GetHP() > 0)
             {
-                GetGame()->ChangeScene(GetGame()->GetResultScene());
-                return;
+                it++;
+            }
+            else
+            {
+
+                it = RemoveEnemy(it);
+                if (m_Enemy.empty())
+                {
+                    GetGame()->ChangeScene(GetGame()->GetResultScene());
+                    return;
+                }
             }
         }
     }
+
+
+
+
 
     if (inAreaEnemy.empty())
     {
@@ -365,7 +384,6 @@ void PlayScene::Render()
         particle->Render(m_graphics->GetViewMatrix(), m_graphics->GetProjectionMatrix());
     }
 
-    //m_targetArea->Render(m_player->GetTarget());
     // リソースの解除＆ライトをキューブで描画
     Resources::GetInstance()->GetShadow()->End();
 
@@ -377,6 +395,7 @@ void PlayScene::Render()
     m_targetArea->Render(m_player->GetTarget());
     m_hpUI->Render();
     m_player->RenderPlayerUI();
+    m_startAnimation->Render();
 
 }
 

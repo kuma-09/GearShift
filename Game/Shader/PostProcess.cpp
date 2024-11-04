@@ -75,6 +75,8 @@ void PostProcess::Initialize()
 
     BinaryFile vs = BinaryFile::LoadFile(L"Resources/Shaders/VS.cso");
     BinaryFile ps = BinaryFile::LoadFile(L"Resources/Shaders/PS.cso");
+    BinaryFile startvs = BinaryFile::LoadFile(L"Resources/Shaders/StartNoiseVS.cso");
+    BinaryFile startps = BinaryFile::LoadFile(L"Resources/Shaders/StartNoisePS.cso");
     BinaryFile noisevs = BinaryFile::LoadFile(L"Resources/Shaders/NoiseVS.cso");
     BinaryFile noiseps = BinaryFile::LoadFile(L"Resources/Shaders/NoisePS.cso");
 
@@ -94,6 +96,14 @@ void PostProcess::Initialize()
     );
 
     DX::ThrowIfFailed(
+        device->CreateVertexShader(startvs.GetData(), startvs.GetSize(), nullptr, m_startVS.ReleaseAndGetAddressOf())
+    );
+
+    DX::ThrowIfFailed(
+        device->CreatePixelShader(startps.GetData(), startps.GetSize(), nullptr, m_startPS.ReleaseAndGetAddressOf())
+    );
+
+    DX::ThrowIfFailed(
         device->CreateVertexShader(noisevs.GetData(), noisevs.GetSize(), nullptr, m_noiseVS.ReleaseAndGetAddressOf())
     );
 
@@ -110,12 +120,22 @@ void PostProcess::Initialize()
     bufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;	// CPUが内容を変更できるようにする
     DX::ThrowIfFailed(device->CreateBuffer(&bufferDesc, nullptr, m_constantBuffer.ReleaseAndGetAddressOf()));
 
+    m_isStartNoise = true;  
     m_isNoise = false;
-    m_nowTime = 0;
+    m_nowTime = m_maxStartNoiseTime;
 }
 
 void PostProcess::Update(float elapsedTime)
 {
+    if (m_isStartNoise)
+    {
+        m_nowTime -= elapsedTime;
+        if (m_nowTime <= 0)
+        {
+            m_isStartNoise = false;
+            m_nowTime = 0;
+        }
+    }
     if (m_isNoise)
     {
         m_nowTime += elapsedTime;
@@ -279,13 +299,45 @@ void PostProcess::combinationRT()
 
     if (!m_isNoise)
     {
-        ID3D11SamplerState* sampler[1] = { state->LinearWrap() };
-        context->PSSetSamplers(0, 1, sampler);
-        context->RSSetState(state->CullNone());
-        context->IASetInputLayout(m_inputLayout.Get());
-        context->PSSetShaderResources(0, 1, &finalSRV);
-        context->VSSetShader(m_VS.Get(), nullptr, 0);
-        context->PSSetShader(m_PS.Get(), nullptr, 0);
+        if (m_isStartNoise)
+        {
+            // 定数バッファを更新
+            D3D11_MAPPED_SUBRESOURCE mappedResource;
+
+            // GPUが定数バッファに対してアクセスを行わないようにする
+            context->Map(m_constantBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+
+            // 定数バッファを更新
+            ConstantBuffer cb = {};
+            cb.time = m_nowTime / m_maxStartNoiseTime;
+
+            *static_cast<ConstantBuffer*>(mappedResource.pData) = cb;
+
+            // GPUが定数バッファに対してのアクセスを許可する
+            context->Unmap(m_constantBuffer.Get(), 0);
+
+            // ピクセルシェーダ使用する定数バッファを設定
+            ID3D11Buffer* cbuf_ps[] = { m_constantBuffer.Get() };
+            context->PSSetConstantBuffers(1, 1, cbuf_ps);	// スロット０はDirectXTKが使用しているのでスロット１を使用する
+
+            ID3D11SamplerState* sampler[1] = { state->LinearWrap() };
+            context->PSSetSamplers(0, 1, sampler);
+            context->RSSetState(state->CullNone());
+            context->IASetInputLayout(m_inputLayout.Get());
+            context->PSSetShaderResources(0, 1, &finalSRV);
+            context->VSSetShader(m_startVS.Get(), nullptr, 0);
+            context->PSSetShader(m_startPS.Get(), nullptr, 0);
+        }
+        else
+        {
+            ID3D11SamplerState* sampler[1] = { state->LinearWrap() };
+            context->PSSetSamplers(0, 1, sampler);
+            context->RSSetState(state->CullNone());
+            context->IASetInputLayout(m_inputLayout.Get());
+            context->PSSetShaderResources(0, 1, &finalSRV);
+            context->VSSetShader(m_VS.Get(), nullptr, 0);
+            context->PSSetShader(m_PS.Get(), nullptr, 0);
+        }
     }
     else
     {
@@ -316,6 +368,7 @@ void PostProcess::combinationRT()
         context->VSSetShader(m_noiseVS.Get(), nullptr, 0);
         context->PSSetShader(m_noisePS.Get(), nullptr, 0);
     }
+
 
     m_batch->Begin();
     m_batch->DrawQuad(m_vertex[0], m_vertex[1], m_vertex[3], m_vertex[2]);

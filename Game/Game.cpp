@@ -128,7 +128,7 @@ void Game::Update(DX::StepTimer const& timer)
     }
 
     // TODO: Add your game logic here.
-    m_debugString->AddString(std::to_string(m_timer.GetFramesPerSecond()).c_str());
+    //m_debugString->AddString(std::to_string(m_timer.GetFramesPerSecond()).c_str());
     m_scene->Update(elapsedTime);
 
 

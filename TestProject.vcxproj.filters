@@ -143,6 +143,7 @@
     <ClInclude Include="Game\Shader\PostProcess.h" />
     <ClInclude Include="Game\Player\BulletGage.h" />
     <ClInclude Include="Game\Object\Bullet\ShotgunBullet.h" />
+    <ClInclude Include="Game\Animation\StartAnimation.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -246,6 +247,7 @@
     <ClCompile Include="Game\Shader\PostProcess.cpp" />
     <ClCompile Include="Game\Player\BulletGage.cpp" />
     <ClCompile Include="Game\Object\Bullet\ShotgunBullet.cpp" />
+    <ClCompile Include="Game\Animation\StartAnimation.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />
@@ -289,5 +291,7 @@
     <FxCompile Include="Shaders\NormalGagePS.hlsl" />
     <FxCompile Include="Shaders\NoisePS.hlsl" />
     <FxCompile Include="Shaders\NoiseVS.hlsl" />
+    <FxCompile Include="Shaders\StartNoisePS.hlsl" />
+    <FxCompile Include="Shaders\StartNoiseVS.hlsl" />
   </ItemGroup>
 </Project>

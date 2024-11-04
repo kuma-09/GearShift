@@ -29,6 +29,8 @@ void Move::Update(float elapsedTime)
 
     // パッドの入力情報
     Vector3 input = Vector3{ gpState.thumbSticks.leftX,0, -gpState.thumbSticks.leftY } * elapsedTime;
+    input.Normalize();
+    input *= 0.05f;
 
     // 親オブジェクトの向いている方向
     Quaternion quaternion = GetOwner()->GetQuaternion();
@@ -37,12 +39,7 @@ void Move::Update(float elapsedTime)
 
     
     bool isMove = false;
-    if (gpState.thumbSticks.leftY != 0)
-    {
-        m_velocity += input;
-        isMove = true;
-    }
-    if (gpState.thumbSticks.leftX != 0)
+    if (input != Vector3::Zero)
     {
         m_velocity += input;
         isMove = true;

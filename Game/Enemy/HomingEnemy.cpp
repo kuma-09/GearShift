@@ -43,6 +43,8 @@ HomingEnemy::~HomingEnemy()
 
 void HomingEnemy::Initialize(GameObject* target)
 {
+	using namespace DirectX::SimpleMath;
+
 	GetComponent<HP>()->SetHP(10);
 	SetTarget(target);
 	GetComponent<Look>()->SetTarget(this, target);
@@ -52,6 +54,12 @@ void HomingEnemy::Initialize(GameObject* target)
 	GetComponent<HPBar>()->Initialize();
 	m_bullet->Initalize(this);
 	m_state->Initialize();
+	Matrix world = Matrix::Identity;
+	world = Matrix::CreateScale(GetScale());
+	world *= Matrix::CreateFromQuaternion(GetQuaternion());
+	world *= Matrix::CreateTranslation(GetPosition());
+
+	SetWorld(world);
 }
 
 void HomingEnemy::Update(float elapsedTime)

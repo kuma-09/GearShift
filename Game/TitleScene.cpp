@@ -51,7 +51,7 @@ void TitleScene::Update(float elapsedTime)
     m_camera->Update(elapsedTime);
     m_player->Update(elapsedTime);
 
-    if (kb->pressed.Space || gp->a == gp->PRESSED)
+    if (kb->pressed.Space || gp->a)
     {
         GetGame()->ChangeScene(GetGame()->GetPlayScene());
     }

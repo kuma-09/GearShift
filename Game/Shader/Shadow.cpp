@@ -118,7 +118,7 @@ void Shadow::Initialize()
     sampler_desc.AddressW = D3D11_TEXTURE_ADDRESS_BORDER;
     sampler_desc.ComparisonFunc = D3D11_COMPARISON_LESS;
     device->CreateSamplerState(&sampler_desc, m_shadowMapSampler.ReleaseAndGetAddressOf());
-
+    
     m_spriteBatch = std::make_unique<SpriteBatch>(context);
 
 }

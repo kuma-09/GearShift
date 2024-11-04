@@ -22,6 +22,7 @@ class Camera;
 class HPUI;
 class HitParticle;
 class HitEffect;
+class StartAnimation;
 
 
 class PlayScene final: public IScene
@@ -83,6 +84,8 @@ private:
 	// 撃破エフェクト
 	std::unique_ptr<HitEffect> m_hitEffect;
 
+
+	std::unique_ptr<StartAnimation> m_startAnimation;
 
 	// 経過時間
 	float m_totalTime;
