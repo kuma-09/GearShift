@@ -82,6 +82,9 @@ void Player::Initialize()
 
 	m_bulletGage = std::make_unique<BulletGage>();
 	m_bulletGage->Initialize();
+
+	m_bulletInterval = INTERVAL;
+	m_exBulletSize = 0;
 }
 
 void Player::Update(float elapsedTime)
@@ -89,6 +92,7 @@ void Player::Update(float elapsedTime)
 	using namespace DirectX::SimpleMath;
 	auto& gp = m_inputManager->GetGamePadTracker();
 	auto& mouse = m_inputManager->GetMouseTracker();
+	auto& mouseState = m_inputManager->GetMouseState();
 	auto& kb = m_inputManager->GetKeyboardTracker();
 
 	m_boostGage->Update();
@@ -96,9 +100,14 @@ void Player::Update(float elapsedTime)
 	m_bulletGage->SetBoostPoint(GetBulletSize());
 	m_bulletGage->SetMaxBoostPoint(GetMaxBulletSize());
 
-	if (mouse->leftButton == mouse->PRESSED || gp->x == gp->PRESSED )
+	m_bulletInterval += elapsedTime;
+	if (mouseState.leftButton || gp->x == gp->PRESSED )
 	{
-		Shot();
+		if (m_bulletInterval >= INTERVAL)
+		{
+			m_bulletInterval = 0;
+			Shot();
+		}
 	}
 
 	if (kb->IsKeyPressed(DirectX::Keyboard::R))
@@ -206,10 +215,26 @@ void Player::ChangeState(State* state)
 
 void Player::Shot()
 {
-
-	if (m_exBullet.empty())
+	int usedCount = 0;
+	for (auto& bullet : m_exBullet)
 	{
-		for (auto& bullet: m_defaultBullet)
+		// “ÁŽê’e‚ð”­ŽË
+		if (bullet->GetState() == Bullet::BulletState::UNUSED && m_target)
+		{
+			m_exBulletSize--;
+			bullet->Shot(m_target);
+			static_cast<PlayScene*>(GetScene())->UpdateBulletMagazine();
+			Audio::GetInstance()->PlaySoundSE_Rocket();
+			break;
+		}
+		{
+			usedCount++;
+		}
+	}
+	// “ÁŽê’e‚ª–³‚¢ê‡’Êí’e‚ð”­ŽË‚·‚é
+	if (m_exBullet.empty() || m_exBullet.size() == usedCount)
+	{
+		for (auto& bullet : m_defaultBullet)
 		{
 			if (bullet->GetState() == Bullet::BulletState::UNUSED && m_target)
 			{
@@ -218,30 +243,6 @@ void Player::Shot()
 				Audio::GetInstance()->PlaySoundSE_Rocket();
 				break;
 			}
-		}
-	}
-	else
-	{
-		int usedCount = 0;
-		for (auto& bullet: m_exBullet)
-		{
-			if (bullet->GetState() == Bullet::BulletState::UNUSED && m_target)
-			{
-				bullet->Shot(m_target);
-				Audio::GetInstance()->PlaySoundSE_Rocket();
-				break;
-			}
-			{
-				usedCount++;
-			}
-		}
-		if (m_exBullet.size() == usedCount)
-		{
-			for (auto& bullet: m_exBullet)
-			{
-				bullet.reset();
-			}
-			m_exBullet.clear();
 		}
 	}
 }
@@ -267,6 +268,11 @@ int Player::GetBulletSize()
 int Player::GetMaxBulletSize()
 {
 	return m_defaultBullet.size();
+}
+
+int Player::GetExBulletSize()
+{
+	return m_exBulletSize;
 }
 
 void Player::Collision(BoxCollider* collider)
@@ -296,10 +302,6 @@ void Player::Collision(BoxCollider* collider)
 		BoxCollider::CheckHit(this, collider->GetOwner());
 	}
 
-	if (collider->GetTypeID() == BoxCollider::DropItem)
-	{
-
-	}
 }
 
 void Player::Reload()

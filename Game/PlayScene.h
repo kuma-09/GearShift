@@ -24,6 +24,7 @@ class HitParticle;
 class HitEffect;
 class StartAnimation;
 class BulletMagazine;
+class ExBulletMagazine;
 
 
 class PlayScene final: public IScene
@@ -90,6 +91,7 @@ private:
 
 	std::unique_ptr<StartAnimation> m_startAnimation;
 	std::unique_ptr<BulletMagazine> m_bulletMagazine;
+	std::unique_ptr<ExBulletMagazine> m_exBulletMagazine;
 
 	// Œo‰ßŽžŠÔ
 	float m_totalTime;

@@ -49,6 +49,7 @@ public:
 	float GetBoostPoint();
 	int GetBulletSize();
 	int GetMaxBulletSize();
+	int GetExBulletSize();
 
 	// パーツをセット
 	void SetPart(const Part::TypeID& partType, std::unique_ptr<Part> part)
@@ -75,7 +76,7 @@ public:
 	{
 
 		m_exBullet = std::move(bullets);
-
+		m_exBulletSize = m_exBullet.size();
 		for (auto& bullet: m_exBullet)
 		{
 			bullet->Initalize(this);
@@ -140,6 +141,9 @@ private:
 	std::vector<std::unique_ptr<Bullet>> m_defaultBullet;
 	// 追加の弾配列
 	std::vector<std::unique_ptr<Bullet>> m_exBullet;
+	int m_exBulletSize;
+	float m_bulletInterval;
+	const float INTERVAL = 0.5f;
 
 	bool m_onFloor;
 

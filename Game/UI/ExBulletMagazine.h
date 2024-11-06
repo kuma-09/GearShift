@@ -2,11 +2,11 @@
 #include "Framework/Graphics.h"
 #include "Framework/DeviceResources.h"
 
-class BulletMagazine
+class ExBulletMagazine
 {
 public:
-	BulletMagazine();
-	~BulletMagazine();
+	ExBulletMagazine();
+	~ExBulletMagazine();
 	void SetSpriteBatch(DirectX::SpriteBatch* spriteBatch);
 	void Initialize(int tagertNumber);
 	void Update();

@@ -20,6 +20,7 @@ public:
 
 	void PlaySoundSE_Rocket();
 	void PlaySoundSE_Hit();
+	void PlaySoundSE_PowerUp();
 
 private:
 	// コンストラクタ
@@ -41,6 +42,7 @@ private:
 	std::unique_ptr<DirectX::AudioEngine> m_audioEngine;
 	std::unique_ptr<DirectX::SoundEffect> m_rocketLauncherSE;
 	std::unique_ptr<DirectX::SoundEffect> m_hitSE;
+	std::unique_ptr<DirectX::SoundEffect> m_powerUpSE;
 	std::unique_ptr<DirectX::SoundEffect> m_soundEffectBGM;
 	std::unique_ptr<DirectX::SoundEffectInstance> m_soundEffectInstanceBGM;
 

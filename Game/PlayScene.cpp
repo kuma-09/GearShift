@@ -4,6 +4,7 @@
 #include "Game.h"
 
 #include "Framework/Microsoft/DebugDraw.h"
+#include "Framework/Audio.h"
 #include "Game/Components/HP.h"
 #include "Game/Components/Camera.h"
 #include "Game/Components/BoxCollider.h"
@@ -27,6 +28,7 @@
 #include "UI/HPUI.h"
 #include "Game/Animation/StartAnimation.h"
 #include "UI/BulletMagazine.h"
+#include "UI/ExBulletMagazine.h"
 
 
 PlayScene::PlayScene()
@@ -141,13 +143,18 @@ void PlayScene::Initialize(Game* game)
     //m_dropItem.back()->SetPosition(Vector3(6, 3, 9));
 
     std::vector<std::unique_ptr<Bullet>> bullets;
+    std::vector<std::unique_ptr<Bullet>> bullets2;
     for (int i = 0; i < 10; i++)
     {
         bullets.emplace_back(std::make_unique<HomingBullet>(this, BoxCollider::PlayerBullet));
+        bullets2.emplace_back(std::make_unique<HomingBullet>(this, BoxCollider::PlayerBullet));
     }
 
     m_dropItemB.emplace_back(std::make_unique<DropItemB>(this, std::move(bullets)));
     m_dropItemB.back()->SetPosition(Vector3(10, 3, 10));
+
+    m_dropItemB.emplace_back(std::make_unique<DropItemB>(this, std::move(bullets2)));
+    m_dropItemB.back()->SetPosition(Vector3(10, 30, 30));
 
     m_floor.emplace_back(std::make_unique<Floor>(this));
     m_floor.back()->SetPosition({ -100,0,-100 });
@@ -176,7 +183,9 @@ void PlayScene::Initialize(Game* game)
     m_startAnimation->Initialize();
     m_bulletMagazine = std::make_unique<BulletMagazine>();
     m_bulletMagazine->Initialize(10);
-
+    m_exBulletMagazine = std::make_unique<ExBulletMagazine>();
+    m_exBulletMagazine->Initialize(0);
+    
 }
 
 /// <summary> çXêVèàóù </summary>
@@ -324,9 +333,9 @@ void PlayScene::Update(float elapsedTime)
                 *it->get()->GetComponent<BoxCollider>()->GetBoundingBox()))
         {
             it->get()->SetHit(true);
-
-                RemoveItem(it);
-                break;
+            Audio::GetInstance()->PlaySoundSE_PowerUp();
+            RemoveItem(it);
+            break;
         }
         else it->get()->SetHit(false);
     }
@@ -339,8 +348,9 @@ void PlayScene::Update(float elapsedTime)
                 *it->get()->GetComponent<BoxCollider>()->GetBoundingBox()))
         {
             it->get()->SetHit(true);
-
+            Audio::GetInstance()->PlaySoundSE_PowerUp();
             m_player->AddWepon(it->get()->GetPart());
+            UpdateBulletMagazine();
             RemoveItemB(it);
             break;
         }
@@ -429,6 +439,7 @@ void PlayScene::Render()
     m_hpUI->Render();
     m_player->RenderPlayerUI();
     m_bulletMagazine->Render();
+    m_exBulletMagazine->Render();
     m_startAnimation->Render();
 
 }
@@ -469,6 +480,7 @@ void PlayScene::Finalize()
 void PlayScene::UpdateBulletMagazine()
 {
     m_bulletMagazine->Initialize(m_player->GetBulletSize());
+    m_exBulletMagazine->Initialize(m_player->GetExBulletSize());
 }
 
 void PlayScene::SetNoise()

@@ -1,10 +1,10 @@
 #include "pch.h"
-#include "BulletMagazine.h"
+#include "ExBulletMagazine.h"
 
 using namespace DirectX;
 using namespace DirectX::SimpleMath;
 
-BulletMagazine::BulletMagazine() :
+ExBulletMagazine::ExBulletMagazine() :
 	m_size{},
 	m_pos{ 100,100 },
 	m_number{0},
@@ -15,7 +15,7 @@ BulletMagazine::BulletMagazine() :
 	m_spriteBatch = std::make_unique<DirectX::SpriteBatch>(context);
 
 	DX::ThrowIfFailed(
-		DirectX::CreateWICTextureFromFile(device, L"Resources/Textures/bulletMagazine.png", nullptr,
+		DirectX::CreateWICTextureFromFile(device, L"Resources/Textures/ExBulletMagazine.png", nullptr,
 			m_bulletTexture.ReleaseAndGetAddressOf())
 	);
 
@@ -25,23 +25,23 @@ BulletMagazine::BulletMagazine() :
 	);
 }
 
-BulletMagazine::~BulletMagazine()
+ExBulletMagazine::~ExBulletMagazine()
 {
 }
 
-void BulletMagazine::SetSpriteBatch(DirectX::SpriteBatch* spriteBatch)
+void ExBulletMagazine::SetSpriteBatch(DirectX::SpriteBatch* spriteBatch)
 {
 
 }
 
 
-void BulletMagazine::Initialize(int number)
+void ExBulletMagazine::Initialize(int number)
 {
 	auto device =  Graphics::GetInstance()->GetDeviceResources()->GetD3DDevice();
 	auto context = Graphics::GetInstance()->GetDeviceResources()->GetD3DDeviceContext();
 
 
-	m_pos = Vector2{1800,1000};
+	m_pos = Vector2{1800,900};
 
 	digit = std::to_string(number).length();
 
@@ -49,7 +49,7 @@ void BulletMagazine::Initialize(int number)
 
 }
 
-void BulletMagazine::Update()
+void ExBulletMagazine::Update()
 {
 	m_pos.y -= 1;
 	if (m_pos.y < 90)
@@ -59,13 +59,13 @@ void BulletMagazine::Update()
 }
 
 
-void BulletMagazine::Render()
+void ExBulletMagazine::Render()
 {
 	auto states = Graphics::GetInstance()->GetCommonStates();
 
 	m_size = { 0,0,500,500 };
 	m_spriteBatch->Begin(SpriteSortMode_Deferred, states->NonPremultiplied());
-	m_spriteBatch->Draw(m_bulletTexture.Get(), Vector2(1500, 900),&m_size,Colors::White,0.0f,Vector2::Zero,0.5f);
+	m_spriteBatch->Draw(m_bulletTexture.Get(), Vector2(1500, 800),&m_size,Colors::White,0.0f,Vector2::Zero,0.5f);
 	for (int i = 0; i < digit; i++)
 	{
 		int tmp = m_number % int(std::pow(10, i + 1)) / std::pow(10, i);

@@ -44,9 +44,11 @@ void Audio::LoadSoundFile()
 	m_rocketLauncherSE = std::make_unique<SoundEffect>(
 		m_audioEngine.get(), L"Resources/Sounds/RocketLauncher.wav");
 
-	// サウンドエフェクトSEをロードする
 	m_hitSE = std::make_unique<SoundEffect>(
 		m_audioEngine.get(), L"Resources/Sounds/Hit.wav");
+
+	m_powerUpSE = std::make_unique<SoundEffect>(
+		m_audioEngine.get(), L"Resources/Sounds/PowerUp.wav");
 
 	// サウンドエフェクトBGMをロードする
 	m_soundEffectBGM = std::make_unique<SoundEffect>(
@@ -81,4 +83,9 @@ void Audio::PlaySoundSE_Rocket()
 void Audio::PlaySoundSE_Hit()
 {
 	m_hitSE->Play(m_seVolume, 0.5f, 0.5f);
+}
+
+void Audio::PlaySoundSE_PowerUp()
+{
+	m_powerUpSE->Play(m_seVolume, 0.5f, 0.5f);
 }

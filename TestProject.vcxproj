@@ -261,6 +261,7 @@
     <ClInclude Include="Game\Title\TitleCamera.h" />
     <ClInclude Include="Game\Title\TitlePlayer.h" />
     <ClInclude Include="Game\UI\BulletMagazine.h" />
+    <ClInclude Include="Game\UI\ExBulletMagazine.h" />
     <ClInclude Include="Game\UI\CircleGage.h" />
     <ClInclude Include="Game\UI\HPUI.h" />
     <ClInclude Include="Game\UI\Menu.h" />
@@ -343,6 +344,7 @@
     <ClCompile Include="Game\Title\TitleCamera.cpp" />
     <ClCompile Include="Game\Title\TitlePlayer.cpp" />
     <ClCompile Include="Game\UI\BulletMagazine.cpp" />
+    <ClCompile Include="Game\UI\ExBulletMagazine.cpp" />
     <ClCompile Include="Game\UI\CircleGage.cpp" />
     <ClCompile Include="Game\UI\HPUI.cpp" />
     <ClCompile Include="Game\UI\Menu.cpp" />

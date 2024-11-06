@@ -146,6 +146,7 @@
     <ClInclude Include="Game\Animation\StartAnimation.h" />
     <ClInclude Include="Game\GameOverScene.h" />
     <ClInclude Include="Game\UI\BulletMagazine.h" />
+    <ClInclude Include="Game\UI\ExBulletMagazine.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -252,6 +253,7 @@
     <ClCompile Include="Game\Animation\StartAnimation.cpp" />
     <ClCompile Include="Game\GameOverScene.cpp" />
     <ClCompile Include="Game\UI\BulletMagazine.cpp" />
+    <ClCompile Include="Game\UI\ExBulletMagazine.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />
