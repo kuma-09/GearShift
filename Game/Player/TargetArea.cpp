@@ -25,7 +25,13 @@ TargetArea::TargetArea()
 
     SetScale(5.f);
     m_rotate = 0;
+    m_range = 200.f;
+    RECT rect = m_graphics->GetDeviceResources()->GetOutputSize();
+    // SetScale(GetScale() - 0.01f);
 
+    m_aspect = float(rect.right) / 1280;
+
+    m_range = m_range * m_aspect;
 }
 
 TargetArea::~TargetArea()
@@ -51,15 +57,16 @@ bool TargetArea::Update(Player* player , GameObject* target)
     m_scale = lerp(m_scale, SCALE, 0.05f);
 
     // ビューポート行列（スクリーン行列）の作成
-    int w;
-    int h;
+    float w;
+    float h;
 
-    m_graphics->GetScreenSize(w, h);
-
+    //m_graphics->GetScreenSize(w, h);
+    RECT rect = m_graphics->GetDeviceResources()->GetOutputSize();
     // SetScale(GetScale() - 0.01f);
 
-    w /= 2;
-    h /= 2;
+    w = rect.right / 2.f;
+    h = rect.bottom / 2.f;
+
 
     Matrix viewport = {
         float(w) , 0 , 0 , 0 ,
@@ -98,13 +105,16 @@ void TargetArea::Render(bool inArea)
 {
     using namespace DirectX::SimpleMath;
 
-    int w;
-    int h;
 
-    m_graphics->GetScreenSize(w, h);
+    RECT windowsize = m_graphics->GetDeviceResources()->GetOutputSize();
+     
+    float w = windowsize.right;
+    float h = windowsize.bottom;
 
     w /= 2;
     h /= 2;
+
+    float n = float(windowsize.right) / float(1200);
 
     RECT rect = { 0,0,int(m_textureSize.x) ,int(m_textureSize.y) };
 
@@ -117,7 +127,7 @@ void TargetArea::Render(bool inArea)
             DirectX::Colors::Red,
             DirectX::XMConvertToRadians(m_rotate),
             Vector2(m_textureSize.x / 2, m_textureSize.y / 2),
-            Vector2(m_scale, m_scale)
+            Vector2(m_scale * n, m_scale * n)
         );
     }
     else
@@ -127,7 +137,7 @@ void TargetArea::Render(bool inArea)
             DirectX::Colors::CadetBlue,
             DirectX::XMConvertToRadians(m_rotate),
             Vector2(m_textureSize.x / 2, m_textureSize.y / 2),
-            Vector2(m_scale, m_scale)
+            Vector2(m_scale * n, m_scale * n)
         );
     }
 

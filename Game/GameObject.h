@@ -38,6 +38,7 @@ public:
 	void SetWorld(DirectX::SimpleMath::Matrix world) { m_world = world; }
 	DirectX::SimpleMath::Matrix GetWorld() { return m_world; }
 
+	// ワールド行列を更新
 	void UpdateWorld();
 
 	// コンポーネントを追加
@@ -73,6 +74,7 @@ public:
 private:
 	IScene* m_scene = nullptr;
 
+	// 座標など
 	DirectX::SimpleMath::Vector3	m_position = DirectX::SimpleMath::Vector3::Zero;
 	DirectX::SimpleMath::Vector3	m_rotation = DirectX::SimpleMath::Vector3::Zero;
 	DirectX::SimpleMath::Vector3    m_velocity = DirectX::SimpleMath::Vector3::Zero;
@@ -80,8 +82,7 @@ private:
 	DirectX::SimpleMath::Vector3	m_scale = DirectX::SimpleMath::Vector3::One;
 	DirectX::SimpleMath::Matrix     m_world = DirectX::SimpleMath::Matrix::Identity;
 
-	int m_hp = 0;
-
+	// コンポーネント配列
 	std::unordered_map<std::type_index, std::unique_ptr<IComponent>> m_umComponents;
 
 };

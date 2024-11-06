@@ -12,7 +12,7 @@ SceneMask::SceneMask()
 
 	auto device = m_graphics->GetDeviceResources()->GetD3DDevice();
 	auto context = m_graphics->GetDeviceResources()->GetD3DDeviceContext();
-
+	
 	m_spriteBatch = std::make_unique<SpriteBatch>(context);
 
 	// ‰æ‘œ‚ğƒ[ƒh‚·‚é

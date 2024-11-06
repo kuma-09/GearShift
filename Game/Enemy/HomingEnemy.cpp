@@ -69,7 +69,6 @@ void HomingEnemy::Update(float elapsedTime)
 	ComponentsUpdate(elapsedTime);
 
 	m_state->Update(elapsedTime);
-
 	m_bullet->Update(elapsedTime);
 
 	// À•W‚ÌˆÚ“®
@@ -93,11 +92,9 @@ void HomingEnemy::Render()
 	
 	m_bullet->Render();
 	m_state->Render();
-	if (GetComponent<HP>()->GetHP() <= 0) return;
 	GetComponent<ModelDraw>()->Render(true);
-
 	
-
+	// “–‚½‚è”»’è‚Ì•`‰æ
 	//GetComponent<BoxCollider>()->Render();
 }
 

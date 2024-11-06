@@ -23,6 +23,7 @@ class HPUI;
 class HitParticle;
 class HitEffect;
 class StartAnimation;
+class BulletMagazine;
 
 
 class PlayScene final: public IScene
@@ -38,6 +39,8 @@ public:
 	void Render() override;
 	
 	void Finalize() override;
+
+	void UpdateBulletMagazine();
 
 	// ヒットエフェクトを生成する関数
 	void SetNoise();
@@ -86,6 +89,7 @@ private:
 
 
 	std::unique_ptr<StartAnimation> m_startAnimation;
+	std::unique_ptr<BulletMagazine> m_bulletMagazine;
 
 	// 経過時間
 	float m_totalTime;

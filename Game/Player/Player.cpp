@@ -214,6 +214,7 @@ void Player::Shot()
 			if (bullet->GetState() == Bullet::BulletState::UNUSED && m_target)
 			{
 				bullet->Shot(m_target);
+				static_cast<PlayScene*>(GetScene())->UpdateBulletMagazine();
 				Audio::GetInstance()->PlaySoundSE_Rocket();
 				break;
 			}
@@ -307,4 +308,5 @@ void Player::Reload()
 	{
 		m_defaultBullet[i]->Initalize(this);
 	}
+	static_cast<PlayScene*>(GetScene())->UpdateBulletMagazine();
 }

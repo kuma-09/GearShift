@@ -49,14 +49,8 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
 
     // ★追記
     // 画面モードの選択
-    if (MessageBox(NULL, L"フルスクリーンにしますか？", L"画面モード設定", MB_YESNO) == IDYES)
-    {
-        s_fullscreen = true;
-    }
-    else
-    {
-        s_fullscreen = false;
-    }
+    s_fullscreen = true;
+
 
     g_game = std::make_unique<Game>();
 
@@ -188,6 +182,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
                 game->OnResuming();
             s_in_suspend = false;
         }
+        //フルスクリーン切り替え時にコメント化すると、画面サイズがリサイズされずに最大化できる
+        //フルスクリーン時でも、見た目の1280x720サイズを保持する
         else if (!s_in_sizemove && game)
         {
             game->OnWindowSizeChanged(LOWORD(lParam), HIWORD(lParam));

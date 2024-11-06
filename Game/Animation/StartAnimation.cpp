@@ -43,7 +43,7 @@ void StartAnimation::Initialize()
 	DX::ThrowIfFailed(
 		CreateWICTextureFromFile(
 			device,
-			L"Resources/Textures/bar.png",
+			L"Resources/Textures/barx1920.png",
 			nullptr,
 			m_texture.ReleaseAndGetAddressOf()
 		)
@@ -85,10 +85,10 @@ bool StartAnimation::Update(float elapsedTime)
 		m_posX *= 1.2f;
 	}
 
-	// Ready...‚Ì•¶Žš
-	if (m_posX >= 890)
+	// MissionStart‚Ì•¶Žš
+	if (m_posX >= 1000)
 	{
-		m_posX = 890;
+		m_posX = 1000;
 		m_count += elapsedTime;
 	}
 
@@ -120,7 +120,6 @@ void StartAnimation::Render()
 	m_spriteBatch->Begin(SpriteSortMode_Deferred, states->NonPremultiplied());
 
 	// F(“§‰ß“x)‚ðŒˆ‚ß‚é
-	//Vector4 color{ alpha,alpha,alpha,alpha };
 	Vector4 color{ 1.0f,1.0f,1.0f, 0.3f };
 
 	m_spriteBatch->Draw(m_texture.Get(), Vector2(0, 360 + m_posY), nullptr, Vector4(1.0f, 1.0f, 1.0f, 0.3f - m_startScale), 0.f, Vector2(0, 120), Vector3(m_width, m_height, 0));

@@ -23,7 +23,8 @@ private:
 	Graphics* m_graphics;
 
 	// ターゲット範囲
-	const float m_range = 200;
+	float m_range;
+	float m_aspect;
 
 	const DirectX::SimpleMath::Vector2 m_textureSize = { 500 , 500 };
 

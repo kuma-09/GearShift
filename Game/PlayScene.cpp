@@ -26,6 +26,8 @@
 
 #include "UI/HPUI.h"
 #include "Game/Animation/StartAnimation.h"
+#include "UI/BulletMagazine.h"
+
 
 PlayScene::PlayScene()
     :
@@ -132,7 +134,6 @@ void PlayScene::Initialize(Game* game)
     m_wall.back()->SetPosition({ 90,9,-10 });
     m_wall.back()->Initialize();
 
-
     m_dropItem.emplace_back(std::make_unique<DropItem>(this, std::make_unique<BodyTop>()));
     m_dropItem.back()->SetPosition(Vector3(0, 20, 20));
 
@@ -173,6 +174,8 @@ void PlayScene::Initialize(Game* game)
 
     m_startAnimation = std::make_unique<StartAnimation>();
     m_startAnimation->Initialize();
+    m_bulletMagazine = std::make_unique<BulletMagazine>();
+    m_bulletMagazine->Initialize(10);
 
 }
 
@@ -223,15 +226,18 @@ void PlayScene::Update(float elapsedTime)
     {
         floor->Update(elapsedTime);
     }
+    for (auto& enemy : m_Enemy)
+    {
+        enemy->Update(elapsedTime);
+    }
 
     std::vector<Enemy*> inAreaEnemy;
-
     if (!m_startAnimation->Update(elapsedTime))
     {
         // 体力の無い敵を削除
         for (auto it = m_Enemy.begin(); it != m_Enemy.end();)
         {
-            it->get()->Update(elapsedTime);
+            //it->get()->Update(elapsedTime);
             if (m_targetArea->Update(m_player.get(), it->get()))
             {
 
@@ -361,8 +367,10 @@ void PlayScene::Render()
     using namespace DirectX;
     auto context = m_graphics->GetDeviceResources()->GetD3DDeviceContext();
 
+    // シャドウマップ作成
     CreateShadow();
 
+    // ポストプロセス無しでの描画
     m_postProcess->BeginNormal();
 
     m_skyDome->Render();
@@ -420,6 +428,7 @@ void PlayScene::Render()
     m_targetArea->Render(m_player->GetTarget());
     m_hpUI->Render();
     m_player->RenderPlayerUI();
+    m_bulletMagazine->Render();
     m_startAnimation->Render();
 
 }
@@ -455,6 +464,11 @@ void PlayScene::Finalize()
     }
     m_hitParticle.clear();
     
+}
+
+void PlayScene::UpdateBulletMagazine()
+{
+    m_bulletMagazine->Initialize(m_player->GetBulletSize());
 }
 
 void PlayScene::SetNoise()
