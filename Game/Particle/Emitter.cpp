@@ -69,7 +69,7 @@ void Emitter::Render(DirectX::SimpleMath::Vector3 pos)
     if (m_totalTime >= m_interval && GetOwner()->GetVelocity() != Vector3::Zero)
     {
         m_totalTime = 0;
-        m_particles.push_back(std::make_unique<Particle>());
+        m_particles.emplace_back(std::make_unique<Particle>());
         m_particles.back()->Initialize(pos,m_lifeTime);
     }
 

@@ -44,6 +44,20 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
     if (FAILED(hr))
         return 1;
 
+    // フルスクリーンフラグ
+    static bool s_fullscreen = false;
+
+    // ★追記
+    // 画面モードの選択
+    if (MessageBox(NULL, L"フルスクリーンにしますか？", L"画面モード設定", MB_YESNO) == IDYES)
+    {
+        s_fullscreen = true;
+    }
+    else
+    {
+        s_fullscreen = false;
+    }
+
     g_game = std::make_unique<Game>();
 
     // Register class and create window
@@ -87,6 +101,8 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
         GetClientRect(hwnd, &rc);
 
         g_game->Initialize(hwnd, rc.right - rc.left, rc.bottom - rc.top);
+
+        if (s_fullscreen) g_game->SetFullscreenState(TRUE);
     }
 
     // Main message loop
@@ -103,6 +119,9 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
             g_game->Tick();
         }
     }
+
+    // ★追記
+    if (s_fullscreen) g_game->SetFullscreenState(FALSE);
 
     g_game.reset();
 

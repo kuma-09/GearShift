@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Head.h"
+#include "Game/Game.h"
 #include "Game/Components/Camera.h"
 #include "Game/Object/Bullet/Bullet.h"
 #include "Game/Components/ModelDraw.h"
@@ -65,7 +66,7 @@ void Head::Render()
 	{
 		GetComponent<ModelDraw>()->Render(false, DirectX::Colors::Black);
 	}
-	GetComponent<BoxCollider>()->Render();
+	//GetComponent<BoxCollider>()->Render();
 }
 
 void Head::Finalize()
@@ -80,11 +81,19 @@ void Head::Collision(BoxCollider* collider)
 		Bullet* bulletObject = static_cast<Bullet*>(collider->GetOwner());
 		if (bulletObject->GetState() == Bullet::FLYING)
 		{
-			GetOwner()->GetComponent<Camera>()->shake();
-			GetComponent<HP>()->SetHP(GetComponent<HP>()->GetHP() - 1);
-			bulletObject->Hit();
-			static_cast<PlayScene*>(GetOwner()->GetScene())->SetNoise();
-			m_isHit = true;
+			if (GetComponent<HP>()->GetHP() > 0)
+			{
+				GetOwner()->GetComponent<Camera>()->shake();
+				GetComponent<HP>()->SetHP(GetComponent<HP>()->GetHP() - 1);
+				bulletObject->Hit();
+				static_cast<PlayScene*>(GetOwner()->GetScene())->SetNoise();
+				m_isHit = true;
+			}
+			else
+			{
+				auto game = static_cast<PlayScene*>(GetOwner()->GetScene())->GetGame();
+				game->ChangeScene(game->GetGameOverScene());
+			}
 		}
 	}
 }

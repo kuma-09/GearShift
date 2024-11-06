@@ -86,25 +86,50 @@ void PlayScene::Initialize(Game* game)
     m_Enemy.back()->Initialize(m_player.get());
 
 
-    m_Enemy.emplace_back(std::make_unique<FixedEnemy>(this));
-    m_Enemy.back()->SetPosition(Vector3(50, 5, 10));
-    m_Enemy.back()->Initialize(m_player.get());
-
-
     m_wall.emplace_back(std::make_unique<BillA>(this));
     m_wall.back()->SetPosition({5,9,40});
+    m_wall.back()->Initialize();
+
+    m_wall.emplace_back(std::make_unique<BillA>(this));
+    m_wall.back()->SetPosition({ 10,9,25 });
+    m_wall.back()->Initialize();
+
+    m_wall.emplace_back(std::make_unique<BillB>(this));
+    m_wall.back()->SetPosition({ 30,9,40 });
+    m_wall.back()->Initialize();
+
+    m_wall.emplace_back(std::make_unique<BillB>(this));
+    m_wall.back()->SetPosition({ 30,9,30 });
+    m_wall.back()->Initialize();
+
+    m_wall.emplace_back(std::make_unique<BillB>(this));
+    m_wall.back()->SetPosition({ 20,9,40 });
+    m_wall.back()->Initialize();
+
+    m_wall.emplace_back(std::make_unique<BillA>(this));
+    m_wall.back()->SetPosition({ -22.5,9,-22.5 });
     m_wall.back()->Initialize();
 
     m_wall.emplace_back(std::make_unique<BillB>(this));
     m_wall.back()->SetPosition({ -6,9,-20 });
     m_wall.back()->Initialize();
 
+    m_wall.emplace_back(std::make_unique<BillB>(this));
+    m_wall.back()->SetPosition({ -14,9,-10 });
+    m_wall.back()->Initialize();
+
+
+
     m_wall.emplace_back(std::make_unique<BillA>(this));
-    m_wall.back()->SetPosition({ 30,9,40 });
+    m_wall.back()->SetPosition({ 80.5,9,-20 });
     m_wall.back()->Initialize();
 
     m_wall.emplace_back(std::make_unique<BillB>(this));
-    m_wall.back()->SetPosition({ -14,9,-10 });
+    m_wall.back()->SetPosition({ 70,9,-10 });
+    m_wall.back()->Initialize();
+
+    m_wall.emplace_back(std::make_unique<BillB>(this));
+    m_wall.back()->SetPosition({ 90,9,-10 });
     m_wall.back()->Initialize();
 
 
@@ -121,7 +146,7 @@ void PlayScene::Initialize(Game* game)
     }
 
     m_dropItemB.emplace_back(std::make_unique<DropItemB>(this, std::move(bullets)));
-    m_dropItemB.back()->SetPosition(Vector3(10, 3, 20));
+    m_dropItemB.back()->SetPosition(Vector3(10, 3, 10));
 
     m_floor.emplace_back(std::make_unique<Floor>(this));
     m_floor.back()->SetPosition({ -100,0,-100 });

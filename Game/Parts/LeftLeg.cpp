@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "LeftLeg.h"
+#include "Game/Game.h"
 #include "Game/Player/Player.h"
 #include "Game/Components/Camera.h"
 #include "Game/Object/Bullet/Bullet.h"
@@ -86,7 +87,7 @@ void LeftLeg::Render()
 	{
 		GetComponent<Emitter>()->Render(GetPosition() - DirectX::SimpleMath::Vector3{ 0,1,0 });
 	}
-	GetComponent<BoxCollider>()->Render();
+	//GetComponent<BoxCollider>()->Render();
 }
 
 void LeftLeg::Finalize()
@@ -101,11 +102,19 @@ void LeftLeg::Collision(BoxCollider* collider)
 		Bullet* bulletObject = static_cast<Bullet*>(collider->GetOwner());
 		if (bulletObject->GetState() == Bullet::FLYING)
 		{
-			GetOwner()->GetComponent<Camera>()->shake();
-			GetComponent<HP>()->SetHP(GetComponent<HP>()->GetHP() - 1);
-			bulletObject->Hit();
-			static_cast<PlayScene*>(GetOwner()->GetScene())->SetNoise();
-			m_isHit = true;
+			if (GetComponent<HP>()->GetHP() > 0)
+			{
+				GetOwner()->GetComponent<Camera>()->shake();
+				GetComponent<HP>()->SetHP(GetComponent<HP>()->GetHP() - 1);
+				bulletObject->Hit();
+				static_cast<PlayScene*>(GetOwner()->GetScene())->SetNoise();
+				m_isHit = true;
+			}
+			else
+			{
+				auto game = static_cast<PlayScene*>(GetOwner()->GetScene())->GetGame();
+				game->ChangeScene(game->GetGameOverScene());
+			}
 		}
 	}
 }

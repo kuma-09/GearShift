@@ -1,9 +1,9 @@
 #include "pch.h"
-#include "ResultScene.h"
+#include "GameOverScene.h"
 #include "Game.h"
 
 
-ResultScene::ResultScene()
+GameOverScene::GameOverScene()
 {
     using namespace DirectX::SimpleMath;
 
@@ -14,16 +14,16 @@ ResultScene::ResultScene()
     int x, y;
     m_graphics->GetScreenSize(x, y);
 
-    m_result = std::make_unique<UI>(L"Resources/Textures/StageClear.png", Vector2(x / 3.f, y / 2.5f));
+    m_result = std::make_unique<UI>(L"Resources/Textures/GameOver.png", Vector2(x / 3.f, y / 2.5f));
     m_backGround = std::make_unique<UI>(L"Resources/Textures/haguruma.png", Vector2::Zero);
 }
 
-ResultScene::~ResultScene()
+GameOverScene::~GameOverScene()
 {
     
 }
 
-void ResultScene::Initialize(Game* game)
+void GameOverScene::Initialize(Game* game)
 {
     using namespace DirectX;
     using namespace DirectX::SimpleMath;
@@ -33,7 +33,7 @@ void ResultScene::Initialize(Game* game)
 }
 
 
-void ResultScene::Update(float elapsedTime)
+void GameOverScene::Update(float elapsedTime)
 {
     using namespace DirectX::SimpleMath;
 
@@ -50,7 +50,7 @@ void ResultScene::Update(float elapsedTime)
 
 }
 
-void ResultScene::Render()
+void GameOverScene::Render()
 {
     using namespace DirectX;
     using namespace DirectX::SimpleMath;
@@ -60,7 +60,7 @@ void ResultScene::Render()
 
 }
 
-void ResultScene::Finalize()
+void GameOverScene::Finalize()
 {
 
 }

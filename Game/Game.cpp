@@ -63,6 +63,7 @@ void Game::Initialize(HWND window, int width, int height)
     m_titleScene = nullptr;
     m_playScene = nullptr;
     m_resultScene = nullptr;
+    m_gameOverScene = nullptr;
     m_testScene = nullptr;
  
     m_sceneMask = std::make_unique<SceneMask>();
@@ -119,6 +120,10 @@ void Game::Update(DX::StepTimer const& timer)
             else if (dynamic_cast<ResultScene*>(m_scene))
             {
                 m_resultScene.reset();
+            }
+            else if(dynamic_cast<GameOverScene*>(m_scene))
+            {
+                m_gameOverScene.reset();
             }
             m_scene = nullptr;
 

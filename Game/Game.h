@@ -9,7 +9,8 @@
 #include "Game/IScene.h"
 #include "Game/PlayScene.h"
 #include "Game/TitleScene.h"
-#include "Game/ResultScene.h"
+#include "Game/ResultScene.h""
+#include "Game/GameOverScene.h"
 #include "Game/TestScene.h"
 #include "SceneMask.h"
 #include "Framework/DebugString.h"
@@ -89,6 +90,16 @@ public:
         return m_resultScene.get();
     }
 
+    GameOverScene* GetGameOverScene()
+    {
+        if (m_resultScene)
+        {
+            return m_gameOverScene.get();
+        }
+        m_gameOverScene = std::make_unique<GameOverScene>();
+        return m_gameOverScene.get();
+    }
+
     TestScene* GetTestScene()
     {
         if (m_resultScene)
@@ -97,6 +108,21 @@ public:
         }
         m_testScene = std::make_unique<TestScene>();
         return m_testScene.get();
+    }
+
+    // フルスクリーン関連
+private:
+    // ★追記
+    BOOL m_fullScreen;
+
+public:
+    // 追記
+    // 画面モードを変更する関数（TRUE:フルスクリーン）
+    void SetFullscreenState(BOOL value)
+    {
+        m_fullScreen = value;
+        m_deviceResources->GetSwapChain()->SetFullscreenState(value, nullptr);
+        if (value) m_deviceResources->CreateWindowSizeDependentResources();
     }
 
 private:
@@ -126,6 +152,7 @@ private:
     std::unique_ptr<PlayScene> m_playScene;
     std::unique_ptr<TitleScene> m_titleScene;
     std::unique_ptr<ResultScene> m_resultScene;
+    std::unique_ptr<GameOverScene> m_gameOverScene;
     std::unique_ptr<TestScene> m_testScene;
     std::unique_ptr<DebugString> m_debugString;
 
