@@ -76,7 +76,7 @@ public:
 	{
 
 		m_exBullet = std::move(bullets);
-		m_exBulletSize = m_exBullet.size();
+		m_exBulletSize = int(m_exBullet.size());
 		for (auto& bullet: m_exBullet)
 		{
 			bullet->Initalize(this);

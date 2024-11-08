@@ -14,9 +14,6 @@ void TitleScene::Initialize(Game* game)
     m_deviceResources = m_graphics->GetDeviceResources();
     m_inputManager = InputManager::GetInstance();
 
-    auto device = m_graphics->GetDeviceResources()->GetD3DDevice();
-    auto context = m_graphics->GetDeviceResources()->GetD3DDeviceContext();
-
     SetGame(game);
  
 

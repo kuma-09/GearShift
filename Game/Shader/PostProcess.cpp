@@ -155,12 +155,8 @@ void PostProcess::BeginNormal()
 
     auto context = m_graphics->GetDeviceResources()->GetD3DDeviceContext();
 
-    auto renderTarget = m_graphics->GetDeviceResources()->GetRenderTargetView();
     auto depthStencil = m_graphics->GetDeviceResources()->GetDepthStencilView();
-    auto offscreenRTV = m_offscreenRT->GetRenderTargetView();
-    auto offscreenSRV = m_offscreenRT->GetShaderResourceView();
     auto offscreenRTV_Normal = m_offscreenRT_Normal->GetRenderTargetView();
-    auto offscreenSRV_Normal = m_offscreenRT_Normal->GetShaderResourceView();
 
     // -------------------------------------------------------------------------- //
     // レンダーターゲットを変更（offscreenRTV_Normal）
@@ -177,10 +173,8 @@ void PostProcess::BeginBloom()
 
     auto context = m_graphics->GetDeviceResources()->GetD3DDeviceContext();
 
-    auto renderTarget = m_graphics->GetDeviceResources()->GetRenderTargetView();
     auto depthStencil = m_graphics->GetDeviceResources()->GetDepthStencilView();
     auto offscreenRTV_Bloom = m_offscreenRT_Bloom->GetRenderTargetView();
-    auto offscreenSRV_Bloom = m_offscreenRT_Bloom->GetShaderResourceView();
 
     // -------------------------------------------------------------------------- //
     // レンダーターゲットを変更（offscreenRTV_Bloom）
@@ -201,9 +195,7 @@ void PostProcess::combinationRT()
     auto depthStencil = m_graphics->GetDeviceResources()->GetDepthStencilView();
     auto offscreenRTV = m_offscreenRT->GetRenderTargetView();
     auto offscreenSRV = m_offscreenRT->GetShaderResourceView();
-    auto offscreenRTV_Normal = m_offscreenRT_Normal->GetRenderTargetView();
     auto offscreenSRV_Normal = m_offscreenRT_Normal->GetShaderResourceView();
-    auto offscreenRTV_Bloom = m_offscreenRT_Bloom->GetRenderTargetView();
     auto offscreenSRV_Bloom = m_offscreenRT_Bloom->GetShaderResourceView();
     auto finalRTV = m_finalRenderTexture->GetRenderTargetView();
     auto finalSRV = m_finalRenderTexture->GetShaderResourceView();

@@ -2,12 +2,15 @@
 #include "DropItemB.h"
 #include "Game/Components/ModelDraw.h"
 #include "Game/Components/BoxCollider.h"
+#include "Game/Components/Gravity.h"
 
 DropItemB::DropItemB(IScene* scene, std::vector<std::unique_ptr<Bullet>> wepons)
 {
 	SetScene(scene);
+	AddComponent<Gravity>();
 	AddComponent<BoxCollider>();
 	GetComponent<BoxCollider>()->SetTypeID(BoxCollider::TypeID::DropItem);
+	GetComponent<BoxCollider>()->SetSize(DirectX::SimpleMath::Vector3::One * 2);
 	AddComponent<ModelDraw>();
 	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetDropItemModel());
 
@@ -41,7 +44,6 @@ void DropItemB::Initialize()
 {
 	using namespace DirectX::SimpleMath;
 
-	SetScale({ m_dropItemModelSize,m_dropItemModelSize,m_dropItemModelSize});
 
 	Matrix world = Matrix::CreateScale(GetScale());
 	world *= Matrix::CreateFromQuaternion(GetQuaternion());
@@ -56,6 +58,7 @@ void DropItemB::Update(float elapsedTime)
 	ComponentsUpdate(elapsedTime);
 
 	SetQuaternion(GetQuaternion() * Quaternion::CreateFromYawPitchRoll({ 0,1 * 3.14 / 180,0 }));
+	SetPosition(GetPosition() + GetVelocity() * elapsedTime);
 
 	Matrix world = Matrix::CreateScale(GetScale());
 	world *= Matrix::CreateFromQuaternion(GetQuaternion());
@@ -75,4 +78,13 @@ void DropItemB::Render()
 
 void DropItemB::Finalize()
 {
+}
+
+void DropItemB::Collision(BoxCollider* collider)
+{
+	if (collider->GetTypeID() == BoxCollider::Floor ||
+		collider->GetTypeID() == BoxCollider::Wall)
+	{
+		BoxCollider::CheckHit(this, collider->GetOwner());
+	}
 }

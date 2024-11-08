@@ -21,6 +21,8 @@ public:
 	std::vector<std::unique_ptr<Bullet>> GetPart() { return std::move(m_bullet); }
 	void SetHit(bool isHit) { m_isHit = isHit; }
 
+	void Collision(BoxCollider* collider);
+
 private:
 	std::vector<std::unique_ptr<Bullet>> m_bullet;
 	const float m_dropItemModelSize = 0.1f;

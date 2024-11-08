@@ -31,8 +31,8 @@ void Boost::Update(float elapsedTime)
 
 	m_totalTime -= elapsedTime;
 	
-	const auto& mouse = InputManager::GetInstance()->GetMouseState();
-	const auto& gpState = InputManager::GetInstance()->GetGamePadState();
+	//const auto& mouse = InputManager::GetInstance()->GetMouseState();
+	//const auto& gpState = InputManager::GetInstance()->GetGamePadState();
 	
 	m_player->SetVelocity(Vector3(m_velocity.x * m_boostPower * m_totalTime,0, m_velocity.y * m_boostPower * m_totalTime));
 	static_cast<PlayScene*>(m_player->GetScene())->CreateHitParticle(m_player->GetWorld(), m_player->GetQuaternion());

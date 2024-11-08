@@ -9,7 +9,7 @@
 #include "Game/IScene.h"
 #include "Game/PlayScene.h"
 #include "Game/TitleScene.h"
-#include "Game/ResultScene.h""
+#include "Game/ResultScene.h"
 #include "Game/GameOverScene.h"
 #include "Game/TestScene.h"
 #include "SceneMask.h"

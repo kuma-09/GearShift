@@ -58,9 +58,6 @@ void PlayScene::Initialize(Game* game)
     m_deviceResources = m_graphics->GetDeviceResources();
     m_inputManager = InputManager::GetInstance();
 
-    auto device = m_graphics->GetDeviceResources()->GetD3DDevice();
-    auto context = m_graphics->GetDeviceResources()->GetD3DDeviceContext();
-
     SetGame(game);
 
     m_timeLimit = 180.0f;
@@ -375,7 +372,6 @@ void PlayScene::Update(float elapsedTime)
 void PlayScene::Render()
 {
     using namespace DirectX;
-    auto context = m_graphics->GetDeviceResources()->GetD3DDeviceContext();
 
     // シャドウマップ作成
     CreateShadow();
@@ -524,7 +520,6 @@ void PlayScene::CreateHitParticle(DirectX::SimpleMath::Matrix world, DirectX::Si
 
         float velocityX = (float)HitParticle::get_rand(-10, 10) / 1000.0f;
         float velocityY = (float)HitParticle::get_rand(-10, 10) / 1000.0f;
-        float velocityZ = (float)HitParticle::get_rand(-30, 30) / 1000.0f;
 
         m_hitParticle.emplace_back(std::make_unique<HitParticle>());
         m_hitParticle.back()->Initialize(pos, Vector3::Transform({ velocityX,velocityY,0 }, rotate));

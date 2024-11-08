@@ -129,7 +129,6 @@ void Shadow::BeginDepth()
     using namespace DirectX::SimpleMath;
 
     auto context = m_graphics->GetDeviceResources()->GetD3DDeviceContext();
-    auto state = m_graphics->GetCommonStates();
 
 
     m_rtv = m_shadowMapRT->GetRenderTargetView();
@@ -173,7 +172,6 @@ void Shadow::EndDepth()
     using namespace DirectX::SimpleMath;
 
     auto context = m_graphics->GetDeviceResources()->GetD3DDeviceContext();
-    auto state = m_graphics->GetCommonStates();
 
     // -------------------------------------------------------------------------- //
     // レンダーターゲットとビューポートを元に戻す

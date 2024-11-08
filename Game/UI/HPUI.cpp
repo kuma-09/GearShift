@@ -63,10 +63,6 @@ void HPUI::Render()
     Vector2 pos = Vector2{ 50,50 };
 
 
-    RECT windowsize = Graphics::GetInstance()->GetDeviceResources()->GetOutputSize();
-
-    float n = windowsize.right / 1200;
-
     m_spriteBatch->Begin();
     m_spriteBatch->Draw(m_texture.Get() , pos + Vector2{   0, -50}  , &rect, Color(m_colorR[0], m_colorG[0], 0), 0.f, Vector2::Zero, 0.1f );
     m_spriteBatch->Draw(m_texture.Get() , pos                       , &rect, Color(m_colorR[1], m_colorG[1], 0), 0.f, Vector2::Zero, 0.1f );

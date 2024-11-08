@@ -108,8 +108,8 @@ void TargetArea::Render(bool inArea)
 
     RECT windowsize = m_graphics->GetDeviceResources()->GetOutputSize();
      
-    float w = windowsize.right;
-    float h = windowsize.bottom;
+    float w = float(windowsize.right);
+    float h = float(windowsize.bottom);
 
     w /= 2;
     h /= 2;

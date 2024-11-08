@@ -91,7 +91,6 @@ void Player::Update(float elapsedTime)
 {
 	using namespace DirectX::SimpleMath;
 	auto& gp = m_inputManager->GetGamePadTracker();
-	auto& mouse = m_inputManager->GetMouseTracker();
 	auto& mouseState = m_inputManager->GetMouseState();
 	auto& kb = m_inputManager->GetKeyboardTracker();
 
@@ -267,7 +266,7 @@ int Player::GetBulletSize()
 
 int Player::GetMaxBulletSize()
 {
-	return m_defaultBullet.size();
+	return int(m_defaultBullet.size());
 }
 
 int Player::GetExBulletSize()

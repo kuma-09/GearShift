@@ -13,7 +13,7 @@ ResultScene::ResultScene()
 
     RECT windowsize = m_graphics->GetDeviceResources()->GetOutputSize();
 
-    m_result = std::make_unique<UI>(L"Resources/Textures/StageClear.png", Vector2(windowsize.right / 3.f, windowsize.bottom / 2.5f));
+    m_result = std::make_unique<UI>(L"Resources/Textures/StageClear.png", Vector2(windowsize.right / 3.5f, windowsize.bottom / 2.5f));
     m_backGround = std::make_unique<UI>(L"Resources/Textures/haguruma.png", Vector2::Zero);
 }
 
