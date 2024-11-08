@@ -49,7 +49,7 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
 
     // ★追記
     // 画面モードの選択
-    s_fullscreen = true;
+    //s_fullscreen = true;
 
 
     g_game = std::make_unique<Game>();

@@ -29,17 +29,9 @@ private:
 	// シーンチェンジフラグ
 	bool m_isChangeScene;
 
-	float m_height;
-	float m_width;
-
-	float m_posX;
-	float m_posY;
-
-	float m_postPosX;
-	float m_postAlpha;
-
-	float m_count;
-
-	float m_startScale;
+	float m_nowTime;
+	float m_targetTime;
+	float m_result;
+	float m_textResult;
 };
 

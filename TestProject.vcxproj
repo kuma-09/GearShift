@@ -183,6 +183,7 @@
     <ClInclude Include="Framework\DebugString.h" />
     <ClInclude Include="Framework\DepthStencil.h" />
     <ClInclude Include="Framework\DeviceResources.h" />
+    <ClInclude Include="Framework\Easing.h" />
     <ClInclude Include="Framework\Graphics.h" />
     <ClInclude Include="Framework\InputManager.h" />
     <ClInclude Include="Framework\Microsoft\DebugDraw.h" />
@@ -274,6 +275,7 @@
     <ClCompile Include="Framework\DebugString.cpp" />
     <ClCompile Include="Framework\DepthStencil.cpp" />
     <ClCompile Include="Framework\DeviceResources.cpp" />
+    <ClCompile Include="Framework\Easing.cpp" />
     <ClCompile Include="Framework\Graphics.cpp" />
     <ClCompile Include="Framework\InputManager.cpp" />
     <ClCompile Include="Framework\Microsoft\DebugDraw.cpp" />
