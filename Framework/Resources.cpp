@@ -41,6 +41,7 @@ void Resources::LoadResource(Graphics* graphics)
 	m_billB		 = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\large_buildingB.sdkmesh", *graphics->GetFX());
 	m_dropItem   = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\mese.sdkmesh", *graphics->GetFX());
 	m_boom       = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\boom.sdkmesh", *graphics->GetFX());
+	m_tankBody   = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\TankBody.sdkmesh", *graphics->GetFX());
 
 	// テクスチャをロードする
 	DirectX::CreateWICTextureFromFile(

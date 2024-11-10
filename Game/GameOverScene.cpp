@@ -13,8 +13,8 @@ GameOverScene::GameOverScene()
 
     RECT windowsize = m_graphics->GetDeviceResources()->GetOutputSize();
 
-    m_result = std::make_unique<UI>(L"Resources/Textures/GameOver.png", Vector2(windowsize.right / 3.f, windowsize.bottom / 2.5f));
-    m_backGround = std::make_unique<UI>(L"Resources/Textures/haguruma.png", Vector2::Zero);
+    m_result = std::make_unique<UI>(L"Resources/Textures/GameOver.png");
+    m_backGround = std::make_unique<UI>(L"Resources/Textures/haguruma.png");
 }
 
 GameOverScene::~GameOverScene()
@@ -54,8 +54,11 @@ void GameOverScene::Render()
     using namespace DirectX;
     using namespace DirectX::SimpleMath;
 
-    m_backGround->Render();
-    m_result->Render();
+    int x, y;
+    Graphics::GetInstance()->GetScreenSize(x, y);
+
+    m_backGround->Render(Vector2::Zero);
+    m_result->Render(Vector2(x / 3.5f, y / 2.5f));
 
 }
 

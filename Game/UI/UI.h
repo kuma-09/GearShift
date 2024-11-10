@@ -4,11 +4,11 @@
 class UI
 {
 public:
-	UI(const wchar_t* path, DirectX::SimpleMath::Vector2 pos);
+	UI(const wchar_t* path);
 	~UI();
 
 	void Initialize();
-	void Render();
+	void Render(DirectX::SimpleMath::Vector2 pos);
 
 	DirectX::SpriteBatch* GetSpriteBatch() { return m_spriteBatch.get(); }
 	ID3D11ShaderResourceView* GetTexture() { return m_texture.Get(); }

@@ -65,7 +65,7 @@ void PlayScene::Initialize(Game* game)
 
     // プレイヤー生成
     m_player = std::make_unique<Player>(this);
-    m_player->SetPosition(Vector3(3, 5, 10));
+    m_player->SetPosition(Vector3(3, 5, 100));
 
     // パーツを装備
     m_player->SetPart(Part::Head, std::make_unique<Head>());
@@ -81,11 +81,13 @@ void PlayScene::Initialize(Game* game)
     m_Enemy.back()->SetPosition(Vector3(0, 5, 0));
     m_Enemy.back()->Initialize(m_player.get());
 
-
     m_Enemy.emplace_back(std::make_unique<HomingEnemy>(this));
     m_Enemy.back()->SetPosition(Vector3(32, 5, 10));
     m_Enemy.back()->Initialize(m_player.get());
-
+    
+    m_Enemy.emplace_back(std::make_unique<FixedEnemy>(this));
+    m_Enemy.back()->SetPosition(Vector3(32, 5, 0));
+    m_Enemy.back()->Initialize(m_player.get());
 
     m_wall.emplace_back(std::make_unique<BillA>(this));
     m_wall.back()->SetPosition({5,9,40});
@@ -100,7 +102,7 @@ void PlayScene::Initialize(Game* game)
     m_wall.back()->Initialize();
 
     m_wall.emplace_back(std::make_unique<BillB>(this));
-    m_wall.back()->SetPosition({ 30,9,30 });
+    m_wall.back()->SetPosition({ 25,9,30 });
     m_wall.back()->Initialize();
 
     m_wall.emplace_back(std::make_unique<BillB>(this));
@@ -118,8 +120,6 @@ void PlayScene::Initialize(Game* game)
     m_wall.emplace_back(std::make_unique<BillB>(this));
     m_wall.back()->SetPosition({ -14,9,-10 });
     m_wall.back()->Initialize();
-
-
 
     m_wall.emplace_back(std::make_unique<BillA>(this));
     m_wall.back()->SetPosition({ 80.5,9,-20 });
@@ -141,6 +141,7 @@ void PlayScene::Initialize(Game* game)
 
     std::vector<std::unique_ptr<Bullet>> bullets;
     std::vector<std::unique_ptr<Bullet>> bullets2;
+
     for (int i = 0; i < 10; i++)
     {
         bullets.emplace_back(std::make_unique<HomingBullet>(this, BoxCollider::PlayerBullet));

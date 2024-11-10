@@ -34,7 +34,7 @@ SkyDome::~SkyDome()
 
 void SkyDome::Initialize(DirectX::SimpleMath::Vector3 pos)
 {
-	auto world = DirectX::SimpleMath::Matrix::CreateScale(0.5f);
+	auto world = DirectX::SimpleMath::Matrix::CreateScale(1.0f);
 	world *= DirectX::SimpleMath::Matrix::CreateTranslation(pos);
 
 	SetWorld(world);

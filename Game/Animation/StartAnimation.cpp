@@ -38,18 +38,7 @@ void StartAnimation::Initialize()
 			m_texture.ReleaseAndGetAddressOf()
 		)
 	);
-	DX::ThrowIfFailed(
-		CreateWICTextureFromFile(
-			device,
-			L"Resources/Textures/GO.png",
-			nullptr,
-			m_GoTexture.ReleaseAndGetAddressOf()
-		)
-	);
 
-
-	// シーン変更フラグを初期化する
-	m_isChangeScene = false;
 
 	m_nowTime = 0;
 	m_result = 0;
@@ -61,10 +50,16 @@ bool StartAnimation::Update(float elapsedTime)
 	m_nowTime += elapsedTime;
 	if (m_nowTime <= m_targetTime)
 	{
-		m_result = Easing::InOutCubic(m_nowTime, 1.0f,2.0f);
+		m_result = Easing::InQuart(m_nowTime, m_targetTime);
 		return false;
 	}
-	return true;
+	if (m_nowTime <= m_targetTime * 2)
+	{
+		m_result = Easing::InQuart(m_nowTime - m_targetTime, m_targetTime);
+		m_result += 1.f;
+		return false;
+	}
+	return false;
 }
 
 
@@ -78,11 +73,11 @@ void StartAnimation::Render()
 	RECT windowsize = Graphics::GetInstance()->GetDeviceResources()->GetOutputSize();
 	int x, y;
 	Graphics::GetInstance()->GetScreenSize(x,y);
-	float value = float(x) / float(windowsize.right);
+	float value = float(windowsize.right) / x;
 
 	Vector4 color{ 1.0f,1.0f,1.0f, 0.3f };
-	m_spriteBatch->Draw(m_texture.Get(),Vector2{ -1280 +  1280 * m_result, float(windowsize.bottom) / 2.f},0,color,0,Vector2::Zero,Vector2{1 * value, 1 * value});
-	m_spriteFont->DrawString(m_spriteBatch.get(), L"Mission Start", Vector2{ -1280 + 1280 * m_result, float(windowsize.bottom) / 2.f }, DirectX::Colors::Black);
+	m_spriteBatch->Draw(m_texture.Get(),Vector2{ ( - 1280 + 1280 * m_result) * value, float(windowsize.bottom) / 2.f}, 0, color, 0, Vector2::Zero, Vector2{1 * value, 1 * value});
+	m_spriteFont->DrawString(m_spriteBatch.get(), L"Mission Start", Vector2{ ( - 1280 + 1280 * m_result) * value, float(windowsize.bottom) / 2.f}, DirectX::Colors::Black,0,Vector2::Zero,Vector2{ 1 * value, 1 * value });
 
 	// スプライトバッチの終わり
 	m_spriteBatch->End();

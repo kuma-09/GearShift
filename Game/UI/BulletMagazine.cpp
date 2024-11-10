@@ -39,7 +39,7 @@ void BulletMagazine::Initialize(int number)
 {
 
 
-	m_pos = Vector2{1800,1000};
+	m_pos = Vector2{1200,650};
 
 	digit = int(std::to_string(number).length());
 
@@ -49,11 +49,6 @@ void BulletMagazine::Initialize(int number)
 
 void BulletMagazine::Update()
 {
-	m_pos.y -= 1;
-	if (m_pos.y < 90)
-	{
-		m_pos.y = 90;
-	}
 }
 
 
@@ -61,9 +56,14 @@ void BulletMagazine::Render()
 {
 	auto states = Graphics::GetInstance()->GetCommonStates();
 
+	RECT windowsize = Graphics::GetInstance()->GetDeviceResources()->GetOutputSize();
+	int x, y;
+	Graphics::GetInstance()->GetScreenSize(x, y);
+	float value = float(windowsize.right) / x;
+
 	m_size = { 0,0,500,500 };
 	m_spriteBatch->Begin(SpriteSortMode_Deferred, states->NonPremultiplied());
-	m_spriteBatch->Draw(m_bulletTexture.Get(), Vector2(1500, 900),&m_size,Colors::White,0.0f,Vector2::Zero,0.5f);
+	m_spriteBatch->Draw(m_bulletTexture.Get(), Vector2(1000, 600) * value,&m_size,Colors::White,0.0f,Vector2::Zero,0.3f * value);
 	for (int i = 0; i < digit; i++)
 	{
 		int tmp = m_number % int(std::pow(10, i + 1)) / int(std::pow(10, i));
@@ -71,7 +71,7 @@ void BulletMagazine::Render()
 		m_size = { 0,0,60,60 };
 		m_size.left += tmp * 60;
 		m_size.right += tmp * 60;
-		m_spriteBatch->Draw(m_comboTexture.Get(), Vector2(m_pos.x - i * 40, m_pos.y), &m_size, Colors::White, 0.f, Vector2::Zero, 1.f);
+		m_spriteBatch->Draw(m_comboTexture.Get(), Vector2(m_pos.x - i * 40, m_pos.y) * value, &m_size, Colors::White, 0.f, Vector2::Zero, 1.f * value);
 	}
 	m_spriteBatch->End();
 }

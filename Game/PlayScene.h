@@ -66,6 +66,9 @@ private:
 	DX::DeviceResources* m_deviceResources;
 	InputManager* m_inputManager;
 
+
+	// ゲームオブジェクトをまとめたポインタ配列
+	std::vector<GameObject*> m_gameObjects;
 	// プレイヤー
 	std::unique_ptr<Player> m_player;
 	// エネミー配列

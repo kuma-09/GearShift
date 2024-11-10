@@ -31,7 +31,7 @@ FixedEnemy::FixedEnemy(IScene* scene)
 	
 	SetEnemyAttack(std::make_unique<EnemyAttackState>(this));
 	SetEnemyMove(std::make_unique<EnemyMoveState>(this));
-	SetScale({ 0.05f,0.05f,0.05f });
+	SetScale({ 3.0f,3.0f,3.0f });
 
 	m_state = GetMoveState();
 }
@@ -50,9 +50,9 @@ void FixedEnemy::Initialize(GameObject* target)
 	GetComponent<HP>()->SetHP(10);
 	SetTarget(target);
 	GetComponent<Look>()->SetTarget(this, target);
-	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetDiceModel());
+	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetTankBodyModel());
 	GetComponent<BoxCollider>()->SetTypeID(BoxCollider::TypeID::Enemy);
-	GetComponent<BoxCollider>()->SetSize({1,1,1});
+	GetComponent<BoxCollider>()->SetSize({2,1,3});
 	GetComponent<HPBar>()->Initialize();
 	m_bullet->Initalize(this);
 	m_state->Initialize();
@@ -72,6 +72,10 @@ void FixedEnemy::Update(float elapsedTime)
 	m_bullet->Update(elapsedTime);
 	ComponentsUpdate(elapsedTime);
 
+
+	// ç¿ïWÇÃà⁄ìÆ
+	SetPosition(GetPosition() + Vector3::Transform(GetVelocity(), GetQuaternion()));
+
 }
 
 void FixedEnemy::CreateShader()
@@ -85,16 +89,17 @@ void FixedEnemy::Render()
 
 	m_bullet->Render();
 	m_state->Render();
-	// ç¿ïWÇÃà⁄ìÆ
-	SetPosition(GetPosition() + Vector3::Transform(GetVelocity(), GetQuaternion()));
+
 	Matrix world = Matrix::Identity;
 	world = Matrix::CreateScale(GetScale());
 	world *= Matrix::CreateFromQuaternion(GetQuaternion());
-	world *= Matrix::CreateTranslation(GetPosition());
+	world *= Matrix::CreateTranslation(GetPosition() + Vector3{ 0,-0.9f,0 });
 
 	SetWorld(world);
+
+
 	if (GetComponent<HP>()->GetHP() <= 0) return;
-	GetComponent<ModelDraw>()->Render(true);
+	GetComponent<ModelDraw>()->Render(false);
 	GetComponent<BoxCollider>()->Render();
 }
 

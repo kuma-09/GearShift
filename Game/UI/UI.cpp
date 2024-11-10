@@ -13,7 +13,7 @@ const std::vector<D3D11_INPUT_ELEMENT_DESC> UI::INPUT_LAYOUT =
 	{ "TEXCOORD",	0, DXGI_FORMAT_R32G32_FLOAT, 0, sizeof(DirectX::SimpleMath::Vector3) + sizeof(DirectX::SimpleMath::Vector4), D3D11_INPUT_PER_VERTEX_DATA, 0 },
 };
 
-UI::UI(const wchar_t* path, DirectX::SimpleMath::Vector2 pos)
+UI::UI(const wchar_t* path)
 {
     using namespace DirectX;
 
@@ -36,7 +36,6 @@ UI::UI(const wchar_t* path, DirectX::SimpleMath::Vector2 pos)
         )
     );
 
-    m_position = pos;
 
 	//	コンパイルされたシェーダファイルを読み込み
 	BinaryFile VSData = BinaryFile::LoadFile(L"Resources/Shaders/UIVS.cso");
@@ -51,12 +50,8 @@ UI::UI(const wchar_t* path, DirectX::SimpleMath::Vector2 pos)
 
 	//	頂点シェーダ作成
 	device->CreateVertexShader(VSData.GetData(), VSData.GetSize(), NULL, m_vertexShader.ReleaseAndGetAddressOf());
-    
-    // ジオメトリシェーダ作成
-    device->CreateGeometryShader(GSData.GetData(), GSData.GetSize(), NULL, m_geometryShader.ReleaseAndGetAddressOf());
-
 	//	ピクセルシェーダ作成
-    (device->CreatePixelShader(PSData.GetData(), PSData.GetSize(), NULL, m_pixelShader.ReleaseAndGetAddressOf()));
+    device->CreatePixelShader(PSData.GetData(), PSData.GetSize(), NULL, m_pixelShader.ReleaseAndGetAddressOf());
 }
 
 UI::~UI()
@@ -69,11 +64,18 @@ void UI::Initialize()
 
 }
 
-void UI::Render()
+void UI::Render(DirectX::SimpleMath::Vector2 pos)
 {
 	using namespace DirectX;
+	using namespace DirectX::SimpleMath;
+
+	RECT windowsize = Graphics::GetInstance()->GetDeviceResources()->GetOutputSize();
+	int x, y;
+	Graphics::GetInstance()->GetScreenSize(x, y);
+	float value = float(windowsize.right) / x;
+
     m_spriteBatch->Begin();
-    m_spriteBatch->Draw(GetTexture(),m_position);
+	m_spriteBatch->Draw(GetTexture(), pos * value, 0, DirectX::Colors::White, 0, Vector2::Zero, Vector2{1 * value, 1 * value});
     m_spriteBatch->End();
 
 	//ID3D11DeviceContext1* context = Graphics::GetInstance()->GetDeviceResources()->GetD3DDeviceContext();

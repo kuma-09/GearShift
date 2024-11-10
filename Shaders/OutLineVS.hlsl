@@ -30,7 +30,7 @@ PS_INPUT main(VS_INPUT input)
     PS_INPUT output;
     
     // 法線方向に拡大ver    
-    output.Pos = mul(float4(input.Pos + input.Normal * 1.0f, 1.0f), matWorld);
+    output.Pos = mul(float4(input.Pos + input.Normal * 0.05f, 1.0f), matWorld);
     
     // ローカル座標方向に拡大ver
     //output.Pos = mul(float4(input.Pos * 1.5f, 1.0f), matWorld);

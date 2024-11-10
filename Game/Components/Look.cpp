@@ -27,7 +27,7 @@ void Look::Update(float elapsedTime)
         float radianX = -atan2f(direction.y, sqrt(direction.x * direction.x + direction.z * direction.z));
 
         // プレイヤーの向いている方向を設定
-        Quaternion quaternion = Quaternion::CreateFromYawPitchRoll(Vector3( radianX, radianY, 0));
+        Quaternion quaternion = Quaternion::CreateFromYawPitchRoll(Vector3( 0, radianY, 0));
         GetOwner()->SetQuaternion(Quaternion::Lerp(GetOwner()->GetQuaternion(), quaternion,0.1f));
 
         // ターゲットの座標を更新

@@ -11,23 +11,24 @@ class Resources
 {
 public:
 	// モデルを取得する
-	DirectX::Model* GetPlayerModel()	 { return m_player.get(); }
-	DirectX::Model* GetHeadModel()		 { return m_head.get(); }
-	DirectX::Model* GetBodyTopModel()	 { return m_bodyTop.get(); }
+	DirectX::Model* GetPlayerModel() { return m_player.get(); }
+	DirectX::Model* GetHeadModel() { return m_head.get(); }
+	DirectX::Model* GetBodyTopModel() { return m_bodyTop.get(); }
 	DirectX::Model* GetBodyBottomModel() { return m_bodyBottom.get(); }
-	DirectX::Model* GetlArmModel()		 { return m_lArm.get(); }
-	DirectX::Model* GetrArmModel()		 { return m_rArm.get(); }
-	DirectX::Model* GetlLegModel()		 { return m_lLeg.get(); }
-	DirectX::Model* GetrLegModel()		 { return m_rLeg.get(); }
-	DirectX::Model* GetDiceModel()		 { return m_dice.get(); }
-	DirectX::Model* GetCubeModel()		 { return m_cube.get(); }
-	DirectX::Model* GetSkyDome()		 { return m_skydome.get(); }
-	DirectX::Model* GetFloorModel()		 { return m_floor.get(); }
-	DirectX::Model* GetBillAModel()		 { return m_billA.get(); }
-	DirectX::Model* GetBillBModel()		 { return m_billB.get(); }
-	DirectX::Model* GetDropItemModel()	 { return m_dropItem.get(); }
-	DirectX::Model* GetBulletModel()	 { return m_bullet.get(); }
-	DirectX::Model* GetBoomModel()		 { return m_boom.get(); }
+	DirectX::Model* GetlArmModel() { return m_lArm.get(); }
+	DirectX::Model* GetrArmModel() { return m_rArm.get(); }
+	DirectX::Model* GetlLegModel() { return m_lLeg.get(); }
+	DirectX::Model* GetrLegModel() { return m_rLeg.get(); }
+	DirectX::Model* GetDiceModel() { return m_dice.get(); }
+	DirectX::Model* GetCubeModel() { return m_cube.get(); }
+	DirectX::Model* GetSkyDome() { return m_skydome.get(); }
+	DirectX::Model* GetFloorModel() { return m_floor.get(); }
+	DirectX::Model* GetBillAModel() { return m_billA.get(); }
+	DirectX::Model* GetBillBModel() { return m_billB.get(); }
+	DirectX::Model* GetDropItemModel() { return m_dropItem.get(); }
+	DirectX::Model* GetBulletModel() { return m_bullet.get(); }
+	DirectX::Model* GetBoomModel() { return m_boom.get(); }
+	DirectX::Model* GetTankBodyModel() { return m_tankBody.get(); }
 
 	// テクスチャを取得
 	ID3D11ShaderResourceView* GetGreenTexture() { return m_greenTexture.Get(); }
@@ -73,6 +74,10 @@ private:
 	std::unique_ptr<DirectX::Model> m_dropItem;
 	std::unique_ptr<DirectX::Model> m_bullet;
 	std::unique_ptr<DirectX::Model> m_boom;
+
+	std::unique_ptr<DirectX::Model> m_tankBody;
+	std::unique_ptr<DirectX::Model> m_tankTurret;
+	std::unique_ptr<DirectX::Model> m_tankGun;
 
 	// テクスチャ
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_greenTexture;

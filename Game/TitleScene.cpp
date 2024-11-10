@@ -18,7 +18,7 @@ void TitleScene::Initialize(Game* game)
  
 
 
-    m_titleLogo = std::make_unique<UI>(L"Resources/Textures/GearShiftLogo.png", Vector2{ 0,0 });
+    m_titleLogo = std::make_unique<UI>(L"Resources/Textures/GearShiftLogo.png");
     m_titleLogo->Initialize();
 
     m_skydome = std::make_unique<SkyDome>();
@@ -88,7 +88,7 @@ void TitleScene::Render()
 
 
     Resources::GetInstance()->GetShadow()->End();
-    m_titleLogo->Render();
+    m_titleLogo->Render(Vector2::Zero);
 
 }
 
