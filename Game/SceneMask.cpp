@@ -24,6 +24,7 @@ SceneMask::SceneMask()
 			m_texture.ReleaseAndGetAddressOf()
 		)
 	);
+
 }
 
 bool SceneMask::Update(float elapsedTime)
@@ -31,7 +32,8 @@ bool SceneMask::Update(float elapsedTime)
 	if (m_isOpen)
 	{
 		// フェードイン
-
+		RECT rect = Graphics::GetInstance()->GetDeviceResources()->GetOutputSize();
+		m_windowSize = float(rect.right) / float(1280);
 		m_alpha -= elapsedTime * 2;
 
 		if (m_alpha <= 0)
@@ -42,7 +44,8 @@ bool SceneMask::Update(float elapsedTime)
 	else if (m_isClose)
 	{
 		// フェードアウト
-
+		RECT rect = Graphics::GetInstance()->GetDeviceResources()->GetOutputSize();
+		m_windowSize = float(rect.right) / float(1280);
 		m_alpha += elapsedTime * 2;
 
 		if (m_alpha >= 1)
@@ -60,8 +63,8 @@ void SceneMask::Render()
 	using namespace DirectX::SimpleMath;
 
 	Vector4 alpha = { 1, 1, 1, m_alpha };
-
+	RECT size = { 0,0,1280,720 };
 	m_spriteBatch->Begin();
-	m_spriteBatch->Draw(m_texture.Get(), Vector2::Zero,alpha);
+	m_spriteBatch->Draw(m_texture.Get(), Vector2::Zero,&size, alpha, 0.0f, Vector2::Zero,1.0f * m_windowSize);
 	m_spriteBatch->End();
 }

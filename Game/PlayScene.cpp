@@ -66,7 +66,7 @@ void PlayScene::Initialize(Game* game)
 
     std::vector<std::string> str;
     std::vector<Vector3> pos;
-    Json::LoadJsonFile(L"GraphData6.json", str, pos);
+    Json::LoadJsonFile(L"Stage1.json", str, pos);
 
 
     for (int i = 0; i < str.size(); i++)
@@ -592,6 +592,12 @@ void PlayScene::CreateObject(std::string className, DirectX::SimpleMath::Vector3
         m_wall.emplace_back(std::make_unique<BillA>(this));
         m_wall.back()->SetPosition(pos);
         m_wall.back()->Initialize();
+    }
+    if (className == "HomingEnemy")
+    {
+        m_Enemy.emplace_back(std::make_unique<HomingEnemy>(this));
+        m_Enemy.back()->SetPosition(pos);
+        m_Enemy.back()->Initialize(m_player.get());
     }
 }
 

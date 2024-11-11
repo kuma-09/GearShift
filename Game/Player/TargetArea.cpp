@@ -23,11 +23,10 @@ TargetArea::TargetArea()
         )
     );
 
-    SetScale(5.f);
+    SetScale(20.f);
     m_rotate = 0;
     m_range = 200.f;
     RECT rect = m_graphics->GetDeviceResources()->GetOutputSize();
-    // SetScale(GetScale() - 0.01f);
 
     m_aspect = float(rect.right) / 1280;
 
@@ -114,7 +113,7 @@ void TargetArea::Render(bool inArea)
     w /= 2;
     h /= 2;
 
-    float n = float(windowsize.right) / float(1200);
+    float n = float(windowsize.right) / float(1280);
 
     RECT rect = { 0,0,int(m_textureSize.x) ,int(m_textureSize.y) };
 

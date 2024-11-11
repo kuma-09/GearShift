@@ -1,0 +1,7 @@
+{
+	"Object_list": [
+		{"Object_Name": "Player"     ,"position":{"x":5.0, "y":9.0, "z":40.0}},
+		{"Object_Name": "BillA"      ,"position":{"x":5.0, "y":9.0, "z":40.0}},
+		{"Object_Name": "HomingEnemy","position":{"x":5.0, "y":9.0, "z":-40.0}}
+	]
+}

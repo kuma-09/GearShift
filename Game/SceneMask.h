@@ -20,8 +20,8 @@ public:
 private:
 	bool m_isOpen;
 	bool m_isClose;
-
 	float m_alpha;
+	float m_windowSize;
 
 	Graphics* m_graphics;
 
