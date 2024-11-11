@@ -5,6 +5,7 @@
 
 #include "Framework/Microsoft/DebugDraw.h"
 #include "Framework/Audio.h"
+#include "Framework/Json.h"
 #include "Game/Components/HP.h"
 #include "Game/Components/Camera.h"
 #include "Game/Components/BoxCollider.h"
@@ -63,9 +64,20 @@ void PlayScene::Initialize(Game* game)
     m_timeLimit = 180.0f;
     m_totalTime = 0;
 
-    // プレイヤー生成
-    m_player = std::make_unique<Player>(this);
-    m_player->SetPosition(Vector3(3, 5, 100));
+    std::vector<std::string> str;
+    std::vector<Vector3> pos;
+    Json::LoadJsonFile(L"GraphData6.json", str, pos);
+
+
+    for (int i = 0; i < str.size(); i++)
+    {
+        CreateObject(str[i], pos[i]);
+    }
+
+
+    //// プレイヤー生成
+    //m_player = std::make_unique<Player>(this);
+    //m_player->SetPosition(Vector3(3, 5, 100));
 
     // パーツを装備
     m_player->SetPart(Part::Head, std::make_unique<Head>());
@@ -75,7 +87,7 @@ void PlayScene::Initialize(Game* game)
     m_player->SetPart(Part::LeftLeg,  std::make_unique<LeftLeg>());
     m_player->SetPart(Part::RightLeg, std::make_unique<RightLeg>());
 
-    m_player->Initialize();
+    //m_player->Initialize();
 
     m_Enemy.emplace_back(std::make_unique<HomingEnemy>(this));
     m_Enemy.back()->SetPosition(Vector3(0, 5, 0));
@@ -89,58 +101,60 @@ void PlayScene::Initialize(Game* game)
     m_Enemy.back()->SetPosition(Vector3(32, 5, 0));
     m_Enemy.back()->Initialize(m_player.get());
 
-    m_wall.emplace_back(std::make_unique<BillA>(this));
-    m_wall.back()->SetPosition({5,9,40});
-    m_wall.back()->Initialize();
+    //m_wall.emplace_back(std::make_unique<BillA>(this));
+    //m_wall.back()->SetPosition({5,9,40});
+    //m_wall.back()->Initialize();
 
-    m_wall.emplace_back(std::make_unique<BillA>(this));
-    m_wall.back()->SetPosition({ 10,9,25 });
-    m_wall.back()->Initialize();
+    //m_wall.emplace_back(std::make_unique<BillA>(this));
+    //m_wall.back()->SetPosition({ 10,9,25 });
+    //m_wall.back()->Initialize();
 
-    m_wall.emplace_back(std::make_unique<BillB>(this));
-    m_wall.back()->SetPosition({ 30,9,40 });
-    m_wall.back()->Initialize();
+    //m_wall.emplace_back(std::make_unique<BillB>(this));
+    //m_wall.back()->SetPosition({ 30,9,40 });
+    //m_wall.back()->Initialize();
 
-    m_wall.emplace_back(std::make_unique<BillB>(this));
-    m_wall.back()->SetPosition({ 25,9,30 });
-    m_wall.back()->Initialize();
+    //m_wall.emplace_back(std::make_unique<BillB>(this));
+    //m_wall.back()->SetPosition({ 25,9,30 });
+    //m_wall.back()->Initialize();
 
-    m_wall.emplace_back(std::make_unique<BillB>(this));
-    m_wall.back()->SetPosition({ 20,9,40 });
-    m_wall.back()->Initialize();
+    //m_wall.emplace_back(std::make_unique<BillB>(this));
+    //m_wall.back()->SetPosition({ 20,9,40 });
+    //m_wall.back()->Initialize();
 
-    m_wall.emplace_back(std::make_unique<BillA>(this));
-    m_wall.back()->SetPosition({ -22.5,9,-22.5 });
-    m_wall.back()->Initialize();
+    //m_wall.emplace_back(std::make_unique<BillA>(this));
+    //m_wall.back()->SetPosition({ -22.5,9,-22.5 });
+    //m_wall.back()->Initialize();
 
-    m_wall.emplace_back(std::make_unique<BillB>(this));
-    m_wall.back()->SetPosition({ -6,9,-20 });
-    m_wall.back()->Initialize();
+    //m_wall.emplace_back(std::make_unique<BillB>(this));
+    //m_wall.back()->SetPosition({ -6,9,-20 });
+    //m_wall.back()->Initialize();
 
-    m_wall.emplace_back(std::make_unique<BillB>(this));
-    m_wall.back()->SetPosition({ -14,9,-10 });
-    m_wall.back()->Initialize();
+    //m_wall.emplace_back(std::make_unique<BillB>(this));
+    //m_wall.back()->SetPosition({ -14,9,-10 });
+    //m_wall.back()->Initialize();
 
-    m_wall.emplace_back(std::make_unique<BillA>(this));
-    m_wall.back()->SetPosition({ 80.5,9,-20 });
-    m_wall.back()->Initialize();
+    //m_wall.emplace_back(std::make_unique<BillA>(this));
+    //m_wall.back()->SetPosition({ 80.5,9,-20 });
+    //m_wall.back()->Initialize();
 
-    m_wall.emplace_back(std::make_unique<BillB>(this));
-    m_wall.back()->SetPosition({ 70,9,-10 });
-    m_wall.back()->Initialize();
+    //m_wall.emplace_back(std::make_unique<BillB>(this));
+    //m_wall.back()->SetPosition({ 70,9,-10 });
+    //m_wall.back()->Initialize();
 
-    m_wall.emplace_back(std::make_unique<BillB>(this));
-    m_wall.back()->SetPosition({ 90,9,-10 });
-    m_wall.back()->Initialize();
+    //m_wall.emplace_back(std::make_unique<BillB>(this));
+    //m_wall.back()->SetPosition({ 90,9,-10 });
+    //m_wall.back()->Initialize();
 
-    m_dropItem.emplace_back(std::make_unique<DropItem>(this, std::make_unique<BodyTop>()));
-    m_dropItem.back()->SetPosition(Vector3(0, 20, 20));
+    //m_dropItem.emplace_back(std::make_unique<DropItem>(this, std::make_unique<BodyTop>()));
+    //m_dropItem.back()->SetPosition(Vector3(0, 20, 20));
 
     //m_dropItem.emplace_back(std::make_unique<DropItem>(this, std::make_unique<LeftArm>()));
     //m_dropItem.back()->SetPosition(Vector3(6, 3, 9));
 
     std::vector<std::unique_ptr<Bullet>> bullets;
     std::vector<std::unique_ptr<Bullet>> bullets2;
+
+
 
     for (int i = 0; i < 10; i++)
     {
@@ -561,6 +575,24 @@ void PlayScene::CreateShadow()
     m_player->CreateShadow();
 
     Resources::GetInstance()->GetShadow()->EndDepth();
+}
+
+void PlayScene::CreateObject(std::string className, DirectX::SimpleMath::Vector3 pos)
+{
+    using namespace DirectX::SimpleMath;
+    GameObject* object = nullptr;
+    if (className == "Player")
+    {
+         m_player = std::make_unique<Player>(this);
+         m_player->Initialize();
+         m_player->SetPosition(pos);
+    }
+    if (className == "BillA")
+    {
+        m_wall.emplace_back(std::make_unique<BillA>(this));
+        m_wall.back()->SetPosition(pos);
+        m_wall.back()->Initialize();
+    }
 }
 
 std::vector<std::unique_ptr<Enemy>>::iterator PlayScene::RemoveEnemy(std::vector<std::unique_ptr<Enemy>>::iterator it)

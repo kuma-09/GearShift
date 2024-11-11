@@ -186,6 +186,7 @@
     <ClInclude Include="Framework\Easing.h" />
     <ClInclude Include="Framework\Graphics.h" />
     <ClInclude Include="Framework\InputManager.h" />
+    <ClInclude Include="Framework\Json.h" />
     <ClInclude Include="Framework\Microsoft\DebugDraw.h" />
     <ClInclude Include="Framework\RenderTexture.h" />
     <ClInclude Include="Framework\Resources.h" />
@@ -278,6 +279,7 @@
     <ClCompile Include="Framework\Easing.cpp" />
     <ClCompile Include="Framework\Graphics.cpp" />
     <ClCompile Include="Framework\InputManager.cpp" />
+    <ClCompile Include="Framework\Json.cpp" />
     <ClCompile Include="Framework\Microsoft\DebugDraw.cpp" />
     <ClCompile Include="Framework\RenderTexture.cpp" />
     <ClCompile Include="Framework\Resources.cpp" />
