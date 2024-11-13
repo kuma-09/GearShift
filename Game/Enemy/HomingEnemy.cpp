@@ -10,11 +10,8 @@
 #include "Game/Object/Bullet/EnemyBullet.h"
 #include "Game/Object/Bullet/HomingBullet.h"
 #include "Game/PlayScene.h"
-
 #include "Game/Enemy/State/EnemyAttackState.h"
 #include "Game/Enemy/State/EnemyMoveState.h"
-
-
 
 HomingEnemy::HomingEnemy(IScene* scene)
 {
@@ -38,15 +35,15 @@ HomingEnemy::HomingEnemy(IScene* scene)
 HomingEnemy::~HomingEnemy()
 {
 	//RemoveAllComponents();
-
 }
 
 void HomingEnemy::Initialize(GameObject* target)
 {
 	using namespace DirectX::SimpleMath;
 
-	GetComponent<HP>()->SetHP(10);
 	SetTarget(target);
+
+	GetComponent<HP>()->SetHP(10);
 	GetComponent<Look>()->SetTarget(this, target);
 	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetDiceModel());
 	GetComponent<BoxCollider>()->SetTypeID(BoxCollider::TypeID::Enemy);
@@ -132,5 +129,4 @@ void HomingEnemy::Collision(BoxCollider* collider)
 	{
 		BoxCollider::CheckHit(this, collider->GetOwner());
 	}
-
 }

@@ -31,7 +31,6 @@ public:
 private:
 
 	std::unique_ptr<Bullet> m_bullet;
-
 	State* m_state;
 };
 

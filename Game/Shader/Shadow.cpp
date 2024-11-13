@@ -268,9 +268,12 @@ void Shadow::End()
     Matrix world = Matrix::CreateFromQuaternion(m_lightRotate);
     world *= Matrix::CreateTranslation(m_lightPosition);
 
+    m_spriteBatch->Begin();
+    m_spriteBatch->Draw(m_srv, Vector2::Zero);
+    m_spriteBatch->End();
+
     // リソースの割り当てを解除する（shadowMapRT）
     ID3D11ShaderResourceView* nullsrv[] = { nullptr };
     context->PSSetShaderResources(1, 1, nullsrv);
-
     Resources::GetInstance()->GetCubeModel()->Draw(context, *state, world, view, proj);
 }

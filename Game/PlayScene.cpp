@@ -89,18 +89,6 @@ void PlayScene::Initialize(Game* game)
 
     //m_player->Initialize();
 
-    m_Enemy.emplace_back(std::make_unique<HomingEnemy>(this));
-    m_Enemy.back()->SetPosition(Vector3(0, 5, 0));
-    m_Enemy.back()->Initialize(m_player.get());
-
-    m_Enemy.emplace_back(std::make_unique<HomingEnemy>(this));
-    m_Enemy.back()->SetPosition(Vector3(32, 5, 10));
-    m_Enemy.back()->Initialize(m_player.get());
-    
-    m_Enemy.emplace_back(std::make_unique<FixedEnemy>(this));
-    m_Enemy.back()->SetPosition(Vector3(32, 5, 0));
-    m_Enemy.back()->Initialize(m_player.get());
-
     //m_wall.emplace_back(std::make_unique<BillA>(this));
     //m_wall.back()->SetPosition({5,9,40});
     //m_wall.back()->Initialize();
@@ -153,8 +141,6 @@ void PlayScene::Initialize(Game* game)
 
     std::vector<std::unique_ptr<Bullet>> bullets;
     std::vector<std::unique_ptr<Bullet>> bullets2;
-
-
 
     for (int i = 0; i < 10; i++)
     {
@@ -210,13 +196,9 @@ void PlayScene::Update(float elapsedTime)
     //const auto& gp = m_inputManager->GetGamePadTracker();
     //const auto& kb = m_inputManager->GetKeyboardTracker();
 
-
-
     // 経過時間を計算
     m_totalTime += elapsedTime;
     m_postProcess->Update(elapsedTime);
-
-
 
     // ヒットエフェクトの更新
     for (auto it = m_hitParticle.begin(); it != m_hitParticle.end();)
@@ -301,10 +283,6 @@ void PlayScene::Update(float elapsedTime)
         }
     }
 
-
-
-
-
     if (inAreaEnemy.empty())
     {
         m_player->SetTarget(nullptr);
@@ -320,10 +298,6 @@ void PlayScene::Update(float elapsedTime)
             }
         }
     }
-
-
-
-
 
     // 当たり判定
     for (auto& collider : GetColliders())
@@ -438,8 +412,7 @@ void PlayScene::Render()
         particle->Render(m_graphics->GetViewMatrix(), m_graphics->GetProjectionMatrix());
     }
 
-    // リソースの解除＆ライトをキューブで描画
-    Resources::GetInstance()->GetShadow()->End();
+
 
     //-------------------------------------------
 
@@ -452,6 +425,8 @@ void PlayScene::Render()
     m_bulletMagazine->Render();
     m_exBulletMagazine->Render();
     m_startAnimation->Render();
+    // リソースの解除＆ライトをキューブで描画
+    Resources::GetInstance()->GetShadow()->End();
 
 }
 
@@ -596,6 +571,12 @@ void PlayScene::CreateObject(std::string className, DirectX::SimpleMath::Vector3
     if (className == "HomingEnemy")
     {
         m_Enemy.emplace_back(std::make_unique<HomingEnemy>(this));
+        m_Enemy.back()->SetPosition(pos);
+        m_Enemy.back()->Initialize(m_player.get());
+    }
+    if (className == "FixedEnemy")
+    {
+        m_Enemy.emplace_back(std::make_unique<FixedEnemy>(this));
         m_Enemy.back()->SetPosition(pos);
         m_Enemy.back()->Initialize(m_player.get());
     }

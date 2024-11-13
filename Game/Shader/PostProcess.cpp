@@ -110,11 +110,10 @@ void PostProcess::Initialize()
 
     // 定数バッファの作成
     D3D11_BUFFER_DESC bufferDesc = {};
-    bufferDesc.ByteWidth = static_cast<UINT>(sizeof(ConstantBuffer));	// 確保するサイズ（16の倍数で設定する）
-    // GPU (読み取り専用) と CPU (書き込み専用) の両方からアクセスできるリソース
+    bufferDesc.ByteWidth = static_cast<UINT>(sizeof(ConstantBuffer));
     bufferDesc.Usage = D3D11_USAGE_DYNAMIC;
-    bufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;	// 定数バッファとして扱う
-    bufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;	// CPUが内容を変更できるようにする
+    bufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+    bufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
     DX::ThrowIfFailed(device->CreateBuffer(&bufferDesc, nullptr, m_constantBuffer.ReleaseAndGetAddressOf()));
 
     m_isStartNoise = true;  
@@ -312,7 +311,7 @@ void PostProcess::combinationRT()
 
             // ピクセルシェーダ使用する定数バッファを設定
             ID3D11Buffer* cbuf_ps[] = { m_constantBuffer.Get() };
-            context->PSSetConstantBuffers(1, 1, cbuf_ps);	// スロット０はDirectXTKが使用しているのでスロット１を使用する
+            context->PSSetConstantBuffers(1, 1, cbuf_ps);
 
             ID3D11SamplerState* sampler[1] = { state->LinearWrap() };
             context->PSSetSamplers(0, 1, sampler);
@@ -352,7 +351,7 @@ void PostProcess::combinationRT()
 
         // ピクセルシェーダ使用する定数バッファを設定
         ID3D11Buffer* cbuf_ps[] = { m_constantBuffer.Get() };
-        context->PSSetConstantBuffers(1, 1, cbuf_ps);	// スロット０はDirectXTKが使用しているのでスロット１を使用する
+        context->PSSetConstantBuffers(1, 1, cbuf_ps);
 
         ID3D11SamplerState* sampler[1] = { state->LinearWrap() };
         context->PSSetSamplers(0, 1, sampler);

@@ -1,7 +1,14 @@
 {
 	"Object_list": [
-		{"Object_Name": "Player"     ,"position":{"x":5.0, "y":9.0, "z":40.0}},
-		{"Object_Name": "BillA"      ,"position":{"x":5.0, "y":9.0, "z":40.0}},
-		{"Object_Name": "HomingEnemy","position":{"x":5.0, "y":9.0, "z":-40.0}}
+		{"Object_Name": "Player"     ,"position":{"x":  5.0, "y":  9.0, "z":100.0}},
+		{"Object_Name": "BillA"      ,"position":{"x":  5.0, "y":  9.0, "z":150.0}},
+		{"Object_Name": "BillA"      ,"position":{"x": 25.0, "y":  9.0, "z":150.0}},
+		{"Object_Name": "BillA"      ,"position":{"x": 45.0, "y":  9.0, "z":150.0}},
+		{"Object_Name": "BillA"      ,"position":{"x": 65.0, "y":  9.0, "z":150.0}},
+		{"Object_Name": "BillA"      ,"position":{"x": 85.0, "y":  9.0, "z":150.0}},
+		{"Object_Name": "BillA"      ,"position":{"x":105.0, "y":  9.0, "z":150.0}},
+		{"Object_Name": "HomingEnemy","position":{"x":  0.0, "y":  5.0, "z":  0.0}},
+		{"Object_Name": "HomingEnemy","position":{"x": 32.0, "y":  5.0, "z": 10.0}},
+		{"Object_Name": "FixedEnemy" ,"position":{"x": 32.0, "y":  5.0, "z":  0.0}}
 	]
 }

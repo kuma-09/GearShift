@@ -44,6 +44,8 @@ private:
 	float m_scale;
 	float m_rotate;
 
+	DirectX::SimpleMath::Vector2 m_targetScreenPos;
+
 	float lerp(float start, float end, float t) {
 		return (1 - t) * start + t * end;
 	}

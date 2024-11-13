@@ -67,6 +67,7 @@ private:
 	
 	bool m_isStartNoise;
 	bool m_isNoise;
+	bool m_isBoost;
 	float m_nowTime;
 	const float m_maxStartNoiseTime = 1.0f;
 	const float m_maxNoiseTime = 0.5f;

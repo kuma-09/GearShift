@@ -17,7 +17,7 @@ TargetArea::TargetArea()
     DX::ThrowIfFailed(
         CreateWICTextureFromFile(
             device,
-            L"Resources/Textures/3.png",
+            L"Resources/Textures/Reticle.png",
             nullptr,
             m_texture.ReleaseAndGetAddressOf()
         )
@@ -53,7 +53,7 @@ bool TargetArea::Update(Player* player , GameObject* target)
     Matrix view = m_graphics->GetViewMatrix();
     Matrix proj = m_graphics->GetProjectionMatrix();
 
-    m_scale = lerp(m_scale, SCALE, 0.05f);
+    SetScale(lerp(GetScale(), SCALE, 0.05f));
 
     // ビューポート行列（スクリーン行列）の作成
     float w;
@@ -91,6 +91,7 @@ bool TargetArea::Update(Player* player , GameObject* target)
     // ターゲット範囲にいるか
     if ((x * x) + (y * y) <= m_range * m_range)
     {
+        m_targetScreenPos = { x,y };
         //player->SetTarget(target);
         return true;
     }
@@ -127,6 +128,12 @@ void TargetArea::Render(bool inArea)
             DirectX::XMConvertToRadians(m_rotate),
             Vector2(m_textureSize.x / 2, m_textureSize.y / 2),
             Vector2(m_scale * n, m_scale * n)
+        );
+
+        m_spriteBatch->Draw(m_texture.Get(), Vector2(float(w), float(h)) - m_targetScreenPos, &rect, DirectX::Colors::CadetBlue,
+            DirectX::XMConvertToRadians(m_rotate),
+            Vector2(m_textureSize.x / 2, m_textureSize.y / 2),
+            Vector2(GetScale() * 0.2f * n, GetScale() * 0.2f * n)
         );
     }
     else
