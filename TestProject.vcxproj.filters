@@ -149,7 +149,7 @@
     <ClInclude Include="Game\UI\ExBulletMagazine.h" />
     <ClInclude Include="Framework\Easing.h" />
     <ClInclude Include="Framework\Json.h" />
-    <ClInclude Include="Game\UI\TargetReticle.h" />
+    <ClInclude Include="Game\UI\Reload.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -259,7 +259,7 @@
     <ClCompile Include="Game\UI\ExBulletMagazine.cpp" />
     <ClCompile Include="Framework\Easing.cpp" />
     <ClCompile Include="Framework\Json.cpp" />
-    <ClCompile Include="Game\UI\TargetReticle.cpp" />
+    <ClCompile Include="Game\UI\Reload.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />
