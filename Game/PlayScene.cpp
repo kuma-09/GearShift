@@ -89,50 +89,6 @@ void PlayScene::Initialize(Game* game)
 
     //m_player->Initialize();
 
-    //m_wall.emplace_back(std::make_unique<BillA>(this));
-    //m_wall.back()->SetPosition({5,9,40});
-    //m_wall.back()->Initialize();
-
-    //m_wall.emplace_back(std::make_unique<BillA>(this));
-    //m_wall.back()->SetPosition({ 10,9,25 });
-    //m_wall.back()->Initialize();
-
-    //m_wall.emplace_back(std::make_unique<BillB>(this));
-    //m_wall.back()->SetPosition({ 30,9,40 });
-    //m_wall.back()->Initialize();
-
-    //m_wall.emplace_back(std::make_unique<BillB>(this));
-    //m_wall.back()->SetPosition({ 25,9,30 });
-    //m_wall.back()->Initialize();
-
-    //m_wall.emplace_back(std::make_unique<BillB>(this));
-    //m_wall.back()->SetPosition({ 20,9,40 });
-    //m_wall.back()->Initialize();
-
-    //m_wall.emplace_back(std::make_unique<BillA>(this));
-    //m_wall.back()->SetPosition({ -22.5,9,-22.5 });
-    //m_wall.back()->Initialize();
-
-    //m_wall.emplace_back(std::make_unique<BillB>(this));
-    //m_wall.back()->SetPosition({ -6,9,-20 });
-    //m_wall.back()->Initialize();
-
-    //m_wall.emplace_back(std::make_unique<BillB>(this));
-    //m_wall.back()->SetPosition({ -14,9,-10 });
-    //m_wall.back()->Initialize();
-
-    //m_wall.emplace_back(std::make_unique<BillA>(this));
-    //m_wall.back()->SetPosition({ 80.5,9,-20 });
-    //m_wall.back()->Initialize();
-
-    //m_wall.emplace_back(std::make_unique<BillB>(this));
-    //m_wall.back()->SetPosition({ 70,9,-10 });
-    //m_wall.back()->Initialize();
-
-    //m_wall.emplace_back(std::make_unique<BillB>(this));
-    //m_wall.back()->SetPosition({ 90,9,-10 });
-    //m_wall.back()->Initialize();
-
     //m_dropItem.emplace_back(std::make_unique<DropItem>(this, std::make_unique<BodyTop>()));
     //m_dropItem.back()->SetPosition(Vector3(0, 20, 20));
 
@@ -412,8 +368,8 @@ void PlayScene::Render()
         particle->Render(m_graphics->GetViewMatrix(), m_graphics->GetProjectionMatrix());
     }
 
-
-
+    // リソースの解除＆ライトをキューブで描画
+    Resources::GetInstance()->GetShadow()->End();
     //-------------------------------------------
 
     m_postProcess->combinationRT();
@@ -425,8 +381,6 @@ void PlayScene::Render()
     m_bulletMagazine->Render();
     m_exBulletMagazine->Render();
     m_startAnimation->Render();
-    // リソースの解除＆ライトをキューブで描画
-    Resources::GetInstance()->GetShadow()->End();
 
 }
 
@@ -568,6 +522,12 @@ void PlayScene::CreateObject(std::string className, DirectX::SimpleMath::Vector3
         m_wall.back()->SetPosition(pos);
         m_wall.back()->Initialize();
     }
+    if (className == "BillB")
+    {
+        m_wall.emplace_back(std::make_unique<BillB>(this));
+        m_wall.back()->SetPosition(pos);
+        m_wall.back()->Initialize();
+    }
     if (className == "HomingEnemy")
     {
         m_Enemy.emplace_back(std::make_unique<HomingEnemy>(this));
@@ -580,6 +540,7 @@ void PlayScene::CreateObject(std::string className, DirectX::SimpleMath::Vector3
         m_Enemy.back()->SetPosition(pos);
         m_Enemy.back()->Initialize(m_player.get());
     }
+    
 }
 
 std::vector<std::unique_ptr<Enemy>>::iterator PlayScene::RemoveEnemy(std::vector<std::unique_ptr<Enemy>>::iterator it)
