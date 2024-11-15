@@ -124,7 +124,6 @@ void HomingBullet::Update(float elapsedTime)
 
 	if (GetState() == FLYING)
 	{
-
 		Vector3 acceleration = Vector3::Zero;
 
 		Vector3 diff = GetTarget()->GetPosition() - m_position;
@@ -132,10 +131,10 @@ void HomingBullet::Update(float elapsedTime)
 		
 		acceleration += (diff - m_velocity * m_period) * 2.f / (m_period * m_period);
 
-		if (acceleration.Length() >= 300.0f)
+		if (acceleration.Length() >= 100.0f)
 		{
 			acceleration.Normalize();
-			acceleration *= 300.0f;
+			acceleration *= 100.0f;
 		}
 
 		m_period -= elapsedTime;
@@ -157,7 +156,7 @@ void HomingBullet::Render()
 	{
 		GetComponent<ModelDraw>()->Render(false);
 	}
-	GetComponent<Emitter>()->Render(GetPosition());
+	GetComponent<Emitter>()->Render(GetPosition() + DirectX::SimpleMath::Vector2(rand() % 2 - 1,rand() % 2 - 1));
 }
 
 void HomingBullet::Collision(BoxCollider* collider)

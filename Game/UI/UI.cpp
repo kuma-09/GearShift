@@ -64,7 +64,7 @@ void UI::Initialize()
 
 }
 
-void UI::Render(DirectX::SimpleMath::Vector2 pos)
+void UI::Render(DirectX::SimpleMath::Vector2 pos, DirectX::XMVECTORF32 color)
 {
 	using namespace DirectX;
 	using namespace DirectX::SimpleMath;
@@ -78,67 +78,4 @@ void UI::Render(DirectX::SimpleMath::Vector2 pos)
 	m_spriteBatch->Draw(GetTexture(), pos * value, 0, DirectX::Colors::White, 0, Vector2::Zero, Vector2{1 * value, 1 * value});
     m_spriteBatch->End();
 
-	//ID3D11DeviceContext1* context = Graphics::GetInstance()->GetDeviceResources()->GetD3DDeviceContext();
-
-	////	頂点情報(板ポリゴンの４頂点の座標情報）
-	//VertexPositionColorTexture vertex[4] =
-	//{
-	//	VertexPositionColorTexture(SimpleMath::Vector3(0.0f,  0.0f, 0.0f),SimpleMath::Vector4::One,SimpleMath::Vector2(0.0f, 0.0f)),
-	//};
-
-	////	シェーダーに渡す追加のバッファを作成する。(ConstBuffer）
-	//ConstBuffer cbuff;
-	//	cbuff.matView = SimpleMath::Matrix::Identity;
-	//	cbuff.matProj = SimpleMath::Matrix::Identity;
-	//	cbuff.matWorld = SimpleMath::Matrix::Identity;
-	//cbuff.Diffuse = SimpleMath::Vector4(1, 1, 1, 1);
-
-	////	受け渡し用バッファの内容更新(ConstBufferからID3D11Bufferへの変換）
-	//context->UpdateSubresource(m_CBuffer.Get(), 0, NULL, &cbuff, 0, 0);
-
-	////	シェーダーにバッファを渡す
-	//ID3D11Buffer* cb[1] = { m_CBuffer.Get() };
-	//context->VSSetConstantBuffers(0, 1, cb);
-	//context->GSSetConstantBuffers(0, 1, cb);
-	//context->PSSetConstantBuffers(0, 1, cb);
-
-	////	画像用サンプラーの登録
-	//ID3D11SamplerState* sampler[1] = { m_states->LinearWrap() };
-	//context->PSSetSamplers(0, 1, sampler);
-
-	////	半透明描画指定
-	//ID3D11BlendState* blendstate = m_states->NonPremultiplied();
-
-	////	透明判定処理
-	//context->OMSetBlendState(blendstate, nullptr, 0xFFFFFFFF);
-
-	////	深度バッファに書き込み参照する
-	//context->OMSetDepthStencilState(m_states->DepthDefault(), 0);
-
-	////	カリングは左周り
-	//context->RSSetState(m_states->CullNone());
-
-	////	シェーダをセットする
-	//context->VSSetShader(m_vertexShader.Get(), nullptr, 0);
-	//context->GSSetShader(m_geometryShader.Get(), nullptr, 0);
-	//context->PSSetShader(m_pixelShader.Get(), nullptr, 0);
-
-	////	ピクセルシェーダにテクスチャを登録する。
-	//for (int i = 0; i < m_texture.size(); i++)
-	//{
-	//	context->PSSetShaderResources(i, 1, m_texture[i].GetAddressOf());
-	//}
-
-	////	インプットレイアウトの登録
-	//context->IASetInputLayout(m_inputLayout.Get());
-
-	////	板ポリゴンを描画
-	//m_batch->Begin();
-	//m_batch->Draw(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST, &vertex[0], 1);
-	//m_batch->End();
-
-	////	シェーダの登録を解除しておく
-	//context->VSSetShader(nullptr, nullptr, 0);
-	//context->GSSetShader(nullptr, nullptr, 0);
-	//context->PSSetShader(nullptr, nullptr, 0);
 }
