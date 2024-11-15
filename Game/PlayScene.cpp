@@ -26,6 +26,7 @@
 
 #include "Game/Particle/HitParticle.h"
 
+#include "UI/Reload.h"
 #include "UI/HPUI.h"
 #include "Game/Animation/StartAnimation.h"
 #include "UI/BulletMagazine.h"
@@ -128,6 +129,8 @@ void PlayScene::Initialize(Game* game)
     m_postProcess = std::make_unique<PostProcess>();
     m_postProcess->Initialize();
 
+    m_reloadUI = std::make_unique<Reload>();
+    m_reloadUI->Initialize();
     m_hpUI = std::make_unique<HPUI>();
 
     m_hitEffect = std::make_unique<HitEffect>();
@@ -309,6 +312,7 @@ void PlayScene::Update(float elapsedTime)
     hp.emplace_back(m_player->GetPart(Part::LeftLeg)->GetComponent<HP>()->GetHP() / m_player->GetPart(Part::LeftLeg)->GetMaxHP());
     hp.emplace_back(m_player->GetPart(Part::RightLeg)->GetComponent<HP>()->GetHP() / m_player->GetPart(Part::RightLeg)->GetMaxHP());
 
+    m_reloadUI->Update(elapsedTime);
     m_hpUI->Update(hp);
 
 }
@@ -376,6 +380,7 @@ void PlayScene::Render()
 
     // UI
     m_targetArea->Render(m_player->GetTarget());
+    m_reloadUI->Render();
     m_hpUI->Render();
     m_player->RenderPlayerUI();
     m_bulletMagazine->Render();

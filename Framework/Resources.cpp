@@ -23,8 +23,11 @@ void Resources::LoadResource(Graphics* graphics)
 {
 	auto device = graphics->GetDeviceResources()->GetD3DDevice();
 
+	DirectX::EffectFactory* FX = new DirectX::EffectFactory(device);
+
+
 	// リソースディレクトリを設定する
-	graphics->GetFX()->SetDirectory(L"Resources\\Models");
+	FX->SetDirectory(L"Resources\\Models");
 	// モデルをロードする
 	m_player	 = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\old_robot\\Robot.sdkmesh",       *graphics->GetFX());
 	m_head		 = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\old_robot\\Head.sdkmesh",        *graphics->GetFX());
@@ -50,6 +53,9 @@ void Resources::LoadResource(Graphics* graphics)
 		nullptr,
 		m_greenTexture.GetAddressOf()
 	);
+
+	delete FX;
+	FX = nullptr;
 
 	// 影
 	m_shadow = std::make_unique<Shadow>();

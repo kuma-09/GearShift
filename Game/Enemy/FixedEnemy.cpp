@@ -100,7 +100,7 @@ void FixedEnemy::Render()
 
 	if (GetComponent<HP>()->GetHP() <= 0) return;
 	GetComponent<ModelDraw>()->Render(false);
-	GetComponent<BoxCollider>()->Render();
+	//GetComponent<BoxCollider>()->Render();
 }
 
 void FixedEnemy::Finalize()

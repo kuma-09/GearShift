@@ -20,6 +20,7 @@
 
 class Camera;
 class HPUI;
+class Reload;
 class HitParticle;
 class HitEffect;
 class StartAnimation;
@@ -84,6 +85,9 @@ private:
 	std::vector<std::unique_ptr<Floor>>   m_floor;
 	// ターゲット範囲
 	std::unique_ptr<TargetArea> m_targetArea;
+
+	std::unique_ptr<Reload> m_reloadUI;
+
 	// HPの表示UI
 	std::unique_ptr<HPUI> m_hpUI;
 	// ヒットパーティクル

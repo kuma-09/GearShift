@@ -75,7 +75,7 @@ void UI::Render(DirectX::SimpleMath::Vector2 pos, DirectX::XMVECTORF32 color)
 	float value = float(windowsize.right) / x;
 
     m_spriteBatch->Begin();
-	m_spriteBatch->Draw(GetTexture(), pos * value, 0, DirectX::Colors::White, 0, Vector2::Zero, Vector2{1 * value, 1 * value});
+	m_spriteBatch->Draw(GetTexture(), pos * value, 0, color, 0, Vector2::Zero, Vector2{1 * value, 1 * value});
     m_spriteBatch->End();
 
 }
