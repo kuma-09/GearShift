@@ -44,7 +44,7 @@ void Jump::Update(float elapsedTime)
 	{
 		if (m_player->GetBoostPoint() > 0)
 		{
-			m_player->UseBoostGage();
+			m_player->GetEnergyGage()->UseEnergyPoint(1);
 			m_player->GetComponent<Gravity>()->Reset();
 		}
 	}

@@ -76,8 +76,8 @@ void Player::Initialize()
 	GetComponent<HPBar>()->Initialize();
 	SetOnFloor(false);
 
-	m_boostGage = std::make_unique<EnergyGage>();
-	m_boostGage->Initialize();
+	m_energyGage = std::make_unique<EnergyGage>();
+	m_energyGage->Initialize();
 
 
 	m_reload = std::make_unique<ReloadUI>();
@@ -94,7 +94,7 @@ void Player::Update(float elapsedTime)
 	auto& mouseState = m_inputManager->GetMouseState();
 	auto& kb = m_inputManager->GetKeyboardTracker();
 
-	m_boostGage->Update(elapsedTime);
+	m_energyGage->Update(elapsedTime);
 	m_reload->Update(elapsedTime);
 
 	m_bulletInterval += elapsedTime;
@@ -112,10 +112,6 @@ void Player::Update(float elapsedTime)
 		Reload();
 	}
 
-	if (dynamic_cast<Idol*>(m_state))
-	{
-		m_boostGage->SetEnergyPoint(0.5f);
-	}
 
 	ComponentsUpdate(elapsedTime);
 
@@ -189,7 +185,7 @@ void Player::Render()
 void Player::RenderPlayerUI()
 {
 	if (GetBulletSize() == 0 && GetExBulletSize() == 0) m_reload->Render();
-	m_boostGage->Render();
+	m_energyGage->Render();
 }
 
 void Player::Finalize()
@@ -246,7 +242,7 @@ void Player::Shot()
 
 float Player::GetBoostPoint()
 {
-	return m_boostGage->GetEnergyPoint();
+	return m_energyGage->GetEnergyPoint();
 }
 
 int Player::GetBulletSize()
@@ -290,12 +286,12 @@ void Player::Collision(BoxCollider* collider)
 	if (collider->GetTypeID() == BoxCollider::Floor)
 	{
 		SetOnFloor(true);
-		m_boostGage->SetEnergyPoint(0.5f);
+		//m_boostGage->SetEnergyPoint(0.5f);
 		BoxCollider::CheckHit(this, collider->GetOwner());
 	}
 	if (collider->GetTypeID() == BoxCollider::Wall)
 	{
-		m_boostGage->SetEnergyPoint(0.5f);
+		//m_boostGage->SetEnergyPoint(0.5f);
 		BoxCollider::CheckHit(this, collider->GetOwner());
 	}
 

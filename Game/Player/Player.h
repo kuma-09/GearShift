@@ -51,6 +51,8 @@ public:
 	int GetMaxBulletSize();
 	int GetExBulletSize();
 
+	EnergyGage* GetEnergyGage() { return m_energyGage.get(); }
+
 	// パーツをセット
 	void SetPart(const Part::TypeID& partType, std::unique_ptr<Part> part)
 	{
@@ -82,8 +84,6 @@ public:
 			bullet->Initalize(this);
 		}
 	}
-
-	void UseBoostGage() { m_boostGage->UseEnergyPoint(1); }
 
 private:
 	void Reload();
@@ -134,7 +134,7 @@ private:
 	std::unique_ptr<Boost> m_boost;
 	std::unique_ptr<Attack> m_attack;
 
-	std::unique_ptr<EnergyGage> m_boostGage;
+	std::unique_ptr<EnergyGage> m_energyGage;
 	std::unique_ptr<ReloadUI> m_reload;
 
 
