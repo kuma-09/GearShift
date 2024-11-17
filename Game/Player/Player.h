@@ -5,6 +5,7 @@
 #include "Game/State.h"
 #include "Framework/DebugString.h"
 #include "Game/Player/BoostGage.h"
+#include "Game/UI/ReloadUI.h"
 #include "Game/Object/Bullet/Bullet.h"
 
 #include <map>
@@ -136,6 +137,8 @@ private:
 
 	std::unique_ptr<BoostGage> m_boostGage;
 	std::unique_ptr<BulletGage> m_bulletGage;
+	std::unique_ptr<ReloadUI> m_reload;
+
 
 	// ’e”z—ñ
 	std::vector<std::unique_ptr<Bullet>> m_defaultBullet;

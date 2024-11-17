@@ -45,7 +45,7 @@ Player::Player(IScene* scene)
 	m_jump = std::make_unique<Jump>(this);
 	m_boost = std::make_unique<Boost>(this);
 	m_attack = std::make_unique<Attack>(this);
-	
+
 
 	for (int i = 0; i < MAX_BULLET_COUNT; i++)
 	{
@@ -83,6 +83,9 @@ void Player::Initialize()
 	m_bulletGage = std::make_unique<BulletGage>();
 	m_bulletGage->Initialize();
 
+	m_reload = std::make_unique<ReloadUI>();
+	m_reload->Initialize();
+
 	m_bulletInterval = INTERVAL;
 	m_exBulletSize = 0;
 }
@@ -95,7 +98,7 @@ void Player::Update(float elapsedTime)
 	auto& kb = m_inputManager->GetKeyboardTracker();
 
 	m_boostGage->Update();
-
+	m_reload->Update(elapsedTime);
 	m_bulletGage->SetBoostPoint(GetBulletSize());
 	m_bulletGage->SetMaxBoostPoint(GetMaxBulletSize());
 
@@ -190,8 +193,8 @@ void Player::Render()
 
 void Player::RenderPlayerUI()
 {
+	if (GetBulletSize() == 0 && GetExBulletSize() == 0) m_reload->Render();
 	m_boostGage->Render();
-	//m_bulletGage->Render();
 }
 
 void Player::Finalize()

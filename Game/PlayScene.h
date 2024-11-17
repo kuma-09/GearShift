@@ -86,8 +86,6 @@ private:
 	// ターゲット範囲
 	std::unique_ptr<TargetArea> m_targetArea;
 
-	std::unique_ptr<Reload> m_reloadUI;
-
 	// HPの表示UI
 	std::unique_ptr<HPUI> m_hpUI;
 	// ヒットパーティクル

@@ -268,7 +268,7 @@
     <ClInclude Include="Game\UI\CircleGage.h" />
     <ClInclude Include="Game\UI\HPUI.h" />
     <ClInclude Include="Game\UI\Menu.h" />
-    <ClInclude Include="Game\UI\Reload.h" />
+    <ClInclude Include="Game\UI\ReloadUI.h" />
     <ClInclude Include="Game\UI\UI.h" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
@@ -354,7 +354,7 @@
     <ClCompile Include="Game\UI\CircleGage.cpp" />
     <ClCompile Include="Game\UI\HPUI.cpp" />
     <ClCompile Include="Game\UI\Menu.cpp" />
-    <ClCompile Include="Game\UI\Reload.cpp" />
+    <ClCompile Include="Game\UI\ReloadUI.cpp" />
     <ClCompile Include="Game\UI\UI.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="pch.cpp">

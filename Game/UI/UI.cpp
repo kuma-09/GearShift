@@ -24,8 +24,6 @@ UI::UI(const wchar_t* path)
 
     m_spriteBatch = std::make_unique<SpriteBatch>(context);
 
-    
-
     // 画像をロードする
     DX::ThrowIfFailed(
         CreateWICTextureFromFile(
@@ -36,22 +34,6 @@ UI::UI(const wchar_t* path)
         )
     );
 
-
-	//	コンパイルされたシェーダファイルを読み込み
-	BinaryFile VSData = BinaryFile::LoadFile(L"Resources/Shaders/UIVS.cso");
-	BinaryFile GSData = BinaryFile::LoadFile(L"Resources/Shaders/UIGS.cso");
-	BinaryFile PSData = BinaryFile::LoadFile(L"Resources/Shaders/UIPS.cso");
-
-	//	インプットレイアウトの作成
-	device->CreateInputLayout(&INPUT_LAYOUT[0],
-		static_cast<UINT>(INPUT_LAYOUT.size()),
-		VSData.GetData(), VSData.GetSize(),
-		m_inputLayout.GetAddressOf());
-
-	//	頂点シェーダ作成
-	device->CreateVertexShader(VSData.GetData(), VSData.GetSize(), NULL, m_vertexShader.ReleaseAndGetAddressOf());
-	//	ピクセルシェーダ作成
-    device->CreatePixelShader(PSData.GetData(), PSData.GetSize(), NULL, m_pixelShader.ReleaseAndGetAddressOf());
 }
 
 UI::~UI()
@@ -64,7 +46,7 @@ void UI::Initialize()
 
 }
 
-void UI::Render(DirectX::SimpleMath::Vector2 pos, DirectX::XMVECTORF32 color)
+void UI::Render(DirectX::SimpleMath::Vector2 pos, DirectX::XMVECTORF32 color, DirectX::SimpleMath::Vector2 origin, DirectX::SimpleMath::Vector2 size)
 {
 	using namespace DirectX;
 	using namespace DirectX::SimpleMath;
@@ -73,9 +55,10 @@ void UI::Render(DirectX::SimpleMath::Vector2 pos, DirectX::XMVECTORF32 color)
 	int x, y;
 	Graphics::GetInstance()->GetScreenSize(x, y);
 	float value = float(windowsize.right) / x;
+	
 
     m_spriteBatch->Begin();
-	m_spriteBatch->Draw(GetTexture(), pos * value, 0, color, 0, Vector2::Zero, Vector2{1 * value, 1 * value});
+	m_spriteBatch->Draw(GetTexture(), pos * value, 0, color, 0, origin, Vector2{size.x * value, size.y * value});
     m_spriteBatch->End();
 
 }

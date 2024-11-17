@@ -2,11 +2,11 @@
 #include "UI.h"
 
 
-class Reload
+class ReloadUI
 {
 public:
-	Reload();
-	~Reload();
+	ReloadUI();
+	~ReloadUI();
 
 	void Initialize();
 	void Update(float elapsedTime);

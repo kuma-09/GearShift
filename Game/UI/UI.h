@@ -8,7 +8,8 @@ public:
 	~UI();
 
 	void Initialize();
-	void Render(DirectX::SimpleMath::Vector2 pos, DirectX::XMVECTORF32 color = DirectX::Colors::White);
+	void Render(DirectX::SimpleMath::Vector2 pos, DirectX::XMVECTORF32 color = DirectX::Colors::White,
+		DirectX::SimpleMath::Vector2 origin = DirectX::SimpleMath::Vector2::Zero, DirectX::SimpleMath::Vector2 size = DirectX::SimpleMath::Vector2::One);
 
 	DirectX::SpriteBatch* GetSpriteBatch() { return m_spriteBatch.get(); }
 	ID3D11ShaderResourceView* GetTexture() { return m_texture.Get(); }
