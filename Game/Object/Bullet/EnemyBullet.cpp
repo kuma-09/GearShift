@@ -98,7 +98,7 @@ void EnemyBullet::Render()
 {
 	if (GetState() == FLYING)
 	{
-		GetComponent<ModelDraw>()->Render(false);
+		GetComponent<ModelDraw>()->Render(GetWorld(),false);
 	}
 
 }

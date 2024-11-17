@@ -154,7 +154,7 @@ void HomingBullet::Render()
 {
 	if (GetState() == FLYING)
 	{
-		GetComponent<ModelDraw>()->Render(false);
+		GetComponent<ModelDraw>()->Render(GetWorld(), false);
 	}
 	GetComponent<Emitter>()->Render(GetPosition() + DirectX::SimpleMath::Vector2(rand() % 2 - 1,rand() % 2 - 1));
 }

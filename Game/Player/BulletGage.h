@@ -11,11 +11,6 @@ public:
 	void Update();
 	void Render();
 
-	void SetMaxBoostPoint(int point) { m_maxBoostPoint = point; }
-
-	void SetBoostPoint(int point) { m_boostPoint = point; }
-	void UseBoostPoint(int usePoint) { m_boostPoint = std::max(0, m_boostPoint - usePoint); }
-
 private:
 
 	Graphics* m_graphics;

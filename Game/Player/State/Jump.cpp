@@ -42,7 +42,7 @@ void Jump::Update(float elapsedTime)
 	}
 	if (kbState.Space || gpState.buttons.a)
 	{
-		if (m_player->GetBoostPoint() >= 0)
+		if (m_player->GetBoostPoint() > 0)
 		{
 			m_player->UseBoostGage();
 			m_player->GetComponent<Gravity>()->Reset();

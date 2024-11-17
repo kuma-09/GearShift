@@ -70,12 +70,12 @@ void DropItem::Update(float elapsedTime)
 
 void DropItem::CreateShadow()
 {
-	GetComponent<ModelDraw>()->CreateShadow();
+	GetComponent<ModelDraw>()->CreateShadow(GetWorld());
 }
 
 void DropItem::Render()
 {
-	GetComponent<ModelDraw>()->Render(true);
+	GetComponent<ModelDraw>()->Render(GetWorld(),true);
 	if (m_isHit)
 	{
 		//m_menu->Render();

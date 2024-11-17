@@ -80,7 +80,7 @@ void FixedEnemy::Update(float elapsedTime)
 
 void FixedEnemy::CreateShader()
 {
-	GetComponent<ModelDraw>()->CreateShadow();
+	GetComponent<ModelDraw>()->CreateShadow(GetWorld());
 }
 
 void FixedEnemy::Render()
@@ -99,7 +99,7 @@ void FixedEnemy::Render()
 
 
 	if (GetComponent<HP>()->GetHP() <= 0) return;
-	GetComponent<ModelDraw>()->Render(false);
+	GetComponent<ModelDraw>()->Render(GetWorld(), false);
 	//GetComponent<BoxCollider>()->Render();
 }
 

@@ -1,22 +1,23 @@
 #pragma once
 #include "Framework/Graphics.h"
+#include "Game/UI/UI.h"
 
-class BoostGage
+class EnergyGage
 {
 public:
-	BoostGage();
-	~BoostGage();
+	EnergyGage();
+	~EnergyGage();
 
 	void Initialize();
-	void Update();
+	void Update(float elapsedTime);
 	void Render();
 
-	void SetMaxBoostPoint(float point) { m_maxBoostPoint = point; }
-	float GetMaxBoostPoint() { return m_maxBoostPoint; }
+	void SetMaxEnergyPoint(float point) { m_maxBoostPoint = point; }
+	float GetMaxEnergyPoint() { return m_maxBoostPoint; }
 
-	void SetBoostPoint(float point) { m_boostPoint = std::min(m_boostPoint + point,m_maxBoostPoint); }
-	float GetBoostPoint() { return m_boostPoint; }
-	void UseBoostPoint(float usePoint) { m_boostPoint = std::max(0.0f,m_boostPoint - usePoint); }
+	void SetEnergyPoint(float point) { m_boostPoint = std::min(m_boostPoint + point,m_maxBoostPoint); }
+	float GetEnergyPoint();
+	void UseEnergyPoint(float usePoint) { m_boostPoint = std::max(0.0f,m_boostPoint - usePoint); }
 
 private:
 
@@ -26,7 +27,8 @@ private:
 
 	std::unique_ptr<DirectX::PrimitiveBatch<DirectX::VertexPositionColorTexture>> m_batch;
 
-	std::unique_ptr<DirectX::BasicEffect> m_basicEffect;
+	std::unique_ptr<UI> m_noEnergyTexture;
+	DirectX::XMVECTORF32 m_color;
 
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_texture;
 
@@ -45,6 +47,7 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11VertexShader> m_vertexShader;
 	Microsoft::WRL::ComPtr<ID3D11PixelShader> m_pixelShader;
 
+	float m_nowTime;
 	float m_maxBoostPoint;
 	float m_boostPoint;
 	float m_tmpPoint;

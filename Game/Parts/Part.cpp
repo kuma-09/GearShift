@@ -5,10 +5,10 @@
 
 void Part::CreateShadow()
 {
-	GetComponent<ModelDraw>()->CreateShadow();
+	GetComponent<ModelDraw>()->CreateShadow(GetWorld());
 }
 
 void Part::Render()
 {
-	GetComponent<ModelDraw>()->Render(false);
+	GetComponent<ModelDraw>()->Render(GetWorld(), false);
 }

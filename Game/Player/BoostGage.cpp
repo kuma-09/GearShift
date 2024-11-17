@@ -6,23 +6,26 @@
 ///	<summary>
 ///	インプットレイアウト
 ///	</summary>
-const std::vector<D3D11_INPUT_ELEMENT_DESC> BoostGage::INPUT_LAYOUT =
+const std::vector<D3D11_INPUT_ELEMENT_DESC> EnergyGage::INPUT_LAYOUT =
 {
 	{ "POSITION",	0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+	{ "COLOR" ,     0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, sizeof(DirectX::SimpleMath::Vector3), D3D11_INPUT_PER_VERTEX_DATA, 0},
 	{ "TEXCOORD",	0, DXGI_FORMAT_R32G32_FLOAT, 0, sizeof(DirectX::SimpleMath::Vector3) + sizeof(DirectX::SimpleMath::Vector4), D3D11_INPUT_PER_VERTEX_DATA, 0 },
 };
 
-BoostGage::BoostGage()
+EnergyGage::EnergyGage()
 {
 	m_boostPoint = 100;
 	m_maxBoostPoint = 100;
+	m_tmpPoint = 0;
+	m_nowTime = 0;
 }
 
-BoostGage::~BoostGage()
+EnergyGage::~EnergyGage()
 {
 }
 
-void BoostGage::Initialize()
+void EnergyGage::Initialize()
 {
 	using namespace DirectX;
 	using namespace DirectX::SimpleMath;
@@ -32,7 +35,8 @@ void BoostGage::Initialize()
 
 	m_batch = std::make_unique<DirectX::PrimitiveBatch<DirectX::VertexPositionColorTexture>>(m_graphics->GetDeviceResources()->GetD3DDeviceContext());
 
-
+	m_noEnergyTexture = std::make_unique<UI>(L"Resources/Textures/NoEnergy.png");
+	m_noEnergyTexture->Initialize();
 
 	//	コンパイルされたシェーダファイルを読み込み
 	BinaryFile VSData = BinaryFile::LoadFile(L"Resources/Shaders/CircleVS.cso");
@@ -70,18 +74,59 @@ void BoostGage::Initialize()
 	device->CreateBuffer(&bd, nullptr, &m_CBuffer);
 }
 
-void BoostGage::Update()
+void EnergyGage::Update(float elapsedTime)
 {
+	using namespace DirectX::SimpleMath;
+
+	if (m_boostPoint <= 0)
+	{
+		m_tmpPoint = 100;
+		m_vertex[0].color = Vector4(1, 0, 0, 1);		//左上
+		m_vertex[1].color = Vector4(1, 0, 0, 1);		//右上
+		m_vertex[2].color = Vector4(1, 0, 0, 1);		//左下
+		m_vertex[3].color = Vector4(1, 0, 0, 1);		//右下
+		return;
+	}
+	if (m_tmpPoint > 0)
+	{
+		m_tmpPoint-=elapsedTime * 20;
+		m_nowTime += elapsedTime * 5;
+		float n = sinf(m_nowTime) / 2 + 0.5f;
+		m_color = { n,n,n,n };
+		if (m_tmpPoint <= 0)
+		{
+			m_boostPoint = 100;
+			m_vertex[0].color = Vector4::One;		//左上
+			m_vertex[1].color = Vector4::One;		//右上
+			m_vertex[2].color = Vector4::One;		//左下
+			m_vertex[3].color = Vector4::One;		//右下
+		}
+	}
 }
 
-void BoostGage::Render()
+void EnergyGage::Render()
 {
+	using namespace DirectX::SimpleMath;
+
 	auto context = m_graphics->GetDeviceResources()->GetD3DDeviceContext();
 	auto state = m_graphics->GetCommonStates();
 
+	DirectX::CreateWICTextureFromFile(m_graphics->GetDeviceResources()->GetD3DDevice(), L"Resources/Textures/BulletCircle.png", nullptr, m_texture.ReleaseAndGetAddressOf());
+
 	//	シェーダーに渡す追加のバッファを作成する。(ConstBuffer）
 	ConstBuffer cbuff;
-	cbuff.rotate = DirectX::XMConvertToRadians(90) - DirectX::XMConvertToRadians(90 * (m_boostPoint / 100));
+	if (m_tmpPoint > 0)
+	{
+		RECT windowSize = Graphics::GetInstance()->GetDeviceResources()->GetOutputSize();
+
+		m_noEnergyTexture->Render({ float(windowSize.right) / 2,float(windowSize.bottom) / 2 + 100 }, m_color, DirectX::SimpleMath::Vector2(936, 143) / 2, { 0.25f, 0.25f });
+
+		cbuff.rotate = DirectX::XMConvertToRadians(90) - DirectX::XMConvertToRadians(90 * ((100 - m_tmpPoint) / 100));
+	}
+	else
+	{
+		cbuff.rotate = DirectX::XMConvertToRadians(90) - DirectX::XMConvertToRadians(90 * (m_boostPoint / 100));
+	}
 
 
 	//	受け渡し用バッファの内容更新(ConstBufferからID3D11Bufferへの変換）
@@ -126,4 +171,13 @@ void BoostGage::Render()
 	//	シェーダの登録を解除しておく
 	context->VSSetShader(nullptr, nullptr, 0);
 	context->PSSetShader(nullptr, nullptr, 0);
+}
+
+float EnergyGage::GetEnergyPoint()
+{
+	if (m_tmpPoint > 0)
+	{
+		return 0;
+	}
+	return m_boostPoint;
 }

@@ -72,16 +72,16 @@ void RightLeg::Render()
 	{
 		if (!m_isHit)
 		{
-			GetComponent<ModelDraw>()->Render(false);
+			GetComponent<ModelDraw>()->Render(GetWorld(), false);
 		}
 		else
 		{
-			GetComponent<ModelDraw>()->Render(false, DirectX::Colors::Red);
+			GetComponent<ModelDraw>()->Render(GetWorld(), false, DirectX::Colors::Red);
 		}
 	}
 	else
 	{
-		GetComponent<ModelDraw>()->Render(false, DirectX::Colors::Black);
+		GetComponent<ModelDraw>()->Render(GetWorld(), false, DirectX::Colors::Black);
 	}
 	if (static_cast<Player*>(GetOwner())->GetOnFloor())
 	{

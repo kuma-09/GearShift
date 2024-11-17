@@ -81,7 +81,7 @@ void HomingEnemy::Update(float elapsedTime)
 
 void HomingEnemy::CreateShader()
 {
-	GetComponent<ModelDraw>()->CreateShadow();
+	GetComponent<ModelDraw>()->CreateShadow(GetWorld());
 }
 
 void HomingEnemy::Render()
@@ -89,7 +89,7 @@ void HomingEnemy::Render()
 	
 	m_bullet->Render();
 	m_state->Render();
-	GetComponent<ModelDraw>()->Render(true);
+	GetComponent<ModelDraw>()->Render(GetWorld(),true);
 	
 	// “–‚½‚è”»’è‚Ì•`‰æ
 	//GetComponent<BoxCollider>()->Render();

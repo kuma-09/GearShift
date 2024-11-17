@@ -68,12 +68,12 @@ void DropItemB::Update(float elapsedTime)
 
 void DropItemB::CreateShadow()
 {
-	GetComponent<ModelDraw>()->CreateShadow();
+	GetComponent<ModelDraw>()->CreateShadow(GetWorld());
 }
 
 void DropItemB::Render()
 {
-	GetComponent<ModelDraw>()->Render(true,DirectX::Colors::Red);
+	GetComponent<ModelDraw>()->Render(GetWorld(), true, DirectX::Colors::Red);
 }
 
 void DropItemB::Finalize()

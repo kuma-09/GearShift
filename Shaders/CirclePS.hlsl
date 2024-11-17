@@ -3,10 +3,10 @@ cbuffer ConstBuffer : register(b0)
     float rotate;
 };
 
-
 struct PS_INPUT
 {
     float4 pos : SV_POSITION;
+    float4 color : COLOR;
     float2 tex : TEXCOORD;
 };
 
@@ -34,6 +34,6 @@ float4 main(PS_INPUT input) : SV_TARGET
     }
     float gb = rotate - 0.7f;
     //gb = min(gb, 1);
-    output = output * float4(1, 1 - gb / 1.5f, 1 - gb, 1);
+    output = output * input.color * float4(1, 1 - gb / 1.5f, 1 - gb, 1);
     return output;
 }

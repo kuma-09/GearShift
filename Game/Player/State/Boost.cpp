@@ -44,7 +44,7 @@ void Boost::Update(float elapsedTime)
 	}
 	if (mouse.rightButton || gpState.buttons.b)
 	{
-		if (m_player->GetBoostPoint())
+		if (m_player->GetBoostPoint() > 0)
 		{
 			m_player->ChangeState(m_player->GetBoost());
 		}

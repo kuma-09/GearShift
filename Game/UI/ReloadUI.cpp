@@ -26,5 +26,5 @@ void ReloadUI::Render()
 {
 	RECT windowSize = Graphics::GetInstance()->GetDeviceResources()->GetOutputSize();
 
-	m_ui->Render({ float(windowSize.right) / 2,float(windowSize.bottom) / 2  + 100}, m_color,DirectX::SimpleMath::Vector2(643,121) / 2, { 0.25f, 0.25f });
+	m_ui->Render({ float(windowSize.right) / 2,float(windowSize.bottom) / 2  + 150}, m_color,DirectX::SimpleMath::Vector2(643,121) / 2, { 0.25f, 0.25f });
 }

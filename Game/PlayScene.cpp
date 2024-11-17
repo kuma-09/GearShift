@@ -346,7 +346,6 @@ void PlayScene::Render()
     if (m_player->GetTarget())
     {
         m_player->GetTarget()->GetComponent<HPBar>()->Render(m_player->GetTarget()->GetPosition());
-        m_player->GetTarget()->GetComponent<ModelDraw>()->OutLineRender();
     }
 
     m_player->Render();

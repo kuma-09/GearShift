@@ -23,7 +23,6 @@
 #include "Game/PlayScene.h"
 
 #include "BoostGage.h"
-#include "BulletGage.h"
 
 
 Player::Player(IScene* scene)
@@ -77,11 +76,9 @@ void Player::Initialize()
 	GetComponent<HPBar>()->Initialize();
 	SetOnFloor(false);
 
-	m_boostGage = std::make_unique<BoostGage>();
+	m_boostGage = std::make_unique<EnergyGage>();
 	m_boostGage->Initialize();
 
-	m_bulletGage = std::make_unique<BulletGage>();
-	m_bulletGage->Initialize();
 
 	m_reload = std::make_unique<ReloadUI>();
 	m_reload->Initialize();
@@ -97,10 +94,8 @@ void Player::Update(float elapsedTime)
 	auto& mouseState = m_inputManager->GetMouseState();
 	auto& kb = m_inputManager->GetKeyboardTracker();
 
-	m_boostGage->Update();
+	m_boostGage->Update(elapsedTime);
 	m_reload->Update(elapsedTime);
-	m_bulletGage->SetBoostPoint(GetBulletSize());
-	m_bulletGage->SetMaxBoostPoint(GetMaxBulletSize());
 
 	m_bulletInterval += elapsedTime;
 	if (mouseState.leftButton || gp->x == gp->PRESSED )
@@ -119,7 +114,7 @@ void Player::Update(float elapsedTime)
 
 	if (dynamic_cast<Idol*>(m_state))
 	{
-		m_boostGage->SetBoostPoint(0.5f);
+		m_boostGage->SetEnergyPoint(0.5f);
 	}
 
 	ComponentsUpdate(elapsedTime);
@@ -251,7 +246,7 @@ void Player::Shot()
 
 float Player::GetBoostPoint()
 {
-	return m_boostGage->GetBoostPoint();
+	return m_boostGage->GetEnergyPoint();
 }
 
 int Player::GetBulletSize()
@@ -295,12 +290,12 @@ void Player::Collision(BoxCollider* collider)
 	if (collider->GetTypeID() == BoxCollider::Floor)
 	{
 		SetOnFloor(true);
-		m_boostGage->SetBoostPoint(0.5f);
+		m_boostGage->SetEnergyPoint(0.5f);
 		BoxCollider::CheckHit(this, collider->GetOwner());
 	}
 	if (collider->GetTypeID() == BoxCollider::Wall)
 	{
-		m_boostGage->SetBoostPoint(0.5f);
+		m_boostGage->SetEnergyPoint(0.5f);
 		BoxCollider::CheckHit(this, collider->GetOwner());
 	}
 
