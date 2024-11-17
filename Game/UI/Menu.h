@@ -1,28 +1,30 @@
 #pragma once
 #include "Framework/Graphics.h"
 #include "Framework/DeviceResources.h"
+#include "Framework/InputManager.h"
+#include "UI.h"
 
 class Menu
 {
 public:
-	Menu(const wchar_t* path, DirectX::SimpleMath::Vector2 pos);
+	Menu();
 	~Menu();
 
+	void AddUI(const wchar_t* path, DirectX::SimpleMath::Vector2 pos,DirectX::SimpleMath::Vector2 size = DirectX::SimpleMath::Vector2::One);
 	void Initialize();
 	void Update();
-	void Render();
-
-	DirectX::SpriteBatch* GetSpriteBatch() { return m_spriteBatch.get(); }
-	ID3D11ShaderResourceView* GetTexture() { return m_windowTexture.Get(); }
-
+	void Render(DirectX::SimpleMath::Vector2 pos);
 
 private:
 
 	Graphics* m_graphics;
+	InputManager* m_inputManager;
+	std::vector<std::unique_ptr<UI>> m_ui;
+	std::vector<DirectX::SimpleMath::Vector2> m_pos;
+	std::vector<DirectX::SimpleMath::Vector2> m_size;
 
-	std::unique_ptr<DirectX::SpriteBatch> m_spriteBatch;
-
-	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_windowTexture;
-	DirectX::SimpleMath::Vector2 m_position;
+	float m_activeSize;
+	int m_menuValue;
+	int m_activeUI;
 
 };

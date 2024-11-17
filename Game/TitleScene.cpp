@@ -4,6 +4,7 @@
 #include "Game/Components/Camera.h" 
 #include "Framework/Resources.h"
 #include "Framework/BinaryFile.h"
+#include "Framework/Easing.h"
 
 void TitleScene::Initialize(Game* game)
 {
@@ -33,7 +34,15 @@ void TitleScene::Initialize(Game* game)
     m_camera->Initialize(m_player.get());
     m_camera->SetPosition(Vector3{ 0,5,-5 });
 
-
+    m_menu = std::make_unique<Menu>();
+    m_menu->AddUI(L"Resources/Textures/Stage1.png", {0,150});
+    m_menu->AddUI(L"Resources/Textures/Stage2.png", {0,300});
+    m_menu->AddUI(L"Resources/Textures/Stage3.png", {0,450});
+    m_menu->Initialize();
+    m_menuBack = std::make_unique<UI>(L"Resources/Textures/SceneChangeBlack.png");
+    m_menuBack->Initialize();
+    m_nowTime = 0;
+    m_isStageSelect = false;
 }
 
 
@@ -48,11 +57,21 @@ void TitleScene::Update(float elapsedTime)
     m_camera->Update(elapsedTime);
     m_player->Update(elapsedTime);
 
-    if (kb->pressed.Space || gp->a)
+    if (m_isStageSelect)
     {
-        GetGame()->ChangeScene(GetGame()->GetPlayScene());
+        m_nowTime += elapsedTime;
+        m_menu->Update();
+        m_menuPosition = Easing::InOutQuart(m_nowTime, 1.0f);
+        if (kb->pressed.Space || gp->a)
+        {
+            GetGame()->ChangeScene(GetGame()->GetPlayScene());
+        }
     }
 
+    if (kb->pressed.Space || gp->a)
+    {
+        m_isStageSelect = true;
+    }
 }
 
 void TitleScene::Render()
@@ -88,7 +107,12 @@ void TitleScene::Render()
 
 
     Resources::GetInstance()->GetShadow()->End();
-    m_titleLogo->Render(Vector2::Zero);
+    m_titleLogo->Render(Vector2::Zero,Colors::White,Vector2::Zero,{0.5f,0.5f});
+    if (m_isStageSelect)
+    {
+        m_menuBack->Render({ m_menuPosition * 1280 - 640,720 / 2 }, {1,1,1,0.5f}, Vector2{1280,720} / 2, {0.95f,0.95f});
+    }
+    m_menu->Render(Vector2{m_menuPosition * 1280 - 960,0});
 
 }
 

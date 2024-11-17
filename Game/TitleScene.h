@@ -10,6 +10,7 @@
 #include "UI/UI.h"
 #include "Framework/RenderTexture.h"
 #include "Framework/DepthStencil.h"
+#include "Game/UI/Menu.h"
 
 class TitleScene final: public IScene
 {
@@ -33,6 +34,13 @@ private:
 	std::unique_ptr<SkyDome> m_skydome;
 	std::unique_ptr<TitlePlayer> m_player;
 	std::unique_ptr<UI> m_titleLogo;
+	std::unique_ptr<UI> m_menuBack;
+	std::unique_ptr<Menu> m_menu;
+
+	float m_nowTime;
+	float m_menuPosition;
+
+	bool m_isStageSelect;
 	
 };
 
