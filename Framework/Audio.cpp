@@ -50,6 +50,9 @@ void Audio::LoadSoundFile()
 	m_powerUpSE = std::make_unique<SoundEffect>(
 		m_audioEngine.get(), L"Resources/Sounds/PowerUp.wav");
 
+	m_boostSE = std::make_unique<SoundEffect>(
+		m_audioEngine.get(), L"Resources/Sounds/Boost.wav");
+
 	// サウンドエフェクトBGMをロードする
 	m_soundEffectBGM = std::make_unique<SoundEffect>(
 		m_audioEngine.get(), L"Resources/Sounds/Bright_Sky.wav");
@@ -88,4 +91,9 @@ void Audio::PlaySoundSE_Hit()
 void Audio::PlaySoundSE_PowerUp()
 {
 	m_powerUpSE->Play(m_seVolume, 0.5f, 0.5f);
+}
+
+void Audio::PlaySoundSE_Boost()
+{
+	m_boostSE->Play(m_seVolume, 0.5f, 0.5f);
 }

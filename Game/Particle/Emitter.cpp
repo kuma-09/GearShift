@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Emitter.h"
+#include "Framework/Easing.h"
 #include <cmath>
 #include "Game/GameObject.h"
 

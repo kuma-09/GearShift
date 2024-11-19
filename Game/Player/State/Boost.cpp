@@ -2,6 +2,7 @@
 #include "Boost.h"
 #include "Idol.h"
 #include "Jump.h"
+#include "Framework/Audio.h"
 #include "Game/Components/Gravity.h"
 #include "Game/Components/Camera.h"
 #include "Game/PlayScene.h"
@@ -26,6 +27,7 @@ void Boost::Initialize()
 	m_player->GetEnergyGage()->UseEnergyPoint(1);
 	m_player->GetComponent<Camera>()->shake();
 	static_cast<PlayScene*>(m_player->GetScene())->SetNoise();
+	Audio::GetInstance()->PlaySoundSE_Boost();
 }
 
 void Boost::Update(float elapsedTime)
@@ -49,7 +51,7 @@ void Boost::Update(float elapsedTime)
 	{
 		if (m_player->GetBoostPoint() > 0)
 		{
-			m_player->ChangeState(m_player->GetBoost());
+			m_totalTime = m_boostTime;
 		}
 	}
 	

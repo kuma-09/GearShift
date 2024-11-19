@@ -112,8 +112,10 @@ void Player::Update(float elapsedTime)
 		Reload();
 	}
 
-
 	ComponentsUpdate(elapsedTime);
+	UpdateParts(elapsedTime);
+
+
 
 	Vector3 velocity = GetComponent<Move>()->GetVelocity();
 	Quaternion quaternion = Quaternion::CreateFromYawPitchRoll({ 0,0,-velocity.x / 5});
@@ -125,8 +127,6 @@ void Player::Update(float elapsedTime)
 	{
 		SetVelocity({ GetVelocity().x, 0, GetVelocity().z });
 	}
-
-	UpdateParts(elapsedTime);
 
 	m_state->Update(elapsedTime);
 

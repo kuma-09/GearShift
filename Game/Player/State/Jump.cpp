@@ -33,7 +33,7 @@ void Jump::Update(float elapsedTime)
 	const auto& gpState = InputManager::GetInstance()->GetGamePadState();
 	const auto& gpTracker = InputManager::GetInstance()->GetGamePadTracker();
 
-	static_cast<PlayScene*>(m_player->GetScene())->CreateHitParticle(m_player->GetWorld(), m_player->GetQuaternion());
+	//static_cast<PlayScene*>(m_player->GetScene())->CreateHitParticle(m_player->GetWorld(), m_player->GetQuaternion());
 
 	if (m_player->GetVelocity().y < 0)
 	{

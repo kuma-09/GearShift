@@ -19,7 +19,7 @@ public:
 
 private:
 
-	const float SPEED = 1.0f;
+	const float SPEED = 2.5f;
 	const float DIFFUSION = 0.5f;
 
 };

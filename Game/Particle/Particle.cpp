@@ -16,6 +16,7 @@ void Particle::Initialize(DirectX::SimpleMath::Vector3 pos, float lifeTime)
     m_pos = pos;
 
     m_lifeTime = lifeTime;
+    m_maxTime = lifeTime;
 }
 
 void Particle::Update(float elapseTime)
@@ -55,7 +56,7 @@ void Particle::Render(
     billboard *= world;
 
 
-    m_graphics->DrawPrimitiveBegin(m_graphics->GetViewMatrix(), m_graphics->GetProjectionMatrix(),billboard, {1,1,1,m_lifeTime});
+    m_graphics->DrawPrimitiveBegin(m_graphics->GetViewMatrix(), m_graphics->GetProjectionMatrix(),billboard, {1,1,1,m_lifeTime / m_maxTime});
     m_graphics->GetPrimitiveBatch()->DrawQuad(*v1, *v2, *v4,*v3);
     m_graphics->DrawPrimitiveEnd();
 }

@@ -33,5 +33,6 @@ private:
 	DirectX::SimpleMath::Matrix m_world;
 	DirectX::SimpleMath::Vector3 m_pos;
 	float m_lifeTime;
+	float m_maxTime;
 
 };

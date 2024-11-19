@@ -17,7 +17,7 @@ HomingBullet::HomingBullet(IScene* scene, BoxCollider::TypeID id)
 	GetComponent<BoxCollider>()->SetTypeID(id);
 	GetComponent<BoxCollider>()->SetSize({ 0.1f,0.1f,0.1f });
 	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetCubeModel());
-	GetComponent<Emitter>()->Initialize(L"Resources/Textures/smoke_white_big.png");
+	GetComponent<Emitter>()->Initialize(L"Resources/Textures/smoke_white_big.png",0.3f,0.01f,0.1f);
 	SetScale({ 0.1f,0.1f,0.1f });
 	SetState(BulletState::UNUSED);
 }
@@ -156,7 +156,7 @@ void HomingBullet::Render()
 	{
 		GetComponent<ModelDraw>()->Render(GetWorld(), false);
 	}
-	GetComponent<Emitter>()->Render(GetPosition() + DirectX::SimpleMath::Vector2(rand() % 2 - 1,rand() % 2 - 1));
+	GetComponent<Emitter>()->Render(GetPosition() + DirectX::SimpleMath::Vector3((rand() % 3 - 1) * 0.25f, (rand() % 3 - 1) * 0.25f, (rand() % 3 - 1) * 0.25f));
 }
 
 void HomingBullet::Collision(BoxCollider* collider)

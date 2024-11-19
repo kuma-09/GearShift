@@ -87,7 +87,6 @@ void FixedEnemyBullet::Render()
 	{
 		GetComponent<ModelDraw>()->Render(GetWorld(), false);
 	}
-
 }
 
 void FixedEnemyBullet::Collision(BoxCollider* collider)

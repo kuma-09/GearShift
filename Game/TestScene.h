@@ -24,11 +24,13 @@ private:
 	DX::DeviceResources* m_deviceResources;
 	InputManager* m_inputManager;
 
+
 	Microsoft::WRL::ComPtr<ID3D11InputLayout> m_inputLayout;
+
 	Microsoft::WRL::ComPtr<ID3D11VertexShader> m_vs;
 	Microsoft::WRL::ComPtr<ID3D11PixelShader> m_ps;
-	std::unique_ptr<HitEffect> m_effect;
-	std::unique_ptr<CircleGage> m_gage;
+
+	DirectX::VertexPositionColorTexture m_vertex[4];
 
 	float m_time;
 
