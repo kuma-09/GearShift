@@ -33,15 +33,12 @@ void LeftLeg::Initialize(int hp,IScene* scene)
 	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetlLegModel());
 	GetComponent<BoxCollider>()->SetSize({ 0.3f,0.8f,0.3f });
 	GetComponent<BoxCollider>()->SetInitalePosition({ 0,-0.4f,0 });
-	GetComponent<Emitter>()->Initialize(L"Resources/Textures/block.png",0.1f,0.05f,0.2f);
+	GetComponent<Emitter>()->Initialize(L"Resources/Textures/smoke_white.png", 0.2f, 0.1f, 0.3f);
 }
 
 void LeftLeg::Update(float elapsedTime)
 {
 	using namespace DirectX::SimpleMath;
-
-
-
 
 	Quaternion quaternion = GetOwner()->GetQuaternion();
 	Vector3 velocity = GetOwner()->GetComponent<Move>()->GetVelocity() / 3;
@@ -85,7 +82,7 @@ void LeftLeg::Render()
 	}
 	if (static_cast<Player*>(GetOwner())->GetOnFloor())
 	{
-		GetComponent<Emitter>()->Render(GetPosition() - DirectX::SimpleMath::Vector3{ 0,1,0 });
+		GetComponent<Emitter>()->Render(GetPosition() - DirectX::SimpleMath::Vector3{ 0,0.8f,0 });
 	}
 	//GetComponent<BoxCollider>()->Render();
 }

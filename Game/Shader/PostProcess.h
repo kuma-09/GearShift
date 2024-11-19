@@ -70,7 +70,7 @@ private:
 	bool m_isBoost;
 	float m_nowTime;
 	const float m_maxStartNoiseTime = 1.0f;
-	const float m_maxNoiseTime = 0.5f;
+	const float m_maxNoiseTime = 0.2f;
 	const float m_maxBoostBlur = 0.5f;
 
 };

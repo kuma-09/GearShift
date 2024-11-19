@@ -32,7 +32,7 @@ void RightLeg::Initialize(int hp,IScene* scene)
 	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetrLegModel());
 	GetComponent<BoxCollider>()->SetSize({ 0.3f,0.8f,0.3f });
 	GetComponent<BoxCollider>()->SetInitalePosition({ 0,-0.4f,0 });
-	GetComponent<Emitter>()->Initialize(L"Resources/Textures/block.png", 0.1f, 0.05f, 0.2f);
+	GetComponent<Emitter>()->Initialize(L"Resources/Textures/smoke_white.png", 0.2f, 0.1f, 0.2f);
 }
 
 void RightLeg::Update(float elapsedTime)

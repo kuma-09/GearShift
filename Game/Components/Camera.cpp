@@ -109,9 +109,9 @@ void Camera::Finalize()
 void Camera::shake()
 {
     using namespace DirectX::SimpleMath;
-    m_shakeRate = SHAKE_RATE;
+    m_shakeRate = SHAKE_RATE; 
     m_shakeTime = SHAKE_TIME;
-    Vector3 velocity = Vector3::Transform({m_shakeRate,m_shakeRate,m_shakeRate}, GetOwner()->GetQuaternion());
+    Vector3 velocity = Vector3::Transform({0,m_shakeRate,m_shakeRate}, GetOwner()->GetQuaternion());
     m_targetPosition += velocity;
 }
 

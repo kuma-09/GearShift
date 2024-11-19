@@ -44,8 +44,8 @@ void PostProcess::Initialize()
     m_finalRenderTexture->SetDevice(device);
 
     // レンダーテクスチャの作成（ブルーム用）
-    rect.right /= 2;
-    rect.bottom /= 2;
+    rect.right /= 4;
+    rect.bottom /= 4;
 
     m_blur1RT = std::make_unique<DX::RenderTexture>(DXGI_FORMAT_B8G8R8A8_UNORM);
     m_blur1RT->SetDevice(device);
@@ -216,7 +216,7 @@ void PostProcess::combinationRT()
 
     // ビューポートを変更する
     D3D11_VIEWPORT vp_blur =
-    { 0.0f, 0.0f, rect.right / 2.0f, rect.bottom / 2.0f, 0.0f, 1.0f };
+    { 0.0f, 0.0f, rect.right / 4.0f, rect.bottom / 4.0f, 0.0f, 1.0f };
     context->RSSetViewports(1, &vp_blur);
 
     m_basicPostProcess->SetEffect(BasicPostProcess::BloomExtract);
@@ -361,7 +361,6 @@ void PostProcess::combinationRT()
         context->VSSetShader(m_noiseVS.Get(), nullptr, 0);
         context->PSSetShader(m_noisePS.Get(), nullptr, 0);
     }
-
 
     m_batch->Begin();
     m_batch->DrawQuad(m_vertex[0], m_vertex[1], m_vertex[3], m_vertex[2]);
