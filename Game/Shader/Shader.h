@@ -41,6 +41,8 @@ private:
 	//	ピクセルシェーダ
 	Microsoft::WRL::ComPtr<ID3D11PixelShader> m_pixelShader;
 
+	float m_time;
+
 public:
 	//	関数
 	static const std::vector<D3D11_INPUT_ELEMENT_DESC> INPUT_LAYOUT;
@@ -52,7 +54,7 @@ public:
 
 	void CreateShader();
 
-	void OutlineRenderStart(DirectX::SimpleMath::Matrix world, DirectX::SimpleMath::Matrix view, DirectX::SimpleMath::Matrix projection);
+	void RenderStart(DirectX::SimpleMath::Matrix world, DirectX::SimpleMath::Matrix view, DirectX::SimpleMath::Matrix projection);
 	void RenderEnd();
 
 };

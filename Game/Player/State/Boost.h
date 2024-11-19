@@ -3,6 +3,7 @@
 #include "Game/Parts/Part.h"
 #include "Framework/InputManager.h"
 #include "Game/Player/Player.h"
+#include "Game/Shader/Shader.h"
 
 class Boost : public State
 {
@@ -18,6 +19,7 @@ public:
 
 private:
 	Player* m_player;
+	std::unique_ptr<Shader> m_shader;
 
 	// ブーストする力
 	float m_boostPower = 7.5f;
@@ -30,4 +32,6 @@ private:
 
 	// のこりのブースト時間
 	float m_totalTime;
+
+	DirectX::SimpleMath::Matrix m_world;
 };

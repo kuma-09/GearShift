@@ -12,6 +12,8 @@ Boost::Boost(Player* player)
 {
 	m_player = player;
 	m_totalTime = m_boostTime;
+	m_shader = std::make_unique<Shader>();
+	m_shader->CreateShader();
 }
 
 Boost::~Boost()
@@ -32,6 +34,7 @@ void Boost::Initialize()
 
 void Boost::Update(float elapsedTime)
 {
+	using namespace DirectX;
 	using namespace DirectX::SimpleMath;
 
 	m_totalTime -= elapsedTime;
@@ -55,12 +58,24 @@ void Boost::Update(float elapsedTime)
 		}
 	}
 	
+	m_world =  Matrix::CreateScale(0.25f);
+	m_world *= Matrix::CreateFromQuaternion(Quaternion::CreateFromYawPitchRoll(Vector3(XMConvertToRadians(90), 0, 0)) * m_player->GetQuaternion());
+	m_world *= Matrix::CreateTranslation(m_player->GetPosition() + Vector3::Transform(Vector3{ 0,0,1 },m_player->GetQuaternion()));
 
 }
 
 void Boost::Render()
 {
-	
+	auto context = Graphics::GetInstance()->GetDeviceResources()->GetD3DDeviceContext();
+	auto state = Graphics::GetInstance()->GetCommonStates();
+	auto view = Graphics::GetInstance()->GetViewMatrix();
+	auto proj = Graphics::GetInstance()->GetProjectionMatrix();
+
+	Resources::GetInstance()->GetEntyuModel()->Draw(context, *state, DirectX::SimpleMath::Matrix::Identity, view, proj, false, [&]
+		{
+			m_shader->RenderStart(m_world, view, proj);
+		}
+	);
 }
 
 void Boost::Finalize()

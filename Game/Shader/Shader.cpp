@@ -6,7 +6,7 @@
 //-------------------------------------------------------------------------------------
 
 #include "pch.h"
-#include "Game/Shader/Shader.h"
+#include "Shader.h"
 #include "VertexTypes.h"
 #include "Framework/Graphics.h"
 #include "Framework/Resources.h"
@@ -50,9 +50,11 @@ void Shader::CreateShader()
 	
 
 	auto device  = Graphics::GetInstance()->GetDeviceResources()->GetD3DDevice();
+	auto context = Graphics::GetInstance()->GetDeviceResources()->GetD3DDeviceContext();
+	auto states = Graphics::GetInstance()->GetCommonStates();
 	//	コンパイルされたシェーダファイルを読み込み
-	BinaryFile VSData = BinaryFile::LoadFile(L"Resources/Shaders/OutLineVS.cso");
-	BinaryFile PSData = BinaryFile::LoadFile(L"Resources/Shaders/OutLinePS.cso");
+	BinaryFile VSData = BinaryFile::LoadFile(L"Resources/Shaders/BurnerVS.cso");
+	BinaryFile PSData = BinaryFile::LoadFile(L"Resources/Shaders/BurnerPS.cso");
 
 	//	インプットレイアウトの作成
 	device->CreateInputLayout(&INPUT_LAYOUT[0],
@@ -84,13 +86,19 @@ void Shader::CreateShader()
 	bd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
 	bd.CPUAccessFlags = 0;
 	device->CreateBuffer(&bd, nullptr, &m_CBuffer);
+
+	m_time = 0;
 }
 
 
-void Shader::OutlineRenderStart(DirectX::SimpleMath::Matrix world, DirectX::SimpleMath::Matrix view, DirectX::SimpleMath::Matrix projection)
+void Shader::RenderStart(DirectX::SimpleMath::Matrix world, DirectX::SimpleMath::Matrix view, DirectX::SimpleMath::Matrix projection)
 {
 	auto states = Graphics::GetInstance()->GetCommonStates();
 	auto context = Graphics::GetInstance()->GetDeviceResources()->GetD3DDeviceContext();
+
+
+
+	m_time += 0.016f;
 
 	// コンストバッファを作成
 	ConstBuffer cbuff;
@@ -100,7 +108,7 @@ void Shader::OutlineRenderStart(DirectX::SimpleMath::Matrix world, DirectX::Simp
 	cbuff.matProj = projection.Transpose();
 	//	ワールド設定
 	cbuff.matWorld = world.Transpose();
-	cbuff.Diffuse = SimpleMath::Vector4(1, 1, 1, 1);
+	cbuff.Diffuse = SimpleMath::Vector4(m_time, 1, 1, 1);
 
 	//	受け渡し用バッファの内容更新(ConstBufferからID3D11Bufferへの変換）
 	context->UpdateSubresource(m_CBuffer.Get(), 0, NULL, &cbuff, 0, 0);
@@ -118,7 +126,7 @@ void Shader::OutlineRenderStart(DirectX::SimpleMath::Matrix world, DirectX::Simp
 	ID3D11BlendState* blendState = states->NonPremultiplied();
 	context->OMSetBlendState(blendState, nullptr, 0xFFFFFFFF);
 	context->OMSetDepthStencilState(states->DepthDefault(), 0);
-	context->RSSetState(states->CullCounterClockwise());
+	context->RSSetState(states->CullNone());
 
 	//	シェーダをセットする
 	context->VSSetShader(m_vertexShader.Get(), nullptr, 0);

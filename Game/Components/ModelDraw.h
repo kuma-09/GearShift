@@ -3,7 +3,6 @@
 #include "Framework/Graphics.h"
 #include "Framework/Resources.h"
 
-class Shader;
 
 class ModelDraw : public IComponent
 {
