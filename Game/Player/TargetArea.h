@@ -12,13 +12,15 @@ public:
 
 	void Initialize();
 	bool Update(Player* plaer, GameObject* target);
-	void Render(bool inArea);
+	void Render(GameObject* target);
 	void Finalize();
 
 	void SetScale(float scale) { m_scale = scale; }
 	float GetScale() { return m_scale; }
 
 private:
+
+	DirectX::SimpleMath::Vector2 GetScreenPosition(GameObject* target);
 
 	Graphics* m_graphics;
 

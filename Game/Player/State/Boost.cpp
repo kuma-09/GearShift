@@ -23,6 +23,7 @@ void Boost::Initialize()
 	m_velocity = { m_player->GetVelocity().x,m_player->GetVelocity().z };
 	m_velocity.Normalize();
 	m_player->GetEnergyGage()->UseEnergyPoint(1);
+	static_cast<PlayScene*>(m_player->GetScene())->SetNoise();
 }
 
 void Boost::Update(float elapsedTime)

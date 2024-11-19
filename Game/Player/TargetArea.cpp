@@ -50,10 +50,89 @@ bool TargetArea::Update(Player* player , GameObject* target)
 
     UNREFERENCED_PARAMETER(player);
 
-    Matrix view = m_graphics->GetViewMatrix();
-    Matrix proj = m_graphics->GetProjectionMatrix();
+
 
     SetScale(lerp(GetScale(), SCALE, 0.05f));
+
+    Vector2 screenPos = GetScreenPosition(target);
+    float x = screenPos.x;
+    float y = screenPos.y;
+
+
+    // ターゲット範囲にいるか
+    if ((x * x) + (y * y) <= m_range * m_range)
+    {
+        return true;
+    }
+
+    return false;
+
+
+}
+
+void TargetArea::Render(GameObject* target)
+{
+    using namespace DirectX::SimpleMath;
+
+
+    RECT windowsize = m_graphics->GetDeviceResources()->GetOutputSize();
+     
+    float w = float(windowsize.right);
+    float h = float(windowsize.bottom);
+
+    w /= 2;
+    h /= 2;
+
+    float n = float(windowsize.right) / float(1280);
+
+    RECT rect = { 0,0,int(m_textureSize.x) ,int(m_textureSize.y) };
+
+
+
+    // 画面の中心に円を表示
+    m_spriteBatch->Begin();
+    if (target)
+    {
+        Vector2 screenPos = GetScreenPosition(target);
+        m_rotate = lerp(m_rotate, 0, 0.1f);
+        m_spriteBatch->Draw(m_texture.Get(), Vector2(float(w), float(h)), &rect,
+            DirectX::Colors::Red,
+            DirectX::XMConvertToRadians(m_rotate),
+            Vector2(m_textureSize.x / 2, m_textureSize.y / 2),
+            Vector2(m_scale * n, m_scale * n)
+        );
+
+        m_spriteBatch->Draw(m_texture.Get(), Vector2(float(w), float(h)) - screenPos, &rect, DirectX::Colors::CadetBlue,
+            DirectX::XMConvertToRadians(m_rotate),
+            Vector2(m_textureSize.x / 2, m_textureSize.y / 2),
+            Vector2(GetScale() * 0.2f * n, GetScale() * 0.2f * n)
+        );
+    }
+    else
+    {
+        m_rotate++;
+        m_spriteBatch->Draw(m_texture.Get(), Vector2(float(w), float(h)), &rect,
+            DirectX::Colors::CadetBlue,
+            DirectX::XMConvertToRadians(m_rotate),
+            Vector2(m_textureSize.x / 2, m_textureSize.y / 2),
+            Vector2(m_scale * n, m_scale * n)
+        );
+    }
+
+    m_spriteBatch->End();
+}
+
+void TargetArea::Finalize()
+{
+
+}
+
+DirectX::SimpleMath::Vector2 TargetArea::GetScreenPosition(GameObject* target)
+{
+    using namespace DirectX::SimpleMath;
+
+    Matrix view = m_graphics->GetViewMatrix();
+    Matrix proj = m_graphics->GetProjectionMatrix();
 
     // ビューポート行列（スクリーン行列）の作成
     float w;
@@ -88,69 +167,5 @@ bool TargetArea::Update(Player* player , GameObject* target)
     float x = w - screenPos.x;
     float y = h - screenPos.y;
 
-    // ターゲット範囲にいるか
-    if ((x * x) + (y * y) <= m_range * m_range)
-    {
-        m_targetScreenPos = { x,y };
-        //player->SetTarget(target);
-        return true;
-    }
-
-    return false;
-
-
-}
-
-void TargetArea::Render(bool inArea)
-{
-    using namespace DirectX::SimpleMath;
-
-
-    RECT windowsize = m_graphics->GetDeviceResources()->GetOutputSize();
-     
-    float w = float(windowsize.right);
-    float h = float(windowsize.bottom);
-
-    w /= 2;
-    h /= 2;
-
-    float n = float(windowsize.right) / float(1280);
-
-    RECT rect = { 0,0,int(m_textureSize.x) ,int(m_textureSize.y) };
-
-    // 画面の中心に円を表示
-    m_spriteBatch->Begin();
-    if (inArea)
-    {
-        m_rotate = lerp(m_rotate, 0, 0.1f);
-        m_spriteBatch->Draw(m_texture.Get(), Vector2(float(w), float(h)), &rect,
-            DirectX::Colors::Red,
-            DirectX::XMConvertToRadians(m_rotate),
-            Vector2(m_textureSize.x / 2, m_textureSize.y / 2),
-            Vector2(m_scale * n, m_scale * n)
-        );
-
-        m_spriteBatch->Draw(m_texture.Get(), Vector2(float(w), float(h)) - m_targetScreenPos, &rect, DirectX::Colors::CadetBlue,
-            DirectX::XMConvertToRadians(m_rotate),
-            Vector2(m_textureSize.x / 2, m_textureSize.y / 2),
-            Vector2(GetScale() * 0.2f * n, GetScale() * 0.2f * n)
-        );
-    }
-    else
-    {
-        m_rotate++;
-        m_spriteBatch->Draw(m_texture.Get(), Vector2(float(w), float(h)), &rect,
-            DirectX::Colors::CadetBlue,
-            DirectX::XMConvertToRadians(m_rotate),
-            Vector2(m_textureSize.x / 2, m_textureSize.y / 2),
-            Vector2(m_scale * n, m_scale * n)
-        );
-    }
-
-    m_spriteBatch->End();
-}
-
-void TargetArea::Finalize()
-{
-
+    return { x,y };
 }

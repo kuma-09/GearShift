@@ -112,7 +112,7 @@ void TitleScene::Render()
     {
         m_menuBack->Render({ m_menuPosition * 1280 - 640,720 / 2 }, {1,1,1,0.5f}, Vector2{1280,720} / 2, {0.95f,0.95f});
     }
-    m_menu->Render(Vector2{m_menuPosition * 1280 - 960,0});
+    m_menu->Render(Vector2{m_menuPosition * 1280 - 640,0});
 
 }
 
