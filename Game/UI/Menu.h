@@ -15,6 +15,8 @@ public:
 	void Update();
 	void Render(DirectX::SimpleMath::Vector2 pos);
 
+	int GetActiveUI() { return m_activeUI; }
+
 private:
 
 	Graphics* m_graphics;

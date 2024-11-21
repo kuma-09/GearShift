@@ -57,7 +57,7 @@ void Menu::Render(DirectX::SimpleMath::Vector2 pos)
 	{
 		if (m_activeUI == i)
 		{
-			m_ui[i]->Render(m_pos[i] + pos, Colors::White, SimpleMath::Vector2{700,100} / 2, m_size[i] * (1 + sin(m_activeSize) / 5));
+			m_ui[i]->Render(m_pos[i] + pos, Colors::White, SimpleMath::Vector2{700,100} / 2, m_size[i] * (1 + sin(m_activeSize) / 20));
 		}
 		else
 		{

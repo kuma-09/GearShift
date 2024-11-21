@@ -70,7 +70,7 @@ void BodyTop::Render()
 	}
 	else
 	{
-		GetComponent<ModelDraw>()->Render(GetWorld(), false, DirectX::Colors::Black);
+		//GetComponent<ModelDraw>()->Render(GetWorld(), false, DirectX::Colors::Black);
 	}
 
 	//GetComponent<BoxCollider>()->Render();
@@ -95,11 +95,11 @@ void BodyTop::Collision(BoxCollider* collider)
 				bulletObject->Hit();
 				static_cast<PlayScene*>(GetOwner()->GetScene())->SetNoise();
 				m_isHit = true;
-			}
-			else
-			{
-				auto game = static_cast<PlayScene*>(GetOwner()->GetScene())->GetGame();
-				game->ChangeScene(game->GetGameOverScene());
+				if (GetComponent<HP>()->GetHP() <= 0)
+				{
+					auto game = static_cast<PlayScene*>(GetOwner()->GetScene())->GetGame();
+					game->ChangeScene(game->GetGameOverScene());
+				}
 			}
 		}
 	}

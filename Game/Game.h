@@ -3,7 +3,6 @@
 //
 
 #pragma once
-
 #include "Framework/DeviceResources.h"
 #include "Framework/StepTimer.h"
 #include "Game/IScene.h"

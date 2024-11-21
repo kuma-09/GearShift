@@ -23,7 +23,6 @@ float4 main(PS_INPUT input) : SV_TARGET
     
     input.tex.x += sin(time * 3.14f) / 100 * sin(input.pos.y);
     
-    
     float4 output = tex.Sample(samLinear, input.tex);
     
     return output;

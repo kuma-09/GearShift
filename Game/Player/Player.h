@@ -29,6 +29,7 @@ public:
 	void Update(float elapsedTime);
 	void CreateShadow();
 	void Render();
+	void RenderState();
 	void RenderPlayerUI();
 	void Finalize();
 

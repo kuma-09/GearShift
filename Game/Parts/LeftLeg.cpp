@@ -33,7 +33,7 @@ void LeftLeg::Initialize(int hp,IScene* scene)
 	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetlLegModel());
 	GetComponent<BoxCollider>()->SetSize({ 0.3f,0.8f,0.3f });
 	GetComponent<BoxCollider>()->SetInitalePosition({ 0,-0.4f,0 });
-	GetComponent<Emitter>()->Initialize(L"Resources/Textures/smoke_white.png", 0.2f, 0.1f, 0.3f);
+	GetComponent<Emitter>()->Initialize(L"Resources/Textures/smoke_white.png", 0.1f, 0.1f, 0.3f);
 }
 
 void LeftLeg::Update(float elapsedTime)
@@ -78,11 +78,11 @@ void LeftLeg::Render()
 	}
 	else
 	{
-		GetComponent<ModelDraw>()->Render(GetWorld(), false, DirectX::Colors::Black);
+		//GetComponent<ModelDraw>()->Render(GetWorld(), false, DirectX::Colors::Black);
 	}
 	if (static_cast<Player*>(GetOwner())->GetOnFloor())
 	{
-		GetComponent<Emitter>()->Render(GetPosition() - DirectX::SimpleMath::Vector3{ 0,0.8f,0 });
+		GetComponent<Emitter>()->Render(GetPosition() - DirectX::SimpleMath::Vector3{ 0,1.f,0 });
 	}
 	//GetComponent<BoxCollider>()->Render();
 }
@@ -109,8 +109,8 @@ void LeftLeg::Collision(BoxCollider* collider)
 			}
 			else
 			{
-				auto game = static_cast<PlayScene*>(GetOwner()->GetScene())->GetGame();
-				game->ChangeScene(game->GetGameOverScene());
+				//auto game = static_cast<PlayScene*>(GetOwner()->GetScene())->GetGame();
+				//game->ChangeScene(game->GetGameOverScene());
 			}
 		}
 	}

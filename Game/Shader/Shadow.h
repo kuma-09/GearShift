@@ -95,7 +95,7 @@ private:
 
 	// シャドウマップテクスチャ---
 	// シャドウマップのサイズ
-	static const int SHADOWMAP_SIZE = 512;
+	static const int SHADOWMAP_SIZE = 1024;
 
 	// シャドウマップ用（レンダーテクスチャ）
 	std::unique_ptr<DX::RenderTexture> m_shadowMapRT;

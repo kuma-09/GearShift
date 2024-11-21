@@ -235,7 +235,7 @@ void PostProcess::combinationRT()
     context->OMSetRenderTargets(1, &blur2RTV, nullptr);
 
     m_basicPostProcess->SetEffect(BasicPostProcess::BloomBlur);
-    m_basicPostProcess->SetBloomBlurParameters(true, 4.0f, 1.0f);
+    m_basicPostProcess->SetBloomBlurParameters(true, 2.0f, 1.0f);
     m_basicPostProcess->SetSourceTexture(blur1SRV);
     m_basicPostProcess->Process(context);
 
@@ -246,7 +246,7 @@ void PostProcess::combinationRT()
     // レンダーターゲットをblur1に変更する
     context->OMSetRenderTargets(1, &blur1RTV, nullptr);
     m_basicPostProcess->SetEffect(BasicPostProcess::BloomBlur);
-    m_basicPostProcess->SetBloomBlurParameters(false, 4.0f, 1.0f);
+    m_basicPostProcess->SetBloomBlurParameters(false, 2.0f, 1.0f);
     m_basicPostProcess->SetSourceTexture(blur2SRV);
     m_basicPostProcess->Process(context);
 

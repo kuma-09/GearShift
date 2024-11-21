@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Game/UI/UI.h"
+
 class StartAnimation
 {
 public:
@@ -20,6 +22,8 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_texture;
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_GoTexture;
 
+	std::unique_ptr<UI> m_bar;
+	std::unique_ptr<UI> m_font;
 
 	std::string m_score;
 	std::string m_mapNum;

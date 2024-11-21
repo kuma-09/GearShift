@@ -28,9 +28,9 @@ void Emitter::Initialize(const wchar_t* path, float size,float interval, float l
 
     // 四角形の頂点座標を定義する…左下基準のコの字、頂点順の指定でDrawQuadが使える
     m_vertices[0] = { Vector3(-size , size,0),Vector4(1.f,1.f,1.f,1.f), Vector2(0.0f, 0.0f) };	//左上
-    m_vertices[1] = { Vector3(size , size,0),Vector4(1.f,1.f,1.f,1.f), Vector2(1.0f, 0.0f) };	//右上
+    m_vertices[1] = { Vector3(size , size,0) ,Vector4(1.f,1.f,1.f,1.f), Vector2(1.0f, 0.0f) };	//右上
     m_vertices[2] = { Vector3(-size ,-size,0),Vector4(1.f,1.f,1.f,1.f), Vector2(0.0f, 1.0f) };	//左下
-    m_vertices[3] = { Vector3(size ,-size,0),Vector4(1.f,1.f,1.f,1.f), Vector2(1.0f, 1.0f) };	//右下
+    m_vertices[3] = { Vector3(size ,-size,0) ,Vector4(1.f,1.f,1.f,1.f), Vector2(1.0f, 1.0f) };	//右下
 
 
 
@@ -77,9 +77,14 @@ void Emitter::Render(DirectX::SimpleMath::Vector3 pos)
 
     m_graphics->GetBasicEffect()->SetTexture(m_texture.Get());
 
+    auto view = m_graphics->GetViewMatrix();
+    auto projection = m_graphics->GetProjectionMatrix();
+
+    m_graphics->GetBasicEffect()->SetTexture(m_texture.Get());
+
     for (auto& particle : m_particles)
     {
-        particle->Render(&m_vertices[0], &m_vertices[1], &m_vertices[2], &m_vertices[3], m_texture);
+        particle->Render(&m_vertices[0], &m_vertices[1], &m_vertices[2], &m_vertices[3]);
     }
 }
 

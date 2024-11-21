@@ -16,8 +16,7 @@ public:
 		DirectX::VertexPositionColorTexture* v1,
 		DirectX::VertexPositionColorTexture* v2,
 		DirectX::VertexPositionColorTexture* v3,
-		DirectX::VertexPositionColorTexture* v4,
-		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> texture
+		DirectX::VertexPositionColorTexture* v4
 	);
 
 	void Finalize();

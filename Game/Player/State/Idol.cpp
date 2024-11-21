@@ -32,7 +32,7 @@ void Idol::Update(float elapsedTime)
 	//const auto& gpState = InputManager::GetInstance()->GetGamePadState();
 	const auto& gpTracker = InputManager::GetInstance()->GetGamePadTracker();
 
-	m_player->GetEnergyGage()->SetEnergyPoint(1);
+	m_player->GetEnergyGage()->SetEnergyPoint(0.5f);
 
 	if (kb->IsKeyPressed(DirectX::Keyboard::Space) || gpTracker->a == gpTracker->PRESSED)
 	{

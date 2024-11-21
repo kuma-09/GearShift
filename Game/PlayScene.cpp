@@ -89,8 +89,8 @@ void PlayScene::Initialize(Game* game)
 
     //m_player->Initialize();
 
-    //m_dropItem.emplace_back(std::make_unique<DropItem>(this, std::make_unique<BodyTop>()));
-    //m_dropItem.back()->SetPosition(Vector3(0, 20, 20));
+    m_dropItem.emplace_back(std::make_unique<DropItem>(this, std::make_unique<BodyTop>()));
+    m_dropItem.back()->SetPosition(Vector3(0, 20, 20));
 
     //m_dropItem.emplace_back(std::make_unique<DropItem>(this, std::make_unique<LeftArm>()));
     //m_dropItem.back()->SetPosition(Vector3(6, 3, 9));
@@ -354,6 +354,7 @@ void PlayScene::Render()
         enemy->Render();
     }
 
+    m_player->RenderState();
     for (auto& particle : m_hitParticle)
     {
         particle->Render(m_graphics->GetViewMatrix(), m_graphics->GetProjectionMatrix());
@@ -362,9 +363,10 @@ void PlayScene::Render()
 
     // Bloom-------------------------------------
     m_postProcess->BeginBloom();
+    //m_player->RenderState();
     for (auto& particle : m_hitParticle)
     {
-        particle->Render(m_graphics->GetViewMatrix(), m_graphics->GetProjectionMatrix());
+        //particle->Render(m_graphics->GetViewMatrix(), m_graphics->GetProjectionMatrix());
     }
 
     // リソースの解除＆ライトをキューブで描画

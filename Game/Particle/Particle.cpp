@@ -35,15 +35,12 @@ void Particle::Render(
     DirectX::VertexPositionColorTexture* v1,
     DirectX::VertexPositionColorTexture* v2,
     DirectX::VertexPositionColorTexture* v3,
-    DirectX::VertexPositionColorTexture* v4,
-    Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> texture)
+    DirectX::VertexPositionColorTexture* v4)
 {
     using namespace DirectX::SimpleMath;
 
     auto view = m_graphics->GetViewMatrix();
     auto projection = m_graphics->GetProjectionMatrix();
-
-    m_graphics->GetBasicEffect()->SetTexture(texture.Get());
 
     Matrix billboard = view.Invert();
     billboard._41 = 0;

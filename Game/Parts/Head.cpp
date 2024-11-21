@@ -64,7 +64,7 @@ void Head::Render()
 	}
 	else
 	{
-		GetComponent<ModelDraw>()->Render(GetWorld(), false, DirectX::Colors::Black);
+		//GetComponent<ModelDraw>()->Render(GetWorld(), false, DirectX::Colors::Black);
 	}
 	//GetComponent<BoxCollider>()->Render();
 }
@@ -91,8 +91,8 @@ void Head::Collision(BoxCollider* collider)
 			}
 			else
 			{
-				auto game = static_cast<PlayScene*>(GetOwner()->GetScene())->GetGame();
-				game->ChangeScene(game->GetGameOverScene());
+				//auto game = static_cast<PlayScene*>(GetOwner()->GetScene())->GetGame();
+				//game->ChangeScene(game->GetGameOverScene());
 			}
 		}
 	}

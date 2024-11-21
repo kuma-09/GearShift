@@ -60,7 +60,7 @@ void Boost::Update(float elapsedTime)
 	
 	m_world =  Matrix::CreateScale(0.25f);
 	m_world *= Matrix::CreateFromQuaternion(Quaternion::CreateFromYawPitchRoll(Vector3(XMConvertToRadians(90), 0, 0)) * m_player->GetQuaternion());
-	m_world *= Matrix::CreateTranslation(m_player->GetPosition() + Vector3::Transform(Vector3{ 0,0,1 },m_player->GetQuaternion()));
+	m_world *= Matrix::CreateTranslation(m_player->GetPosition() + Vector3(0,0.5f,0) + Vector3::Transform(Vector3{ 0,0,1.2f },m_player->GetQuaternion()));
 
 }
 

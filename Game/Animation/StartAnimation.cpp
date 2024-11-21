@@ -8,6 +8,8 @@ using namespace DirectX::SimpleMath;
 
 StartAnimation::StartAnimation()
 {
+	m_bar = std::make_unique<UI>(L"Resources/Textures/bar.png");
+	m_font = std::make_unique<UI>(L"Resources/Textures/Mission_Start.png");
 }
 
 StartAnimation::~StartAnimation()
@@ -23,12 +25,6 @@ void StartAnimation::Initialize()
 	// スプライトバッチを作成する
 	m_spriteBatch = std::make_unique<DirectX::SpriteBatch>(context);
 
-	// スプライトフォントを作成する
-	m_spriteFont = std::make_unique<DirectX::SpriteFont>(
-		device,
-		L"Resources/Fonts/BigGothic.spritefont"
-	);
-
 	// 画像をロードする
 	DX::ThrowIfFailed(
 		CreateWICTextureFromFile(
@@ -39,6 +35,8 @@ void StartAnimation::Initialize()
 		)
 	);
 
+	m_bar->Initialize();
+	m_font->Initialize();
 
 	m_nowTime = 0;
 	m_result = 0;
@@ -65,19 +63,22 @@ bool StartAnimation::Update(float elapsedTime)
 
 void StartAnimation::Render()
 {
-	auto states = Graphics::GetInstance()->GetCommonStates();
+	auto state = Graphics::GetInstance()->GetCommonStates();
 
 	// スプライトバッチの開始：オプションでソートモード、ブレンドステートを指定する
-	m_spriteBatch->Begin(SpriteSortMode_Deferred, states->NonPremultiplied());;
+	m_spriteBatch->Begin(SpriteSortMode_Deferred, state->NonPremultiplied());;
+
 	// 色(透過度)を決める
 	RECT windowsize = Graphics::GetInstance()->GetDeviceResources()->GetOutputSize();
 	int x, y;
 	Graphics::GetInstance()->GetScreenSize(x,y);
 	float value = float(windowsize.right) / x;
 
-	Vector4 color{ 1.0f,1.0f,1.0f, 0.3f };
-	m_spriteBatch->Draw(m_texture.Get(),Vector2{ ( - 1280 + 1280 * m_result) * value, float(windowsize.bottom) / 2.f}, 0, color, 0, Vector2::Zero, Vector2{1 * value, 1 * value});
-	m_spriteFont->DrawString(m_spriteBatch.get(), L"Mission Start", Vector2{ ( - 1280 + 1280 * m_result) * value, float(windowsize.bottom) / 2.f}, DirectX::Colors::Black,0,Vector2::Zero,Vector2{ 1 * value, 1 * value });
+	XMVECTORF32 color{ 1.0f,1.0f,1.0f, 0.3f };
+	m_spriteBatch->Draw(m_texture.Get(),Vector2{ ( -640 + 1280 * m_result) * value, float(windowsize.bottom) / 2.f}, 0, color, 0, Vector2(1280, 240) / 2, Vector2{1 * value, 1 * value});
+
+	//m_bar->Render(Vector2{ (-1280 + 1280 * m_result) * value, float(windowsize.bottom) / 2.f },color,DirectX::SimpleMath::Vector2::Zero, Vector2{ 1 * value, 1 * value });
+	m_font->Render(Vector2{ (-640 + 1280 * m_result) * value, float(windowsize.bottom) / 2.f },DirectX::Colors::White,Vector2(1200,100) / 2, Vector2{1 * value, 1 * value});
 
 	// スプライトバッチの終わり
 	m_spriteBatch->End();

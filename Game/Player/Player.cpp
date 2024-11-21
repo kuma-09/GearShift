@@ -162,7 +162,7 @@ void Player::CreateShadow()
 
 void Player::Render()
 {
-	m_state->Render();
+
 
 	for (auto& bullet : m_defaultBullet)
 	{
@@ -180,6 +180,11 @@ void Player::Render()
 
 	//GetComponent<BoxCollider>()->Render();
 
+}
+
+void Player::RenderState()
+{
+	m_state->Render();
 }
 
 void Player::RenderPlayerUI()
