@@ -10,6 +10,7 @@ public:
 	{
 		Player,
 		PlayerBullet,
+		PlayerSword,
 		Enemy,
 		EnemyBullet,
 		Wall,

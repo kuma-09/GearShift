@@ -107,6 +107,11 @@ void Player::Update(float elapsedTime)
 		}
 	}
 
+	if (kb->IsKeyPressed(DirectX::Keyboard::Z) || gp->x == gp->PRESSED)
+	{
+		ChangeState(GetAttack());
+	}
+
 	if (kb->IsKeyPressed(DirectX::Keyboard::R))
 	{
 		Reload();

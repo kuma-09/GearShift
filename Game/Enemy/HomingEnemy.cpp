@@ -12,6 +12,7 @@
 #include "Game/PlayScene.h"
 #include "Game/Enemy/State/EnemyAttackState.h"
 #include "Game/Enemy/State/EnemyMoveState.h"
+#include "Game/Object/Sword.h"
 
 HomingEnemy::HomingEnemy(IScene* scene)
 {
@@ -123,7 +124,16 @@ void HomingEnemy::Collision(BoxCollider* collider)
 			bulletObject->Hit();
 		}
 	}
-
+	if (collider->GetTypeID() == BoxCollider::PlayerSword)
+	{
+		Sword* bulletObject = static_cast<Sword*>(collider->GetOwner());
+		if (bulletObject->GetState() == Sword::USING)
+		{
+			GetComponent<HP>()->SetHP(GetComponent<HP>()->GetHP() - 1);
+			static_cast<PlayScene*>(GetScene())->CreateHitParticle(GetWorld());
+			bulletObject->Hit();
+		}
+	}
 	if (collider->GetTypeID() == BoxCollider::Floor ||
 		collider->GetTypeID() == BoxCollider::Wall)
 	{

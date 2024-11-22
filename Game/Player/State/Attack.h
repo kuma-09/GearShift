@@ -4,6 +4,7 @@
 #include "Framework/InputManager.h"
 #include "Game/Player/Player.h"
 #include "Game/Object/Sword.h"
+#include "Game/Shader/Shader.h"
 
 class Attack : public State
 {
@@ -19,12 +20,13 @@ public:
 
 private:
 	Player* m_player;
+	std::unique_ptr<Shader> m_shader;
 
 	// ブーストする力
-	float m_boostPower = 1.0f;
+	float m_boostPower = 5.0f;
 
 	// ブースト時間
-	float m_boostTime = 0.5f;
+	float m_boostTime = 1.0f;
 
 	// ブースト開始時進んでいた方向
 	DirectX::SimpleMath::Vector3 m_velocity;
@@ -36,4 +38,6 @@ private:
 	float m_totalTime;
 
 	std::unique_ptr<Sword> m_sword;
+
+	DirectX::SimpleMath::Matrix m_world;
 };

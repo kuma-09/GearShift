@@ -363,10 +363,10 @@ void PlayScene::Render()
 
     // Bloom-------------------------------------
     m_postProcess->BeginBloom();
-    //m_player->RenderState();
+    m_player->RenderState();
     for (auto& particle : m_hitParticle)
     {
-        //particle->Render(m_graphics->GetViewMatrix(), m_graphics->GetProjectionMatrix());
+        particle->Render(m_graphics->GetViewMatrix(), m_graphics->GetProjectionMatrix());
     }
 
     // リソースの解除＆ライトをキューブで描画
@@ -435,16 +435,16 @@ void PlayScene::CreateHitParticle(DirectX::SimpleMath::Matrix world)
 {
     using namespace DirectX::SimpleMath;
 
-    int particleValue = HitParticle::get_rand(5, 10);
+    int particleValue = HitParticle::get_rand(1, 5);
     Vector3 pos = { world._41,world._42,world._43 };
 
 
     for (int i = 0; i < particleValue; i++)
     {
 
-        float velocityX = (float)HitParticle::get_rand(-10, 10) / 100.0f;
-        float velocityY = (float)HitParticle::get_rand(-10, 10) / 100.0f;
-        float velocityZ = (float)HitParticle::get_rand(5, 20) / 100.0f;
+        float velocityX = 0;
+        float velocityY = 0;
+        float velocityZ = 0;
 
         m_hitParticle.emplace_back(std::make_unique<HitParticle>());
         m_hitParticle.back()->Initialize(pos, Vector3(velocityX, velocityY, velocityZ));

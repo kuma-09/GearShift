@@ -30,6 +30,7 @@ public:
 	DirectX::Model* GetBoomModel() { return m_boom.get(); }
 	DirectX::Model* GetTankBodyModel() { return m_tankBody.get(); }
 	DirectX::Model* GetEntyuModel() { return m_entyu.get(); }
+	DirectX::Model* GetSwordModel() { return m_sword.get(); }
 
 	// テクスチャを取得
 	ID3D11ShaderResourceView* GetGreenTexture() { return m_greenTexture.Get(); }
@@ -76,6 +77,7 @@ private:
 	std::unique_ptr<DirectX::Model> m_bullet;
 	std::unique_ptr<DirectX::Model> m_boom;
 	std::unique_ptr<DirectX::Model> m_entyu;
+	std::unique_ptr<DirectX::Model> m_sword;
 
 	std::unique_ptr<DirectX::Model> m_tankBody;
 	std::unique_ptr<DirectX::Model> m_tankTurret;
