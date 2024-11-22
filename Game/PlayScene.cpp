@@ -442,9 +442,9 @@ void PlayScene::CreateHitParticle(DirectX::SimpleMath::Matrix world)
     for (int i = 0; i < particleValue; i++)
     {
 
-        float velocityX = 0;
-        float velocityY = 0;
-        float velocityZ = 0;
+        float velocityX = 0;//(float)HitParticle::get_rand(-20, 20) / 100.0f;
+            float velocityY = 0;//(float)HitParticle::get_rand(-20, 20) / 100.0f;
+            float velocityZ = 0;//(float)HitParticle::get_rand(-20, 20) / 100.0f;
 
         m_hitParticle.emplace_back(std::make_unique<HitParticle>());
         m_hitParticle.back()->Initialize(pos, Vector3(velocityX, velocityY, velocityZ));
@@ -463,8 +463,8 @@ void PlayScene::CreateHitParticle(DirectX::SimpleMath::Matrix world, DirectX::Si
     for (int i = 0; i < particleValue; i++)
     {
 
-        float velocityX = (float)HitParticle::get_rand(-20, 20) / 1000.0f;
-        float velocityY = (float)HitParticle::get_rand(-20, 20) / 1000.0f;
+        float velocityX = (float)HitParticle::get_rand(-20, 20) / 500.0f;
+        float velocityY = (float)HitParticle::get_rand(-20, 20) / 500.0f;
 
         m_hitParticle.emplace_back(std::make_unique<HitParticle>());
         m_hitParticle.back()->Initialize(pos, Vector3::Transform({ velocityX,velocityY,0 }, rotate));

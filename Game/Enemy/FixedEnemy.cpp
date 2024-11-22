@@ -9,6 +9,7 @@
 #include "Game/Components/HPBar.h"
 #include "Game/Components/Gravity.h"
 #include "Game/Object/Bullet/FixedEnemyBullet.h"
+#include "Game/Object/Sword.h"
 #include "Game/PlayScene.h"
 
 #include "Game/Enemy/State/EnemyAttackState.h"
@@ -123,10 +124,20 @@ void FixedEnemy::Collision(BoxCollider* collider)
 {
 	if (collider->GetTypeID() == BoxCollider::PlayerBullet)
 	{
-		FixedEnemyBullet* bulletObject = static_cast<FixedEnemyBullet*>(collider->GetOwner());
+		Bullet* bulletObject = static_cast<Bullet*>(collider->GetOwner());
 		if (bulletObject->GetState() == Bullet::FLYING)
 		{
 			GetComponent<HP>()->SetHP(GetComponent<HP>()->GetHP() - 1);
+			static_cast<PlayScene*>(GetScene())->CreateHitParticle(GetWorld());
+			bulletObject->Hit();
+		}
+	}
+	if (collider->GetTypeID() == BoxCollider::PlayerSword)
+	{
+		Sword* bulletObject = static_cast<Sword*>(collider->GetOwner());
+		if (bulletObject->GetState() == Sword::USING)
+		{
+			GetComponent<HP>()->SetHP(GetComponent<HP>()->GetHP() - 5);
 			static_cast<PlayScene*>(GetScene())->CreateHitParticle(GetWorld());
 			bulletObject->Hit();
 		}

@@ -129,7 +129,7 @@ void HomingEnemy::Collision(BoxCollider* collider)
 		Sword* bulletObject = static_cast<Sword*>(collider->GetOwner());
 		if (bulletObject->GetState() == Sword::USING)
 		{
-			GetComponent<HP>()->SetHP(GetComponent<HP>()->GetHP() - 1);
+			GetComponent<HP>()->SetHP(GetComponent<HP>()->GetHP() - 5);
 			static_cast<PlayScene*>(GetScene())->CreateHitParticle(GetWorld());
 			bulletObject->Hit();
 		}

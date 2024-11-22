@@ -46,7 +46,7 @@ void Attack::Update(float elapsedTime)
 	m_velocity = Vector3::Transform(Vector3::Forward, m_quaternion);
 	float boostSpeed = std::min(m_boostPower * m_totalTime, 1.0f);
 	m_player->SetVelocity(Vector3(m_velocity.x * boostSpeed, m_velocity.y * boostSpeed, m_velocity.z * boostSpeed));
-	if (m_sword->GetIsHit())
+	if (m_sword->GetState() == Sword::USED)
 	{
 		m_player->SetVelocity(Vector3::Zero);
 	}
@@ -59,7 +59,7 @@ void Attack::Update(float elapsedTime)
 		m_player->ChangeState(m_player->GetBoost());
 	}
 
-	if (m_sword->GetState() == Sword::USED)
+	if (m_sword->GetIsHit())
 	{
 		m_player->ChangeState(m_player->GetIdol());
 	}

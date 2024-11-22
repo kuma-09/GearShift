@@ -34,5 +34,5 @@ private:
 	bool m_isHit;
 	float m_rotate;
 
-	const DirectX::SimpleMath::Vector3 m_size = {4.f,4.f,4.f};
+	const DirectX::SimpleMath::Vector3 m_size = {5.f,5.f,5.f};
 };

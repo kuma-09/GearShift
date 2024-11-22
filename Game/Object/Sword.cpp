@@ -10,7 +10,7 @@ Sword::Sword(IScene* scene , BoxCollider::TypeID id)
 	AddComponent<BoxCollider>();
 	AddComponent<ModelDraw>();
 	GetComponent<BoxCollider>()->SetTypeID(BoxCollider::PlayerSword);
-	GetComponent<BoxCollider>()->SetSize(m_size);
+	GetComponent<BoxCollider>()->SetSize({5,4,5});
 	SetScale(m_size);
 	SetState(SwordState::UNUSED);
 
@@ -29,8 +29,8 @@ void Sword::Initalize(GameObject* object)
 	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetSwordModel());
 
 	Vector3 velocity = Vector3::Zero;
-	SetPosition(Vector3::Zero);
-	SetQuaternion(Quaternion::Identity);
+	SetPosition(m_owner->GetPosition());
+	SetQuaternion(m_owner->GetQuaternion());
 
 	SetVelocity(Vector3::Zero);
 	SetState(SwordState::USING);
@@ -57,10 +57,9 @@ void Sword::Hit()
 	using namespace DirectX::SimpleMath;
 
 	Vector3 velocity = Vector3::Zero;
-	SetPosition(Vector3::Zero);
-	//SetQuaternion(Quaternion::Identity);
-
-	SetVelocity(Vector3::Zero);
+	SetPosition(m_owner->GetPosition());
+	SetQuaternion(m_owner->GetQuaternion());
+	SetState(USED);
 }
 
 void Sword::Update(float elapsedTime)
@@ -68,24 +67,26 @@ void Sword::Update(float elapsedTime)
 	using namespace DirectX;
 	using namespace DirectX::SimpleMath;
 
-	ComponentsUpdate(elapsedTime);
 
-	if (m_isHit)
+
+	if (GetState() == USED)
 	{
-		m_rotate += elapsedTime * 1500;
+		m_rotate += elapsedTime * 1000;
 		if (m_rotate >= 200)
 		{
-			SetState(USED);
+			m_isHit = true;
 		}
 	}
 
 
+	SetPosition(m_owner->GetPosition() + Vector3::Transform({0,0,-4},m_owner->GetQuaternion()));
+	ComponentsUpdate(elapsedTime);
 	SetPosition(m_owner->GetPosition());
 	SetQuaternion(m_owner->GetQuaternion());
 	Matrix world = Matrix::CreateScale(GetScale());
-	if (m_isHit)
+	if (GetState() == USED)
 	{
-		world *= Matrix::CreateFromAxisAngle(Vector3(-2, -2, 0), 100 - m_rotate);
+		world *= Matrix::CreateFromAxisAngle(Vector3(2, 2, 0), XMConvertToRadians(100 - m_rotate));
 	}
 	else
 	{
@@ -98,13 +99,10 @@ void Sword::Update(float elapsedTime)
 
 void Sword::Render()
 {	
-	if (m_state != USED)
+	if (!m_isHit)
 	{
-
-
-
 		static_cast<PlayScene*>(m_owner->GetScene())->CreateHitParticle(GetWorld());
-		GetComponent<ModelDraw>()->Render(GetWorld());
+		GetComponent<ModelDraw>()->Render(GetWorld(),false,DirectX::Colors::LightBlue);
 		GetComponent<BoxCollider>()->Render();
 	}
 
@@ -112,12 +110,5 @@ void Sword::Render()
 
 void Sword::Collision(BoxCollider* collider)
 {
-	if (GetState() == USING)
-	{
-		if (collider->GetTypeID() == BoxCollider::Enemy)
-		{
-			Hit();
-			m_isHit = true;
-		}
-	}
+
 }
