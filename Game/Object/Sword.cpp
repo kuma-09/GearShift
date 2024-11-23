@@ -4,14 +4,14 @@
 #include "Game/Components/ModelDraw.h"
 #include "Game/PlayScene.h"
 
-Sword::Sword(IScene* scene , BoxCollider::TypeID id)
+Sword::Sword(IScene* scene, BoxCollider::TypeID id)
 {
 	SetScene(scene);
 	AddComponent<BoxCollider>();
 	AddComponent<ModelDraw>();
 	GetComponent<BoxCollider>()->SetTypeID(BoxCollider::PlayerSword);
-	GetComponent<BoxCollider>()->SetSize({5,4,5});
-	SetScale(m_size);
+	GetComponent<BoxCollider>()->SetSize({ 5,4,5 });
+	SetScale({7.5f, 7.5f, 7.5f});
 	SetState(SwordState::UNUSED);
 
 }
@@ -71,7 +71,7 @@ void Sword::Update(float elapsedTime)
 
 	if (GetState() == USED)
 	{
-		m_rotate += elapsedTime * 1000;
+		m_rotate += elapsedTime * 750;
 		if (m_rotate >= 200)
 		{
 			m_isHit = true;
@@ -79,11 +79,29 @@ void Sword::Update(float elapsedTime)
 	}
 
 
-	SetPosition(m_owner->GetPosition() + Vector3::Transform({0,0,-4},m_owner->GetQuaternion()));
+	SetPosition(m_owner->GetPosition() + Vector3::Transform({0,0,-1},m_owner->GetQuaternion()));
 	ComponentsUpdate(elapsedTime);
 	SetPosition(m_owner->GetPosition());
 	SetQuaternion(m_owner->GetQuaternion());
-	Matrix world = Matrix::CreateScale(GetScale());
+
+	Matrix world = Matrix::Identity;
+	for (int i = 0; i < 5; i++)
+	{
+		world = Matrix::CreateScale(GetScale());
+		world *= Matrix::CreateTranslation(Vector3{ 0,0,i / 2.f * -1.f});
+		if (GetState() == USED)
+		{
+			world *= Matrix::CreateFromAxisAngle(Vector3(2, 2, 0), XMConvertToRadians(100 - m_rotate));
+		}
+		else
+		{
+			world *= Matrix::CreateFromQuaternion(Quaternion::CreateFromYawPitchRoll(XMConvertToRadians(100), XMConvertToRadians(15), 0));
+		}
+		world *= Matrix::CreateFromQuaternion(GetQuaternion());
+		world *= Matrix::CreateTranslation(GetPosition());
+		static_cast<PlayScene*>(m_owner->GetScene())->CreateHitParticle(world);
+	}
+	world = Matrix::CreateScale(GetScale());
 	if (GetState() == USED)
 	{
 		world *= Matrix::CreateFromAxisAngle(Vector3(2, 2, 0), XMConvertToRadians(100 - m_rotate));
@@ -94,14 +112,15 @@ void Sword::Update(float elapsedTime)
 	}
 	world *= Matrix::CreateFromQuaternion(GetQuaternion());
 	world *= Matrix::CreateTranslation(GetPosition());
+
 	SetWorld(world);
+
 }
 
 void Sword::Render()
 {	
 	if (!m_isHit)
 	{
-		static_cast<PlayScene*>(m_owner->GetScene())->CreateHitParticle(GetWorld());
 		GetComponent<ModelDraw>()->Render(GetWorld(),false,DirectX::Colors::LightBlue);
 		GetComponent<BoxCollider>()->Render();
 	}

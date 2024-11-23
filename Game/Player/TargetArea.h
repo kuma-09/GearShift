@@ -11,9 +11,12 @@ public:
 	~TargetArea();
 
 	void Initialize();
+	void ClearTarget();
 	bool Update(Player* plaer, GameObject* target);
 	void Render(GameObject* target);
 	void Finalize();
+
+	GameObject* GetTarget() { return m_target; }
 
 	void SetScale(float scale) { m_scale = scale; }
 	float GetScale() { return m_scale; }
@@ -35,6 +38,9 @@ private:
 
 	// カメラポジション
 	DirectX::SimpleMath::Vector3 m_eyePosition;
+
+	// 敵
+	GameObject* m_target;
 
 	// 注視点
 	DirectX::SimpleMath::Vector3 m_targetPosition;

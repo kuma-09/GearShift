@@ -9,6 +9,13 @@
 #include "Game/Components/Camera.h"
 #include "Game/Components/Look.h"
 
+#include "Game/Parts/Part.h"
+#include "Game/Parts/Head.h"
+#include "Game/Parts/BodyTop.h"
+#include "Game/Parts/LeftArm.h"
+#include "Game/Parts/LeftLeg.h"
+#include "Game/Parts/RightArm.h"
+#include "Game/Parts/RightLeg.h"
 
 #include "Game/Player/State/Idol.h"
 #include "Game/Player/State/Jump.h"
@@ -39,6 +46,13 @@ Player::Player(IScene* scene)
 	AddComponent<BoxCollider>();
 	AddComponent<Gravity>();
 	AddComponent<HPBar>();
+
+	SetPart(Part::Head, std::make_unique<Head>());
+	SetPart(Part::BodyTop, std::make_unique<BodyTop>());
+	SetPart(Part::LeftArm, std::make_unique<LeftArm>());
+	SetPart(Part::RightArm, std::make_unique<RightArm>());
+	SetPart(Part::LeftLeg, std::make_unique<LeftLeg>());
+	SetPart(Part::RightLeg, std::make_unique<RightLeg>());
 
 	m_idol = std::make_unique<Idol>(this);
 	m_jump = std::make_unique<Jump>(this);

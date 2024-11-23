@@ -45,12 +45,15 @@ void Attack::Update(float elapsedTime)
 	m_quaternion = m_player->GetQuaternion();
 	m_velocity = Vector3::Transform(Vector3::Forward, m_quaternion);
 	float boostSpeed = std::min(m_boostPower * m_totalTime, 1.0f);
-	m_player->SetVelocity(Vector3(m_velocity.x * boostSpeed, m_velocity.y * boostSpeed, m_velocity.z * boostSpeed));
 	if (m_sword->GetState() == Sword::USED)
 	{
-		m_player->SetVelocity(Vector3::Zero);
+		m_player->SetVelocity(Vector3::Lerp(m_player->GetVelocity(), {0,0 ,0}, 0.75f));
 	}
-	static_cast<PlayScene*>(m_player->GetScene())->CreateHitParticle(m_player->GetWorld(), m_player->GetQuaternion());
+	else
+	{
+		m_player->SetVelocity(Vector3(m_velocity.x * boostSpeed, m_velocity.y * boostSpeed, m_velocity.z * boostSpeed));
+	}
+	//static_cast<PlayScene*>(m_player->GetScene())->CreateHitParticle(m_player->GetWorld(), m_player->GetQuaternion());
 	m_player->GetEnergyGage()->UseEnergyPoint(1);
 	m_sword->Update(elapsedTime);
 

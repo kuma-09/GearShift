@@ -41,7 +41,12 @@ TargetArea::~TargetArea()
 
 void TargetArea::Initialize()
 {
+    m_target = nullptr;
+}
 
+void TargetArea::ClearTarget()
+{
+    m_target = nullptr;
 }
 
 bool TargetArea::Update(Player* player , GameObject* target)
@@ -62,6 +67,7 @@ bool TargetArea::Update(Player* player , GameObject* target)
     // ターゲット範囲にいるか
     if ((x * x) + (y * y) <= m_range * m_range)
     {
+        m_target = target;
         return true;
     }
 
@@ -91,9 +97,9 @@ void TargetArea::Render(GameObject* target)
 
     // 画面の中心に円を表示
     m_spriteBatch->Begin();
-    if (target)
+    if (m_target)
     {
-        Vector2 screenPos = GetScreenPosition(target);
+        Vector2 screenPos = GetScreenPosition(m_target);
         m_rotate = lerp(m_rotate, 0, 0.1f);
         m_spriteBatch->Draw(m_texture.Get(), Vector2(float(w), float(h)), &rect,
             DirectX::Colors::Red,

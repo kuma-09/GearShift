@@ -12,13 +12,6 @@
 #include "Game/Components/HPBar.h"
 #include "Game/Components/ModelDraw.h"
 
-#include "Game/Parts/Part.h"
-#include "Game/Parts/Head.h"
-#include "Game/Parts/BodyTop.h"
-#include "Game/Parts/LeftArm.h"
-#include "Game/Parts/LeftLeg.h"
-#include "Game/Parts/RightArm.h"
-#include "Game/Parts/RightLeg.h"
 
 #include "Game/Object/Wall/BillA.h"
 #include "Game/Object/Wall/BillB.h"
@@ -61,39 +54,21 @@ void PlayScene::Initialize(Game* game)
 
     SetGame(game);
 
+    // 制限時間
     m_timeLimit = 180.0f;
     m_totalTime = 0;
 
+    // JsonファイルのDataを読み込み
     std::vector<std::string> str;
     std::vector<Vector3> pos;
     Json::LoadJsonFile(L"Stage1.json", str, pos);
 
-
+    // オブジェクトの生成
     for (int i = 0; i < str.size(); i++)
     {
         CreateObject(str[i], pos[i]);
     }
 
-
-    //// プレイヤー生成
-    //m_player = std::make_unique<Player>(this);
-    //m_player->SetPosition(Vector3(3, 5, 100));
-
-    // パーツを装備
-    m_player->SetPart(Part::Head, std::make_unique<Head>());
-    m_player->SetPart(Part::BodyTop,std::make_unique<BodyTop>());
-    m_player->SetPart(Part::LeftArm, std::make_unique<LeftArm>());
-    m_player->SetPart(Part::RightArm, std::make_unique<RightArm>());
-    m_player->SetPart(Part::LeftLeg,  std::make_unique<LeftLeg>());
-    m_player->SetPart(Part::RightLeg, std::make_unique<RightLeg>());
-
-    //m_player->Initialize();
-
-    m_dropItem.emplace_back(std::make_unique<DropItem>(this, std::make_unique<BodyTop>()));
-    m_dropItem.back()->SetPosition(Vector3(0, 20, 20));
-
-    //m_dropItem.emplace_back(std::make_unique<DropItem>(this, std::make_unique<LeftArm>()));
-    //m_dropItem.back()->SetPosition(Vector3(6, 3, 9));
 
     std::vector<std::unique_ptr<Bullet>> bullets;
     std::vector<std::unique_ptr<Bullet>> bullets2;
@@ -148,13 +123,12 @@ void PlayScene::Update(float elapsedTime)
 {
     using namespace DirectX::SimpleMath;
 
-    // ゲームパッドとキーボードの入力情報を取得
-    //const auto& gp = m_inputManager->GetGamePadTracker();
-    //const auto& kb = m_inputManager->GetKeyboardTracker();
-
     // 経過時間を計算
     m_totalTime += elapsedTime;
     m_postProcess->Update(elapsedTime);
+
+    m_startAnimation->Update(elapsedTime);
+    m_targetArea->ClearTarget();
 
     // ヒットエフェクトの更新
     for (auto it = m_hitParticle.begin(); it != m_hitParticle.end();)
@@ -188,69 +162,26 @@ void PlayScene::Update(float elapsedTime)
     for (auto& enemy : m_Enemy)
     {
         enemy->Update(elapsedTime);
+        m_targetArea->Update(m_player.get(), enemy.get());
     }
+
+    m_player->SetTarget(m_targetArea->GetTarget());
 
     std::vector<Enemy*> inAreaEnemy;
-    if (!m_startAnimation->Update(elapsedTime))
+
+    // 体力の無い敵を削除
+    for (auto it = m_Enemy.begin(); it != m_Enemy.end();)
     {
-        // 体力の無い敵を削除
-        for (auto it = m_Enemy.begin(); it != m_Enemy.end();)
+        if (it->get()->GetComponent<HP>()->GetHP() > 0)
         {
-            //it->get()->Update(elapsedTime);
-            if (m_targetArea->Update(m_player.get(), it->get()))
-            {
-
-                Vector3 dir = it->get()->GetPosition() - m_player->GetPosition();
-                dir.Normalize();
-                Ray ray = { m_player->GetPosition(),dir };
-                float n = 0;
-
-                int i = 0;
-                for (auto& wall : m_wall)
-                {
-                    if (ray.Intersects(*wall->GetComponent<BoxCollider>()->GetBoundingBox(), n))
-                    {
-                        if (n <= (it->get()->GetPosition() - m_player->GetPosition()).Length())
-                        {
-                            i++;
-                        }
-                    }
-                }
-
-                if (i == 0 && it->get()->GetComponent<HP>()->GetHP() > 0)
-                {
-                    inAreaEnemy.emplace_back(it->get());
-                }
-            }
-            if (it->get()->GetComponent<HP>()->GetHP() > 0)
-            {
-                it++;
-            }
-            else
-            {
-
-                it = RemoveEnemy(it);
-                if (m_Enemy.empty())
-                {
-                    GetGame()->ChangeScene(GetGame()->GetResultScene());
-                    return;
-                }
-            }
+            it++;
         }
-    }
-
-    if (inAreaEnemy.empty())
-    {
-        m_player->SetTarget(nullptr);
-    }
-    else
-    {
-        for (auto enemy : inAreaEnemy)
+        else
         {
-            if (enemy->GetComponent<HP>()->GetHP() > 0)
+            it = RemoveEnemy(it);
+            if (m_Enemy.empty())
             {
-                m_player->SetTarget(enemy);
-                break;
+                GetGame()->ChangeScene(GetGame()->GetResultScene());
             }
         }
     }
@@ -435,22 +366,22 @@ void PlayScene::CreateHitParticle(DirectX::SimpleMath::Matrix world)
 {
     using namespace DirectX::SimpleMath;
 
-    int particleValue = HitParticle::get_rand(1, 5);
+    int particleValue = HitParticle::get_rand(1, 1);
     Vector3 pos = { world._41,world._42,world._43 };
 
 
     for (int i = 0; i < particleValue; i++)
     {
 
-        float velocityX = 0;//(float)HitParticle::get_rand(-20, 20) / 100.0f;
-            float velocityY = 0;//(float)HitParticle::get_rand(-20, 20) / 100.0f;
-            float velocityZ = 0;//(float)HitParticle::get_rand(-20, 20) / 100.0f;
+        float velocityX = (float)HitParticle::get_rand(-20, 20) / 1000.0f;
+        float velocityY = (float)HitParticle::get_rand(-20, 20) / 1000.0f;
+        float velocityZ = (float)HitParticle::get_rand(-20, 20) / 1000.0f;
 
         m_hitParticle.emplace_back(std::make_unique<HitParticle>());
         m_hitParticle.back()->Initialize(pos, Vector3(velocityX, velocityY, velocityZ));
     }
 
-
+   
 }
 
 void PlayScene::CreateHitParticle(DirectX::SimpleMath::Matrix world, DirectX::SimpleMath::Quaternion rotate)
@@ -507,6 +438,7 @@ void PlayScene::CreateShadow()
     Resources::GetInstance()->GetShadow()->EndDepth();
 }
 
+// Jsonから読み取った座標にオブジェクトを生成
 void PlayScene::CreateObject(std::string className, DirectX::SimpleMath::Vector3 pos)
 {
     using namespace DirectX::SimpleMath;
@@ -546,7 +478,6 @@ void PlayScene::CreateObject(std::string className, DirectX::SimpleMath::Vector3
 
 std::vector<std::unique_ptr<Enemy>>::iterator PlayScene::RemoveEnemy(std::vector<std::unique_ptr<Enemy>>::iterator it)
 {
-    //RemoveCollider(it->get()->GetComponent<BoxCollider>());
     it->get()->Finalize();
     m_player->SetTarget(nullptr);
     return it = m_Enemy.erase(it);
@@ -556,13 +487,10 @@ void PlayScene::RemoveItem(std::vector<std::unique_ptr<DropItem>>::iterator it)
 {
     Part::TypeID typeID = it->get()->GetPartType();
     m_player->SetPart(typeID, it->get()->GetPart());
-    //RemoveCollider(it->get()->GetComponent<BoxCollider>());
     it = m_dropItem.erase(it);
 }
 
 void PlayScene::RemoveItemB(std::vector<std::unique_ptr<DropItemB>>::iterator it)
 {
-    //m_player->AddWepon(it);
-    //RemoveCollider(it->get()->GetComponent<BoxCollider>());
     it = m_dropItemB.erase(it);
 }
