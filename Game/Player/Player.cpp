@@ -2,6 +2,7 @@
 #include "Player.h"
 #include "Game/Game.h"
 
+#include "Game/Components/HP.h"
 #include "Game/Components/HPBar.h"
 #include "Game/Components/ModelDraw.h"
 #include "Game/Components/BoxCollider.h"
@@ -9,6 +10,7 @@
 #include "Game/Components/Gravity.h"
 #include "Game/Components/Camera.h"
 #include "Game/Components/Look.h"
+#include "Game/Components/Trail.h"
 
 #include "Game/Parts/Part.h"
 #include "Game/Parts/Head.h"
@@ -25,7 +27,6 @@
 #include "Game/Player/State/Attack.h"
 #include "Game/Object/Bullet/NormalBullet.h"
 #include "Game/Object/Bullet/HomingBullet.h"
-#include <Game/Components/HP.h>
 
 #include "Framework/Audio.h"
 #include "Game/PlayScene.h"
@@ -47,6 +48,7 @@ Player::Player(IScene* scene)
 	AddComponent<BoxCollider>();
 	AddComponent<Gravity>();
 	AddComponent<HPBar>();
+	AddComponent<Trail>();
 
 	SetPart(Part::Head, std::make_unique<Head>());
 	SetPart(Part::BodyTop, std::make_unique<BodyTop>());
@@ -89,6 +91,7 @@ void Player::Initialize()
 	GetComponent<Camera>()->SetTarget(this, nullptr);
 	GetComponent<HP>()->SetHP(10);
 	GetComponent<HPBar>()->Initialize();
+	GetComponent<Trail>()->Initialize(L"Resources/Texture/green.png", 20);
 	SetOnFloor(false);
 
 	m_energyGage = std::make_unique<EnergyGage>();
@@ -136,7 +139,6 @@ void Player::Update(float elapsedTime)
 	UpdateParts(elapsedTime);
 
 
-
 	Vector3 velocity = GetComponent<Move>()->GetVelocity();
 	Quaternion quaternion = Quaternion::CreateFromYawPitchRoll({ 0,0,-velocity.x / 5});
 	if (!m_target)
@@ -173,6 +175,9 @@ void Player::Update(float elapsedTime)
 	SetWorld(world);
 	SetOnFloor(false);
 
+	Vector3 pos = { world._41,world._42,world._43 };
+	GetComponent<Trail>()->SetPos(pos, pos + Vector3{ 0, -1, 0 });
+
 }
 
 void Player::CreateShadow()
@@ -199,6 +204,7 @@ void Player::Render()
 	RenderParts();
 
 	GetComponent<HPBar>()->Render(GetPosition());
+	//GetComponent<Trail>()->Render();
 
 }
 

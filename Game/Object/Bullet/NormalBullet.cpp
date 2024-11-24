@@ -5,6 +5,7 @@
 #include "Game/PlayScene.h"
 #include "Game/Components/BoxCollider.h"
 #include "Game/Components/ModelDraw.h"
+#include "Game/Components/Trail.h"
 #include <random>
 
 #include "Framework/Audio.h"
@@ -14,6 +15,7 @@ NormalBullet::NormalBullet(IScene* scene, BoxCollider::TypeID id)
 	SetScene(scene);
 	AddComponent<BoxCollider>();
 	AddComponent<ModelDraw>();
+	AddComponent<Trail>();
 	GetComponent<BoxCollider>()->SetTypeID(id);
 	GetComponent<BoxCollider>()->SetSize({ 0.5f,0.5f,0.5f });
 	SetScale({ 0.25f,0.25f,0.25f });
@@ -31,6 +33,7 @@ void NormalBullet::Initalize(GameObject* object)
 	SetOwner(object);
 
 	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetCubeModel());
+	GetComponent<Trail>()->Initialize(L"Resources/Texture/green.png", 10);
 
 	Vector3 velocity = Vector3::Zero;
 	SetPosition(Vector3::Zero);
@@ -96,10 +99,15 @@ void NormalBullet::Update(float elapsedTime)
 	
 	SetPosition(GetPosition() + GetVelocity() * elapsedTime);
 
+
 	Matrix world = Matrix::CreateScale(GetScale());
 	world *= Matrix::CreateFromQuaternion(GetQuaternion());
 	world *= Matrix::CreateTranslation(GetPosition());
 	SetWorld(world);
+
+	Vector3 pos = { world._41,world._42,world._43 };
+	//if (GetState() == FLYING) GetComponent<Trail>()->SetPos(pos, pos + Vector3(0,1,0));
+	if (GetState() == FLYING) GetComponent<Trail>()->SetPos(GetPosition(), GetPosition() + Vector3(0, 1, 0));
 }
 
 void NormalBullet::Render()
@@ -107,6 +115,7 @@ void NormalBullet::Render()
 	if (GetState() == FLYING)
 	{
 		GetComponent<ModelDraw>()->Render(GetWorld(), false);
+		GetComponent<Trail>()->Render();
 	}
 }
 
