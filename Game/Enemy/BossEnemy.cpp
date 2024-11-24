@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "HomingEnemy.h"
+#include "BossEnemy.h"
 #include <iostream>
 #include <algorithm>
 #include "Game/Components/HP.h"
@@ -7,57 +7,67 @@
 #include "Game/Components/ModelDraw.h"
 #include "Game/Components/BoxCollider.h"
 #include "Game/Components/HPBar.h"
-#include "Game/Object/Bullet/EnemyBullet.h"
-#include "Game/Object/Bullet/HomingBullet.h"
+#include "Game/Components/Gravity.h"
+#include "Game/Object/Bullet/FixedEnemyBullet.h"
+#include "Game/Object/Sword.h"
 #include "Game/PlayScene.h"
+
 #include "Game/Enemy/State/EnemyAttackState.h"
 #include "Game/Enemy/State/EnemyMoveState.h"
-#include "Game/Object/Sword.h"
 
-HomingEnemy::HomingEnemy(IScene* scene)
+#include "Game/Parts/Head.h"
+#include "Game/Parts/BodyTop.h"
+#include "Game/Parts/LeftArm.h"
+#include "Game/Parts/LeftLeg.h"
+#include "Game/Parts/RightArm.h"
+#include "Game/Parts/RightLeg.h"
+
+
+
+BossEnemy::BossEnemy(IScene* scene)
 {
 	SetScene(scene);
 
 	AddComponent<HP>();
 	AddComponent<Look>();
-	AddComponent<ModelDraw>();
+	AddComponent<Gravity>();
 	AddComponent<BoxCollider>();
 	AddComponent<HPBar>();
 
-	for (int i = 0; i < BULLET_COUNT; i++)
-	{
-		m_bullet.emplace_back(std::make_unique<HomingBullet>(GetScene(), BoxCollider::TypeID::EnemyBullet));
-	}
+	m_bullet = std::make_unique<FixedEnemyBullet>(GetScene(), BoxCollider::TypeID::EnemyBullet);
+
 	SetEnemyAttack(std::make_unique<EnemyAttackState>(this));
 	SetEnemyMove(std::make_unique<EnemyMoveState>(this));
-	SetScale({ 0.05f,0.05f,0.05f });
+	SetScale({ 3.0f,3.0f,3.0f });
 
 	m_state = GetMoveState();
+
+	SetPart(Part::Head, std::make_unique<Head>());
+	SetPart(Part::BodyTop, std::make_unique<BodyTop>());
+	SetPart(Part::LeftArm, std::make_unique<LeftArm>());
+	SetPart(Part::RightArm, std::make_unique<RightArm>());
+	SetPart(Part::LeftLeg, std::make_unique<LeftLeg>());
+	SetPart(Part::RightLeg, std::make_unique<RightLeg>());
 }
 
-HomingEnemy::~HomingEnemy()
+BossEnemy::~BossEnemy()
 {
 	//RemoveAllComponents();
+
 }
 
-void HomingEnemy::Initialize(GameObject* target)
+void BossEnemy::Initialize(GameObject* target)
 {
 	using namespace DirectX::SimpleMath;
 
-	SetTarget(target);
 
 	GetComponent<HP>()->SetHP(10);
+	SetTarget(target);
 	GetComponent<Look>()->SetTarget(this, target);
-	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetDiceModel());
 	GetComponent<BoxCollider>()->SetTypeID(BoxCollider::TypeID::Enemy);
-	GetComponent<BoxCollider>()->SetSize({1,1,1});
+	GetComponent<BoxCollider>()->SetSize({ 2,1,3 });
 	GetComponent<HPBar>()->Initialize();
-
-	for (auto& bullet : m_bullet)
-	{
-		bullet->Initalize(this);
-	}
-
+	m_bullet->Initalize(this);
 	m_state->Initialize();
 	Matrix world = Matrix::Identity;
 	world = Matrix::CreateScale(GetScale());
@@ -67,75 +77,62 @@ void HomingEnemy::Initialize(GameObject* target)
 	SetWorld(world);
 }
 
-void HomingEnemy::Update(float elapsedTime)
+void BossEnemy::Update(float elapsedTime)
 {
 	using namespace DirectX::SimpleMath;
 
-	ComponentsUpdate(elapsedTime);
-
 	m_state->Update(elapsedTime);
-	for (auto& bullet : m_bullet)
-	{
-		bullet->Update(elapsedTime);
-	}
+	m_bullet->Update(elapsedTime);
+	ComponentsUpdate(elapsedTime);
+	UpdateParts(elapsedTime);
 
 	// À•W‚ÌˆÚ“®
 	SetPosition(GetPosition() + Vector3::Transform(GetVelocity(), GetQuaternion()));
 
+}
+
+void BossEnemy::CreateShader()
+{
+	CreateShadows();
+}
+
+void BossEnemy::Render()
+{
+	using namespace DirectX::SimpleMath;
+
+	m_bullet->Render();
+	m_state->Render();
+	RenderParts();
+
 	Matrix world = Matrix::Identity;
 	world = Matrix::CreateScale(GetScale());
 	world *= Matrix::CreateFromQuaternion(GetQuaternion());
-	world *= Matrix::CreateTranslation(GetPosition());
+	world *= Matrix::CreateTranslation(GetPosition() + Vector3{ 0,-0.9f,0 });
 
 	SetWorld(world);
-}
 
-void HomingEnemy::CreateShader()
-{
-	GetComponent<ModelDraw>()->CreateShadow(GetWorld());
-}
 
-void HomingEnemy::Render()
-{
-	for (auto& bullet : m_bullet)
-	{
-		bullet->Render();
-	}
-	m_state->Render();
-	GetComponent<ModelDraw>()->Render(GetWorld(),true);
-	
-	// “–‚½‚è”»’è‚Ì•`‰æ
+	if (GetComponent<HP>()->GetHP() <= 0) return;
 	//GetComponent<BoxCollider>()->Render();
 }
 
-void HomingEnemy::Finalize()
+void BossEnemy::Finalize()
 {
-	for (auto& bullet : m_bullet)
-	{
-		static_cast<PlayScene*>(GetScene())->RemoveCollider(bullet->GetComponent<BoxCollider>());
-	}
-
+	dynamic_cast<PlayScene*>(GetScene())->RemoveCollider(m_bullet->GetComponent<BoxCollider>());
 }
 
-void HomingEnemy::Shot()
+void BossEnemy::Shot()
 {
-	for (auto& bullet : m_bullet)
-	{
-		if (bullet->GetState() == Bullet::BulletState::UNUSED)
-		{
-			bullet->Shot(static_cast<Player*>(GetTarget()));
-			break;
-		}
-	}
+	m_bullet->Shot(static_cast<Player*>(GetTarget()));
 }
 
-void HomingEnemy::ChangeState(State* state)
+void BossEnemy::ChangeState(State* state)
 {
 	m_state = state;
 	m_state->Initialize();
 }
 
-void HomingEnemy::Collision(BoxCollider* collider)
+void BossEnemy::Collision(BoxCollider* collider)
 {
 	if (collider->GetTypeID() == BoxCollider::PlayerBullet)
 	{
@@ -161,5 +158,6 @@ void HomingEnemy::Collision(BoxCollider* collider)
 		collider->GetTypeID() == BoxCollider::Wall)
 	{
 		BoxCollider::CheckHit(this, collider->GetOwner());
+
 	}
 }

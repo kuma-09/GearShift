@@ -32,7 +32,7 @@ void EnemyMoveState::Update(float elapsedTime)
 	{
 		m_enemy->SetVelocity({ 0,0,-SPEED });
 	}
-	else if (dis > 20)
+	else
 	{
 		m_enemy->ChangeState(m_enemy->GetAttackState());
 	}

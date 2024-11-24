@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "Gravity.h"
+#include "BoxCollider.h"
 #include "Game/GameObject.h"
+
 
 Gravity::Gravity()
 {
@@ -14,7 +16,6 @@ Gravity::~Gravity()
 
 void Gravity::Initialize()
 {
-
 }
 
 void Gravity::Update(float elapsedTime)

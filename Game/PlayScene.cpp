@@ -373,9 +373,9 @@ void PlayScene::CreateHitParticle(DirectX::SimpleMath::Matrix world)
     for (int i = 0; i < particleValue; i++)
     {
 
-        float velocityX = (float)HitParticle::get_rand(-20, 20) / 1000.0f;
-        float velocityY = (float)HitParticle::get_rand(-20, 20) / 1000.0f;
-        float velocityZ = (float)HitParticle::get_rand(-20, 20) / 1000.0f;
+        float velocityX = (float)HitParticle::get_rand(-20, 20) / 500.0f;
+        float velocityY = (float)HitParticle::get_rand(-20, 20) / 500.0f;
+        float velocityZ = (float)HitParticle::get_rand(-20, 20) / 500.0f;
 
         m_hitParticle.emplace_back(std::make_unique<HitParticle>());
         m_hitParticle.back()->Initialize(pos, Vector3(velocityX, velocityY, velocityZ));
@@ -442,7 +442,6 @@ void PlayScene::CreateShadow()
 void PlayScene::CreateObject(std::string className, DirectX::SimpleMath::Vector3 pos)
 {
     using namespace DirectX::SimpleMath;
-    GameObject* object = nullptr;
     if (className == "Player")
     {
          m_player = std::make_unique<Player>(this);
@@ -470,6 +469,12 @@ void PlayScene::CreateObject(std::string className, DirectX::SimpleMath::Vector3
     if (className == "FixedEnemy")
     {
         m_Enemy.emplace_back(std::make_unique<FixedEnemy>(this));
+        m_Enemy.back()->SetPosition(pos);
+        m_Enemy.back()->Initialize(m_player.get());
+    }
+    if (className == "BossEnemy")
+    {
+        m_Enemy.emplace_back(std::make_unique<BossEnemy>(this));
         m_Enemy.back()->SetPosition(pos);
         m_Enemy.back()->Initialize(m_player.get());
     }

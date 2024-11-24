@@ -17,7 +17,7 @@ void EnemyAttackState::Initialize()
 void EnemyAttackState::Update(float elapsedTime)
 {
 	m_totalTime += elapsedTime;
-	m_enemy->SetVelocity({ sinf(m_totalTime) * SPEED,0,0 });
+	m_enemy->SetVelocity({0,0,0 });
 	if (m_totalTime >= SHOT_INTERVAL)
 	{
 		m_enemy->Shot();

@@ -7,6 +7,7 @@
 #include "Player/Player.h"
 #include "Enemy/FixedEnemy.h"
 #include "Enemy/HomingEnemy.h"
+#include "Enemy/BossEnemy.h"
 #include "Game/Object/Wall/Wall.h"
 #include "Game/Object/DropItem.h"
 #include "Game/Object/DropItemB.h"
@@ -85,6 +86,8 @@ private:
 	std::vector<std::unique_ptr<Floor>>   m_floor;
 	// ターゲット範囲
 	std::unique_ptr<TargetArea> m_targetArea;
+
+	std::vector<std::unique_ptr<Bullet>> m_bullets;
 
 	// HPの表示UI
 	std::unique_ptr<HPUI> m_hpUI;

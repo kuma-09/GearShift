@@ -53,6 +53,9 @@ void Audio::LoadSoundFile()
 	m_boostSE = std::make_unique<SoundEffect>(
 		m_audioEngine.get(), L"Resources/Sounds/Boost.wav");
 
+	m_slashSE = std::make_unique<SoundEffect>(
+		m_audioEngine.get(), L"Resources/Sounds/Slash2.wav");
+
 	// サウンドエフェクトBGMをロードする
 	m_soundEffectBGM = std::make_unique<SoundEffect>(
 		m_audioEngine.get(), L"Resources/Sounds/Bright_Sky.wav");
@@ -96,4 +99,9 @@ void Audio::PlaySoundSE_PowerUp()
 void Audio::PlaySoundSE_Boost()
 {
 	m_boostSE->Play(m_seVolume, 0.5f, 0.5f);
+}
+
+void Audio::PlaySoundSE_Slash()
+{
+	m_slashSE->Play(m_seVolume, 0.5f, 0.5f);
 }

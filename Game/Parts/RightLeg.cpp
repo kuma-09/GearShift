@@ -43,8 +43,11 @@ void RightLeg::Update(float elapsedTime)
 
 	Quaternion quaternion = GetOwner()->GetQuaternion();
 	Vector3 pos{ 0.4f,-0.2f,-0.0f };
-	Vector3 velocity = GetOwner()->GetComponent<Move>()->GetVelocity() / 3;
-	//velocity = Vector3::Transform(velocity, quaternion);
+	Vector3 velocity = Vector3::Zero;
+	if (GetOwner()->GetComponent<Move>())
+	{
+		velocity = GetOwner()->GetComponent<Move>()->GetVelocity() / 3;
+	}
 	SetPosition(GetOwner()->GetPosition() + Vector3::Transform(pos, quaternion));
 	SetVelocity(GetOwner()->GetVelocity());
 

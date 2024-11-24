@@ -30,7 +30,9 @@ public:
 
 private:
 
-	std::unique_ptr<Bullet> m_bullet;
+	const int BULLET_COUNT = 10;
+
+	std::vector<std::unique_ptr<Bullet>> m_bullet;
 	State* m_state;
 };
 

@@ -1,7 +1,7 @@
 #pragma once
 #include "IComponent.h"
-#include "Framework/InputManager.h"
 
+class BoxCollider;
 
 class Gravity : public IComponent
 {

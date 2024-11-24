@@ -3,6 +3,7 @@
 #include "Game/Components/BoxCollider.h"
 #include "Game/Components/ModelDraw.h"
 #include "Game/PlayScene.h"
+#include "Framework/Audio.h"
 
 Sword::Sword(IScene* scene, BoxCollider::TypeID id)
 {
@@ -56,10 +57,14 @@ void Sword::Hit()
 {
 	using namespace DirectX::SimpleMath;
 
-	Vector3 velocity = Vector3::Zero;
-	SetPosition(m_owner->GetPosition());
-	SetQuaternion(m_owner->GetQuaternion());
-	SetState(USED);
+	if (GetState()!=USED)
+	{
+		Vector3 velocity = Vector3::Zero;
+		SetPosition(m_owner->GetPosition());
+		SetQuaternion(m_owner->GetQuaternion());
+		SetState(USED);
+		Audio::GetInstance()->PlaySoundSE_Slash();
+	}
 }
 
 void Sword::Update(float elapsedTime)

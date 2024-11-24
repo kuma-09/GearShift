@@ -45,7 +45,6 @@ Player::Player(IScene* scene)
 	AddComponent<Look>();
 	AddComponent<BoxCollider>();
 	AddComponent<Gravity>();
-	AddComponent<HPBar>();
 
 	SetPart(Part::Head, std::make_unique<Head>());
 	SetPart(Part::BodyTop, std::make_unique<BodyTop>());
@@ -86,8 +85,6 @@ void Player::Initialize()
 	GetComponent<BoxCollider>()->SetSize({ 1,1.45f,1 });
 	GetComponent<Look>()->SetTarget(this, nullptr);
 	GetComponent<Camera>()->SetTarget(this, nullptr);
-	GetComponent<HP>()->SetHP(100);
-	GetComponent<HPBar>()->Initialize();
 	SetOnFloor(false);
 
 	m_energyGage = std::make_unique<EnergyGage>();
