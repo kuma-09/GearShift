@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Player.h"
+#include "Game/Game.h"
 
 #include "Game/Components/HPBar.h"
 #include "Game/Components/ModelDraw.h"
@@ -45,6 +46,7 @@ Player::Player(IScene* scene)
 	AddComponent<Look>();
 	AddComponent<BoxCollider>();
 	AddComponent<Gravity>();
+	AddComponent<HPBar>();
 
 	SetPart(Part::Head, std::make_unique<Head>());
 	SetPart(Part::BodyTop, std::make_unique<BodyTop>());
@@ -85,6 +87,8 @@ void Player::Initialize()
 	GetComponent<BoxCollider>()->SetSize({ 1,1.45f,1 });
 	GetComponent<Look>()->SetTarget(this, nullptr);
 	GetComponent<Camera>()->SetTarget(this, nullptr);
+	GetComponent<HP>()->SetHP(10);
+	GetComponent<HPBar>()->Initialize();
 	SetOnFloor(false);
 
 	m_energyGage = std::make_unique<EnergyGage>();
@@ -194,7 +198,7 @@ void Player::Render()
 
 	RenderParts();
 
-	//GetComponent<BoxCollider>()->Render();
+	GetComponent<HPBar>()->Render(GetPosition());
 
 }
 
@@ -295,12 +299,21 @@ void Player::Collision(BoxCollider* collider)
 	{
 		if (m_state != m_boost.get())
 		{
-			GetPart(Part::Head)->Collision(collider);
-			GetPart(Part::BodyTop)->Collision(collider);
-			GetPart(Part::LeftArm)->Collision(collider);
-			GetPart(Part::RightArm)->Collision(collider);
-			GetPart(Part::LeftLeg)->Collision(collider);
-			GetPart(Part::RightLeg)->Collision(collider);
+			//GetPart(Part::Head)->Collision(collider);
+			//GetPart(Part::BodyTop)->Collision(collider);
+			//GetPart(Part::LeftArm)->Collision(collider);
+			//GetPart(Part::RightArm)->Collision(collider);
+			//GetPart(Part::LeftLeg)->Collision(collider);
+			//GetPart(Part::RightLeg)->Collision(collider);
+			GetComponent<Camera>()->shake();
+			GetComponent<HP>()->SetHP(GetComponent<HP>()->GetHP() - 1);
+			//collider->Hit();
+			static_cast<PlayScene*>(GetScene())->SetNoise();
+			if (GetComponent<HP>()->GetHP() <= 0)
+			{
+				auto game = static_cast<PlayScene*>(GetScene())->GetGame();
+				game->ChangeScene(game->GetGameOverScene());
+			}
 		}
 	}
 	

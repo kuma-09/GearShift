@@ -45,7 +45,7 @@ void HitEffect::Set(DirectX::SimpleMath::Vector3 pos)
 
 	for (int i = 0; i < 3; i++)
 	{
-		m_posLife.insert({ pos,0.0f });
+		m_posLife.insert({ pos + Vector3(rand() % 3,rand() % 3,rand() % 3),0.0f});
 	}
 
 

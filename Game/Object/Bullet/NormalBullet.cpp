@@ -68,7 +68,7 @@ void NormalBullet::Hit()
 
 	if (GetState() == BulletState::FLYING)
 	{
-		static_cast<PlayScene*>(GetOwner()->GetScene())->CreateHitEffect(GetPosition());
+		//static_cast<PlayScene*>(GetOwner()->GetScene())->CreateHitEffect(GetPosition());
 		Vector3 velocity = Vector3::Zero;
 		SetPosition(Vector3::Zero);
 		SetQuaternion(Quaternion::Identity);

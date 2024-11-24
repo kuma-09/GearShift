@@ -178,6 +178,7 @@ void PlayScene::Update(float elapsedTime)
         }
         else
         {
+            CreateHitEffect(it->get()->GetPosition());
             it = RemoveEnemy(it);
             if (m_Enemy.empty())
             {
