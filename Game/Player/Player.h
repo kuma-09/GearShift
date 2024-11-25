@@ -123,7 +123,7 @@ private:
 	std::unordered_map<Part::TypeID, std::unique_ptr<Part>> m_pPart;
 
 	// 弾の最大数
-	static const int MAX_BULLET_COUNT = 10;
+	static const int MAX_BULLET_COUNT = 30;
 
 	// 一フレーム前の座標
 	DirectX::SimpleMath::Vector3 m_prePosition;
@@ -145,7 +145,7 @@ private:
 	std::vector<std::unique_ptr<Bullet>> m_exBullet;
 	int m_exBulletSize;
 	float m_bulletInterval;
-	const float INTERVAL = 0.5f;
+	const float INTERVAL = 0.25f;
 
 	bool m_onFloor;
 

@@ -160,6 +160,8 @@ void PostProcess::BeginNormal()
     // -------------------------------------------------------------------------- //
     // レンダーターゲットを変更（offscreenRTV_Normal）
     // -------------------------------------------------------------------------- //
+    ID3D11ShaderResourceView* nullsrv[] = { nullptr };
+    context->PSSetShaderResources(1, 1, nullsrv);
     context->ClearDepthStencilView(depthStencil, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
     context->ClearRenderTargetView(m_offscreenRT_Normal->GetRenderTargetView(), Colors::Black);
     context->OMSetRenderTargets(1, &offscreenRTV_Normal, depthStencil);
@@ -178,6 +180,8 @@ void PostProcess::BeginBloom()
     // -------------------------------------------------------------------------- //
     // レンダーターゲットを変更（offscreenRTV_Bloom）
     // -------------------------------------------------------------------------- //
+    ID3D11ShaderResourceView* nullsrv[] = { nullptr };
+    context->PSSetShaderResources(1, 1, nullsrv);
     context->ClearRenderTargetView(m_offscreenRT_Bloom->GetRenderTargetView(), Colors::Black);
     context->OMSetRenderTargets(1, &offscreenRTV_Bloom, depthStencil);
     // -------------------------------------------------------------------------- //
@@ -211,8 +215,7 @@ void PostProcess::combinationRT()
     // レンダーターゲットをblur1に変更する
 
     context->OMSetRenderTargets(1, &blur1RTV, nullptr);
-    ID3D11ShaderResourceView* nullsrv[] = { nullptr };
-    context->PSSetShaderResources(1, 1, nullsrv);
+
 
     // ビューポートを変更する
     D3D11_VIEWPORT vp_blur =
@@ -290,74 +293,40 @@ void PostProcess::combinationRT()
 
     auto state = m_graphics->GetCommonStates();
 
+    // 定数バッファを更新
+    D3D11_MAPPED_SUBRESOURCE mappedResource;
+    // GPUが定数バッファに対してアクセスを行わないようにする
+    context->Map(m_constantBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+    // 定数バッファを更新
+    ConstantBuffer cb = {};
+    cb.time = m_nowTime / m_maxStartNoiseTime;
+    *static_cast<ConstantBuffer*>(mappedResource.pData) = cb;
+    // GPUが定数バッファに対してのアクセスを許可する
+    context->Unmap(m_constantBuffer.Get(), 0);
+    // ピクセルシェーダ使用する定数バッファを設定
+    ID3D11Buffer* cbuf_ps[] = { m_constantBuffer.Get() };
+    context->PSSetConstantBuffers(1, 1, cbuf_ps);
+    ID3D11SamplerState* sampler[1] = { state->LinearWrap() };
+    context->PSSetSamplers(0, 1, sampler);
+    context->RSSetState(state->CullNone());
+    context->IASetInputLayout(m_inputLayout.Get());
+    context->PSSetShaderResources(0, 1, &finalSRV);
+
     if (!m_isNoise)
     {
         if (m_isStartNoise)
         {
-            // 定数バッファを更新
-            D3D11_MAPPED_SUBRESOURCE mappedResource;
-
-            // GPUが定数バッファに対してアクセスを行わないようにする
-            context->Map(m_constantBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
-
-            // 定数バッファを更新
-            ConstantBuffer cb = {};
-            cb.time = m_nowTime / m_maxStartNoiseTime;
-
-            *static_cast<ConstantBuffer*>(mappedResource.pData) = cb;
-
-            // GPUが定数バッファに対してのアクセスを許可する
-            context->Unmap(m_constantBuffer.Get(), 0);
-
-            // ピクセルシェーダ使用する定数バッファを設定
-            ID3D11Buffer* cbuf_ps[] = { m_constantBuffer.Get() };
-            context->PSSetConstantBuffers(1, 1, cbuf_ps);
-
-            ID3D11SamplerState* sampler[1] = { state->LinearWrap() };
-            context->PSSetSamplers(0, 1, sampler);
-            context->RSSetState(state->CullNone());
-            context->IASetInputLayout(m_inputLayout.Get());
-            context->PSSetShaderResources(0, 1, &finalSRV);
             context->VSSetShader(m_startVS.Get(), nullptr, 0);
             context->PSSetShader(m_startPS.Get(), nullptr, 0);
         }
         else
         {
-            ID3D11SamplerState* sampler[1] = { state->LinearWrap() };
-            context->PSSetSamplers(0, 1, sampler);
-            context->RSSetState(state->CullNone());
-            context->IASetInputLayout(m_inputLayout.Get());
-            context->PSSetShaderResources(0, 1, &finalSRV);
             context->VSSetShader(m_VS.Get(), nullptr, 0);
             context->PSSetShader(m_PS.Get(), nullptr, 0);
         }
     }
     else
     {
-        // 定数バッファを更新
-        D3D11_MAPPED_SUBRESOURCE mappedResource;
-
-        // GPUが定数バッファに対してアクセスを行わないようにする
-        context->Map(m_constantBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
-
-        // 定数バッファを更新
-        ConstantBuffer cb = {};
-        cb.time = m_nowTime / m_maxNoiseTime;
-
-        *static_cast<ConstantBuffer*>(mappedResource.pData) = cb;
-
-        // GPUが定数バッファに対してのアクセスを許可する
-        context->Unmap(m_constantBuffer.Get(), 0);
-
-        // ピクセルシェーダ使用する定数バッファを設定
-        ID3D11Buffer* cbuf_ps[] = { m_constantBuffer.Get() };
-        context->PSSetConstantBuffers(1, 1, cbuf_ps);
-
-        ID3D11SamplerState* sampler[1] = { state->LinearWrap() };
-        context->PSSetSamplers(0, 1, sampler);
-        context->RSSetState(state->CullNone());
-        context->IASetInputLayout(m_inputLayout.Get());
-        context->PSSetShaderResources(0, 1, &finalSRV);
         context->VSSetShader(m_noiseVS.Get(), nullptr, 0);
         context->PSSetShader(m_noisePS.Get(), nullptr, 0);
     }

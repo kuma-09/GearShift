@@ -182,8 +182,8 @@ void Shadow::EndDepth()
     context->ClearRenderTargetView(renderTarget, Colors::CornflowerBlue);
     context->ClearDepthStencilView(depthStencil, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 
-    ID3D11ShaderResourceView* nullSRV[1] = { nullptr };
-    context->PSSetShaderResources(0, 1, nullSRV);
+    ID3D11ShaderResourceView* nullSRV[2] = { nullptr };
+    context->PSSetShaderResources(0, 2, nullSRV);
     context->OMSetRenderTargets(1, &renderTarget, depthStencil);
     auto const viewport = m_graphics->GetDeviceResources()->GetScreenViewport();
     context->RSSetViewports(1, &viewport);

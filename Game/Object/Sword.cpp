@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Sword.h"
+#include "Game/Components/Camera.h"
 #include "Game/Components/BoxCollider.h"
 #include "Game/Components/ModelDraw.h"
 #include "Game/Components/Trail.h"
@@ -14,7 +15,7 @@ Sword::Sword(IScene* scene, BoxCollider::TypeID id)
 	AddComponent<Trail>();
 	GetComponent<BoxCollider>()->SetTypeID(BoxCollider::PlayerSword);
 	GetComponent<BoxCollider>()->SetSize({ 5,4,5 });
-	GetComponent<Trail>()->Initialize(L"Resources/Texture/green.png", 10);
+	GetComponent<Trail>()->Initialize(L"Resources/Textures/green.png", 10);
 	SetScale({7.5f, 7.5f, 7.5f});
 	SetState(SwordState::UNUSED);
 
@@ -65,6 +66,7 @@ void Sword::Hit()
 		Vector3 velocity = Vector3::Zero;
 		SetPosition(m_owner->GetPosition());
 		SetQuaternion(m_owner->GetQuaternion());
+		m_owner->GetComponent<Camera>()->shake();
 		SetState(USED);
 		Audio::GetInstance()->PlaySoundSE_Slash();
 	}
@@ -79,7 +81,7 @@ void Sword::Update(float elapsedTime)
 
 	if (GetState() == USED)
 	{
-		m_rotate += elapsedTime * 750;
+		m_rotate += elapsedTime * 500;
 		if (m_rotate >= 200)
 		{
 			m_isHit = true;
@@ -100,10 +102,6 @@ void Sword::Update(float elapsedTime)
 		if (GetState() == USED)
 		{
 			world *= Matrix::CreateFromAxisAngle(Vector3(2, 2, 0), XMConvertToRadians(100 - m_rotate));
-		}
-		else
-		{
-			world *= Matrix::CreateFromQuaternion(Quaternion::CreateFromYawPitchRoll(XMConvertToRadians(100), XMConvertToRadians(15), 0));
 		}
 		world *= Matrix::CreateFromQuaternion(GetQuaternion());
 		world *= Matrix::CreateTranslation(GetPosition());
@@ -128,7 +126,7 @@ void Sword::Update(float elapsedTime)
 
 void Sword::Render()
 {	
-	if (!m_isHit)
+	if (GetState() == USED)
 	{
 		GetComponent<ModelDraw>()->Render(GetWorld(),false,DirectX::Colors::White);
 		GetComponent<BoxCollider>()->Render();

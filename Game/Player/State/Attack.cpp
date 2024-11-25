@@ -26,7 +26,7 @@ void Attack::Initialize()
 {
 	using namespace DirectX::SimpleMath;
 
-	m_totalTime = m_boostTime;
+	m_totalTime = 0;
 	m_sword->Initalize(m_player);
 	m_player->GetEnergyGage()->UseEnergyPoint(1);
 	m_player->GetComponent<Camera>()->shake();
@@ -54,6 +54,12 @@ void Attack::Update(float elapsedTime)
 		static_cast<PlayScene*>(m_player->GetScene())->CreateHitParticle(m_player->GetWorld(), m_player->GetQuaternion());
 		m_player->SetVelocity(Vector3(m_velocity.x * boostSpeed, m_velocity.y * boostSpeed, m_velocity.z * boostSpeed));
 	}
+
+	if (m_totalTime >= m_boostTime)
+	{
+		m_sword->SetState(Sword::USED);
+	}
+
 	m_player->GetEnergyGage()->UseEnergyPoint(1);
 	m_sword->Update(elapsedTime);
 

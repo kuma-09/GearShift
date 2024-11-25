@@ -19,8 +19,8 @@ NormalBullet::NormalBullet(IScene* scene, BoxCollider::TypeID id)
 	GetComponent<BoxCollider>()->SetTypeID(id);
 	GetComponent<BoxCollider>()->SetSize({ 0.5f,0.5f,0.5f });
 	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetCubeModel());
-	GetComponent<Trail>()->Initialize(L"Resources/Texture/green.png", 10);
-	SetScale({ 0.25f,0.25f,0.25f });
+	GetComponent<Trail>()->Initialize(L"Resources/Textures/particle.png", 10);
+	SetScale({ 0.1f,0.1f,0.1f });
 }
 
 NormalBullet::~NormalBullet()
@@ -107,7 +107,7 @@ void NormalBullet::Update(float elapsedTime)
 
 	Vector3 pos = { world._41,world._42,world._43 };
 	//if (GetState() == FLYING) GetComponent<Trail>()->SetPos(pos, pos + Vector3(0,1,0));
-	if (GetState() == FLYING) GetComponent<Trail>()->SetPos(GetPosition(), GetPosition() + Vector3(0, 1, 0));
+	if (GetState() == FLYING) GetComponent<Trail>()->SetPos(GetPosition() - Vector3(0, 0.5f, 0), GetPosition() + Vector3(0, 0.5f, 0));
 }
 
 void NormalBullet::Render()

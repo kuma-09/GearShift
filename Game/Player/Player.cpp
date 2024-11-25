@@ -91,6 +91,7 @@ void Player::Initialize()
 	GetComponent<Camera>()->SetTarget(this, nullptr);
 	GetComponent<HP>()->SetHP(10);
 	GetComponent<HPBar>()->Initialize();
+	GetComponent<Trail>()->Initialize(L"Resources/Textures/particle.png", 10);
 	SetOnFloor(false);
 
 	m_energyGage = std::make_unique<EnergyGage>();
@@ -115,13 +116,10 @@ void Player::Update(float elapsedTime)
 	m_reload->Update(elapsedTime);
 
 	m_bulletInterval += elapsedTime;
+
 	if (mouseState.leftButton || gp->x == gp->PRESSED )
 	{
-		if (m_bulletInterval >= INTERVAL)
-		{
-			m_bulletInterval = 0;
-			Shot();
-		}
+		Shot();
 	}
 
 	if (kb->IsKeyPressed(DirectX::Keyboard::Z) || gp->x == gp->PRESSED)
@@ -137,13 +135,6 @@ void Player::Update(float elapsedTime)
 	ComponentsUpdate(elapsedTime);
 	UpdateParts(elapsedTime);
 
-
-	Vector3 velocity = GetComponent<Move>()->GetVelocity();
-	Quaternion quaternion = Quaternion::CreateFromYawPitchRoll({ 0,0,-velocity.x / 5});
-	if (!m_target)
-	{
-		SetQuaternion(Quaternion::CreateFromYawPitchRoll(GetQuaternion().ToEuler().y, GetQuaternion().ToEuler().x, quaternion.ToEuler().z));
-	}
 	if (GetOnFloor())
 	{
 		SetVelocity({ GetVelocity().x, 0, GetVelocity().z });
@@ -165,6 +156,8 @@ void Player::Update(float elapsedTime)
 
 	SetPrePosition(GetPosition());
 	SetPosition(GetPosition() + GetVelocity());
+
+	GetComponent<Trail>()->SetPos(GetPosition(), GetPosition() + Vector3(0, 1, 0));
 
 	Matrix world = Matrix::Identity;
 	world = Matrix::CreateScale(GetScale());
@@ -197,7 +190,7 @@ void Player::Render()
 	}
 
 	RenderParts();
-
+	GetComponent<Trail>()->Render();
 	GetComponent<HPBar>()->Render(GetPosition());
 
 }
@@ -233,7 +226,12 @@ void Player::ChangeState(State* state)
 
 void Player::Shot()
 {
+	if (m_bulletInterval < INTERVAL)
+	{
+		return;
+	}
 	int usedCount = 0;
+	m_bulletInterval = 0;
 	for (auto& bullet : m_exBullet)
 	{
 		// “ÁŽê’e‚ð”­ŽË
@@ -297,17 +295,12 @@ void Player::Collision(BoxCollider* collider)
 {
 	if (collider->GetTypeID() == BoxCollider::EnemyBullet)
 	{
-		if (m_state != m_boost.get())
+		Bullet* bullet = static_cast<Bullet*>(collider->GetOwner());
+		if (bullet->GetState() == Bullet::FLYING)
 		{
-			//GetPart(Part::Head)->Collision(collider);
-			//GetPart(Part::BodyTop)->Collision(collider);
-			//GetPart(Part::LeftArm)->Collision(collider);
-			//GetPart(Part::RightArm)->Collision(collider);
-			//GetPart(Part::LeftLeg)->Collision(collider);
-			//GetPart(Part::RightLeg)->Collision(collider);
 			GetComponent<Camera>()->shake();
 			GetComponent<HP>()->SetHP(GetComponent<HP>()->GetHP() - 1);
-			//collider->Hit();
+			bullet->Hit();
 			static_cast<PlayScene*>(GetScene())->SetNoise();
 			if (GetComponent<HP>()->GetHP() <= 0)
 			{
@@ -320,12 +313,10 @@ void Player::Collision(BoxCollider* collider)
 	if (collider->GetTypeID() == BoxCollider::Floor)
 	{
 		SetOnFloor(true);
-		//m_boostGage->SetEnergyPoint(0.5f);
 		BoxCollider::CheckHit(this, collider->GetOwner());
 	}
 	if (collider->GetTypeID() == BoxCollider::Wall)
 	{
-		//m_boostGage->SetEnergyPoint(0.5f);
 		BoxCollider::CheckHit(this, collider->GetOwner());
 	}
 

@@ -294,12 +294,22 @@ void PlayScene::Render()
     m_hitEffect->Render();
 
     // Bloom-------------------------------------
+
     m_postProcess->BeginBloom();
+    for (auto& dropItem : m_dropItem)
+    {
+        dropItem->Render();
+    }
+    for (auto& dropItem : m_dropItemB)
+    {
+        dropItem->Render();
+    }
     m_player->RenderState();
     for (auto& particle : m_hitParticle)
     {
         particle->Render(m_graphics->GetViewMatrix(), m_graphics->GetProjectionMatrix());
     }
+    m_hitEffect->Render();
 
     // リソースの解除＆ライトをキューブで描画
     Resources::GetInstance()->GetShadow()->End();

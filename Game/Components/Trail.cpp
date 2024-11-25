@@ -97,21 +97,23 @@ void Trail::Render()
 	context->PSSetSamplers(0, 1, sampler);
 	context->RSSetState(state->CullNone());
 	context->PSSetShaderResources(0, 1, m_texture.GetAddressOf());
-	context->OMSetDepthStencilState(state->DepthDefault(), 0);
+	context->OMSetDepthStencilState(state->DepthRead(), 0);
 	context->VSSetShader(m_vertexShader.Get(), nullptr, 0);
 	context->PSSetShader(m_pixelShader.Get(), nullptr, 0);
 	context->IASetInputLayout(m_inputLayout.Get());
 	m_batch->Begin();
 	if (m_bufferCount >= 2)
 	{
-		for (int i = 0; i < m_bufferCount % m_maxBufferSize; i++)
+		int count = std::min(m_bufferCount, m_maxBufferSize);
+		float uv = 1.0f / float(count);
+		for (int i = 1; i < count; i++)
 		{
 			DirectX::VertexPositionTexture vertex[4] =
 			{
-				{Vector3(m_buffer[i].head)      ,Vector2(0.0f,0.0f)},
-				{Vector3(m_buffer[i + 1].head)  ,Vector2(1.0f,0.0f)},
-				{Vector3(m_buffer[i].tail)      ,Vector2(0.0f,1.0f)},
-				{Vector3(m_buffer[i + 1].tail)  ,Vector2(1.0f,1.0f)},
+				{Vector3(m_buffer[i - 1].head)  ,Vector2(0.0f + uv * (i - 1), 0)},
+				{Vector3(m_buffer[i    ].head)  ,Vector2(0.0f + uv * i      , 0)},
+				{Vector3(m_buffer[i - 1].tail)  ,Vector2(0.0f + uv * (i - 1), 1)},
+				{Vector3(m_buffer[i    ].tail)  ,Vector2(0.0f + uv * i      , 1)},
 			};
 
 			m_batch->DrawQuad(vertex[0], vertex[1], vertex[3], vertex[2]);
@@ -125,7 +127,18 @@ void Trail::SetPos(DirectX::XMFLOAT3 head, DirectX::XMFLOAT3 tail)
 	PosBuffer tmp;
 	tmp.head = head;
 	tmp.tail = tail;
-	m_buffer.at(m_bufferCount % m_maxBufferSize) = tmp;
+	if (m_bufferCount >= m_maxBufferSize)
+	{
+		for (int i = 0; i < m_maxBufferSize - 1; i++)
+		{
+			m_buffer[i] = m_buffer[i + 1];
+			m_buffer.back() = tmp;
+		}
+	}
+	else
+	{
+		m_buffer.at(m_bufferCount) = tmp;
+	}
 	m_bufferCount++;
 }
 

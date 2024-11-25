@@ -9,11 +9,12 @@
 FixedEnemyBullet::FixedEnemyBullet(IScene* scene, BoxCollider::TypeID id)
 {
 	SetScene(scene);
+	SetScale({ 0.5f,0.5f,0.5f });
 	AddComponent<BoxCollider>();
 	AddComponent<ModelDraw>();
 	GetComponent<BoxCollider>()->SetTypeID(id);
 	GetComponent<BoxCollider>()->SetSize({ 0.5f,0.5f,0.5f });
-	SetScale({ 0.5f,0.5f,0.5f });
+	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetCubeModel());
 }
 
 FixedEnemyBullet::~FixedEnemyBullet()
@@ -27,8 +28,6 @@ void FixedEnemyBullet::Initalize(GameObject* object)
 
 	SetOwner(object);
 
-	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetCubeModel());
-
 	Vector3 velocity = Vector3::Zero;
 	SetPosition(Vector3::Zero);
 	SetQuaternion(Quaternion::Identity);
@@ -40,29 +39,21 @@ void FixedEnemyBullet::Initalize(GameObject* object)
 void FixedEnemyBullet::Shot(GameObject* target)
 {
 	using namespace DirectX::SimpleMath;
-
 	Vector3 velocity = Vector3::Zero;
 	SetPosition(GetOwner()->GetPosition());
 	GetOwner()->GetQuaternion();
 	SetTarget(target);
-
 	velocity += Vector3::Transform(Vector3::Backward * SPEED, GetOwner()->GetQuaternion());
-
-
 	SetVelocity(velocity);
 	SetState(BulletState::FLYING);
-
-
 }
 
 void FixedEnemyBullet::Hit()
 {
 	using namespace DirectX::SimpleMath;
-
 	Vector3 velocity = Vector3::Zero;
 	SetPosition(Vector3::Zero);
 	SetQuaternion(Quaternion::Identity);
-
 	SetVelocity(Vector3::Zero);
 	SetState(BulletState::USED);
 }

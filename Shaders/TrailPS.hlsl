@@ -1,3 +1,4 @@
+#include "Common.hlsli"
 
 struct PS_INPUT
 {
@@ -9,8 +10,8 @@ struct PS_INPUT
 float4 main(PS_INPUT input) : SV_Target
 {
     float4 output;
-    //output = Texture.Sample(Sampler, input.Texture);
-    output = float4(0.4f, 0.6f, 1, 1);
-    output.a = 1 - input.Texture.y;
+    output = Texture.Sample(Sampler, input.Texture);
+    //output = float4(1, 1, 1, 1);
+    output.a *= input.Texture.x;
     return output;
 }

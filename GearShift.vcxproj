@@ -199,6 +199,7 @@
     <ClInclude Include="Game\Components\HP.h" />
     <ClInclude Include="Game\Components\HPBar.h" />
     <ClInclude Include="Game\Components\IComponent.h" />
+    <ClInclude Include="Game\Components\InputComponent.h" />
     <ClInclude Include="Game\Components\Look.h" />
     <ClInclude Include="Game\Components\ModelDraw.h" />
     <ClInclude Include="Game\Components\Move.h" />
@@ -294,6 +295,7 @@
     <ClCompile Include="Game\Components\Gravity.cpp" />
     <ClCompile Include="Game\Components\HP.cpp" />
     <ClCompile Include="Game\Components\HPBar.cpp" />
+    <ClCompile Include="Game\Components\InputComponent.cpp" />
     <ClCompile Include="Game\Components\Look.cpp" />
     <ClCompile Include="Game\Components\ModelDraw.cpp" />
     <ClCompile Include="Game\Components\Move.cpp" />

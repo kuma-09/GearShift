@@ -26,7 +26,7 @@ private:
 	float m_boostPower = 5.0f;
 
 	// ブースト時間
-	float m_boostTime = 1.0f;
+	float m_boostTime = 0.75f;
 
 	// ブースト開始時進んでいた方向
 	DirectX::SimpleMath::Vector3 m_velocity;
