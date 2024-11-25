@@ -18,6 +18,8 @@ NormalBullet::NormalBullet(IScene* scene, BoxCollider::TypeID id)
 	AddComponent<Trail>();
 	GetComponent<BoxCollider>()->SetTypeID(id);
 	GetComponent<BoxCollider>()->SetSize({ 0.5f,0.5f,0.5f });
+	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetCubeModel());
+	GetComponent<Trail>()->Initialize(L"Resources/Texture/green.png", 10);
 	SetScale({ 0.25f,0.25f,0.25f });
 }
 
@@ -31,9 +33,6 @@ void NormalBullet::Initalize(GameObject* object)
 	using namespace DirectX::SimpleMath;
 
 	SetOwner(object);
-
-	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetCubeModel());
-	GetComponent<Trail>()->Initialize(L"Resources/Texture/green.png", 10);
 
 	Vector3 velocity = Vector3::Zero;
 	SetPosition(Vector3::Zero);
@@ -80,6 +79,7 @@ void NormalBullet::Hit()
 		SetState(BulletState::USED);
 
 		Audio::GetInstance()->PlaySoundSE_Hit();
+		GetComponent<Trail>()->ClearBuffer();
 	}
 }
 

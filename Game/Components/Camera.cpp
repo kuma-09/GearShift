@@ -14,6 +14,7 @@ Camera::Camera()
     m_shakeTime = 0;
     m_rotateX = 0;
     m_rotateY = 0;
+    m_enemy = nullptr;
 }
 
 Camera::~Camera()
@@ -59,13 +60,23 @@ void Camera::Update(float elapsedTime)
     // カメラのデフォルトの座標ベクトル
     DirectX::SimpleMath::Vector3 eye{ 0.0f,CAMERA_HEIGHT,CAMERA_DISTANCE };
 
+
     // ターゲットの向いている方向に追従する
     eye = DirectX::SimpleMath::Vector3::Transform(eye, m_quaternion);
 
-    m_targetPosition += (m_player->GetPosition() - m_targetPosition) * CAMERA_TARGET_RATE;
+    if (m_enemy)
+    {
+        m_targetPosition = m_enemy->GetPosition();
+        // カメラ座標を計算する
+        m_eyePosition = m_player->GetPosition();
+    }
+    else
+    {
+        m_targetPosition += (m_player->GetPosition() - m_targetPosition) * CAMERA_TARGET_RATE;
+        // カメラ座標を計算する
+        m_eyePosition += (m_targetPosition + eye - m_eyePosition) * CAMERA_EYE_RATE;
+    }
 
-    // カメラ座標を計算する
-    m_eyePosition += (m_targetPosition + eye - m_eyePosition) * CAMERA_EYE_RATE;
 
     m_shakeTime -= elapsedTime;
     if (m_shakeTime >= 0)
@@ -118,7 +129,7 @@ void Camera::shake()
 void Camera::SetTarget(GameObject* player, GameObject* enemy)
 {
     m_player = player;
-    m_enemy  = enemy;
+    //m_enemy  = enemy;
 }
 
 

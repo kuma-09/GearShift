@@ -2,6 +2,7 @@
 #include "Sword.h"
 #include "Game/Components/BoxCollider.h"
 #include "Game/Components/ModelDraw.h"
+#include "Game/Components/Trail.h"
 #include "Game/PlayScene.h"
 #include "Framework/Audio.h"
 
@@ -10,8 +11,10 @@ Sword::Sword(IScene* scene, BoxCollider::TypeID id)
 	SetScene(scene);
 	AddComponent<BoxCollider>();
 	AddComponent<ModelDraw>();
+	AddComponent<Trail>();
 	GetComponent<BoxCollider>()->SetTypeID(BoxCollider::PlayerSword);
 	GetComponent<BoxCollider>()->SetSize({ 5,4,5 });
+	GetComponent<Trail>()->Initialize(L"Resources/Texture/green.png", 10);
 	SetScale({7.5f, 7.5f, 7.5f});
 	SetState(SwordState::UNUSED);
 
@@ -109,6 +112,7 @@ void Sword::Update(float elapsedTime)
 	world = Matrix::CreateScale(GetScale());
 	if (GetState() == USED)
 	{
+		GetComponent<Trail>()->SetPos(GetPosition(), GetPosition() + Vector3(0, 1, 0));
 		world *= Matrix::CreateFromAxisAngle(Vector3(2, 2, 0), XMConvertToRadians(100 - m_rotate));
 	}
 	else
@@ -126,8 +130,9 @@ void Sword::Render()
 {	
 	if (!m_isHit)
 	{
-		GetComponent<ModelDraw>()->Render(GetWorld(),false,DirectX::Colors::LightBlue);
+		GetComponent<ModelDraw>()->Render(GetWorld(),false,DirectX::Colors::White);
 		GetComponent<BoxCollider>()->Render();
+		GetComponent<Trail>()->Render();
 	}
 
 }

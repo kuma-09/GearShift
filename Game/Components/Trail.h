@@ -8,9 +8,10 @@ public:
 
 	Trail();
 	void Initialize(const wchar_t* path,int bufferSize);
-	void Update(float elapsedTime);                                //履歴を更新して、頂点バッファを更新する
+	void Update(float elapsedTime);                               //頂点バッファを更新する
 	void Render();
-	void SetPos(DirectX::XMFLOAT3 head, DirectX::XMFLOAT3 tail);  //現在フレームの剣の位置を保存する
+	void SetPos(DirectX::XMFLOAT3 head, DirectX::XMFLOAT3 tail);  //現在フレームの位置を保存する
+	void ClearBuffer();
 private:
 
 	std::unique_ptr<DirectX::PrimitiveBatch<DirectX::VertexPositionTexture>> m_batch;
@@ -28,6 +29,15 @@ private:
 		DirectX::XMFLOAT3 pos;
 		DirectX::XMFLOAT2 uv;
 	};
+
+	struct ConstantBuffer
+	{
+		DirectX::XMMATRIX world;
+		DirectX::XMMATRIX view;
+		DirectX::XMMATRIX proj;
+	};
+
+	Microsoft::WRL::ComPtr<ID3D11Buffer> m_constantBuffer;
 
 	std::vector<PosBuffer> m_buffer;
 	//	入力レイアウト

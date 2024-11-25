@@ -91,7 +91,6 @@ void Player::Initialize()
 	GetComponent<Camera>()->SetTarget(this, nullptr);
 	GetComponent<HP>()->SetHP(10);
 	GetComponent<HPBar>()->Initialize();
-	GetComponent<Trail>()->Initialize(L"Resources/Texture/green.png", 20);
 	SetOnFloor(false);
 
 	m_energyGage = std::make_unique<EnergyGage>();
@@ -174,10 +173,6 @@ void Player::Update(float elapsedTime)
 
 	SetWorld(world);
 	SetOnFloor(false);
-
-	Vector3 pos = { world._41,world._42,world._43 };
-	GetComponent<Trail>()->SetPos(pos, pos + Vector3{ 0, -1, 0 });
-
 }
 
 void Player::CreateShadow()
@@ -204,7 +199,6 @@ void Player::Render()
 	RenderParts();
 
 	GetComponent<HPBar>()->Render(GetPosition());
-	//GetComponent<Trail>()->Render();
 
 }
 

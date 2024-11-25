@@ -1,4 +1,9 @@
-#include "Common.hlsli"
+cbuffer Parmetaers : register(b0)
+{
+    matrix world;
+    matrix view;
+    matrix proj;
+}
 
 struct VS_INPUT
 {
@@ -17,7 +22,9 @@ PS_INPUT main(VS_INPUT input)
 {
     PS_INPUT output;
     
-    output.Position = mul(float4(input.Position, 1), WorldViewProj);
+    output.Position = mul(float4(input.Position, 1), world);
+    output.Position = mul(output.Position, view);
+    output.Position = mul(output.Position, proj);
     output.Texture = input.Texture;
     
     return output;

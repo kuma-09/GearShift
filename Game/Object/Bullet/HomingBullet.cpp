@@ -2,6 +2,7 @@
 #include "HomingBullet.h"
 #include "Game/Components/BoxCollider.h"
 #include "Game/Components/ModelDraw.h"
+#include "Game/Components/Trail.h"
 #include "Game/PlayScene.h"
 #include "Game/Player/Player.h"
 #include "random"
@@ -14,10 +15,12 @@ HomingBullet::HomingBullet(IScene* scene, BoxCollider::TypeID id)
 	AddComponent<BoxCollider>();
 	AddComponent<ModelDraw>();
 	AddComponent<Emitter>();
+	AddComponent<Trail>();
 	GetComponent<BoxCollider>()->SetTypeID(id);
 	GetComponent<BoxCollider>()->SetSize({ 0.1f,0.1f,0.1f });
 	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetCubeModel());
 	GetComponent<Emitter>()->Initialize(L"Resources/Textures/smoke_white_big.png",0.3f,0.01f,0.1f);
+	GetComponent<Trail>()->Initialize(L"Resources/Texture/green.png", 10);
 	SetScale({ 0.1f,0.1f,0.1f });
 	SetState(BulletState::UNUSED);
 }
@@ -148,6 +151,8 @@ void HomingBullet::Update(float elapsedTime)
 	world *= Matrix::CreateFromQuaternion(GetQuaternion());
 	world *= Matrix::CreateTranslation(GetPosition());
 	SetWorld(world);
+
+	if (GetState() == FLYING) GetComponent<Trail>()->SetPos(GetPosition(), GetPosition() + Vector3(0, 1, 0));
 }
 
 void HomingBullet::Render()
@@ -155,6 +160,7 @@ void HomingBullet::Render()
 	if (GetState() == FLYING)
 	{
 		GetComponent<ModelDraw>()->Render(GetWorld(), false);
+		GetComponent<Trail>()->Render();
 	}
 	GetComponent<Emitter>()->Render(GetPosition() + DirectX::SimpleMath::Vector3((rand() % 3 - 1) * 0.25f, (rand() % 3 - 1) * 0.25f, (rand() % 3 - 1) * 0.25f));
 }

@@ -36,6 +36,13 @@ Trail::Trail()
 		device->CreatePixelShader(ps.GetData(), ps.GetSize(), nullptr, m_pixelShader.ReleaseAndGetAddressOf())
 	);
 
+	// 定数バッファの作成
+	D3D11_BUFFER_DESC bufferDesc = {};
+	bufferDesc.ByteWidth = static_cast<UINT>(sizeof(ConstantBuffer));
+	bufferDesc.Usage = D3D11_USAGE_DYNAMIC;
+	bufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+	bufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+	DX::ThrowIfFailed(device->CreateBuffer(&bufferDesc, nullptr, m_constantBuffer.ReleaseAndGetAddressOf()));
 
 }
 
@@ -44,6 +51,7 @@ void Trail::Initialize(const wchar_t* path, int bufferSize)
 	auto device = Graphics::GetInstance()->GetDeviceResources()->GetD3DDevice();
 
 	m_maxBufferSize = bufferSize;
+	m_buffer.resize(bufferSize);
 
 	// テクスチャをロードする
 	DirectX::CreateWICTextureFromFile(
@@ -65,7 +73,26 @@ void Trail::Render()
 	auto device = Graphics::GetInstance()->GetDeviceResources()->GetD3DDevice();
 	auto context = Graphics::GetInstance()->GetDeviceResources()->GetD3DDeviceContext();
 	auto state = Graphics::GetInstance()->GetCommonStates();
+
+	auto view = Graphics::GetInstance()->GetViewMatrix();
+	auto proj = Graphics::GetInstance()->GetProjectionMatrix();
 	
+	// 定数バッファを更新
+	D3D11_MAPPED_SUBRESOURCE mappedResource;
+	// GPUが定数バッファに対してアクセスを行わないようにする
+	context->Map(m_constantBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+	ConstantBuffer cb = {};
+	cb.world = Matrix::Identity.Transpose();
+	cb.view = view.Transpose();
+	cb.proj = proj.Transpose();
+	*static_cast<ConstantBuffer*>(mappedResource.pData) = cb;
+	// GPUが定数バッファに対してのアクセスを許可する
+	context->Unmap(m_constantBuffer.Get(), 0);
+	// ピクセルシェーダ使用する定数バッファを設定
+	ID3D11Buffer* cbuffer[] = { m_constantBuffer.Get() };
+	context->PSSetConstantBuffers(0, 1, cbuffer);
+	context->VSSetConstantBuffers(0, 1, cbuffer);
+
 	ID3D11SamplerState* sampler[1] = { state->LinearWrap() };
 	context->PSSetSamplers(0, 1, sampler);
 	context->RSSetState(state->CullNone());
@@ -75,16 +102,16 @@ void Trail::Render()
 	context->PSSetShader(m_pixelShader.Get(), nullptr, 0);
 	context->IASetInputLayout(m_inputLayout.Get());
 	m_batch->Begin();
-	if (m_buffer.size() >= 2)
+	if (m_bufferCount >= 2)
 	{
-		for (auto it = m_buffer.begin(); m_buffer.end() - 1 != it; it++)
+		for (int i = 0; i < m_bufferCount % m_maxBufferSize; i++)
 		{
 			DirectX::VertexPositionTexture vertex[4] =
 			{
-				{Vector3(it->head)      ,Vector2(0.0f,0.0f)},
-				{Vector3((it + 1)->head),Vector2(1.0f,0.0f)},
-				{Vector3(it->tail)      ,Vector2(0.0f,1.0f)},
-				{Vector3((it + 1)->tail),Vector2(1.0f,1.0f)},
+				{Vector3(m_buffer[i].head)      ,Vector2(0.0f,0.0f)},
+				{Vector3(m_buffer[i + 1].head)  ,Vector2(1.0f,0.0f)},
+				{Vector3(m_buffer[i].tail)      ,Vector2(0.0f,1.0f)},
+				{Vector3(m_buffer[i + 1].tail)  ,Vector2(1.0f,1.0f)},
 			};
 
 			m_batch->DrawQuad(vertex[0], vertex[1], vertex[3], vertex[2]);
@@ -95,16 +122,16 @@ void Trail::Render()
 
 void Trail::SetPos(DirectX::XMFLOAT3 head, DirectX::XMFLOAT3 tail)
 {
-	m_bufferCount++;
 	PosBuffer tmp;
 	tmp.head = head;
 	tmp.tail = tail;
-	if (m_buffer.size() >= m_maxBufferSize)
-	{
-		m_buffer.at(m_bufferCount % m_maxBufferSize) = tmp;
-	}
-	else
-	{
-		m_buffer.emplace_back(tmp);
-	}
+	m_buffer.at(m_bufferCount % m_maxBufferSize) = tmp;
+	m_bufferCount++;
+}
+
+void Trail::ClearBuffer()
+{
+	m_buffer.clear();
+	m_buffer.resize(m_maxBufferSize);
+	m_bufferCount = 0;
 }
