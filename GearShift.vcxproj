@@ -241,6 +241,8 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="Game\Parts\BodyTop.h" />
+    <ClInclude Include="Game\Parts\BossHead.h" />
+    <ClInclude Include="Game\Parts\BossLeg.h" />
     <ClInclude Include="Game\Parts\Head.h" />
     <ClInclude Include="Game\Parts\Part.h" />
     <ClInclude Include="Game\Parts\LeftArm.h" />
@@ -332,6 +334,8 @@
     <ClCompile Include="Game\Particle\HitParticle.cpp" />
     <ClCompile Include="Game\Particle\Particle.cpp" />
     <ClCompile Include="Game\Parts\BodyTop.cpp" />
+    <ClCompile Include="Game\Parts\BossHead.cpp" />
+    <ClCompile Include="Game\Parts\BossLeg.cpp" />
     <ClCompile Include="Game\Parts\Head.cpp" />
     <ClCompile Include="Game\Parts\LeftArm.cpp" />
     <ClCompile Include="Game\Parts\LeftLeg.cpp" />

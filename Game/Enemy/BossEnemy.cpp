@@ -15,12 +15,8 @@
 #include "Game/Enemy/State/EnemyAttackState.h"
 #include "Game/Enemy/State/EnemyMoveState.h"
 
-#include "Game/Parts/Head.h"
-#include "Game/Parts/BodyTop.h"
-#include "Game/Parts/LeftArm.h"
-#include "Game/Parts/LeftLeg.h"
-#include "Game/Parts/RightArm.h"
-#include "Game/Parts/RightLeg.h"
+#include "Game/Parts/BossHead.h"
+#include "Game/Parts/BossLeg.h"
 
 
 
@@ -42,12 +38,8 @@ BossEnemy::BossEnemy(IScene* scene)
 
 	m_state = GetMoveState();
 
-	SetPart(Part::Head, std::make_unique<Head>());
-	SetPart(Part::BodyTop, std::make_unique<BodyTop>());
-	SetPart(Part::LeftArm, std::make_unique<LeftArm>());
-	SetPart(Part::RightArm, std::make_unique<RightArm>());
-	SetPart(Part::LeftLeg, std::make_unique<LeftLeg>());
-	SetPart(Part::RightLeg, std::make_unique<RightLeg>());
+	SetPart(Part::Head, std::make_unique<BossHead>());
+	SetPart(Part::BodyTop, std::make_unique<BossLeg>());
 }
 
 BossEnemy::~BossEnemy()
@@ -83,6 +75,7 @@ void BossEnemy::Update(float elapsedTime)
 
 	m_state->Update(elapsedTime);
 	m_bullet->Update(elapsedTime);
+	
 	ComponentsUpdate(elapsedTime);
 	UpdateParts(elapsedTime);
 
@@ -100,10 +93,6 @@ void BossEnemy::Render()
 {
 	using namespace DirectX::SimpleMath;
 
-	m_bullet->Render();
-	m_state->Render();
-	RenderParts();
-
 	Matrix world = Matrix::Identity;
 	world = Matrix::CreateScale(GetScale());
 	world *= Matrix::CreateFromQuaternion(GetQuaternion());
@@ -111,9 +100,15 @@ void BossEnemy::Render()
 
 	SetWorld(world);
 
+	m_bullet->Render();
+	m_state->Render();
+	RenderParts();
+
+
+
 
 	if (GetComponent<HP>()->GetHP() <= 0) return;
-	//GetComponent<BoxCollider>()->Render();
+	GetComponent<BoxCollider>()->Render();
 }
 
 void BossEnemy::Finalize()
