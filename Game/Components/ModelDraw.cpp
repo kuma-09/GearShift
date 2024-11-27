@@ -2,6 +2,7 @@
 #include "ModelDraw.h"
 #include "Game/GameObject.h"
 #include "Game/Shader/Shader.h"
+#include "Game/DeferredRendering.h"
 
 ModelDraw::ModelDraw()
 	:
@@ -35,7 +36,8 @@ void ModelDraw::Render(DirectX::SimpleMath::Matrix world, bool texture, DirectX:
 
 	m_model->Draw(context, *state, world, view, projection, false, [&]
 	{
-		Resources::GetInstance()->GetShadow()->Draw(texture,color);
+		//Resources::GetInstance()->GetShadow()->Draw(texture,color);
+		DeferredRendering::DrawGBuffer(texture);
 	});
 }
 
@@ -46,10 +48,10 @@ void ModelDraw::CreateShadow(DirectX::SimpleMath::Matrix world)
 	auto view = m_graphics->GetViewMatrix();
 	auto projection = m_graphics->GetProjectionMatrix();
 
-	m_model->Draw(context, *state, world, view, projection, false, [&]
-		{
-			Resources::GetInstance()->GetShadow()->RenderDepth();
-		});
+	//m_model->Draw(context, *state, world, view, projection, false, [&]
+	//	{
+	//		Resources::GetInstance()->GetShadow()->RenderDepth();
+	//	});
 }
 
 void ModelDraw::Finalize()

@@ -17,6 +17,7 @@ public:
 	void Update(float elapsedTime) override;
 
 	void Render() override;
+	void RenderUI() {};
 
 	void Finalize() override;
 private:

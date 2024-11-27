@@ -19,6 +19,8 @@ public:
 
 	virtual void Render() = 0;
 
+	virtual void RenderUI() = 0;
+
 	virtual void Finalize() = 0;
 
 	// ボックスコライダーを追加

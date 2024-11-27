@@ -143,6 +143,7 @@ private:
     DX::DeviceResources* m_deviceResources;
     InputManager* m_inputManager;
     Resources* m_resources;
+    std::unique_ptr<DirectX::SpriteBatch> m_spriteBatch;
     Audio* m_audio;
 
 

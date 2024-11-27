@@ -251,10 +251,10 @@ void PlayScene::Render()
     using namespace DirectX;
 
     // シャドウマップ作成
-    CreateShadow();
+    //CreateShadow();
 
     // ポストプロセス無しでの描画
-    m_postProcess->BeginNormal();
+    //m_postProcess->BeginNormal();
 
     m_skyDome->Render();
 
@@ -295,28 +295,40 @@ void PlayScene::Render()
 
     // Bloom-------------------------------------
 
-    m_postProcess->BeginBloom();
-    for (auto& dropItem : m_dropItem)
-    {
-        dropItem->Render();
-    }
-    for (auto& dropItem : m_dropItemB)
-    {
-        dropItem->Render();
-    }
-    m_player->RenderState();
-    for (auto& particle : m_hitParticle)
-    {
-        particle->Render(m_graphics->GetViewMatrix(), m_graphics->GetProjectionMatrix());
-    }
-    m_hitEffect->Render();
+    //m_postProcess->BeginBloom();
+    //for (auto& dropItem : m_dropItem)
+    //{
+    //    dropItem->Render();
+    //}
+    //for (auto& dropItem : m_dropItemB)
+    //{
+    //    dropItem->Render();
+    //}
+    //m_player->RenderState();
+    //for (auto& particle : m_hitParticle)
+    //{
+    //    particle->Render(m_graphics->GetViewMatrix(), m_graphics->GetProjectionMatrix());
+    //}
+    //m_hitEffect->Render();
 
     // リソースの解除＆ライトをキューブで描画
-    Resources::GetInstance()->GetShadow()->End();
+    //Resources::GetInstance()->GetShadow()->End();
     //-------------------------------------------
 
-    m_postProcess->combinationRT();
+    //m_postProcess->combinationRT();
 
+    //// UI
+    //m_targetArea->Render(m_player->GetTarget());
+    //m_hpUI->Render();
+    //m_player->RenderPlayerUI();
+    //m_bulletMagazine->Render();
+    //m_exBulletMagazine->Render();
+    //m_startAnimation->Render();
+
+}
+
+void PlayScene::RenderUI()
+{
     // UI
     m_targetArea->Render(m_player->GetTarget());
     m_hpUI->Render();
@@ -324,7 +336,6 @@ void PlayScene::Render()
     m_bulletMagazine->Render();
     m_exBulletMagazine->Render();
     m_startAnimation->Render();
-
 }
 
 /// <summary> 終了処理 </summary>

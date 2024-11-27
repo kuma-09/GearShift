@@ -10,6 +10,8 @@
 #include "Framework/Audio.h"
 #include "Game/PlayScene.h"
 #include "Game/TitleScene.h"
+#include "Game/DeferredRendering.h"
+#include "Game/ForwardRendering.h"
 
 extern void ExitGame() noexcept;
 
@@ -72,7 +74,11 @@ void Game::Initialize(HWND window, int width, int height)
         m_graphics->GetDeviceResources()->GetD3DDeviceContext(),
         L"Resources/Fonts/SegoeUI_18.spritefont");
 
+    m_spriteBatch = std::make_unique<SpriteBatch>(m_deviceResources->GetD3DDeviceContext());
+
     //ChangeScene(GetTitleScene());
+    DeferredRendering::Initialize();
+    ForwardRendering::Initialize();
     m_scene = GetTitleScene();
     m_scene->Initialize(this);
 
@@ -159,14 +165,18 @@ void Game::Render()
     m_deviceResources->PIXBeginEvent(L"Render");
 
     // TODO: Add your rendering code here.
+    DeferredRendering::BeginGBuffer();
     m_scene->Render();
+    DeferredRendering::DeferredLighting();
 
+    ForwardRendering::BeginBuffer();
+    m_scene->RenderUI();
     if (m_sceneMask->IsClose() || m_sceneMask->IsOpen())
     {
         m_sceneMask->Render();
     }
 
-    m_debugString->Render(m_graphics->GetCommonStates());
+
 
     m_deviceResources->PIXEndEvent();
 
