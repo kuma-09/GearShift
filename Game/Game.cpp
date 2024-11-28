@@ -173,10 +173,11 @@ void Game::Render()
     m_scene->RenderUI();
     if (m_sceneMask->IsClose() || m_sceneMask->IsOpen())
     {
-        m_sceneMask->Render();
+        //m_sceneMask->Render();
     }
 
-
+    ID3D11ShaderResourceView* srv = ForwardRendering::GetRenderTexture()->GetShaderResourceView();
+    DeferredRendering::CombientRenderTarget(srv);
 
     m_deviceResources->PIXEndEvent();
 

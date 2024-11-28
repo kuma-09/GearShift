@@ -11,7 +11,7 @@ public:
 	static void DrawGBuffer(bool texture = false);
 	static void DeferredLighting();
 
-	static void CombientRenderTarget(ID3D11ShaderResourceView* srv1, ID3D11ShaderResourceView* srv2);
+	static void CombientRenderTarget(ID3D11ShaderResourceView* srv);
 
 	static DX::RenderTexture* GetAlbedoRenderTexture() { return m_albedoRT.get(); }
 	static DX::RenderTexture* GetNormalRenderTexture() { return m_normalRT.get(); }
@@ -21,6 +21,7 @@ private:
 	static std::unique_ptr<DX::RenderTexture> m_albedoRT;
 	static std::unique_ptr<DX::RenderTexture> m_normalRT;
 	static std::unique_ptr<DX::RenderTexture> m_depthRT;
+	static std::unique_ptr<DX::RenderTexture> m_deferredRT;
 	// GBuffer書き込み用のシェーダー
 	static Microsoft::WRL::ComPtr<ID3D11VertexShader> m_vertexShader;
 	static Microsoft::WRL::ComPtr<ID3D11PixelShader> m_pixelShader;

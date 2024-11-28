@@ -21,12 +21,16 @@ const std::vector<D3D11_INPUT_ELEMENT_DESC> DeferredRendering::INPUT_LAYOUT_L =
 std::unique_ptr<DX::RenderTexture> DeferredRendering::m_albedoRT;
 std::unique_ptr<DX::RenderTexture> DeferredRendering::m_normalRT;
 std::unique_ptr<DX::RenderTexture> DeferredRendering::m_depthRT;
+std::unique_ptr<DX::RenderTexture> DeferredRendering::m_deferredRT;
 Microsoft::WRL::ComPtr<ID3D11VertexShader> DeferredRendering::m_vertexShader;
 Microsoft::WRL::ComPtr<ID3D11PixelShader> DeferredRendering::m_pixelShader;
 Microsoft::WRL::ComPtr<ID3D11PixelShader> DeferredRendering::m_pixelShader_tex;
 Microsoft::WRL::ComPtr<ID3D11VertexShader> DeferredRendering::m_vertexShader_light;
 Microsoft::WRL::ComPtr<ID3D11PixelShader> DeferredRendering::m_pixelShader_light;
+Microsoft::WRL::ComPtr<ID3D11VertexShader> DeferredRendering::m_vertexShader_combient;
+Microsoft::WRL::ComPtr<ID3D11PixelShader> DeferredRendering::m_pixelShader_combient;
 Microsoft::WRL::ComPtr<ID3D11Buffer> DeferredRendering::m_constantBuffer;
+
 Microsoft::WRL::ComPtr<ID3D11InputLayout> DeferredRendering::m_inputLayoutGBuffer;
 Microsoft::WRL::ComPtr<ID3D11InputLayout> DeferredRendering::m_inputLayoutLight;
 // プリミティブバッチ
@@ -41,7 +45,8 @@ void DeferredRendering::Initialize()
 	m_albedoRT = std::make_unique<DX::RenderTexture>(DXGI_FORMAT_R8G8B8A8_UNORM);
 	m_normalRT = std::make_unique<DX::RenderTexture>(DXGI_FORMAT_R10G10B10A2_UNORM);
 	m_depthRT  = std::make_unique<DX::RenderTexture>(DXGI_FORMAT_R32_FLOAT);
-	
+	m_deferredRT = std::make_unique<DX::RenderTexture>(DXGI_FORMAT_R8G8B8A8_UNORM);
+
 	auto device = Graphics::GetInstance()->GetDeviceResources()->GetD3DDevice();
 	auto context = Graphics::GetInstance()->GetDeviceResources()->GetD3DDeviceContext();
 	auto rect = Graphics::GetInstance()->GetDeviceResources()->GetOutputSize();
@@ -49,10 +54,12 @@ void DeferredRendering::Initialize()
 	m_albedoRT->SetDevice(device);
 	m_normalRT->SetDevice(device);
 	m_depthRT->SetDevice(device);
+	m_deferredRT->SetDevice(device);
 
 	m_albedoRT->SetWindow(rect);
 	m_normalRT->SetWindow(rect);
 	m_depthRT->SetWindow(rect);
+	m_deferredRT->SetWindow(rect);
 
 	BinaryFile vs = BinaryFile::LoadFile(L"Resources/Shaders/GBufferVS.cso");
 	BinaryFile ps = BinaryFile::LoadFile(L"Resources/Shaders/GBufferPS.cso");
@@ -67,6 +74,8 @@ void DeferredRendering::Initialize()
 	device->CreatePixelShader(ps_tex.GetData(), ps_tex.GetSize(), nullptr, m_pixelShader_tex.ReleaseAndGetAddressOf());
 	device->CreateVertexShader(vs_deferred.GetData(), vs_deferred.GetSize(), nullptr, m_vertexShader_light.ReleaseAndGetAddressOf());
 	device->CreatePixelShader(ps_deferred.GetData(), ps_deferred.GetSize(), nullptr, m_pixelShader_light.ReleaseAndGetAddressOf());
+	device->CreateVertexShader(vs_combient.GetData(), vs_combient.GetSize(), nullptr, m_vertexShader_combient.ReleaseAndGetAddressOf());
+	device->CreatePixelShader(ps_combient.GetData(), ps_combient.GetSize(), nullptr, m_pixelShader_combient.ReleaseAndGetAddressOf());
 
 
 	//	インプットレイアウトの作成
@@ -162,7 +171,7 @@ void DeferredRendering::DrawGBuffer(bool texture)
 void DeferredRendering::DeferredLighting()
 {
 	auto context = Graphics::GetInstance()->GetDeviceResources()->GetD3DDeviceContext();
-	auto renderTarget = Graphics::GetInstance()->GetDeviceResources()->GetRenderTargetView();
+	auto renderTarget = m_deferredRT->GetRenderTargetView();
 	auto depthStencil = Graphics::GetInstance()->GetDeviceResources()->GetDepthStencilView();
 
 	context->ClearRenderTargetView(renderTarget, DirectX::Colors::CornflowerBlue);
@@ -189,13 +198,37 @@ void DeferredRendering::DeferredLighting()
 	m_batch->End();
 
 	// リソースを使用する前にシェーダーリソーススロットを解除
-	context->VSSetShader(nullptr, nullptr, 0);
-	context->PSSetShader(nullptr, nullptr, 0);
 	ID3D11ShaderResourceView* nullSRV[3] = { nullptr,nullptr,nullptr };
 	context->PSSetShaderResources(1, 3, nullSRV);
 
 }
 
-void DeferredRendering::CombientRenderTarget(ID3D11ShaderResourceView* srv1, ID3D11ShaderResourceView* srv2)
+void DeferredRendering::CombientRenderTarget(ID3D11ShaderResourceView* srv)
 {
+	auto context = Graphics::GetInstance()->GetDeviceResources()->GetD3DDeviceContext();
+	auto renderTarget = Graphics::GetInstance()->GetDeviceResources()->GetRenderTargetView();
+	auto depthStencil = Graphics::GetInstance()->GetDeviceResources()->GetDepthStencilView();
+
+	context->ClearRenderTargetView(renderTarget, DirectX::Colors::CornflowerBlue);
+	context->ClearDepthStencilView(depthStencil, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
+	context->OMSetRenderTargets(1, &renderTarget, depthStencil);
+
+	ID3D11ShaderResourceView* deferredRT = m_deferredRT->GetShaderResourceView();
+	auto const viewport = Graphics::GetInstance()->GetDeviceResources()->GetScreenViewport();
+	context->RSSetViewports(1, &viewport);
+
+	// シェーダを設定する
+	context->PSSetShaderResources(1, 1, &deferredRT);
+	context->PSSetShaderResources(2, 1, &srv);
+	context->VSSetShader(m_vertexShader_combient.Get(), nullptr, 0);
+	context->PSSetShader(m_pixelShader_combient.Get(), nullptr, 0);
+	context->IASetInputLayout(m_inputLayoutLight.Get());
+
+	m_batch->Begin();
+	m_batch->DrawQuad(m_vertex[0], m_vertex[1], m_vertex[3], m_vertex[2]);
+	m_batch->End();
+
+	// リソースを使用する前にシェーダーリソーススロットを解除
+	ID3D11ShaderResourceView* nullSRV[2] = { nullptr,nullptr};
+	context->PSSetShaderResources(1, 2, nullSRV);
 }

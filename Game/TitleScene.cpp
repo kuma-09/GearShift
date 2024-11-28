@@ -112,9 +112,18 @@ void TitleScene::Render()
 
 
     //Resources::GetInstance()->GetShadow()->End();
+    //m_titleLogo->Render(Vector2::Zero,Colors::White,Vector2::Zero,{0.5f,0.5f});
+    //m_menu->Render(Vector2{ 1500 - m_menuPosition * 1280,0});
+
+}
+
+void TitleScene::RenderUI()
+{
+    using namespace DirectX;
+    using namespace DirectX::SimpleMath;
+
     m_titleLogo->Render(Vector2::Zero,Colors::White,Vector2::Zero,{0.5f,0.5f});
     m_menu->Render(Vector2{ 1500 - m_menuPosition * 1280,0});
-
 }
 
 void TitleScene::Finalize()
