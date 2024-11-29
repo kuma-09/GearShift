@@ -19,8 +19,10 @@ float4 main(PS_INPUT input) : SV_TARGET
 {
     float4 texture1 = tex1.Sample(samLinear, input.tex);
     float4 texture2 = tex2.Sample(samLinear, input.tex);
+    float3 output = texture1;
     
-    float3 output = texture1.rgb + texture2.rgb;
+    if (length(texture2.rgb) > 0)
+        return float4((texture2.rgb + texture1.rgb), 1);
     
-    return float4(output, 1);
+    return texture1;
 }

@@ -25,7 +25,6 @@ BossEnemy::BossEnemy(IScene* scene)
 	SetScene(scene);
 
 	AddComponent<HP>();
-	AddComponent<Look>();
 	AddComponent<Gravity>();
 	AddComponent<BoxCollider>();
 	AddComponent<HPBar>();
@@ -38,8 +37,6 @@ BossEnemy::BossEnemy(IScene* scene)
 
 	m_state = GetMoveState();
 
-	SetPart(Part::Head, std::make_unique<BossHead>());
-	SetPart(Part::BodyTop, std::make_unique<BossLeg>());
 }
 
 BossEnemy::~BossEnemy()
@@ -55,7 +52,8 @@ void BossEnemy::Initialize(GameObject* target)
 
 	GetComponent<HP>()->SetHP(10);
 	SetTarget(target);
-	GetComponent<Look>()->SetTarget(this, target);
+	SetPart(Part::Head, std::make_unique<BossHead>(target));
+	SetPart(Part::BodyTop, std::make_unique<BossLeg>());
 	GetComponent<BoxCollider>()->SetTypeID(BoxCollider::TypeID::Enemy);
 	GetComponent<BoxCollider>()->SetSize({ 2,1,3 });
 	GetComponent<HPBar>()->Initialize();

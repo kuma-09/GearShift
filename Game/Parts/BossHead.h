@@ -4,7 +4,7 @@
 class BossHead : public Part
 {
 public:
-	BossHead();
+	BossHead(GameObject* target);
 	~BossHead();
 
 	void Initialize(int hp, IScene* scene) override;

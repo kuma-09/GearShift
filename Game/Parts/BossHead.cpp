@@ -9,14 +9,17 @@
 #include "Game/Components/BoxCollider.h"
 #include "Game/Components/Move.h"
 #include <Game/Components/HP.h>
+#include "Game/Components/Look.h"
 #include "Game/PlayScene.h"
 
-BossHead::BossHead()
+BossHead::BossHead(GameObject* target)
 {
 	AddComponent<HP>();
 	AddComponent<ModelDraw>();
 	AddComponent<BoxCollider>();
 	AddComponent<Emitter>();
+	AddComponent<Look>();
+	GetComponent<Look>()->SetTarget(this, target);
 	m_isHit = false;
 }
 
@@ -35,7 +38,6 @@ void BossHead::Initialize(int hp, IScene* scene)
 	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetCutoRobotHeadModel());
 	GetComponent<BoxCollider>()->SetSize({ 1.0f,1.0f,1.0f });
 	GetComponent<BoxCollider>()->SetInitalePosition({ 0,-0.4f,0 });
-	GetComponent<Emitter>()->Initialize(L"Resources/Textures/smoke_white.png", 0.1f, 0.1f, 0.3f);
 }
 
 void BossHead::Update(float elapsedTime)
@@ -49,7 +51,7 @@ void BossHead::Update(float elapsedTime)
 	SetVelocity(GetOwner()->GetVelocity());
 	Matrix world = Matrix::Identity;
 	world = Matrix::CreateScale(GetScale());
-	world *= Matrix::CreateFromQuaternion(quaternion);
+	world *= Matrix::CreateFromQuaternion(Quaternion::CreateFromYawPitchRoll({0,DirectX::XMConvertToRadians(135),0}) * GetQuaternion());
 	world *= Matrix::CreateTranslation(GetPosition());
 
 	SetWorld(world);
@@ -75,10 +77,6 @@ void BossHead::Render()
 	else
 	{
 		//GetComponent<ModelDraw>()->Render(GetWorld(), false, DirectX::Colors::Black);
-	}
-	if (static_cast<Player*>(GetOwner())->GetOnFloor())
-	{
-		GetComponent<Emitter>()->Render(GetPosition() - DirectX::SimpleMath::Vector3{ 0,1.f,0 });
 	}
 	GetComponent<BoxCollider>()->Render();
 }

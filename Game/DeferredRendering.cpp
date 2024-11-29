@@ -171,7 +171,8 @@ void DeferredRendering::DrawGBuffer(bool texture)
 void DeferredRendering::DeferredLighting()
 {
 	auto context = Graphics::GetInstance()->GetDeviceResources()->GetD3DDeviceContext();
-	auto renderTarget = m_deferredRT->GetRenderTargetView();
+	auto device = Graphics::GetInstance()->GetDeviceResources()->GetD3DDevice();
+	auto renderTarget = Graphics::GetInstance()->GetDeviceResources()->GetRenderTargetView();
 	auto depthStencil = Graphics::GetInstance()->GetDeviceResources()->GetDepthStencilView();
 
 	context->ClearRenderTargetView(renderTarget, DirectX::Colors::CornflowerBlue);
@@ -184,6 +185,22 @@ void DeferredRendering::DeferredLighting()
 	ID3D11ShaderResourceView* albedo = m_albedoRT->GetShaderResourceView();
 	ID3D11ShaderResourceView* normal = m_normalRT->GetShaderResourceView();
 	ID3D11ShaderResourceView* depth = m_depthRT->GetShaderResourceView();
+
+	D3D11_BLEND_DESC blendDesc = {};
+	blendDesc.RenderTarget[0].BlendEnable = TRUE;
+	blendDesc.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;         // カラーのソースブレンド
+	blendDesc.RenderTarget[0].DestBlend = D3D11_BLEND_INV_SRC_ALPHA;    // カラーのデスティネーションブレンド
+	blendDesc.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;             // カラーブレンド演算
+
+	blendDesc.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;          // アルファのソースブレンド
+	blendDesc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ZERO;        // アルファのデスティネーションブレンド
+	blendDesc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;        // アルファブレンド演算
+
+	blendDesc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
+
+	Microsoft::WRL::ComPtr<ID3D11BlendState> blendState;
+	device->CreateBlendState(&blendDesc, &blendState);
+	context->OMSetBlendState(blendState.Get(), nullptr, 0xFFFFFFFF);
 
 	// シェーダを設定する
 	context->PSSetShaderResources(1, 1, &albedo);

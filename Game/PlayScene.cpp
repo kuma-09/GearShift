@@ -275,10 +275,7 @@ void PlayScene::Render()
     {
         dropItem->Render();
     }
-    if (m_player->GetTarget())
-    {
-        m_player->GetTarget()->GetComponent<HPBar>()->Render(m_player->GetTarget()->GetPosition());
-    }
+
 
     m_player->Render();
     for (auto& enemy : m_Enemy)
@@ -330,6 +327,10 @@ void PlayScene::Render()
 void PlayScene::RenderUI()
 {
     // UI
+    if (m_player->GetTarget())
+    {
+        m_player->GetTarget()->GetComponent<HPBar>()->Render(m_player->GetTarget()->GetPosition());
+    }
     m_targetArea->Render(m_player->GetTarget());
     m_hpUI->Render();
     m_player->RenderPlayerUI();

@@ -169,15 +169,26 @@ void Game::Render()
     m_scene->Render();
     DeferredRendering::DeferredLighting();
 
-    ForwardRendering::BeginBuffer();
+    //auto context = Graphics::GetInstance()->GetDeviceResources()->GetD3DDeviceContext();
+    //auto renderTarget = Graphics::GetInstance()->GetDeviceResources()->GetRenderTargetView();
+    //auto depthStencil = Graphics::GetInstance()->GetDeviceResources()->GetDepthStencilView();
+
+    //context->ClearRenderTargetView(renderTarget, DirectX::Colors::CornflowerBlue);
+    //context->ClearDepthStencilView(depthStencil, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
+    //context->OMSetRenderTargets(1, &renderTarget, depthStencil);
+
+    //auto const viewport = Graphics::GetInstance()->GetDeviceResources()->GetScreenViewport();
+    //context->RSSetViewports(1, &viewport);
+
+    //ForwardRendering::BeginBuffer();
     m_scene->RenderUI();
     if (m_sceneMask->IsClose() || m_sceneMask->IsOpen())
     {
-        //m_sceneMask->Render();
+        m_sceneMask->Render();
     }
 
-    ID3D11ShaderResourceView* srv = ForwardRendering::GetRenderTexture()->GetShaderResourceView();
-    DeferredRendering::CombientRenderTarget(srv);
+    //ID3D11ShaderResourceView* srv = ForwardRendering::GetRenderTexture()->GetShaderResourceView();
+    //DeferredRendering::CombientRenderTarget(srv);
 
     m_deviceResources->PIXEndEvent();
 
