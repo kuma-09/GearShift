@@ -4,6 +4,8 @@
 #include "Framework/Resources.h"
 #include "Enemy.h"
 #include "Game/Object/Bullet/Bullet.h"
+#include "Game/Object/Bullet/FixedEnemyBullet.h"
+#include "Game/Object/Bullet/HomingBullet.h"
 #include "Game/Parts/Part.h"
 
 class State;
@@ -77,7 +79,11 @@ private:
 	// パーツ配列
 	std::unordered_map<Part::TypeID, std::unique_ptr<Part>> m_pPart;
 
-	std::unique_ptr<Bullet> m_bullet;
+	const int MAX_FIXED_BULLET = 10;
+	const int MAX_HOMING_BULLET = 10;
+
+	std::vector<std::unique_ptr<FixedEnemyBullet>> m_fixedBullets;
+	std::vector<std::unique_ptr<HomingBullet>> m_homingBullets;
 
 	State* m_state;
 };

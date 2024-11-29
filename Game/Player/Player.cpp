@@ -50,27 +50,12 @@ Player::Player(IScene* scene)
 	AddComponent<HPBar>();
 	AddComponent<Trail>();
 
-	SetPart(Part::Head, std::make_unique<Head>());
-	SetPart(Part::BodyTop, std::make_unique<BodyTop>());
-	SetPart(Part::LeftArm, std::make_unique<LeftArm>());
-	SetPart(Part::RightArm, std::make_unique<RightArm>());
-	SetPart(Part::LeftLeg, std::make_unique<LeftLeg>());
-	SetPart(Part::RightLeg, std::make_unique<RightLeg>());
-
-	m_idol = std::make_unique<Idol>(this);
-	m_jump = std::make_unique<Jump>(this);
-	m_boost = std::make_unique<Boost>(this);
-	m_attack = std::make_unique<Attack>(this);
-
-
-	for (int i = 0; i < MAX_BULLET_COUNT; i++)
-	{
-		m_defaultBullet.emplace_back(std::make_unique<NormalBullet>(GetScene(), BoxCollider::TypeID::PlayerBullet));
-	}
-
-	m_exBullet.clear();
-
-	m_state = m_idol.get();
+	// ステートの作成
+	CreateState();
+	// パーツのセット
+	CreateDefaultParts();
+	// 弾の作成
+	CreateBullets();
 }
 
 Player::~Player()
@@ -80,11 +65,6 @@ Player::~Player()
 
 void Player::Initialize()
 {
-	for (auto& bullet: m_defaultBullet)
-	{
-		bullet->Initalize(this);
-	}
-
 	GetComponent<BoxCollider>()->SetTypeID(BoxCollider::TypeID::Player);
 	GetComponent<BoxCollider>()->SetSize({ 1,1.45f,1 });
 	GetComponent<Look>()->SetTarget(this, nullptr);
@@ -96,7 +76,6 @@ void Player::Initialize()
 
 	m_energyGage = std::make_unique<EnergyGage>();
 	m_energyGage->Initialize();
-
 
 	m_reload = std::make_unique<ReloadUI>();
 	m_reload->Initialize();
@@ -213,7 +192,7 @@ void Player::Finalize()
 void Player::SetTarget(GameObject* target)
 {
 	m_target = target;
-	GetComponent<Camera>()->SetTarget(this, target);
+	//GetComponent<Camera>()->SetTarget(this, target);
 	GetComponent<Look>()->SetTarget(this, target);
 }
 
@@ -326,7 +305,41 @@ void Player::Reload()
 {
 	for (int i = 0; i < MAX_BULLET_COUNT; i++)
 	{
-		m_defaultBullet[i]->Initalize(this);
+		m_defaultBullet[i]->Initialize(this);
 	}
 	static_cast<PlayScene*>(GetScene())->UpdateBulletMagazine();
+}
+
+// プレイヤーのステートを作成
+void Player::CreateState()
+{
+	m_idol = std::make_unique<Idol>(this);
+	m_jump = std::make_unique<Jump>(this);
+	m_boost = std::make_unique<Boost>(this);
+	m_attack = std::make_unique<Attack>(this);
+	m_state = m_idol.get();
+}
+
+// デフォルトパーツをセット
+void Player::CreateDefaultParts()
+{
+	SetPart(Part::Head,     std::make_unique<Head>());
+	SetPart(Part::BodyTop,  std::make_unique<BodyTop>());
+	SetPart(Part::LeftArm,  std::make_unique<LeftArm>());
+	SetPart(Part::RightArm, std::make_unique<RightArm>());
+	SetPart(Part::LeftLeg,  std::make_unique<LeftLeg>());
+	SetPart(Part::RightLeg, std::make_unique<RightLeg>());
+}
+
+// 初期弾を作成
+void Player::CreateBullets()
+{
+	// デフォルトの弾を作成
+	for (int i = 0; i < MAX_BULLET_COUNT; i++)
+	{
+		m_defaultBullet.emplace_back(std::make_unique<NormalBullet>(GetScene(), BoxCollider::TypeID::PlayerBullet));
+		m_defaultBullet.back()->Initialize(this);
+	}
+	// 特殊弾はクリア
+	m_exBullet.clear();
 }

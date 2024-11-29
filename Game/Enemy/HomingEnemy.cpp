@@ -55,7 +55,7 @@ void HomingEnemy::Initialize(GameObject* target)
 
 	for (auto& bullet : m_bullet)
 	{
-		bullet->Initalize(this);
+		bullet->Initialize(this);
 	}
 
 	m_state->Initialize();

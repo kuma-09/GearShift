@@ -82,12 +82,16 @@ public:
 		m_exBulletSize = int(m_exBullet.size());
 		for (auto& bullet: m_exBullet)
 		{
-			bullet->Initalize(this);
+			bullet->Initialize(this);
 		}
 	}
 
 private:
 	void Reload();
+
+	void CreateState();
+	void CreateDefaultParts();
+	void CreateBullets();
 
 	// パーツをまとめて更新
 	void UpdateParts(float elapsedTime) {

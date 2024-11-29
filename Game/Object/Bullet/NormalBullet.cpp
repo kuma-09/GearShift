@@ -28,7 +28,7 @@ NormalBullet::~NormalBullet()
 
 }
 
-void NormalBullet::Initalize(GameObject* object)
+void NormalBullet::Initialize(GameObject* object)
 {
 	using namespace DirectX::SimpleMath;
 

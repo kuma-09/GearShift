@@ -15,7 +15,7 @@ Sword::Sword(IScene* scene, BoxCollider::TypeID id)
 	AddComponent<Trail>();
 	GetComponent<BoxCollider>()->SetTypeID(BoxCollider::PlayerSword);
 	GetComponent<BoxCollider>()->SetSize({ 5,4,5 });
-	GetComponent<Trail>()->Initialize(L"Resources/Textures/green.png", 10);
+	GetComponent<Trail>()->Initialize(L"Resources/Textures/particle.png", 10);
 	SetScale({7.5f, 7.5f, 7.5f});
 	SetState(SwordState::UNUSED);
 
@@ -107,10 +107,11 @@ void Sword::Update(float elapsedTime)
 		world *= Matrix::CreateTranslation(GetPosition());
 		static_cast<PlayScene*>(m_owner->GetScene())->CreateHitParticle(world);
 	}
+	GetComponent<Trail>()->SetPos(GetPosition(), GetPosition() + Vector3(0, 1, 0));
 	world = Matrix::CreateScale(GetScale());
 	if (GetState() == USED)
 	{
-		GetComponent<Trail>()->SetPos(GetPosition(), GetPosition() + Vector3(0, 1, 0));
+
 		world *= Matrix::CreateFromAxisAngle(Vector3(2, 2, 0), XMConvertToRadians(100 - m_rotate));
 	}
 	else
@@ -137,5 +138,5 @@ void Sword::Render()
 
 void Sword::Collision(BoxCollider* collider)
 {
-
+	UNREFERENCED_PARAMETER(collider);
 }

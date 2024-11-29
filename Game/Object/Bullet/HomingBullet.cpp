@@ -30,7 +30,7 @@ HomingBullet::~HomingBullet()
 
 }
 
-void HomingBullet::Initalize(GameObject* object)
+void HomingBullet::Initialize(GameObject* object)
 {
 	using namespace DirectX::SimpleMath;
 

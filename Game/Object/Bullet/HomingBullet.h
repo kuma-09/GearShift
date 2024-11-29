@@ -7,7 +7,7 @@ public:
 
 	HomingBullet(IScene* scene, BoxCollider::TypeID id);
 	~HomingBullet();
-	void Initalize(GameObject* object);
+	void Initialize(GameObject* object);
 	void Shot(GameObject* object);
 	void Shot(GameObject* object, float period);
 	void Hit();

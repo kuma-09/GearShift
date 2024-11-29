@@ -55,7 +55,7 @@ void FixedEnemy::Initialize(GameObject* target)
 	GetComponent<BoxCollider>()->SetTypeID(BoxCollider::TypeID::Enemy);
 	GetComponent<BoxCollider>()->SetSize({2,1,3});
 	GetComponent<HPBar>()->Initialize();
-	m_bullet->Initalize(this);
+	m_bullet->Initialize(this);
 	m_state->Initialize();
 	Matrix world = Matrix::Identity;
 	world = Matrix::CreateScale(GetScale());

@@ -29,7 +29,15 @@ BossEnemy::BossEnemy(IScene* scene)
 	AddComponent<BoxCollider>();
 	AddComponent<HPBar>();
 
-	m_bullet = std::make_unique<FixedEnemyBullet>(GetScene(), BoxCollider::TypeID::EnemyBullet);
+	for (int i = 0; i < MAX_FIXED_BULLET; i++)
+	{
+		m_fixedBullets.push_back(std::make_unique<FixedEnemyBullet>(GetScene(), BoxCollider::TypeID::EnemyBullet));
+	}
+
+	for (int i = 0; i < MAX_HOMING_BULLET; i++)
+	{
+		m_homingBullets.push_back(std::make_unique<HomingBullet>(GetScene(), BoxCollider::TypeID::EnemyBullet));
+	}
 
 	SetEnemyAttack(std::make_unique<EnemyAttackState>(this));
 	SetEnemyMove(std::make_unique<EnemyMoveState>(this));
@@ -57,7 +65,15 @@ void BossEnemy::Initialize(GameObject* target)
 	GetComponent<BoxCollider>()->SetTypeID(BoxCollider::TypeID::Enemy);
 	GetComponent<BoxCollider>()->SetSize({ 2,1,3 });
 	GetComponent<HPBar>()->Initialize();
-	m_bullet->Initalize(this);
+	for (auto& bullet : m_fixedBullets)
+	{
+		bullet->Initialize(this);
+	}
+
+	for (auto& bullet : m_homingBullets)
+	{
+		bullet->Initialize(this);
+	}
 	m_state->Initialize();
 	Matrix world = Matrix::Identity;
 	world = Matrix::CreateScale(GetScale());
@@ -72,7 +88,15 @@ void BossEnemy::Update(float elapsedTime)
 	using namespace DirectX::SimpleMath;
 
 	m_state->Update(elapsedTime);
-	m_bullet->Update(elapsedTime);
+	for (auto& bullet : m_fixedBullets)
+	{
+		bullet->Update(elapsedTime);
+	}
+
+	for (auto& bullet : m_homingBullets)
+	{
+		bullet->Update(elapsedTime);
+	}
 	
 	ComponentsUpdate(elapsedTime);
 	UpdateParts(elapsedTime);
@@ -98,7 +122,15 @@ void BossEnemy::Render()
 
 	SetWorld(world);
 
-	m_bullet->Render();
+	for (auto& bullet : m_fixedBullets)
+	{
+		bullet->Render();
+	}
+
+	for (auto& bullet : m_homingBullets)
+	{
+		bullet->Render();
+	}
 	m_state->Render();
 	RenderParts();
 
@@ -111,12 +143,29 @@ void BossEnemy::Render()
 
 void BossEnemy::Finalize()
 {
-	dynamic_cast<PlayScene*>(GetScene())->RemoveCollider(m_bullet->GetComponent<BoxCollider>());
+	//dynamic_cast<PlayScene*>(GetScene())->RemoveCollider(m_bullet->GetComponent<BoxCollider>());
 }
 
 void BossEnemy::Shot()
 {
-	m_bullet->Shot(static_cast<Player*>(GetTarget()));
+	for (auto& bullet : m_fixedBullets)
+	{
+		if (bullet->GetState() == Bullet::BulletState::UNUSED)
+		{
+			bullet->Shot(static_cast<Player*>(GetTarget()));
+			break;
+		}
+	}
+
+	for (auto& bullet : m_homingBullets)
+	{
+		if (bullet->GetState() == Bullet::BulletState::UNUSED)
+		{
+			bullet->Shot(static_cast<Player*>(GetTarget()));
+			break;
+		}
+	}
+
 }
 
 void BossEnemy::ChangeState(State* state)

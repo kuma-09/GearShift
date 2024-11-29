@@ -11,8 +11,6 @@ public:
 	static void DrawGBuffer(bool texture = false);
 	static void DeferredLighting();
 
-	static void CombientRenderTarget(ID3D11ShaderResourceView* srv);
-
 	static DX::RenderTexture* GetAlbedoRenderTexture() { return m_albedoRT.get(); }
 	static DX::RenderTexture* GetNormalRenderTexture() { return m_normalRT.get(); }
 	static DX::RenderTexture* GetDepthRenderTexture() { return m_depthRT.get(); }

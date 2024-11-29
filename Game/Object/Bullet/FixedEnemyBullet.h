@@ -9,7 +9,7 @@ public:
 
 	FixedEnemyBullet(IScene* scene, BoxCollider::TypeID id);
 	~FixedEnemyBullet();
-	void Initalize(GameObject* object);
+	void Initialize(GameObject* object);
 	void Shot(GameObject* target);
 	void Hit();
 	void Update(float elapsedTime);

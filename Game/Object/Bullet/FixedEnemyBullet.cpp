@@ -22,7 +22,7 @@ FixedEnemyBullet::~FixedEnemyBullet()
 
 }
 
-void FixedEnemyBullet::Initalize(GameObject* object)
+void FixedEnemyBullet::Initialize(GameObject* object)
 {
 	using namespace DirectX::SimpleMath;
 

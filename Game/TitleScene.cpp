@@ -95,7 +95,7 @@ void TitleScene::Render()
     //m_player->CreateShadow();
     //Resources::GetInstance()->GetShadow()->EndDepth();
 
-    m_skydome->Render();
+    //m_skydome->Render();
     m_player->Render();
     //for (int i = 0; i < 2; i++)
     //{

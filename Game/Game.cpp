@@ -139,7 +139,7 @@ void Game::Update(DX::StepTimer const& timer)
     }
 
     // TODO: Add your game logic here.
-    //m_debugString->AddString(std::to_string(m_timer.GetFramesPerSecond()).c_str());
+    m_debugString->AddString(std::to_string(m_timer.GetFramesPerSecond()).c_str());
     m_scene->Update(elapsedTime);
 
 
@@ -154,6 +154,8 @@ void Game::Update(DX::StepTimer const& timer)
 void Game::Render()
 {
     using namespace DirectX::SimpleMath;
+    auto state = Graphics::GetInstance()->GetCommonStates();
+
 
     // Don't try to render anything before the first Update.
     if (m_timer.GetFrameCount() == 0)
@@ -165,30 +167,21 @@ void Game::Render()
     m_deviceResources->PIXBeginEvent(L"Render");
 
     // TODO: Add your rendering code here.
+
+    // DeferredRendering開始
     DeferredRendering::BeginGBuffer();
     m_scene->Render();
     DeferredRendering::DeferredLighting();
 
-    //auto context = Graphics::GetInstance()->GetDeviceResources()->GetD3DDeviceContext();
-    //auto renderTarget = Graphics::GetInstance()->GetDeviceResources()->GetRenderTargetView();
-    //auto depthStencil = Graphics::GetInstance()->GetDeviceResources()->GetDepthStencilView();
-
-    //context->ClearRenderTargetView(renderTarget, DirectX::Colors::CornflowerBlue);
-    //context->ClearDepthStencilView(depthStencil, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
-    //context->OMSetRenderTargets(1, &renderTarget, depthStencil);
-
-    //auto const viewport = Graphics::GetInstance()->GetDeviceResources()->GetScreenViewport();
-    //context->RSSetViewports(1, &viewport);
-
-    //ForwardRendering::BeginBuffer();
+    // ForwardRenderingでUIを表示
     m_scene->RenderUI();
+
+    // シーン切り替え時のマスク
     if (m_sceneMask->IsClose() || m_sceneMask->IsOpen())
     {
         m_sceneMask->Render();
     }
-
-    //ID3D11ShaderResourceView* srv = ForwardRendering::GetRenderTexture()->GetShaderResourceView();
-    //DeferredRendering::CombientRenderTarget(srv);
+    m_debugString->Render(state);
 
     m_deviceResources->PIXEndEvent();
 

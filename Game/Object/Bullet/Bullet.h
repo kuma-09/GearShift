@@ -15,7 +15,7 @@ public:
 
 
 	virtual ~Bullet() = default;
-	virtual void Initalize(GameObject* object) = 0;
+	virtual void Initialize(GameObject* object) = 0;
 	virtual void Shot(GameObject* target) = 0;
 	virtual void Hit() = 0;
 	virtual void Update(float elapsedTime) = 0;

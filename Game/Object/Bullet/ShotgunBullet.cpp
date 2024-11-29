@@ -24,7 +24,7 @@ ShotgunBullet::~ShotgunBullet()
 
 }
 
-void ShotgunBullet::Initalize(GameObject* object)
+void ShotgunBullet::Initialize(GameObject* object)
 {
 	using namespace DirectX::SimpleMath;
 
