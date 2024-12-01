@@ -169,12 +169,12 @@ void Game::Render()
     // TODO: Add your rendering code here.
 
     // DeferredRendering開始
-    DeferredRendering::BeginGBuffer();
+    //DeferredRendering::BeginGBuffer();
     m_scene->Render();
-    DeferredRendering::DeferredLighting();
+    //DeferredRendering::DeferredLighting();
 
     // ForwardRenderingでUIを表示
-    m_scene->RenderUI();
+    //m_scene->RenderUI();
 
     // シーン切り替え時のマスク
     if (m_sceneMask->IsClose() || m_sceneMask->IsOpen())

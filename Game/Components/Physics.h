@@ -3,11 +3,11 @@
 
 class BoxCollider;
 
-class Gravity : public IComponent
+class Physics : public IComponent
 {
 public:
-	Gravity();
-	~Gravity();
+	Physics();
+	~Physics();
 
 	void Initialize();
 	void Update(float elapsedTime);
@@ -18,5 +18,6 @@ public:
 private:
 	const float MAX_GRAVITY = 0.5f;
 	float m_velocity;
+	bool m_onFloor;
 };
 

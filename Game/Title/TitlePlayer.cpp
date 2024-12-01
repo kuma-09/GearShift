@@ -5,7 +5,7 @@
 #include "Game/Components/ModelDraw.h"
 #include "Game/Components/BoxCollider.h"
 #include "Game/Components/Move.h"
-#include "Game/Components/Gravity.h"
+#include "Game/Components/Physics.h"
 #include "Game/Components/Camera.h"
 #include "Game/Components/Look.h"
 

@@ -7,7 +7,7 @@
 #include "Game/Components/ModelDraw.h"
 #include "Game/Components/BoxCollider.h"
 #include "Game/Components/HPBar.h"
-#include "Game/Components/Gravity.h"
+#include "Game/Components/Physics.h"
 #include "Game/Object/Bullet/FixedEnemyBullet.h"
 #include "Game/Object/Sword.h"
 #include "Game/PlayScene.h"
@@ -25,7 +25,7 @@ BossEnemy::BossEnemy(IScene* scene)
 	SetScene(scene);
 
 	AddComponent<HP>();
-	AddComponent<Gravity>();
+	AddComponent<Physics>();
 	AddComponent<BoxCollider>();
 	AddComponent<HPBar>();
 

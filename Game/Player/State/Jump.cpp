@@ -3,7 +3,7 @@
 #include "Idol.h"
 #include "Boost.h"
 #include "Attack.h"
-#include "Game/Components/Gravity.h"
+#include "Game/Components/Physics.h"
 #include "Game/PlayScene.h"
 
 
@@ -19,7 +19,7 @@ Jump::~Jump()
 
 void Jump::Initialize()
 {
-	m_player->GetComponent<Gravity>()->Reset();
+	m_player->GetComponent<Physics>()->Reset();
 }
 
 void Jump::Update(float elapsedTime)
@@ -37,7 +37,7 @@ void Jump::Update(float elapsedTime)
 
 	if (m_player->GetVelocity().y < 0)
 	{
-		m_player->GetComponent<Gravity>()->Reset();
+		m_player->GetComponent<Physics>()->Reset();
 		m_player->ChangeState(m_player->GetIdol());
 	}
 	if (kbState.Space || gpState.buttons.a)
@@ -45,7 +45,7 @@ void Jump::Update(float elapsedTime)
 		if (m_player->GetBoostPoint() > 0)
 		{
 			m_player->GetEnergyGage()->UseEnergyPoint(1);
-			m_player->GetComponent<Gravity>()->Reset();
+			m_player->GetComponent<Physics>()->Reset();
 		}
 	}
 	if (mouse->rightButton == mouse->PRESSED || gpTracker->b == gpTracker->PRESSED)

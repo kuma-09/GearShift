@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "DropItem.h"
-#include "Game/Components/Gravity.h"
+#include "Game/Components/Physics.h"
 #include "Game/Components/ModelDraw.h"
 #include "Game/Components/BoxCollider.h"
 
@@ -8,7 +8,7 @@ DropItem::DropItem(IScene* scene, std::unique_ptr<Part> part)
 {
 
 	SetScene(scene);
-	AddComponent<Gravity>();
+	AddComponent<Physics>();
 	AddComponent<BoxCollider>();
 	GetComponent<BoxCollider>()->SetTypeID(BoxCollider::TypeID::DropItem);
 	GetComponent<BoxCollider>()->SetSize(DirectX::SimpleMath::Vector3::One * 2);

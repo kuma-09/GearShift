@@ -10,8 +10,6 @@
 
 class State;
 class FixedEnemyBullet;
-class EnemyAttackState;
-class EnemyMoveState;
 
 class BossEnemy : public Enemy
 {

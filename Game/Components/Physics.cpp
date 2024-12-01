@@ -1,24 +1,24 @@
 #include "pch.h"
-#include "Gravity.h"
+#include "Physics.h"
 #include "BoxCollider.h"
 #include "Game/GameObject.h"
 
 
-Gravity::Gravity()
+Physics::Physics()
 {
 	m_velocity = 0;
 }
 
-Gravity::~Gravity()
+Physics::~Physics()
 {
 
 }
 
-void Gravity::Initialize()
+void Physics::Initialize()
 {
 }
 
-void Gravity::Update(float elapsedTime)
+void Physics::Update(float elapsedTime)
 {
     using namespace DirectX::SimpleMath;
 
@@ -28,12 +28,11 @@ void Gravity::Update(float elapsedTime)
 		m_velocity = MAX_GRAVITY;
 	}
 	GetOwner()->SetVelocity(GetOwner()->GetVelocity() - Vector3(0, m_velocity, 0));
-	
 
 }
 
 
-void Gravity::Finalize()
+void Physics::Finalize()
 {
 
 }

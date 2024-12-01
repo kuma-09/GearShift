@@ -84,29 +84,12 @@ void PostProcess::Initialize()
         m_inputLayout.GetAddressOf()
     );
 
-    DX::ThrowIfFailed(
-        device->CreateVertexShader(vs.GetData(), vs.GetSize(), nullptr, m_VS.ReleaseAndGetAddressOf())
-    );
-
-    DX::ThrowIfFailed(
-        device->CreatePixelShader(ps.GetData(), ps.GetSize(), nullptr, m_PS.ReleaseAndGetAddressOf())
-    );
-
-    DX::ThrowIfFailed(
-        device->CreateVertexShader(startvs.GetData(), startvs.GetSize(), nullptr, m_startVS.ReleaseAndGetAddressOf())
-    );
-
-    DX::ThrowIfFailed(
-        device->CreatePixelShader(startps.GetData(), startps.GetSize(), nullptr, m_startPS.ReleaseAndGetAddressOf())
-    );
-
-    DX::ThrowIfFailed(
-        device->CreateVertexShader(noisevs.GetData(), noisevs.GetSize(), nullptr, m_noiseVS.ReleaseAndGetAddressOf())
-    );
-
-    DX::ThrowIfFailed(
-        device->CreatePixelShader(noiseps.GetData(), noiseps.GetSize(), nullptr, m_noisePS.ReleaseAndGetAddressOf())
-    );
+    device->CreateVertexShader(vs.GetData(), vs.GetSize(), nullptr, m_VS.ReleaseAndGetAddressOf());
+    device->CreatePixelShader(ps.GetData(), ps.GetSize(), nullptr, m_PS.ReleaseAndGetAddressOf());
+    device->CreateVertexShader(startvs.GetData(), startvs.GetSize(), nullptr, m_startVS.ReleaseAndGetAddressOf());
+    device->CreatePixelShader(startps.GetData(), startps.GetSize(), nullptr, m_startPS.ReleaseAndGetAddressOf());
+    device->CreateVertexShader(noisevs.GetData(), noisevs.GetSize(), nullptr, m_noiseVS.ReleaseAndGetAddressOf());
+    device->CreatePixelShader(noiseps.GetData(), noiseps.GetSize(), nullptr, m_noisePS.ReleaseAndGetAddressOf());
 
     // 定数バッファの作成
     D3D11_BUFFER_DESC bufferDesc = {};
@@ -137,7 +120,7 @@ void PostProcess::Update(float elapsedTime)
             m_nowTime = 0;
         }
     }
-    if (m_isNoise)
+    else if (m_isNoise)
     {
         m_nowTime += elapsedTime;
         if (m_nowTime >= m_maxNoiseTime)
@@ -241,7 +224,8 @@ void PostProcess::combinationRT()
     m_basicPostProcess->SetBloomBlurParameters(true, 2.0f, 1.0f);
     m_basicPostProcess->SetSourceTexture(blur1SRV);
     m_basicPostProcess->Process(context);
-
+    ID3D11ShaderResourceView* nullsrv[] = { nullptr };
+    context->PSSetShaderResources(0, 1, nullsrv);
     // -------------------------------------------------------------------------- //
     // Pass3 blur2 → blur1 縦にぼかす
     // -------------------------------------------------------------------------- //
@@ -254,7 +238,6 @@ void PostProcess::combinationRT()
     m_basicPostProcess->Process(context);
 
 
-
     // -------------------------------------------------------------------------- //
     // Pass4 offscreen + blur1 → バックバッファ
     // -------------------------------------------------------------------------- //
@@ -263,7 +246,6 @@ void PostProcess::combinationRT()
     // -------------------------------------------------------------------------- //
     context->ClearRenderTargetView(offscreenRTV, Colors::Black);
     context->ClearDepthStencilView(depthStencil, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
-
     context->OMSetRenderTargets(1, &offscreenRTV, depthStencil);
     auto const viewport = m_graphics->GetDeviceResources()->GetScreenViewport();
     context->RSSetViewports(1, &viewport);
@@ -274,7 +256,6 @@ void PostProcess::combinationRT()
     m_dualPostProcess->SetSourceTexture(offscreenSRV_Bloom);
     m_dualPostProcess->SetSourceTexture2(blur1SRV);
     m_dualPostProcess->Process(context);
-
 
     context->ClearRenderTargetView(finalRTV, Colors::Black);
     context->ClearDepthStencilView(depthStencil, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
@@ -334,4 +315,5 @@ void PostProcess::combinationRT()
     m_batch->Begin();
     m_batch->DrawQuad(m_vertex[0], m_vertex[1], m_vertex[3], m_vertex[2]);
     m_batch->End();
+
 }

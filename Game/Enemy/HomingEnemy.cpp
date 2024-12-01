@@ -70,7 +70,6 @@ void HomingEnemy::Initialize(GameObject* target)
 void HomingEnemy::Update(float elapsedTime)
 {
 	using namespace DirectX::SimpleMath;
-
 	ComponentsUpdate(elapsedTime);
 
 	m_state->Update(elapsedTime);
@@ -103,7 +102,7 @@ void HomingEnemy::Render()
 	}
 	m_state->Render();
 	GetComponent<ModelDraw>()->Render(GetWorld(),true);
-	
+	GetComponent<HPBar>()->Render(GetPosition());
 	// “–‚½‚è”»’è‚Ì•`‰æ
 	//GetComponent<BoxCollider>()->Render();
 }

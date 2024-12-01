@@ -7,7 +7,7 @@
 #include "Game/Components/ModelDraw.h"
 #include "Game/Components/BoxCollider.h"
 #include "Game/Components/Move.h"
-#include "Game/Components/Gravity.h"
+#include "Game/Components/Physics.h"
 #include "Game/Components/Camera.h"
 #include "Game/Components/Look.h"
 #include "Game/Components/Trail.h"
@@ -46,7 +46,7 @@ Player::Player(IScene* scene)
 	AddComponent<Camera>();
 	AddComponent<Look>();
 	AddComponent<BoxCollider>();
-	AddComponent<Gravity>();
+	AddComponent<Physics>();
 	AddComponent<HPBar>();
 	AddComponent<Trail>();
 
@@ -136,7 +136,7 @@ void Player::Update(float elapsedTime)
 	SetPrePosition(GetPosition());
 	SetPosition(GetPosition() + GetVelocity());
 
-	GetComponent<Trail>()->SetPos(GetPosition(), GetPosition() + Vector3(0, 1, 0));
+	GetComponent<Trail>()->SetPos(GetPosition() - Vector3(0,0.5f, 0), GetPosition() + Vector3(0, 0.5f, 0));
 
 	Matrix world = Matrix::Identity;
 	world = Matrix::CreateScale(GetScale());
@@ -192,7 +192,7 @@ void Player::Finalize()
 void Player::SetTarget(GameObject* target)
 {
 	m_target = target;
-	//GetComponent<Camera>()->SetTarget(this, target);
+	GetComponent<Camera>()->SetTarget(this, target);
 	GetComponent<Look>()->SetTarget(this, target);
 }
 
@@ -294,7 +294,7 @@ void Player::Collision(BoxCollider* collider)
 		SetOnFloor(true);
 		BoxCollider::CheckHit(this, collider->GetOwner());
 	}
-	if (collider->GetTypeID() == BoxCollider::Wall)
+	if (collider->GetTypeID() == BoxCollider::Wall || collider->GetTypeID() == BoxCollider::Enemy)
 	{
 		BoxCollider::CheckHit(this, collider->GetOwner());
 	}

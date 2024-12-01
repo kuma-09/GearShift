@@ -160,9 +160,10 @@ void HomingBullet::Render()
 	if (GetState() == FLYING)
 	{
 		GetComponent<ModelDraw>()->Render(GetWorld(), false);
-		GetComponent<Trail>()->Render();
+		//GetComponent<Trail>()->Render();
+		//GetComponent<Emitter>()->Render(GetPosition() + DirectX::SimpleMath::Vector3((rand() % 3 - 1) * 0.25f, (rand() % 3 - 1) * 0.25f, (rand() % 3 - 1) * 0.25f));
 	}
-	//GetComponent<Emitter>()->Render(GetPosition() + DirectX::SimpleMath::Vector3((rand() % 3 - 1) * 0.25f, (rand() % 3 - 1) * 0.25f, (rand() % 3 - 1) * 0.25f));
+	GetComponent<Emitter>()->Render(GetPosition() + DirectX::SimpleMath::Vector3((rand() % 3 - 1) * 0.25f, (rand() % 3 - 1) * 0.25f, (rand() % 3 - 1) * 0.25f));
 }
 
 void HomingBullet::Collision(BoxCollider* collider)

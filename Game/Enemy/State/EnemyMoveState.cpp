@@ -24,17 +24,21 @@ void EnemyMoveState::Initialize(Enemy* enemy)
 void EnemyMoveState::Update(float elapsedTime)
 {
 	m_totalTime += elapsedTime;
-	m_enemy->SetVelocity({ 0,0,SPEED });
 
 	float dis = (m_enemy->GetPosition() - m_enemy->GetTarget()->GetPosition()).Length();
 
-	if (dis > 40)
+	if (m_totalTime >= 2)
 	{
-		m_enemy->SetVelocity({ 0,0,-SPEED });
-	}
-	else
-	{
-		m_enemy->ChangeState(m_enemy->GetAttackState());
+		if (dis > 40)
+		{
+			m_enemy->SetVelocity(DirectX::SimpleMath::Vector3{ 0,0,-SPEED });
+			Initialize(m_enemy);
+		}
+		else
+		{
+			m_enemy->SetVelocity(DirectX::SimpleMath::Vector3{ float(rand() % 2 * 2 - 1) * 0.1f,0,0 });
+			Initialize(m_enemy);
+		}
 	}
 }
 

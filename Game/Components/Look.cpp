@@ -3,14 +3,18 @@
 
 Look::Look()
 {
+    m_h = false;
+    m_v = false;
 }
 
 Look::~Look()
 {
 }
 
-void Look::Initialize()
+void Look::Initialize(bool h, bool v)
 {
+    m_h = h;
+    m_v = v;
 }
 
 void Look::Update(float elapsedTime)
@@ -25,6 +29,9 @@ void Look::Update(float elapsedTime)
         Vector3 direction = GetOwner()->GetPosition() - m_targetPosition;
         float radianY = atan2f(direction.x, direction.z);
         float radianX = -atan2f(direction.y, sqrt(direction.x * direction.x + direction.z * direction.z));
+
+        if (m_h) radianY = 0;
+        if (m_v) radianX = 0;
 
         // ƒvƒŒƒCƒ„[‚ÌŒü‚¢‚Ä‚¢‚é•ûŒü‚ğİ’è
         Quaternion quaternion = Quaternion::CreateFromYawPitchRoll(Vector3( radianX, radianY, 0));

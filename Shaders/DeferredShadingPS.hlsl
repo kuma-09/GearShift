@@ -26,7 +26,7 @@ float LinearizeDepth(float depth, float near, float far);
 float4 main(PS_INPUT input) : SV_TARGET
 {
     // テクスチャカラー
-	float4 albedo = AlbedoMap.Sample(Sampler, input.Texture).rgba;
+	float3 albedo = AlbedoMap.Sample(Sampler, input.Texture).rgb;
     // ノーマル
     float3 normal = NormalMap.Sample(Sampler, input.Texture).rgb;
     // 深度値

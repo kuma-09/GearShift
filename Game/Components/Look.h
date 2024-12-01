@@ -10,7 +10,7 @@ public:
 	Look();
 	~Look();
 
-	void Initialize();
+	void Initialize(bool h , bool v);
 	void Update(float elapsedTime);
 	void Render();
 	void Finalize();
@@ -21,6 +21,9 @@ private:
 
 	GameObject* m_from;
 	GameObject* m_to;
+
+	bool m_h;
+	bool m_v;
 
 	DirectX::SimpleMath::Vector3 m_eyePosition;
 	DirectX::SimpleMath::Vector3 m_targetPosition;

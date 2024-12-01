@@ -21,7 +21,7 @@ SkyDome::SkyDome()
 				basicEffect->SetLightEnabled(2, false);
 
 				// ƒ‚ƒfƒ‹‚ðŽ©”­Œõ‚³‚¹‚é
-				//basicEffect->SetEmissiveColor(Colors::White);
+				basicEffect->SetEmissiveColor(Colors::White);
 			}
 		}
 	);

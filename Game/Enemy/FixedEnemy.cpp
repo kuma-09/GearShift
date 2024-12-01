@@ -7,7 +7,7 @@
 #include "Game/Components/ModelDraw.h"
 #include "Game/Components/BoxCollider.h"
 #include "Game/Components/HPBar.h"
-#include "Game/Components/Gravity.h"
+#include "Game/Components/Physics.h"
 #include "Game/Object/Bullet/FixedEnemyBullet.h"
 #include "Game/Object/Sword.h"
 #include "Game/PlayScene.h"
@@ -23,7 +23,7 @@ FixedEnemy::FixedEnemy(IScene* scene)
 
 	AddComponent<HP>();
 	AddComponent<Look>();
-	AddComponent<Gravity>();
+	AddComponent<Physics>();
 	AddComponent<ModelDraw>();
 	AddComponent<BoxCollider>();
 	AddComponent<HPBar>();
@@ -50,6 +50,7 @@ void FixedEnemy::Initialize(GameObject* target)
 
 	GetComponent<HP>()->SetHP(10);
 	SetTarget(target);
+	GetComponent<Look>()->Initialize(false,true);
 	GetComponent<Look>()->SetTarget(this, target);
 	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetTankBodyModel());
 	GetComponent<BoxCollider>()->SetTypeID(BoxCollider::TypeID::Enemy);
@@ -101,6 +102,7 @@ void FixedEnemy::Render()
 
 	if (GetComponent<HP>()->GetHP() <= 0) return;
 	GetComponent<ModelDraw>()->Render(GetWorld(), false);
+	GetComponent<HPBar>()->Render(GetPosition());
 	//GetComponent<BoxCollider>()->Render();
 }
 

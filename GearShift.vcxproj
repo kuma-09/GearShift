@@ -195,7 +195,7 @@
     <ClInclude Include="Game\Animation\StartAnimation.h" />
     <ClInclude Include="Game\Components\BoxCollider.h" />
     <ClInclude Include="Game\Components\Camera.h" />
-    <ClInclude Include="Game\Components\Gravity.h" />
+    <ClInclude Include="Game\Components\Physics.h" />
     <ClInclude Include="Game\Components\HP.h" />
     <ClInclude Include="Game\Components\HPBar.h" />
     <ClInclude Include="Game\Components\IComponent.h" />
@@ -298,7 +298,7 @@
     <ClCompile Include="Game\Animation\StartAnimation.cpp" />
     <ClCompile Include="Game\Components\BoxCollider.cpp" />
     <ClCompile Include="Game\Components\Camera.cpp" />
-    <ClCompile Include="Game\Components\Gravity.cpp" />
+    <ClCompile Include="Game\Components\Physics.cpp" />
     <ClCompile Include="Game\Components\HP.cpp" />
     <ClCompile Include="Game\Components\HPBar.cpp" />
     <ClCompile Include="Game\Components\InputComponent.cpp" />

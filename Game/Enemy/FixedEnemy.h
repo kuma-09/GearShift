@@ -6,8 +6,6 @@
 
 class State;
 class FixedEnemyBullet;
-class EnemyAttackState;
-class EnemyMoveState;
 
 class FixedEnemy : public Enemy
 {

@@ -55,7 +55,7 @@ void Camera::Update(float elapsedTime)
         m_rotateY = -1.f;
     }
 
-    m_quaternion = Quaternion::CreateFromYawPitchRoll({ m_rotateY ,m_rotateX ,0 });
+
 
     // カメラのデフォルトの座標ベクトル
     DirectX::SimpleMath::Vector3 eye{ 0.0f,CAMERA_HEIGHT,CAMERA_DISTANCE };
@@ -69,12 +69,19 @@ void Camera::Update(float elapsedTime)
         m_targetPosition = m_enemy->GetPosition();
         // カメラ座標を計算する
         m_eyePosition = m_player->GetPosition();
+
+        float z = m_eyePosition.z - m_targetPosition.z;
+        float x = m_eyePosition.x - m_targetPosition.x;
+
+        m_quaternion = Quaternion::CreateFromYawPitchRoll(DirectX::XMConvertToRadians(atan2f(x,z)), 0, 0);
     }
     else
     {
         m_targetPosition += (m_player->GetPosition() - m_targetPosition) * CAMERA_TARGET_RATE;
         // カメラ座標を計算する
         m_eyePosition += (m_targetPosition + eye - m_eyePosition) * CAMERA_EYE_RATE;
+
+        m_quaternion = Quaternion::CreateFromYawPitchRoll({ m_rotateY ,m_rotateX ,0 });
     }
 
 

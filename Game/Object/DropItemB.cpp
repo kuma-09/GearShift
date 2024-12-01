@@ -2,12 +2,12 @@
 #include "DropItemB.h"
 #include "Game/Components/ModelDraw.h"
 #include "Game/Components/BoxCollider.h"
-#include "Game/Components/Gravity.h"
+#include "Game/Components/Physics.h"
 
 DropItemB::DropItemB(IScene* scene, std::vector<std::unique_ptr<Bullet>> wepons)
 {
 	SetScene(scene);
-	AddComponent<Gravity>();
+	AddComponent<Physics>();
 	AddComponent<BoxCollider>();
 	GetComponent<BoxCollider>()->SetTypeID(BoxCollider::TypeID::DropItem);
 	GetComponent<BoxCollider>()->SetSize(DirectX::SimpleMath::Vector3::One * 2);
