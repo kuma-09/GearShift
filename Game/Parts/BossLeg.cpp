@@ -5,7 +5,7 @@
 #include "Game/Components/Camera.h"
 #include "Game/Object/Bullet/Bullet.h"
 #include "Game/Components/ModelDraw.h"
-#include "Game/Components/BoxCollider.h"
+#include "Game/Components/Collider.h"
 #include "Game/Components/Move.h"
 #include <Game/Components/HP.h>
 #include "Game/PlayScene.h"
@@ -14,7 +14,7 @@ BossLeg::BossLeg()
 {
 	AddComponent<HP>();
 	AddComponent<ModelDraw>();
-	AddComponent<BoxCollider>();
+	AddComponent<Collider>();
 	AddComponent<Emitter>();
 	m_isHit = false;
 }
@@ -32,8 +32,8 @@ void BossLeg::Initialize(int hp, IScene* scene)
 	GetComponent<HP>()->SetHP(hp);
 	SetMaxHP(float(hp));
 	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetCutoRobotModel());
-	GetComponent<BoxCollider>()->SetSize({ 1.0f,1.0f,1.0f });
-	GetComponent<BoxCollider>()->SetInitalePosition({ 0,0,0 });
+	GetComponent<Collider>()->SetSize({ 1.0f,1.0f,1.0f });
+	GetComponent<Collider>()->SetInitalePosition({ 0,0,0 });
 	GetComponent<Emitter>()->Initialize(L"Resources/Textures/smoke_white.png", 0.1f, 0.1f, 0.3f);
 }
 
@@ -83,17 +83,17 @@ void BossLeg::Render()
 	{
 		//GetComponent<Emitter>()->Render(GetPosition() - DirectX::SimpleMath::Vector3{ 0,1.f,0 });
 	}
-	GetComponent<BoxCollider>()->Render();
+	GetComponent<Collider>()->Render();
 }
 
 void BossLeg::Finalize()
 {
 }
 
-void BossLeg::Collision(BoxCollider* collider)
+void BossLeg::Collision(Collider* collider)
 {
 	// ÉpÅ[ÉcÇ∆ÇÃìñÇΩÇËîªíË
-	if (GetComponent<BoxCollider>()->GetBoundingBox()->Intersects(*collider->GetBoundingBox()))
+	if (GetComponent<Collider>()->GetBoundingBox()->Intersects(*collider->GetBoundingBox()))
 	{
 		Bullet* bulletObject = static_cast<Bullet*>(collider->GetOwner());
 		if (bulletObject->GetState() == Bullet::FLYING)

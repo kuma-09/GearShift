@@ -5,42 +5,50 @@
 #include "Game/Components/HP.h"
 #include "Game/Components/Look.h"
 #include "Game/Components/ModelDraw.h"
-#include "Game/Components/BoxCollider.h"
+#include "Game/Components/Collider.h"
 #include "Game/Components/HPBar.h"
 #include "Game/Components/Physics.h"
-#include "Game/Object/Bullet/FixedEnemyBullet.h"
+
 #include "Game/Object/Sword.h"
 #include "Game/PlayScene.h"
 
-#include "Game/Enemy/State/EnemyAttackState.h"
-#include "Game/Enemy/State/EnemyMoveState.h"
+#include "Game/Enemy/BossState/BossMissileState.h"
+#include "Game/Enemy/BossState/BossMoveState.h"
 
 #include "Game/Parts/BossHead.h"
 #include "Game/Parts/BossLeg.h"
 
 
 
-BossEnemy::BossEnemy(IScene* scene)
+BossEnemy::BossEnemy(IScene* scene,GameObject* target)
 {
 	SetScene(scene);
-
+	SetTarget(target);
 	AddComponent<HP>();
 	AddComponent<Physics>();
-	AddComponent<BoxCollider>();
+	AddComponent<Collider>();
 	AddComponent<HPBar>();
+	//AddComponent<Look>();
+	//GetComponent<Look>()->Initialize(false, true);
+	//GetComponent<Look>()->SetTarget(this, target);
 
 	for (int i = 0; i < MAX_FIXED_BULLET; i++)
 	{
-		m_fixedBullets.push_back(std::make_unique<FixedEnemyBullet>(GetScene(), BoxCollider::TypeID::EnemyBullet));
+		m_fixedBullets.push_back(std::make_unique<FixedEnemyBullet>(GetScene(), Collider::TypeID::EnemyBullet));
 	}
 
 	for (int i = 0; i < MAX_HOMING_BULLET; i++)
 	{
-		m_homingBullets.push_back(std::make_unique<HomingBullet>(GetScene(), BoxCollider::TypeID::EnemyBullet));
+		m_homingBullets.push_back(std::make_unique<HomingBullet>(GetScene(), Collider::TypeID::EnemyBullet));
 	}
 
-	SetEnemyAttack(std::make_unique<EnemyAttackState>(this));
-	SetEnemyMove(std::make_unique<EnemyMoveState>(this));
+	for (size_t i = 0; i < MAX_LASER_BULLET; i++)
+	{
+		m_laserBullet.emplace_back(std::make_unique<LaserBullet>(GetScene(), Collider::TypeID::EnemyBullet));
+	}
+
+	SetEnemyAttack(std::make_unique<BossMissileState>(this));
+	SetEnemyMove(std::make_unique<BossMoveState>(this));
 	SetScale({ 3.0f,3.0f,3.0f });
 
 	m_state = GetMoveState();
@@ -53,17 +61,17 @@ BossEnemy::~BossEnemy()
 
 }
 
-void BossEnemy::Initialize(GameObject* target)
+void BossEnemy::Initialize()
 {
 	using namespace DirectX::SimpleMath;
 
 
 	GetComponent<HP>()->SetHP(10);
-	SetTarget(target);
-	SetPart(Part::Head, std::make_unique<BossHead>(target));
+	SetTarget(GetTarget());
+	SetPart(Part::Head, std::make_unique<BossHead>(GetTarget()));
 	SetPart(Part::BodyTop, std::make_unique<BossLeg>());
-	GetComponent<BoxCollider>()->SetTypeID(BoxCollider::TypeID::Enemy);
-	GetComponent<BoxCollider>()->SetSize({ 2,1,3 });
+	GetComponent<Collider>()->SetTypeID(Collider::TypeID::Enemy);
+	GetComponent<Collider>()->SetSize({ 2,1,3 });
 	GetComponent<HPBar>()->Initialize();
 	for (auto& bullet : m_fixedBullets)
 	{
@@ -71,6 +79,11 @@ void BossEnemy::Initialize(GameObject* target)
 	}
 
 	for (auto& bullet : m_homingBullets)
+	{
+		bullet->Initialize(this);
+	}
+
+	for (auto& bullet : m_laserBullet)
 	{
 		bullet->Initialize(this);
 	}
@@ -88,6 +101,7 @@ void BossEnemy::Update(float elapsedTime)
 	using namespace DirectX::SimpleMath;
 
 	m_state->Update(elapsedTime);
+
 	for (auto& bullet : m_fixedBullets)
 	{
 		bullet->Update(elapsedTime);
@@ -98,6 +112,10 @@ void BossEnemy::Update(float elapsedTime)
 		bullet->Update(elapsedTime);
 	}
 	
+	for (auto& bullet : m_laserBullet)
+	{
+		bullet->Update(elapsedTime);
+	}
 	ComponentsUpdate(elapsedTime);
 	UpdateParts(elapsedTime);
 
@@ -131,6 +149,11 @@ void BossEnemy::Render()
 	{
 		bullet->Render();
 	}
+
+	for (auto& bullet : m_laserBullet)
+	{
+		bullet->Render();
+	}
 	m_state->Render();
 	RenderParts();
 
@@ -138,12 +161,12 @@ void BossEnemy::Render()
 
 
 	if (GetComponent<HP>()->GetHP() <= 0) return;
-	GetComponent<BoxCollider>()->Render();
+	GetComponent<Collider>()->Render();
 }
 
 void BossEnemy::Finalize()
 {
-	//dynamic_cast<PlayScene*>(GetScene())->RemoveCollider(m_bullet->GetComponent<BoxCollider>());
+	//dynamic_cast<PlayScene*>(GetScene())->RemoveCollider(m_bullet->GetComponent<Collider>());
 }
 
 void BossEnemy::Shot()
@@ -166,6 +189,14 @@ void BossEnemy::Shot()
 		}
 	}
 
+	for (auto& bullet : m_laserBullet)
+	{
+		if (bullet->GetState() == Bullet::BulletState::UNUSED)
+		{
+			bullet->Shot(static_cast<Player*>(GetTarget()));
+			break;
+		}
+	}
 }
 
 void BossEnemy::ChangeState(State* state)
@@ -174,9 +205,9 @@ void BossEnemy::ChangeState(State* state)
 	m_state->Initialize();
 }
 
-void BossEnemy::Collision(BoxCollider* collider)
+void BossEnemy::Collision(Collider* collider)
 {
-	if (collider->GetTypeID() == BoxCollider::PlayerBullet)
+	if (collider->GetTypeID() == Collider::PlayerBullet)
 	{
 		Bullet* bulletObject = static_cast<Bullet*>(collider->GetOwner());
 		if (bulletObject->GetState() == Bullet::FLYING)
@@ -186,7 +217,7 @@ void BossEnemy::Collision(BoxCollider* collider)
 			bulletObject->Hit();
 		}
 	}
-	if (collider->GetTypeID() == BoxCollider::PlayerSword)
+	if (collider->GetTypeID() == Collider::PlayerSword)
 	{
 		Sword* bulletObject = static_cast<Sword*>(collider->GetOwner());
 		if (bulletObject->GetState() == Sword::USING)
@@ -196,10 +227,10 @@ void BossEnemy::Collision(BoxCollider* collider)
 			bulletObject->Hit();
 		}
 	}
-	if (collider->GetTypeID() == BoxCollider::Floor ||
-		collider->GetTypeID() == BoxCollider::Wall)
+	if (collider->GetTypeID() == Collider::Floor ||
+		collider->GetTypeID() == Collider::Wall)
 	{
-		BoxCollider::CheckHit(this, collider->GetOwner());
+		Collider::CheckHit(this, collider->GetOwner());
 
 	}
 }

@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "HomingBullet.h"
-#include "Game/Components/BoxCollider.h"
+#include "Game/Components/Collider.h"
 #include "Game/Components/ModelDraw.h"
 #include "Game/Components/Trail.h"
 #include "Game/PlayScene.h"
@@ -9,15 +9,15 @@
 
 #include "Framework/Audio.h"
 
-HomingBullet::HomingBullet(IScene* scene, BoxCollider::TypeID id)
+HomingBullet::HomingBullet(IScene* scene, Collider::TypeID id)
 {
 	SetScene(scene);
-	AddComponent<BoxCollider>();
+	AddComponent<Collider>();
 	AddComponent<ModelDraw>();
 	AddComponent<Emitter>();
 	AddComponent<Trail>();
-	GetComponent<BoxCollider>()->SetTypeID(id);
-	GetComponent<BoxCollider>()->SetSize({ 0.1f,0.1f,0.1f });
+	GetComponent<Collider>()->SetTypeID(id);
+	GetComponent<Collider>()->SetSize({ 0.1f,0.1f,0.1f });
 	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetCubeModel());
 	GetComponent<Emitter>()->Initialize(L"Resources/Textures/smoke_white_big.png",0.3f,0.01f,0.1f);
 	GetComponent<Trail>()->Initialize(L"Resources/Textures/particle.png", 10);
@@ -166,12 +166,12 @@ void HomingBullet::Render()
 	GetComponent<Emitter>()->Render(GetPosition() + DirectX::SimpleMath::Vector3((rand() % 3 - 1) * 0.25f, (rand() % 3 - 1) * 0.25f, (rand() % 3 - 1) * 0.25f));
 }
 
-void HomingBullet::Collision(BoxCollider* collider)
+void HomingBullet::Collision(Collider* collider)
 {
 	if (GetState() == FLYING)
 	{
-		if (collider->GetTypeID() == BoxCollider::Wall ||
-			collider->GetTypeID() == BoxCollider::Floor)
+		if (collider->GetTypeID() == Collider::Wall ||
+			collider->GetTypeID() == Collider::Floor)
 		{
 			Hit();
 		}

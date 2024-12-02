@@ -4,7 +4,7 @@
 #include "Game/Object/Bullet/Bullet.h"
 #include "Game/Components/Camera.h"
 #include "Game/Components/ModelDraw.h"
-#include "Game/Components/BoxCollider.h"
+#include "Game/Components/Collider.h"
 #include "Game/Components/Move.h"
 #include <Game/Components/HP.h>
 #include "Game/PlayScene.h"
@@ -13,7 +13,7 @@ RightLeg::RightLeg()
 {
 	AddComponent<HP>();
 	AddComponent<ModelDraw>();
-	AddComponent<BoxCollider>();
+	AddComponent<Collider>();
 	AddComponent<Emitter>();
 	SetTypeID(TypeID::RightLeg);
 	m_isHit = false;
@@ -30,8 +30,8 @@ void RightLeg::Initialize(int hp,IScene* scene)
 	GetComponent<HP>()->SetHP(hp);
 	SetMaxHP(float(hp));
 	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetrLegModel());
-	GetComponent<BoxCollider>()->SetSize({ 0.3f,0.8f,0.3f });
-	GetComponent<BoxCollider>()->SetInitalePosition({ 0,-0.4f,0 });
+	GetComponent<Collider>()->SetSize({ 0.3f,0.8f,0.3f });
+	GetComponent<Collider>()->SetInitalePosition({ 0,-0.4f,0 });
 	GetComponent<Emitter>()->Initialize(L"Resources/Textures/smoke_white.png", 0.1f, 0.1f, 0.2f);
 }
 
@@ -91,17 +91,17 @@ void RightLeg::Render()
 	{
 		//GetComponent<Emitter>()->Render(GetPosition() - DirectX::SimpleMath::Vector3{ 0,1.f,0 });
 	}
-	//GetComponent<BoxCollider>()->Render();
+	//GetComponent<Collider>()->Render();
 }
 
 void RightLeg::Finalize()
 {
 }
 
-void RightLeg::Collision(BoxCollider* collider)
+void RightLeg::Collision(Collider* collider)
 {
 	// ÉpÅ[ÉcÇ∆ÇÃìñÇΩÇËîªíË
-	if (GetComponent<BoxCollider>()->GetBoundingBox()->Intersects(*collider->GetBoundingBox()))
+	if (GetComponent<Collider>()->GetBoundingBox()->Intersects(*collider->GetBoundingBox()))
 	{
 		Bullet* bulletObject = static_cast<Bullet*>(collider->GetOwner());
 		if (bulletObject->GetState() == Bullet::FLYING)

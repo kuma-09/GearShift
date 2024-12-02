@@ -13,10 +13,10 @@ class HomingEnemy : public Enemy
 {
 public:
 
-	HomingEnemy(IScene* scene);
+	HomingEnemy(IScene* scene, GameObject* target);
 	~HomingEnemy();
 
-	void Initialize(GameObject* target);
+	void Initialize();
 	void Update(float elapsedTime);
 	void CreateShader();
 	void Render();
@@ -26,7 +26,7 @@ public:
 	void Shot();
 	void ChangeState(State* state);
 
-	void Collision(BoxCollider* collider);
+	void Collision(Collider* collider);
 
 private:
 

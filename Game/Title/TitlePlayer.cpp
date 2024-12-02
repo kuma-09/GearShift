@@ -3,7 +3,7 @@
 
 #include "Game/Components/HPBar.h"
 #include "Game/Components/ModelDraw.h"
-#include "Game/Components/BoxCollider.h"
+#include "Game/Components/Collider.h"
 #include "Game/Components/Move.h"
 #include "Game/Components/Physics.h"
 #include "Game/Components/Camera.h"
@@ -71,7 +71,7 @@ void TitlePlayer::Finalize()
 }
 
 
-void TitlePlayer::Collision(BoxCollider* collider)
+void TitlePlayer::Collision(Collider* collider)
 {
 	UNREFERENCED_PARAMETER(collider);
 }

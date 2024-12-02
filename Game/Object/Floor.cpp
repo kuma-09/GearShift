@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "Floor.h"
-#include "Game/Components/BoxCollider.h"
+#include "Game/Components/Collider.h"
 #include "Game/Components/ModelDraw.h"
 
 Floor::Floor(IScene* scene)
@@ -8,10 +8,10 @@ Floor::Floor(IScene* scene)
 	using namespace DirectX::SimpleMath;
 
 	SetScene(scene);
-	AddComponent<BoxCollider>();
+	AddComponent<Collider>();
 	AddComponent<ModelDraw>();
-	GetComponent<BoxCollider>()->SetSize({ 100, 1, 100 });
-	GetComponent<BoxCollider>()->SetTypeID(BoxCollider::Floor);
+	GetComponent<Collider>()->SetSize({ 100, 1, 100 });
+	GetComponent<Collider>()->SetTypeID(Collider::Floor);
 	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetFloorModel());
 	SetPosition({ 0,-1,0 });
 	
@@ -41,5 +41,5 @@ void Floor::Render()
 
 
 
-	//GetComponent<BoxCollider>()->Render();
+	//GetComponent<Collider>()->Render();
 }

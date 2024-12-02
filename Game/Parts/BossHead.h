@@ -12,7 +12,7 @@ public:
 	void Render() override;
 	void Finalize();
 
-	void Collision(BoxCollider* collider);
+	void Collision(Collider* collider);
 
 private:
 	bool m_isHit;

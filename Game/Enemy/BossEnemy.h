@@ -3,22 +3,22 @@
 #include "Framework/DeviceResources.h"
 #include "Framework/Resources.h"
 #include "Enemy.h"
-#include "Game/Object/Bullet/Bullet.h"
-#include "Game/Object/Bullet/FixedEnemyBullet.h"
-#include "Game/Object/Bullet/HomingBullet.h"
 #include "Game/Parts/Part.h"
 
+#include "Game/Object/Bullet/LaserBullet.h"
+#include "Game/Object/Bullet/HomingBullet.h"
+#include "Game/Object/Bullet/FixedEnemyBullet.h"
+
 class State;
-class FixedEnemyBullet;
 
 class BossEnemy : public Enemy
 {
 public:
 
-	BossEnemy(IScene* scene);
+	BossEnemy(IScene* scene, GameObject* target);
 	~BossEnemy();
 
-	void Initialize(GameObject* target);
+	void Initialize();
 	void Update(float elapsedTime);
 	void CreateShader();
 	void Render();
@@ -28,7 +28,7 @@ public:
 	void Shot();
 	void ChangeState(State* state);
 
-	void Collision(BoxCollider* collider);
+	void Collision(Collider* collider);
 
 	// パーツをセット
 	void SetPart(const Part::TypeID& partType, std::unique_ptr<Part> part)
@@ -77,11 +77,13 @@ private:
 	// パーツ配列
 	std::unordered_map<Part::TypeID, std::unique_ptr<Part>> m_pPart;
 
+	const int MAX_LASER_BULLET = 10;
 	const int MAX_FIXED_BULLET = 10;
 	const int MAX_HOMING_BULLET = 10;
 
+	std::vector<std::unique_ptr<LaserBullet>>      m_laserBullet;
 	std::vector<std::unique_ptr<FixedEnemyBullet>> m_fixedBullets;
-	std::vector<std::unique_ptr<HomingBullet>> m_homingBullets;
+	std::vector<std::unique_ptr<HomingBullet>>     m_homingBullets;
 
 	State* m_state;
 };

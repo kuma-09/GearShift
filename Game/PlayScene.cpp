@@ -8,7 +8,7 @@
 #include "Framework/Json.h"
 #include "Game/Components/HP.h"
 #include "Game/Components/Camera.h"
-#include "Game/Components/BoxCollider.h"
+#include "Game/Components/Collider.h"
 #include "Game/Components/HPBar.h"
 #include "Game/Components/ModelDraw.h"
 
@@ -75,8 +75,8 @@ void PlayScene::Initialize(Game* game)
 
     for (int i = 0; i < 10; i++)
     {
-        bullets.emplace_back(std::make_unique<HomingBullet>(this, BoxCollider::PlayerBullet));
-        bullets2.emplace_back(std::make_unique<HomingBullet>(this, BoxCollider::PlayerBullet));
+        bullets.emplace_back(std::make_unique<HomingBullet>(this, Collider::PlayerBullet));
+        bullets2.emplace_back(std::make_unique<HomingBullet>(this, Collider::PlayerBullet));
     }
 
     m_dropItemB.emplace_back(std::make_unique<DropItemB>(this, std::move(bullets)));
@@ -202,9 +202,9 @@ void PlayScene::Update(float elapsedTime)
     // プレイヤーがドロップアイテムに触れている時
     for (auto it = m_dropItem.begin(); it != m_dropItem.end(); it++)
     {
-        if (m_player->GetComponent<BoxCollider>()->
+        if (m_player->GetComponent<Collider>()->
             GetBoundingBox()->Intersects(
-                *it->get()->GetComponent<BoxCollider>()->GetBoundingBox()))
+                *it->get()->GetComponent<Collider>()->GetBoundingBox()))
         {
             it->get()->SetHit(true);
             Audio::GetInstance()->PlaySoundSE_PowerUp();
@@ -217,9 +217,9 @@ void PlayScene::Update(float elapsedTime)
     // プレイヤーがドロップアイテムに触れている時
     for (auto it = m_dropItemB.begin(); it != m_dropItemB.end(); it++)
     {
-        if (m_player->GetComponent<BoxCollider>()->
+        if (m_player->GetComponent<Collider>()->
             GetBoundingBox()->Intersects(
-                *it->get()->GetComponent<BoxCollider>()->GetBoundingBox()))
+                *it->get()->GetComponent<Collider>()->GetBoundingBox()))
         {
             it->get()->SetHit(true);
             Audio::GetInstance()->PlaySoundSE_PowerUp();
@@ -308,8 +308,6 @@ void PlayScene::Render()
     }
     m_hitEffect->Render();
 
-    // リソースの解除＆ライトをキューブで描画
-    Resources::GetInstance()->GetShadow()->End();
     //-------------------------------------------
 
     m_postProcess->combinationRT();
@@ -485,21 +483,21 @@ void PlayScene::CreateObject(std::string className, DirectX::SimpleMath::Vector3
     }
     if (className == "HomingEnemy")
     {
-        m_Enemy.emplace_back(std::make_unique<HomingEnemy>(this));
+        m_Enemy.emplace_back(std::make_unique<HomingEnemy>(this, m_player.get()));
         m_Enemy.back()->SetPosition(pos);
-        m_Enemy.back()->Initialize(m_player.get());
+        m_Enemy.back()->Initialize();
     }
     if (className == "FixedEnemy")
     {
-        m_Enemy.emplace_back(std::make_unique<FixedEnemy>(this));
+        m_Enemy.emplace_back(std::make_unique<FixedEnemy>(this, m_player.get()));
         m_Enemy.back()->SetPosition(pos);
-        m_Enemy.back()->Initialize(m_player.get());
+        m_Enemy.back()->Initialize();
     }
     if (className == "BossEnemy")
     {
-        m_Enemy.emplace_back(std::make_unique<BossEnemy>(this));
+        m_Enemy.emplace_back(std::make_unique<BossEnemy>(this, m_player.get()));
         m_Enemy.back()->SetPosition(pos);
-        m_Enemy.back()->Initialize(m_player.get());
+        m_Enemy.back()->Initialize();
     }
     
 }

@@ -4,7 +4,7 @@
 #include "Game/Components/Camera.h"
 #include "Game/Object/Bullet/Bullet.h"
 #include "Game/Components/ModelDraw.h"
-#include "Game/Components/BoxCollider.h"
+#include "Game/Components/Collider.h"
 #include <Game/Components/HP.h>
 #include "Game/PlayScene.h"
 
@@ -12,7 +12,7 @@ LeftArm::LeftArm()
 {
 	AddComponent<HP>();
 	AddComponent<ModelDraw>();
-	AddComponent<BoxCollider>();
+	AddComponent<Collider>();
 	SetTypeID(TypeID::LeftArm);
 	m_isHit = false;
 }
@@ -28,8 +28,8 @@ void LeftArm::Initialize(int hp,IScene* scene)
 	GetComponent<HP>()->SetHP(hp);
 	SetMaxHP(float(hp));
 	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetlArmModel());
-	GetComponent<BoxCollider>()->SetSize({ 0.3f,0.5f,0.3f });
-	GetComponent<BoxCollider>()->SetInitalePosition({ 0,-0.3f,0 });
+	GetComponent<Collider>()->SetSize({ 0.3f,0.5f,0.3f });
+	GetComponent<Collider>()->SetInitalePosition({ 0,-0.3f,0 });
 }
 
 void LeftArm::Update(float elapsedTime)
@@ -71,17 +71,17 @@ void LeftArm::Render()
 	{
 		//GetComponent<ModelDraw>()->Render(GetWorld(), false, DirectX::Colors::Black);
 	}
-	//GetComponent<BoxCollider>()->Render();
+	//GetComponent<Collider>()->Render();
 }
 
 void LeftArm::Finalize()
 {
 }
 
-void LeftArm::Collision(BoxCollider* collider)
+void LeftArm::Collision(Collider* collider)
 {
 	// ÉpÅ[ÉcÇ∆ÇÃìñÇΩÇËîªíË
-	if (GetComponent<BoxCollider>()->GetBoundingBox()->Intersects(*collider->GetBoundingBox()))
+	if (GetComponent<Collider>()->GetBoundingBox()->Intersects(*collider->GetBoundingBox()))
 	{
 		Bullet* bulletObject = static_cast<Bullet*>(collider->GetOwner());
 		if (bulletObject->GetState() == Bullet::FLYING)

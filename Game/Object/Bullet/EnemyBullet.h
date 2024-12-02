@@ -7,7 +7,7 @@ class EnemyBullet :public Bullet
 {
 public:
 
-	EnemyBullet(IScene* scene, BoxCollider::TypeID id);
+	EnemyBullet(IScene* scene, Collider::TypeID id);
 	~EnemyBullet();
 	void Initialize(GameObject* object);
 	void Shot(GameObject* target);
@@ -15,7 +15,7 @@ public:
 	void Update(float elapsedTime);
 	void Render();
 
-	void Collision(BoxCollider* collider);
+	void Collision(Collider* collider);
 
 
 private:

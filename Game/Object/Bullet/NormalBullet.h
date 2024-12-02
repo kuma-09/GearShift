@@ -7,7 +7,7 @@ class NormalBullet :public Bullet
 {
 public:
 
-	NormalBullet(IScene* scene, BoxCollider::TypeID id);
+	NormalBullet(IScene* scene, Collider::TypeID id);
 	~NormalBullet();
 	void Initialize(GameObject* object);
 	void Shot(GameObject* target);
@@ -15,7 +15,7 @@ public:
 	void Update(float elapsedTime);
 	void Render();
 
-	void Collision(BoxCollider* collider);
+	void Collision(Collider* collider);
 
 private:
 

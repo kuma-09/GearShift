@@ -3,21 +3,21 @@
 #include "Game/Enemy/Enemy.h"
 #include "Game/Player/Player.h"
 #include "Game/PlayScene.h"
-#include "Game/Components/BoxCollider.h"
+#include "Game/Components/Collider.h"
 #include "Game/Components/ModelDraw.h"
 #include "Game/Components/Trail.h"
 #include <random>
 
 #include "Framework/Audio.h"
 
-NormalBullet::NormalBullet(IScene* scene, BoxCollider::TypeID id)
+NormalBullet::NormalBullet(IScene* scene, Collider::TypeID id)
 {
 	SetScene(scene);
-	AddComponent<BoxCollider>();
+	AddComponent<Collider>();
 	AddComponent<ModelDraw>();
 	AddComponent<Trail>();
-	GetComponent<BoxCollider>()->SetTypeID(id);
-	GetComponent<BoxCollider>()->SetSize({ 0.5f,0.5f,0.5f });
+	GetComponent<Collider>()->SetTypeID(id);
+	GetComponent<Collider>()->SetSize({ 0.5f,0.5f,0.5f });
 	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetCubeModel());
 	GetComponent<Trail>()->Initialize(L"Resources/Textures/particle.png", 10);
 	SetScale({ 0.1f,0.1f,0.1f });
@@ -119,12 +119,12 @@ void NormalBullet::Render()
 	}
 }
 
-void NormalBullet::Collision(BoxCollider* collider)
+void NormalBullet::Collision(Collider* collider)
 {
 	if (GetState() == FLYING)
 	{
-		if (collider->GetTypeID() == BoxCollider::Wall ||
-			collider->GetTypeID() == BoxCollider::Floor)
+		if (collider->GetTypeID() == Collider::Wall ||
+			collider->GetTypeID() == Collider::Floor)
 		{
 			Hit();
 		}

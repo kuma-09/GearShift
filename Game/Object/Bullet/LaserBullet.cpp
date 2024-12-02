@@ -1,12 +1,12 @@
 #include "pch.h"
-#include "FixedEnemyBullet.h"
+#include "LaserBullet.h"
 #include "Game/Enemy/Enemy.h"
 #include "Game/Player/Player.h"
 #include "Game/Components/Collider.h"
 #include "Game/Components/ModelDraw.h"
 #include <random>
 
-FixedEnemyBullet::FixedEnemyBullet(IScene* scene, Collider::TypeID id)
+LaserBullet::LaserBullet(IScene* scene, Collider::TypeID id)
 {
 	SetScene(scene);
 	SetScale({ 0.5f,0.5f,0.5f });
@@ -17,12 +17,12 @@ FixedEnemyBullet::FixedEnemyBullet(IScene* scene, Collider::TypeID id)
 	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetCubeModel());
 }
 
-FixedEnemyBullet::~FixedEnemyBullet()
+LaserBullet::~LaserBullet()
 {
 
 }
 
-void FixedEnemyBullet::Initialize(GameObject* object)
+void LaserBullet::Initialize(GameObject* object)
 {
 	using namespace DirectX::SimpleMath;
 
@@ -36,11 +36,12 @@ void FixedEnemyBullet::Initialize(GameObject* object)
 	SetState(BulletState::UNUSED);
 }
 
-void FixedEnemyBullet::Shot(GameObject* target)
+void LaserBullet::Shot(GameObject* target)
 {
 	using namespace DirectX::SimpleMath;
 	Vector3 velocity = Vector3::Zero;
 	SetPosition(GetOwner()->GetPosition());
+	m_startPosition = GetPosition();
 	GetOwner()->GetQuaternion();
 	SetTarget(target);
 	velocity += Vector3::Transform(Vector3::Backward * SPEED, GetOwner()->GetQuaternion());
@@ -48,7 +49,7 @@ void FixedEnemyBullet::Shot(GameObject* target)
 	SetState(BulletState::FLYING);
 }
 
-void FixedEnemyBullet::Hit()
+void LaserBullet::Hit()
 {
 	using namespace DirectX::SimpleMath;
 	Vector3 velocity = Vector3::Zero;
@@ -58,7 +59,7 @@ void FixedEnemyBullet::Hit()
 	SetState(BulletState::USED);
 }
 
-void FixedEnemyBullet::Update(float elapsedTime)
+void LaserBullet::Update(float elapsedTime)
 {
 	using namespace DirectX::SimpleMath;
 
@@ -72,15 +73,16 @@ void FixedEnemyBullet::Update(float elapsedTime)
 	SetWorld(world);
 }
 
-void FixedEnemyBullet::Render()
+void LaserBullet::Render()
 {
 	if (GetState() == FLYING)
 	{
 		GetComponent<ModelDraw>()->Render(GetWorld(), false);
+		GetComponent<Collider>()->Render();
 	}
 }
 
-void FixedEnemyBullet::Collision(Collider* collider)
+void LaserBullet::Collision(Collider* collider)
 {
 	if (GetState() == FLYING)
 	{

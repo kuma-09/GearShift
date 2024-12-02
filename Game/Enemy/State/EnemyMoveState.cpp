@@ -37,7 +37,7 @@ void EnemyMoveState::Update(float elapsedTime)
 		else
 		{
 			m_enemy->SetVelocity(DirectX::SimpleMath::Vector3{ float(rand() % 2 * 2 - 1) * 0.1f,0,0 });
-			Initialize(m_enemy);
+			m_enemy->ChangeState(m_enemy->GetAttackState());
 		}
 	}
 }

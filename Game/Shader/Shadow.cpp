@@ -14,20 +14,33 @@ const std::vector<D3D11_INPUT_ELEMENT_DESC> Shadow::INPUT_LAYOUT =
     { "COLOR" ,   0, DXGI_FORMAT_R8G8B8A8_UNORM, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 };
 
-Shadow::Shadow()
-{
-    m_graphics = Graphics::GetInstance();
-}
+Graphics* Shadow::m_graphics;
+Microsoft::WRL::ComPtr<ID3D11InputLayout>  Shadow::m_inputLayout;
+Microsoft::WRL::ComPtr<ID3D11SamplerState> Shadow::m_shadowMapSampler;
+DirectX::SimpleMath::Vector3    Shadow::m_lightPosition;
+DirectX::SimpleMath::Quaternion Shadow::m_lightRotate;
+float Shadow::m_lightTheta;
+Microsoft::WRL::ComPtr<ID3D11VertexShader> Shadow::m_VS_Depth;
+Microsoft::WRL::ComPtr<ID3D11PixelShader>  Shadow::m_PS_Depth;
+Microsoft::WRL::ComPtr<ID3D11VertexShader> Shadow::m_VS;
+Microsoft::WRL::ComPtr<ID3D11PixelShader>  Shadow::m_PS;
+Microsoft::WRL::ComPtr<ID3D11PixelShader>  Shadow::m_PS_Tex;
 
-Shadow::~Shadow()
-{
-}
+Microsoft::WRL::ComPtr<ID3D11Buffer> Shadow::m_CBuffer;
+Microsoft::WRL::ComPtr<ID3D11Buffer> Shadow::m_CBuffer2;
+std::unique_ptr<DX::RenderTexture> Shadow::m_shadowMapRT;
+std::unique_ptr<DepthStencil>      Shadow::m_shadowMapDS;
+
+ID3D11RenderTargetView*   Shadow::m_rtv;
+ID3D11ShaderResourceView* Shadow::m_srv;
+ID3D11DepthStencilView*   Shadow::m_dsv;
 
 void Shadow::Initialize()
 {
     using namespace DirectX;
     using namespace DirectX::SimpleMath;
 
+    m_graphics = Graphics::GetInstance();
     auto device = m_graphics->GetDeviceResources()->GetD3DDevice();
     auto context = m_graphics->GetDeviceResources()->GetD3DDeviceContext();
 
@@ -118,9 +131,6 @@ void Shadow::Initialize()
     sampler_desc.AddressW = D3D11_TEXTURE_ADDRESS_BORDER;
     sampler_desc.ComparisonFunc = D3D11_COMPARISON_LESS;
     device->CreateSamplerState(&sampler_desc, m_shadowMapSampler.ReleaseAndGetAddressOf());
-    
-    m_spriteBatch = std::make_unique<SpriteBatch>(context);
-
 }
 
 void Shadow::BeginDepth()
@@ -128,8 +138,12 @@ void Shadow::BeginDepth()
     using namespace DirectX;
     using namespace DirectX::SimpleMath;
 
-    auto context = m_graphics->GetDeviceResources()->GetD3DDeviceContext();
 
+
+    auto context = m_graphics->GetDeviceResources()->GetD3DDeviceContext();
+    // リソースの割り当てを解除する（shadowMapRT）
+    ID3D11ShaderResourceView* nullsrv[] = { nullptr };
+    context->PSSetShaderResources(1, 1, nullsrv);
 
     m_rtv = m_shadowMapRT->GetRenderTargetView();
     m_srv = m_shadowMapRT->GetShaderResourceView();
@@ -147,9 +161,6 @@ void Shadow::BeginDepth()
     // ビューポートを設定
     D3D11_VIEWPORT vp = { 0.0f, 0.0f, SHADOWMAP_SIZE, SHADOWMAP_SIZE, 0.0f, 1.0f };
     context->RSSetViewports(1, &vp);
-
-
-
 }
 
 void Shadow::RenderDepth()
@@ -254,22 +265,4 @@ void Shadow::Draw(bool texture, DirectX::XMVECTORF32 color)
     {
         context->PSSetShader(m_PS.Get(), nullptr, 0);
     }
-}
-
-void Shadow::End()
-{
-    using namespace DirectX::SimpleMath;
-
-    auto context = m_graphics->GetDeviceResources()->GetD3DDeviceContext();
-    auto state = m_graphics->GetCommonStates();
-    auto view = m_graphics->GetViewMatrix();
-    auto proj = m_graphics->GetProjectionMatrix();
-
-    Matrix world = Matrix::CreateFromQuaternion(m_lightRotate);
-    world *= Matrix::CreateTranslation(m_lightPosition);
-
-    // リソースの割り当てを解除する（shadowMapRT）
-    ID3D11ShaderResourceView* nullsrv[] = { nullptr };
-    context->PSSetShaderResources(1, 1, nullsrv);
-    Resources::GetInstance()->GetCubeModel()->Draw(context, *state, world, view, proj);
 }

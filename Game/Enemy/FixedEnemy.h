@@ -11,10 +11,10 @@ class FixedEnemy : public Enemy
 {
 public:
 
-	FixedEnemy(IScene* scene);
+	FixedEnemy(IScene* scene, GameObject* target);
 	~FixedEnemy();
 
-	void Initialize(GameObject* target);
+	void Initialize();
 	void Update(float elapsedTime);
 	void CreateShader();
 	void Render();
@@ -24,7 +24,7 @@ public:
 	void Shot();
 	void ChangeState(State* state);
 
-	void Collision(BoxCollider* collider);
+	void Collision(Collider* collider);
 
 private:
 

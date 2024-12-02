@@ -2,16 +2,16 @@
 #include "DropItem.h"
 #include "Game/Components/Physics.h"
 #include "Game/Components/ModelDraw.h"
-#include "Game/Components/BoxCollider.h"
+#include "Game/Components/Collider.h"
 
 DropItem::DropItem(IScene* scene, std::unique_ptr<Part> part)
 {
 
 	SetScene(scene);
 	AddComponent<Physics>();
-	AddComponent<BoxCollider>();
-	GetComponent<BoxCollider>()->SetTypeID(BoxCollider::TypeID::DropItem);
-	GetComponent<BoxCollider>()->SetSize(DirectX::SimpleMath::Vector3::One * 2);
+	AddComponent<Collider>();
+	GetComponent<Collider>()->SetTypeID(Collider::TypeID::DropItem);
+	GetComponent<Collider>()->SetSize(DirectX::SimpleMath::Vector3::One * 2);
 	AddComponent<ModelDraw>();
 	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetDropItemModel());
 
@@ -86,11 +86,11 @@ void DropItem::Finalize()
 {
 }
 
-void DropItem::Collision(BoxCollider* collider)
+void DropItem::Collision(Collider* collider)
 {
-	if (collider->GetTypeID() == BoxCollider::Floor ||
-		collider->GetTypeID() == BoxCollider::Wall)
+	if (collider->GetTypeID() == Collider::Floor ||
+		collider->GetTypeID() == Collider::Wall)
 	{
-		BoxCollider::CheckHit(this, collider->GetOwner());
+		Collider::CheckHit(this, collider->GetOwner());
 	}
 }

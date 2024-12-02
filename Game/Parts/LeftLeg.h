@@ -14,7 +14,7 @@ public:
 	void Render() override;
 	void Finalize();
 
-	void Collision(BoxCollider* collider);
+	void Collision(Collider* collider);
 
 	void Action();
 

@@ -2,17 +2,17 @@
 #include "EnemyBullet.h"
 #include "Game/Enemy/Enemy.h"
 #include "Game/Player/Player.h"
-#include "Game/Components/BoxCollider.h"
+#include "Game/Components/Collider.h"
 #include "Game/Components/ModelDraw.h"
 #include <random>
 
-EnemyBullet::EnemyBullet(IScene* scene, BoxCollider::TypeID id)
+EnemyBullet::EnemyBullet(IScene* scene, Collider::TypeID id)
 {
 	SetScene(scene);
-	AddComponent<BoxCollider>();
+	AddComponent<Collider>();
 	AddComponent<ModelDraw>();
-	GetComponent<BoxCollider>()->SetTypeID(id);
-	GetComponent<BoxCollider>()->SetSize({ 0.1f,0.1f,0.1f });
+	GetComponent<Collider>()->SetTypeID(id);
+	GetComponent<Collider>()->SetSize({ 0.1f,0.1f,0.1f });
 	SetScale({ 0.5f,0.5f,0.5f });
 	SetState(BulletState::UNUSED);
 }
@@ -103,9 +103,9 @@ void EnemyBullet::Render()
 
 }
 
-void EnemyBullet::Collision(BoxCollider* collider)
+void EnemyBullet::Collision(Collider* collider)
 {
-	if (collider->GetTypeID() == BoxCollider::Wall)
+	if (collider->GetTypeID() == Collider::Wall)
 	{
 		Hit();
 	}

@@ -6,7 +6,7 @@
 #include "Game/Components/Camera.h"
 #include "Game/Object/Bullet/Bullet.h"
 #include "Game/Components/ModelDraw.h"
-#include "Game/Components/BoxCollider.h"
+#include "Game/Components/Collider.h"
 #include "Game/Components/Move.h"
 #include <Game/Components/HP.h>
 #include "Game/Components/Look.h"
@@ -16,7 +16,7 @@ BossHead::BossHead(GameObject* target)
 {
 	AddComponent<HP>();
 	AddComponent<ModelDraw>();
-	AddComponent<BoxCollider>();
+	AddComponent<Collider>();
 	AddComponent<Emitter>();
 	AddComponent<Look>();
 	GetComponent<Look>()->SetTarget(this, target);
@@ -36,8 +36,8 @@ void BossHead::Initialize(int hp, IScene* scene)
 	GetComponent<HP>()->SetHP(hp);
 	SetMaxHP(float(hp));
 	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetCutoRobotHeadModel());
-	GetComponent<BoxCollider>()->SetSize({ 1.0f,1.0f,1.0f });
-	GetComponent<BoxCollider>()->SetInitalePosition({ 0,-0.4f,0 });
+	GetComponent<Collider>()->SetSize({ 1.0f,1.0f,1.0f });
+	GetComponent<Collider>()->SetInitalePosition({ 0,-0.4f,0 });
 }
 
 void BossHead::Update(float elapsedTime)
@@ -78,17 +78,17 @@ void BossHead::Render()
 	{
 		//GetComponent<ModelDraw>()->Render(GetWorld(), false, DirectX::Colors::Black);
 	}
-	GetComponent<BoxCollider>()->Render();
+	GetComponent<Collider>()->Render();
 }
 
 void BossHead::Finalize()
 {
 }
 
-void BossHead::Collision(BoxCollider* collider)
+void BossHead::Collision(Collider* collider)
 {
 	// ÉpÅ[ÉcÇ∆ÇÃìñÇΩÇËîªíË
-	if (GetComponent<BoxCollider>()->GetBoundingBox()->Intersects(*collider->GetBoundingBox()))
+	if (GetComponent<Collider>()->GetBoundingBox()->Intersects(*collider->GetBoundingBox()))
 	{
 		Bullet* bulletObject = static_cast<Bullet*>(collider->GetOwner());
 		if (bulletObject->GetState() == Bullet::FLYING)

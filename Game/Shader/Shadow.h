@@ -8,61 +8,45 @@
 class Shadow
 {
 public:
-	Shadow();
-	~Shadow();
+	static void Initialize();
+	static void BeginDepth();
+	static void RenderDepth();
+	static void EndDepth();
 
-	void Initialize();
-	void BeginDepth();
-	void RenderDepth();
-	void EndDepth();
-
-	void Draw(bool texture,DirectX::XMVECTORF32 color = DirectX::Colors::White);
-	void End();
-
-	ID3D11ShaderResourceView* GetSRV() { return m_srv; }
+	static void Draw(bool texture,DirectX::XMVECTORF32 color = DirectX::Colors::White);
 
 private:
-
-	Graphics* m_graphics;
-
-	// デバッグ用
-	std::unique_ptr<DirectX::SpriteBatch> m_spriteBatch;
+	// デバイスリソース
+	static Graphics* m_graphics;
 
 	//	入力レイアウト
 	static const std::vector<D3D11_INPUT_ELEMENT_DESC> INPUT_LAYOUT;
-	Microsoft::WRL::ComPtr<ID3D11InputLayout> m_inputLayout;
-
+	static Microsoft::WRL::ComPtr<ID3D11InputLayout> m_inputLayout;
 	// サンプラー
-	Microsoft::WRL::ComPtr<ID3D11SamplerState> m_shadowMapSampler;
-
-private:
+	static Microsoft::WRL::ComPtr<ID3D11SamplerState> m_shadowMapSampler;
 
 	// ライト------------------
 	// ライトの位置
-	DirectX::SimpleMath::Vector3 m_lightPosition;
+	static DirectX::SimpleMath::Vector3 m_lightPosition;
 
 	// ライトの回転
-	DirectX::SimpleMath::Quaternion m_lightRotate;
+	static DirectX::SimpleMath::Quaternion m_lightRotate;
 
 	// ライトの範囲の角度
-	float m_lightTheta;
+	static float m_lightTheta;
 
-private:
 	// シェーダー--------------
 	// 頂点シェーダー(深度用)
-	Microsoft::WRL::ComPtr<ID3D11VertexShader> m_VS_Depth;
-
+	static Microsoft::WRL::ComPtr<ID3D11VertexShader> m_VS_Depth;
 	// ピクセルシェーダー(深度用)
-	Microsoft::WRL::ComPtr<ID3D11PixelShader> m_PS_Depth;
+	static Microsoft::WRL::ComPtr<ID3D11PixelShader> m_PS_Depth;
 
 	// 頂点シェーダー
-	Microsoft::WRL::ComPtr<ID3D11VertexShader> m_VS;
-
+	static Microsoft::WRL::ComPtr<ID3D11VertexShader> m_VS;
 	// ピクセルシェーダー
-	Microsoft::WRL::ComPtr<ID3D11PixelShader> m_PS;
-	Microsoft::WRL::ComPtr<ID3D11PixelShader> m_PS_Tex;
+	static Microsoft::WRL::ComPtr<ID3D11PixelShader> m_PS;
+	static Microsoft::WRL::ComPtr<ID3D11PixelShader> m_PS_Tex;
 
-private:
 	// 定数バッファ-------------
 	// 定数バッファの構造体
 	struct ConstantBuffer
@@ -82,24 +66,21 @@ private:
 	};
 
 	// 定数バッファへのポインタ
-	Microsoft::WRL::ComPtr<ID3D11Buffer> m_CBuffer;
+	static Microsoft::WRL::ComPtr<ID3D11Buffer> m_CBuffer;
 
 	// 定数バッファへのポインタ
-	Microsoft::WRL::ComPtr<ID3D11Buffer> m_CBuffer2;
-
-private:
-
-	ID3D11RenderTargetView* m_rtv;
-	ID3D11ShaderResourceView* m_srv;
-	ID3D11DepthStencilView* m_dsv;
+	static Microsoft::WRL::ComPtr<ID3D11Buffer> m_CBuffer2;
 
 	// シャドウマップテクスチャ---
 	// シャドウマップのサイズ
-	static const int SHADOWMAP_SIZE = 1024;
+	static const int SHADOWMAP_SIZE = 512;
 
 	// シャドウマップ用（レンダーテクスチャ）
-	std::unique_ptr<DX::RenderTexture> m_shadowMapRT;
-
+	static std::unique_ptr<DX::RenderTexture> m_shadowMapRT;
 	// シャドウマップ用（デプスステンシル）
-	std::unique_ptr<DepthStencil> m_shadowMapDS;
+	static std::unique_ptr<DepthStencil> m_shadowMapDS;
+
+	static ID3D11RenderTargetView* m_rtv;
+	static ID3D11ShaderResourceView* m_srv;
+	static ID3D11DepthStencilView* m_dsv;
 };

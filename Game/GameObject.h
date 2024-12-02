@@ -70,7 +70,7 @@ public:
 
 public:
 	virtual void Update(float elapsedTime) = 0;
-	virtual void Collision(BoxCollider* collider) { UNREFERENCED_PARAMETER(collider); };
+	virtual void Collision(Collider* collider) { UNREFERENCED_PARAMETER(collider); };
 private:
 	IScene* m_scene = nullptr;
 

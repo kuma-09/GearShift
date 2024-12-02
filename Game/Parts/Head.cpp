@@ -4,7 +4,7 @@
 #include "Game/Components/Camera.h"
 #include "Game/Object/Bullet/Bullet.h"
 #include "Game/Components/ModelDraw.h"
-#include "Game/Components/BoxCollider.h"
+#include "Game/Components/Collider.h"
 #include <Game/Components/HP.h>
 #include "Game/PlayScene.h"
 
@@ -12,7 +12,7 @@ Head::Head()
 {
 	AddComponent<HP>();
 	AddComponent<ModelDraw>();
-	AddComponent<BoxCollider>();
+	AddComponent<Collider>();
 	SetTypeID(TypeID::Head);
 	m_isHit = false;
 }
@@ -28,7 +28,7 @@ void Head::Initialize(int hp,IScene* scene)
 	GetComponent<HP>()->SetHP(hp);
 	SetMaxHP(float(hp));
 	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetHeadModel());
-	GetComponent<BoxCollider>()->SetSize({ 0.3f,0.3f,0.3f });
+	GetComponent<Collider>()->SetSize({ 0.3f,0.3f,0.3f });
 }
 
 void Head::Update(float elapsedTime)
@@ -66,17 +66,17 @@ void Head::Render()
 	{
 		//GetComponent<ModelDraw>()->Render(GetWorld(), false, DirectX::Colors::Black);
 	}
-	//GetComponent<BoxCollider>()->Render();
+	//GetComponent<Collider>()->Render();
 }
 
 void Head::Finalize()
 {
 }
 
-void Head::Collision(BoxCollider* collider)
+void Head::Collision(Collider* collider)
 {
 	// ÉpÅ[ÉcÇ∆ÇÃìñÇΩÇËîªíË
-	if (GetComponent<BoxCollider>()->GetBoundingBox()->Intersects(*collider->GetBoundingBox()))
+	if (GetComponent<Collider>()->GetBoundingBox()->Intersects(*collider->GetBoundingBox()))
 	{
 		Bullet* bulletObject = static_cast<Bullet*>(collider->GetOwner());
 		if (bulletObject->GetState() == Bullet::FLYING)

@@ -5,7 +5,7 @@ class HomingBullet :public Bullet
 {
 public:
 
-	HomingBullet(IScene* scene, BoxCollider::TypeID id);
+	HomingBullet(IScene* scene, Collider::TypeID id);
 	~HomingBullet();
 	void Initialize(GameObject* object);
 	void Shot(GameObject* object);
@@ -14,7 +14,7 @@ public:
 	void Update(float elapsedTime);
 	void Render();
 
-	void Collision(BoxCollider* collider);
+	void Collision(Collider* collider);
 
 
 private:

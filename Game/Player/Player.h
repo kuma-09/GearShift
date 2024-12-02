@@ -73,7 +73,7 @@ public:
 	}
 
 
-	void Collision(BoxCollider* collider);
+	void Collision(Collider* collider);
 	
 	void AddWepon(std::vector<std::unique_ptr<Bullet>> bullets)
 	{

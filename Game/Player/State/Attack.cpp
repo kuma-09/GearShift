@@ -3,7 +3,7 @@
 #include "Boost.h"
 #include "Idol.h"
 #include "Jump.h"
-#include "Game/Components/BoxCollider.h"
+#include "Game/Components/Collider.h"
 #include "Game/Components/Camera.h"	
 #include "Game/PlayScene.h"
 #include "Framework/Audio.h"
@@ -12,7 +12,7 @@ Attack::Attack(Player* player)
 {
 	m_player = player;
 	m_totalTime = m_boostTime;
-	m_sword = std::make_unique<Sword>(m_player->GetScene(), BoxCollider::PlayerBullet);
+	m_sword = std::make_unique<Sword>(m_player->GetScene(), Collider::PlayerBullet);
 	m_shader = std::make_unique<Shader>();
 	m_shader->CreateShader();
 }

@@ -7,7 +7,7 @@ class FixedEnemyBullet :public Bullet
 {
 public:
 
-	FixedEnemyBullet(IScene* scene, BoxCollider::TypeID id);
+	FixedEnemyBullet(IScene* scene, Collider::TypeID id);
 	~FixedEnemyBullet();
 	void Initialize(GameObject* object);
 	void Shot(GameObject* target);
@@ -15,7 +15,7 @@ public:
 	void Update(float elapsedTime);
 	void Render();
 
-	void Collision(BoxCollider* collider);
+	void Collision(Collider* collider);
 
 private:
 

@@ -1,14 +1,14 @@
 #include "pch.h"
 #include "Game/Object/Wall/BillB.h"
 #include "Game/Components/ModelDraw.h"
-#include "Game/Components/BoxCollider.h"
+#include "Game/Components/Collider.h"
 
 BillB::BillB(IScene* scene)
 {
 	SetScene(scene);
-	AddComponent<BoxCollider>();
+	AddComponent<Collider>();
 	AddComponent<ModelDraw>();
-	GetComponent<BoxCollider>()->SetTypeID(BoxCollider::TypeID::Wall);
+	GetComponent<Collider>()->SetTypeID(Collider::TypeID::Wall);
 
 }
 
@@ -22,8 +22,8 @@ void BillB::Initialize()
 
 	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetBillBModel());
 	SetScale({ 4, 8, 4 });
-	GetComponent<BoxCollider>()->SetSize(GetScale());
-	GetComponent<BoxCollider>()->GetBoundingBox()->Center = GetPosition();
+	GetComponent<Collider>()->SetSize(GetScale());
+	GetComponent<Collider>()->GetBoundingBox()->Center = GetPosition();
 
 	Matrix world = Matrix::Identity;
 	world *= Matrix::CreateTranslation(Vector3{ GetPosition().x,GetPosition().y - GetScale().y,GetPosition().z });
@@ -44,6 +44,6 @@ void BillB::Render()
 {
 	using namespace DirectX::SimpleMath;
 
-	//GetComponent<BoxCollider>()->Render();
+	//GetComponent<Collider>()->Render();
 	GetComponent<ModelDraw>()->Render(GetWorld(),false);
 }

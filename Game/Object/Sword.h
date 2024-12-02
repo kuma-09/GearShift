@@ -12,7 +12,7 @@ public:
 		USED,
 	};
 
-	Sword(IScene* scene, BoxCollider::TypeID id);
+	Sword(IScene* scene, Collider::TypeID id);
 	~Sword();
 	void Initalize(GameObject* object);
 	void Shot(GameObject* object);
@@ -24,7 +24,7 @@ public:
 	SwordState GetState() { return m_state; }
 	void SetState(SwordState state) { m_state = state; }
 
-	void Collision(BoxCollider* collider);
+	void Collision(Collider* collider);
 
 
 private:

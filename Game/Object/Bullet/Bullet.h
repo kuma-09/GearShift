@@ -34,7 +34,7 @@ public:
 	GameObject* GetOwner() { return m_owner; }
 	void SetOwner(GameObject* owner) { m_owner = owner; }
 
-	virtual void Collision(BoxCollider* collider) = 0;
+	virtual void Collision(Collider* collider) = 0;
 
 private:
 	BulletState m_state;

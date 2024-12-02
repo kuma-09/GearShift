@@ -5,7 +5,7 @@
 #include "Game/Components/HP.h"
 #include "Game/Components/Look.h"
 #include "Game/Components/ModelDraw.h"
-#include "Game/Components/BoxCollider.h"
+#include "Game/Components/Collider.h"
 #include "Game/Components/HPBar.h"
 #include "Game/Components/Physics.h"
 #include "Game/Object/Bullet/FixedEnemyBullet.h"
@@ -17,18 +17,18 @@
 
 
 
-FixedEnemy::FixedEnemy(IScene* scene)
+FixedEnemy::FixedEnemy(IScene* scene,GameObject* target)
 {
 	SetScene(scene);
-
+	SetTarget(target);
 	AddComponent<HP>();
 	AddComponent<Look>();
 	AddComponent<Physics>();
 	AddComponent<ModelDraw>();
-	AddComponent<BoxCollider>();
+	AddComponent<Collider>();
 	AddComponent<HPBar>();
 
-	m_bullet = std::make_unique<FixedEnemyBullet>(GetScene(), BoxCollider::TypeID::EnemyBullet);
+	m_bullet = std::make_unique<FixedEnemyBullet>(GetScene(), Collider::TypeID::EnemyBullet);
 	
 	SetEnemyAttack(std::make_unique<EnemyAttackState>(this));
 	SetEnemyMove(std::make_unique<EnemyMoveState>(this));
@@ -43,18 +43,17 @@ FixedEnemy::~FixedEnemy()
 
 }
 
-void FixedEnemy::Initialize(GameObject* target)
+void FixedEnemy::Initialize()
 {
 	using namespace DirectX::SimpleMath;
 
 
 	GetComponent<HP>()->SetHP(10);
-	SetTarget(target);
 	GetComponent<Look>()->Initialize(false,true);
-	GetComponent<Look>()->SetTarget(this, target);
+	GetComponent<Look>()->SetTarget(this, GetTarget());
 	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetTankBodyModel());
-	GetComponent<BoxCollider>()->SetTypeID(BoxCollider::TypeID::Enemy);
-	GetComponent<BoxCollider>()->SetSize({2,1,3});
+	GetComponent<Collider>()->SetTypeID(Collider::TypeID::Enemy);
+	GetComponent<Collider>()->SetSize({2,1,3});
 	GetComponent<HPBar>()->Initialize();
 	m_bullet->Initialize(this);
 	m_state->Initialize();
@@ -103,12 +102,12 @@ void FixedEnemy::Render()
 	if (GetComponent<HP>()->GetHP() <= 0) return;
 	GetComponent<ModelDraw>()->Render(GetWorld(), false);
 	GetComponent<HPBar>()->Render(GetPosition());
-	//GetComponent<BoxCollider>()->Render();
+	//GetComponent<Collider>()->Render();
 }
 
 void FixedEnemy::Finalize()
 {
-	dynamic_cast<PlayScene*>(GetScene())->RemoveCollider(m_bullet->GetComponent<BoxCollider>());
+	dynamic_cast<PlayScene*>(GetScene())->RemoveCollider(m_bullet->GetComponent<Collider>());
 }
 
 void FixedEnemy::Shot()
@@ -122,9 +121,9 @@ void FixedEnemy::ChangeState(State* state)
 	m_state->Initialize();
 }
 
-void FixedEnemy::Collision(BoxCollider* collider)
+void FixedEnemy::Collision(Collider* collider)
 {
-	if (collider->GetTypeID() == BoxCollider::PlayerBullet)
+	if (collider->GetTypeID() == Collider::PlayerBullet)
 	{
 		Bullet* bulletObject = static_cast<Bullet*>(collider->GetOwner());
 		if (bulletObject->GetState() == Bullet::FLYING)
@@ -134,7 +133,7 @@ void FixedEnemy::Collision(BoxCollider* collider)
 			bulletObject->Hit();
 		}
 	}
-	if (collider->GetTypeID() == BoxCollider::PlayerSword)
+	if (collider->GetTypeID() == Collider::PlayerSword)
 	{
 		Sword* bulletObject = static_cast<Sword*>(collider->GetOwner());
 		if (bulletObject->GetState() == Sword::USING)
@@ -144,10 +143,10 @@ void FixedEnemy::Collision(BoxCollider* collider)
 			bulletObject->Hit();
 		}
 	}
-	if (collider->GetTypeID() == BoxCollider::Floor ||
-		collider->GetTypeID() == BoxCollider::Wall)
+	if (collider->GetTypeID() == Collider::Floor ||
+		collider->GetTypeID() == Collider::Wall)
 	{
-		BoxCollider::CheckHit(this, collider->GetOwner());
+		Collider::CheckHit(this, collider->GetOwner());
 
 	}
 }

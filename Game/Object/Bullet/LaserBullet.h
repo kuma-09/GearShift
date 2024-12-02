@@ -3,12 +3,12 @@
 
 class Player;
 
-class ShotgunBullet :public Bullet
+class LaserBullet :public Bullet
 {
 public:
 
-	ShotgunBullet(IScene* scene, Collider::TypeID id);
-	~ShotgunBullet();
+	LaserBullet(IScene* scene, Collider::TypeID id);
+	~LaserBullet();
 	void Initialize(GameObject* object);
 	void Shot(GameObject* target);
 	void Hit();
@@ -18,10 +18,8 @@ public:
 	void Collision(Collider* collider);
 
 private:
-
-	const float MAX_TIME = 10.0f;
-	float m_totalTime;
-	const float SPEED = 100.0f;
+	DirectX::SimpleMath::Vector3 m_startPosition;
+	const float SPEED = 2.5f;
 	const float DIFFUSION = 0.5f;
 
 };

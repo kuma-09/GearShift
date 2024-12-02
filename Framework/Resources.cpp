@@ -62,6 +62,5 @@ void Resources::LoadResource(Graphics* graphics)
 	FX = nullptr;
 
 	// ‰e
-	m_shadow = std::make_unique<Shadow>();
-	m_shadow->Initialize();
+	Shadow::Initialize();
 }

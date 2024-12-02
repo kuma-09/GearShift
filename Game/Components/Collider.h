@@ -3,7 +3,7 @@
 #include "Framework/Graphics.h"
 
 
-class BoxCollider : public IComponent
+class Collider : public IComponent
 {
 public:
 	enum TypeID
@@ -18,9 +18,19 @@ public:
 		Floor
 	};
 
-	BoxCollider();
-	~BoxCollider();
+	enum ColliderType
+	{
+		None,
+		Box,
+		Sphere,
+		Oriented
+	};
 
+	Collider();
+	~Collider();
+
+	template<typename T>
+	void Initialize(std::unique_ptr<DirectX::BoundingBox> collider) {};
 	void Initialize();
 	void Update(float elapsedTime);
 	void Render();
@@ -39,6 +49,7 @@ public:
 private:
 	Graphics* m_graphics;
 	TypeID m_typeID;
+	ColliderType m_colliderType;
 	std::unique_ptr<DirectX::BoundingBox> m_boudingBox;
 	DirectX::SimpleMath::Vector3 m_initalePosition;
 };

@@ -36,7 +36,7 @@ void ModelDraw::Render(DirectX::SimpleMath::Matrix world, bool texture, DirectX:
 
 	m_model->Draw(context, *state, world, view, projection, false, [&]
 	{
-		Resources::GetInstance()->GetShadow()->Draw(texture,color);
+		Shadow::Draw(texture, color);
 		//DeferredRendering::DrawGBuffer(texture);
 	});
 }
@@ -50,7 +50,7 @@ void ModelDraw::CreateShadow(DirectX::SimpleMath::Matrix world)
 
 	m_model->Draw(context, *state, world, view, projection, false, [&]
 		{
-			Resources::GetInstance()->GetShadow()->RenderDepth();
+			Shadow::RenderDepth();
 		});
 }
 

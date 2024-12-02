@@ -3,19 +3,19 @@
 #include "Game/Enemy/Enemy.h"
 #include "Game/Player/Player.h"
 #include "Game/PlayScene.h"
-#include "Game/Components/BoxCollider.h"
+#include "Game/Components/Collider.h"
 #include "Game/Components/ModelDraw.h"
 #include <random>
 
 #include "Framework/Audio.h"
 
-ShotgunBullet::ShotgunBullet(IScene* scene, BoxCollider::TypeID id)
+ShotgunBullet::ShotgunBullet(IScene* scene, Collider::TypeID id)
 {
 	SetScene(scene);
-	AddComponent<BoxCollider>();
+	AddComponent<Collider>();
 	AddComponent<ModelDraw>();
-	GetComponent<BoxCollider>()->SetTypeID(id);
-	GetComponent<BoxCollider>()->SetSize({ 0.5f,0.5f,0.5f });
+	GetComponent<Collider>()->SetTypeID(id);
+	GetComponent<Collider>()->SetSize({ 0.5f,0.5f,0.5f });
 	SetScale({ 0.25f,0.25f,0.25f });
 }
 
@@ -110,12 +110,12 @@ void ShotgunBullet::Render()
 	}
 }
 
-void ShotgunBullet::Collision(BoxCollider* collider)
+void ShotgunBullet::Collision(Collider* collider)
 {
 	if (GetState() == FLYING)
 	{
-		if (collider->GetTypeID() == BoxCollider::Wall ||
-			collider->GetTypeID() == BoxCollider::Floor)
+		if (collider->GetTypeID() == Collider::Wall ||
+			collider->GetTypeID() == Collider::Floor)
 		{
 			Hit();
 		}

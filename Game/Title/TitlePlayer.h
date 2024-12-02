@@ -54,7 +54,7 @@ public:
 		}
 	}
 
-	void Collision(BoxCollider* collider);
+	void Collision(Collider* collider);
 
 private:
 

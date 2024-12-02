@@ -1,20 +1,20 @@
 #include "pch.h"
 #include "Sword.h"
 #include "Game/Components/Camera.h"
-#include "Game/Components/BoxCollider.h"
+#include "Game/Components/Collider.h"
 #include "Game/Components/ModelDraw.h"
 #include "Game/Components/Trail.h"
 #include "Game/PlayScene.h"
 #include "Framework/Audio.h"
 
-Sword::Sword(IScene* scene, BoxCollider::TypeID id)
+Sword::Sword(IScene* scene, Collider::TypeID id)
 {
 	SetScene(scene);
-	AddComponent<BoxCollider>();
+	AddComponent<Collider>();
 	AddComponent<ModelDraw>();
 	AddComponent<Trail>();
-	GetComponent<BoxCollider>()->SetTypeID(BoxCollider::PlayerSword);
-	GetComponent<BoxCollider>()->SetSize({ 5,4,5 });
+	GetComponent<Collider>()->SetTypeID(Collider::PlayerSword);
+	GetComponent<Collider>()->SetSize({ 5,4,5 });
 	GetComponent<Trail>()->Initialize(L"Resources/Textures/particle.png", 10);
 	SetScale({7.5f, 7.5f, 7.5f});
 	SetState(SwordState::UNUSED);
@@ -130,13 +130,13 @@ void Sword::Render()
 	if (GetState() == USED)
 	{
 		GetComponent<ModelDraw>()->Render(GetWorld(),false,DirectX::Colors::White);
-		GetComponent<BoxCollider>()->Render();
+		GetComponent<Collider>()->Render();
 		GetComponent<Trail>()->Render();
 	}
 
 }
 
-void Sword::Collision(BoxCollider* collider)
+void Sword::Collision(Collider* collider)
 {
 	UNREFERENCED_PARAMETER(collider);
 }

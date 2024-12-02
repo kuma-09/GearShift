@@ -5,7 +5,7 @@
 #include "Game/Components/HP.h"
 #include "Game/Components/Look.h"
 #include "Game/Components/ModelDraw.h"
-#include "Game/Components/BoxCollider.h"
+#include "Game/Components/Collider.h"
 #include "Game/Components/HPBar.h"
 #include "Game/Object/Bullet/EnemyBullet.h"
 #include "Game/Object/Bullet/HomingBullet.h"
@@ -14,19 +14,19 @@
 #include "Game/Enemy/State/EnemyMoveState.h"
 #include "Game/Object/Sword.h"
 
-HomingEnemy::HomingEnemy(IScene* scene)
+HomingEnemy::HomingEnemy(IScene* scene,GameObject* target)
 {
 	SetScene(scene);
-
+	SetTarget(target);
 	AddComponent<HP>();
 	AddComponent<Look>();
 	AddComponent<ModelDraw>();
-	AddComponent<BoxCollider>();
+	AddComponent<Collider>();
 	AddComponent<HPBar>();
 
 	for (int i = 0; i < BULLET_COUNT; i++)
 	{
-		m_bullet.emplace_back(std::make_unique<HomingBullet>(GetScene(), BoxCollider::TypeID::EnemyBullet));
+		m_bullet.emplace_back(std::make_unique<HomingBullet>(GetScene(), Collider::TypeID::EnemyBullet));
 	}
 	SetEnemyAttack(std::make_unique<EnemyAttackState>(this));
 	SetEnemyMove(std::make_unique<EnemyMoveState>(this));
@@ -40,17 +40,15 @@ HomingEnemy::~HomingEnemy()
 	//RemoveAllComponents();
 }
 
-void HomingEnemy::Initialize(GameObject* target)
+void HomingEnemy::Initialize()
 {
 	using namespace DirectX::SimpleMath;
 
-	SetTarget(target);
-
 	GetComponent<HP>()->SetHP(10);
-	GetComponent<Look>()->SetTarget(this, target);
+	GetComponent<Look>()->SetTarget(this, GetTarget());
 	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetDiceModel());
-	GetComponent<BoxCollider>()->SetTypeID(BoxCollider::TypeID::Enemy);
-	GetComponent<BoxCollider>()->SetSize({1,1,1});
+	GetComponent<Collider>()->SetTypeID(Collider::TypeID::Enemy);
+	GetComponent<Collider>()->SetSize({1,1,1});
 	GetComponent<HPBar>()->Initialize();
 
 	for (auto& bullet : m_bullet)
@@ -104,14 +102,14 @@ void HomingEnemy::Render()
 	GetComponent<ModelDraw>()->Render(GetWorld(),true);
 	GetComponent<HPBar>()->Render(GetPosition());
 	// “–‚½‚è”»’è‚Ì•`‰æ
-	//GetComponent<BoxCollider>()->Render();
+	//GetComponent<Collider>()->Render();
 }
 
 void HomingEnemy::Finalize()
 {
 	for (auto& bullet : m_bullet)
 	{
-		static_cast<PlayScene*>(GetScene())->RemoveCollider(bullet->GetComponent<BoxCollider>());
+		static_cast<PlayScene*>(GetScene())->RemoveCollider(bullet->GetComponent<Collider>());
 	}
 
 }
@@ -134,9 +132,9 @@ void HomingEnemy::ChangeState(State* state)
 	m_state->Initialize();
 }
 
-void HomingEnemy::Collision(BoxCollider* collider)
+void HomingEnemy::Collision(Collider* collider)
 {
-	if (collider->GetTypeID() == BoxCollider::PlayerBullet)
+	if (collider->GetTypeID() == Collider::PlayerBullet)
 	{
 		Bullet* bulletObject = static_cast<Bullet*>(collider->GetOwner());
 		if (bulletObject->GetState() == Bullet::FLYING)
@@ -146,7 +144,7 @@ void HomingEnemy::Collision(BoxCollider* collider)
 			bulletObject->Hit();
 		}
 	}
-	if (collider->GetTypeID() == BoxCollider::PlayerSword)
+	if (collider->GetTypeID() == Collider::PlayerSword)
 	{
 		Sword* bulletObject = static_cast<Sword*>(collider->GetOwner());
 		if (bulletObject->GetState() == Sword::USING)
@@ -156,9 +154,9 @@ void HomingEnemy::Collision(BoxCollider* collider)
 			bulletObject->Hit();
 		}
 	}
-	if (collider->GetTypeID() == BoxCollider::Floor ||
-		collider->GetTypeID() == BoxCollider::Wall)
+	if (collider->GetTypeID() == Collider::Floor ||
+		collider->GetTypeID() == Collider::Wall)
 	{
-		BoxCollider::CheckHit(this, collider->GetOwner());
+		Collider::CheckHit(this, collider->GetOwner());
 	}
 }

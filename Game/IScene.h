@@ -3,7 +3,7 @@
 	@brief	シーンのインターフェイスクラス
 */
 #pragma once
-#include "Game/Components/BoxCollider.h"
+#include "Game/Components/Collider.h"
 
 class Game;
 
@@ -24,31 +24,31 @@ public:
 	virtual void Finalize() = 0;
 
 	// ボックスコライダーを追加
-	void AddCollider(BoxCollider* collider)
+	void AddCollider(Collider* collider)
 	{
-		m_pBoxCollider.emplace_back(collider);
+		m_pCollider.emplace_back(collider);
 	}
 
 	// コライダーを削除する
-	void RemoveCollider(BoxCollider* collider)
+	void RemoveCollider(Collider* collider)
 	{
 		int it = 0;
-		for (auto boxColliders : m_pBoxCollider)
+		for (auto Colliders : m_pCollider)
 		{
-			if (boxColliders == collider)
+			if (Colliders == collider)
 			{
 				break;
 			}
 			it++;
 		}
-		if (m_pBoxCollider.size() > it)
+		if (m_pCollider.size() > it)
 		{
-			m_pBoxCollider.erase(m_pBoxCollider.begin() + it);
+			m_pCollider.erase(m_pCollider.begin() + it);
 		}
 	}
 
 	// ボックスコライダーの配列を取得
-	std::vector<BoxCollider*> GetColliders() { return m_pBoxCollider; }
+	std::vector<Collider*> GetColliders() { return m_pCollider; }
 
 	void SetGame(Game* game) { m_game = game; }
 	Game* GetGame() { return m_game; }
@@ -57,6 +57,6 @@ private:
 
 	Game* m_game;
 	// ボックスコライダーをまとめた配列
-	std::vector<BoxCollider*> m_pBoxCollider;
+	std::vector<Collider*> m_pCollider;
 
 };

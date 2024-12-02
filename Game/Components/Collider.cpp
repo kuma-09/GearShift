@@ -1,11 +1,11 @@
 #include "pch.h"
-#include "BoxCollider.h"
+#include "Collider.h"
 #include "Game/IScene.h"
 #include "Game/GameObject.h"
 #include "Framework/Microsoft/DebugDraw.h"
 #include "Game/PlayScene.h"
 
-BoxCollider::BoxCollider()
+Collider::Collider()
 {
 	m_graphics = Graphics::GetInstance();
 	m_boudingBox = std::make_unique<DirectX::BoundingBox>();
@@ -14,7 +14,7 @@ BoxCollider::BoxCollider()
     m_initalePosition = DirectX::SimpleMath::Vector3::Zero;
 }
 
-BoxCollider::~BoxCollider()
+Collider::~Collider()
 {
     if (GetOwner()->GetScene())
     {
@@ -22,18 +22,18 @@ BoxCollider::~BoxCollider()
     }
 }
 
-void BoxCollider::Initialize()
+void Collider::Initialize()
 {
     
 }
 
-void BoxCollider::Update(float elapsedTime)
+void Collider::Update(float elapsedTime)
 {
     UNREFERENCED_PARAMETER(elapsedTime);
 	m_boudingBox->Center = GetOwner()->GetPosition() + m_initalePosition;
 }
 
-void BoxCollider::Render()
+void Collider::Render()
 {
 	auto view       = m_graphics->GetViewMatrix();
 	auto projection = m_graphics->GetProjectionMatrix();
@@ -43,22 +43,22 @@ void BoxCollider::Render()
 	m_graphics->DrawPrimitivePositionColorEnd();
 }
 
-void BoxCollider::Finalize()
+void Collider::Finalize()
 {
 
 }
 
-void BoxCollider::SetSize(DirectX::SimpleMath::Vector3 size)
+void Collider::SetSize(DirectX::SimpleMath::Vector3 size)
 {
 	m_boudingBox->Extents = size;
 }
 
-void BoxCollider::SetInitalePosition(DirectX::SimpleMath::Vector3 pos)
+void Collider::SetInitalePosition(DirectX::SimpleMath::Vector3 pos)
 {
     m_initalePosition = pos;
 }
 
-void BoxCollider::SetTypeID(TypeID id)
+void Collider::SetTypeID(TypeID id)
 {
     m_typeID = id;
     GetOwner()->GetScene()->AddCollider(this);
@@ -69,12 +69,12 @@ void BoxCollider::SetTypeID(TypeID id)
 /// </summary>
 /// <param name="object1"> ‰Ÿ‚µ–ß‚³‚ê‚é‘ÎÛ </param>
 /// <param name="object2"> ”»’è‚·‚é“–‚½‚è”»’è </param>
-void BoxCollider::CheckHit(GameObject* object1, GameObject* object2)
+void Collider::CheckHit(GameObject* object1, GameObject* object2)
 {
     using namespace DirectX::SimpleMath;
 
-    DirectX::BoundingBox* a = object1->GetComponent<BoxCollider>()->GetBoundingBox();
-    DirectX::BoundingBox* b = object2->GetComponent<BoxCollider>()->GetBoundingBox();
+    DirectX::BoundingBox* a = object1->GetComponent<Collider>()->GetBoundingBox();
+    DirectX::BoundingBox* b = object2->GetComponent<Collider>()->GetBoundingBox();
 
     // ƒqƒbƒg‚µ‚Ä‚¢‚È‚¯‚ê‚ÎI‚í‚è
     if (!a->Intersects(*b)) { return; }

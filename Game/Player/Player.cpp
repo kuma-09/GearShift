@@ -5,7 +5,7 @@
 #include "Game/Components/HP.h"
 #include "Game/Components/HPBar.h"
 #include "Game/Components/ModelDraw.h"
-#include "Game/Components/BoxCollider.h"
+#include "Game/Components/Collider.h"
 #include "Game/Components/Move.h"
 #include "Game/Components/Physics.h"
 #include "Game/Components/Camera.h"
@@ -45,7 +45,7 @@ Player::Player(IScene* scene)
 	AddComponent<Move>();
 	AddComponent<Camera>();
 	AddComponent<Look>();
-	AddComponent<BoxCollider>();
+	AddComponent<Collider>();
 	AddComponent<Physics>();
 	AddComponent<HPBar>();
 	AddComponent<Trail>();
@@ -65,8 +65,8 @@ Player::~Player()
 
 void Player::Initialize()
 {
-	GetComponent<BoxCollider>()->SetTypeID(BoxCollider::TypeID::Player);
-	GetComponent<BoxCollider>()->SetSize({ 1,1.45f,1 });
+	GetComponent<Collider>()->SetTypeID(Collider::TypeID::Player);
+	GetComponent<Collider>()->SetSize({ 1,1.45f,1 });
 	GetComponent<Look>()->SetTarget(this, nullptr);
 	GetComponent<Camera>()->SetTarget(this, nullptr);
 	GetComponent<HP>()->SetHP(10);
@@ -270,9 +270,9 @@ int Player::GetExBulletSize()
 	return m_exBulletSize;
 }
 
-void Player::Collision(BoxCollider* collider)
+void Player::Collision(Collider* collider)
 {
-	if (collider->GetTypeID() == BoxCollider::EnemyBullet)
+	if (collider->GetTypeID() == Collider::EnemyBullet)
 	{
 		Bullet* bullet = static_cast<Bullet*>(collider->GetOwner());
 		if (bullet->GetState() == Bullet::FLYING)
@@ -289,14 +289,14 @@ void Player::Collision(BoxCollider* collider)
 		}
 	}
 	
-	if (collider->GetTypeID() == BoxCollider::Floor)
+	if (collider->GetTypeID() == Collider::Floor)
 	{
 		SetOnFloor(true);
-		BoxCollider::CheckHit(this, collider->GetOwner());
+		Collider::CheckHit(this, collider->GetOwner());
 	}
-	if (collider->GetTypeID() == BoxCollider::Wall || collider->GetTypeID() == BoxCollider::Enemy)
+	if (collider->GetTypeID() == Collider::Wall || collider->GetTypeID() == Collider::Enemy)
 	{
-		BoxCollider::CheckHit(this, collider->GetOwner());
+		Collider::CheckHit(this, collider->GetOwner());
 	}
 
 }
@@ -337,7 +337,7 @@ void Player::CreateBullets()
 	// デフォルトの弾を作成
 	for (int i = 0; i < MAX_BULLET_COUNT; i++)
 	{
-		m_defaultBullet.emplace_back(std::make_unique<NormalBullet>(GetScene(), BoxCollider::TypeID::PlayerBullet));
+		m_defaultBullet.emplace_back(std::make_unique<NormalBullet>(GetScene(), Collider::TypeID::PlayerBullet));
 		m_defaultBullet.back()->Initialize(this);
 	}
 	// 特殊弾はクリア
