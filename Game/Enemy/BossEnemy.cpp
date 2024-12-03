@@ -12,6 +12,7 @@
 #include "Game/Object/Sword.h"
 #include "Game/PlayScene.h"
 
+#include "Game/Enemy/BossState/BossGatlingState.h"
 #include "Game/Enemy/BossState/BossMissileState.h"
 #include "Game/Enemy/BossState/BossMoveState.h"
 
@@ -34,7 +35,7 @@ BossEnemy::BossEnemy(IScene* scene,GameObject* target)
 
 	for (int i = 0; i < MAX_FIXED_BULLET; i++)
 	{
-		m_fixedBullets.push_back(std::make_unique<FixedEnemyBullet>(GetScene(), Collider::TypeID::EnemyBullet));
+		m_fixedBullets.push_back(std::make_unique<EnemyBullet>(GetScene(), Collider::TypeID::EnemyBullet));
 	}
 
 	for (int i = 0; i < MAX_HOMING_BULLET; i++)
@@ -47,8 +48,9 @@ BossEnemy::BossEnemy(IScene* scene,GameObject* target)
 		m_laserBullet.emplace_back(std::make_unique<LaserBullet>(GetScene(), Collider::TypeID::EnemyBullet));
 	}
 
-	SetEnemyAttack(std::make_unique<BossMissileState>(this));
+	SetEnemyAttack(std::make_unique<BossGatlingState>(this));
 	SetEnemyMove(std::make_unique<BossMoveState>(this));
+	m_missileState = std::make_unique<BossMissileState>(this);
 	SetScale({ 3.0f,3.0f,3.0f });
 
 	m_state = GetMoveState();
@@ -66,7 +68,7 @@ void BossEnemy::Initialize()
 	using namespace DirectX::SimpleMath;
 
 
-	GetComponent<HP>()->SetHP(10);
+	GetComponent<HP>()->SetHP(100);
 	SetTarget(GetTarget());
 	SetPart(Part::Head, std::make_unique<BossHead>(GetTarget()));
 	SetPart(Part::BodyTop, std::make_unique<BossLeg>());
@@ -161,6 +163,7 @@ void BossEnemy::Render()
 
 
 	if (GetComponent<HP>()->GetHP() <= 0) return;
+	GetComponent<HPBar>()->Render(GetPosition());
 	GetComponent<Collider>()->Render();
 }
 
@@ -169,7 +172,31 @@ void BossEnemy::Finalize()
 	//dynamic_cast<PlayScene*>(GetScene())->RemoveCollider(m_bullet->GetComponent<Collider>());
 }
 
-void BossEnemy::Shot()
+//void BossEnemy::Shot()
+//{
+//	for (auto& bullet : m_laserBullet)
+//	{
+//		if (bullet->GetState() == Bullet::BulletState::UNUSED)
+//		{
+//			bullet->Shot(static_cast<Player*>(GetTarget()));
+//			break;
+//		}
+//	}
+//}
+
+void BossEnemy::ShotMissile()
+{
+	for (auto& bullet : m_homingBullets)
+	{
+		if (bullet->GetState() == Bullet::BulletState::UNUSED)
+		{
+			bullet->Shot(static_cast<Player*>(GetTarget()));
+			break;
+		}
+	}
+}
+
+void BossEnemy::ShotGatling()
 {
 	for (auto& bullet : m_fixedBullets)
 	{
@@ -179,23 +206,13 @@ void BossEnemy::Shot()
 			break;
 		}
 	}
+}
 
-	for (auto& bullet : m_homingBullets)
+void BossEnemy::ReloadGatling()
+{
+	for (auto& bullet : m_fixedBullets)
 	{
-		if (bullet->GetState() == Bullet::BulletState::UNUSED)
-		{
-			bullet->Shot(static_cast<Player*>(GetTarget()));
-			break;
-		}
-	}
-
-	for (auto& bullet : m_laserBullet)
-	{
-		if (bullet->GetState() == Bullet::BulletState::UNUSED)
-		{
-			bullet->Shot(static_cast<Player*>(GetTarget()));
-			break;
-		}
+		bullet->Initialize(this);
 	}
 }
 

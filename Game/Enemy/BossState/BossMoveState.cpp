@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "BossMoveState.h"
 #include "Game/Enemy/Enemy.h"
+#include "Game/Enemy/BossEnemy.h"
 
 BossMoveState::BossMoveState(Enemy* enemy)
 {
@@ -25,11 +26,15 @@ void BossMoveState::Update(float elapsedTime)
 		{
 			m_enemy->SetVelocity(DirectX::SimpleMath::Vector3{ 0,0,-SPEED });
 			Initialize();
+			m_enemy->ChangeState(m_enemy->GetAttackState());
+			//m_enemy->ChangeState(static_cast<BossEnemy*>(m_enemy)->GetMissileState());
+			m_totalTime = 0;
 		}
 		else
 		{
 			m_enemy->SetVelocity(DirectX::SimpleMath::Vector3{ float(rand() % 2 * 2 - 1) * SPEED,0,0 });
-			m_enemy->ChangeState(m_enemy->GetAttackState());
+			//m_enemy->ChangeState(m_enemy->GetAttackState());
+			m_totalTime = 0;
 		}
 	}
 }

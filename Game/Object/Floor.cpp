@@ -10,12 +10,13 @@ Floor::Floor(IScene* scene)
 	SetScene(scene);
 	AddComponent<Collider>();
 	AddComponent<ModelDraw>();
-	GetComponent<Collider>()->SetSize({ 100, 1, 100 });
+	SetScale({ 6,1,6 });
+	GetComponent<Collider>()->SetSize({ 300, 1, 300 });
 	GetComponent<Collider>()->SetTypeID(Collider::Floor);
 	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetFloorModel());
 	SetPosition({ 0,-1,0 });
 	
-	Matrix world = Matrix::CreateScale({ 50,1,50 });
+	Matrix world = Matrix::CreateScale(GetScale());
 	world *= Matrix::CreateTranslation(GetPosition());
 	SetWorld(world);
 }
@@ -29,17 +30,8 @@ void Floor::Render()
 {
 	using namespace DirectX::SimpleMath;
 
-	for (int i = 0; i < 2; i++)
-	{
-		for (int n = 0; n < 2; n++)
-		{
-			Matrix world = Matrix::CreateTranslation(Vector3{ -50 + float(i) * 100 ,1, -50 + float(n) * 100 } + GetPosition());
-			GetComponent<ModelDraw>()->Render(world,true);
-		}
-	}
-
-
-
-
-	//GetComponent<Collider>()->Render();
+	Matrix world = Matrix::CreateScale(GetScale());
+	world *= Matrix::CreateTranslation(GetPosition());
+	GetComponent<ModelDraw>()->Render(world,true);
+	GetComponent<Collider>()->Render();
 }

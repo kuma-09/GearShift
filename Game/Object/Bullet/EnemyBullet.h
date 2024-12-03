@@ -24,7 +24,7 @@ private:
 
 private:
 
-	const float SPEED = 1.0f;
+	const float SPEED = 2.0f;
 	const float DIFFUSION = 1.0f;
 
 };

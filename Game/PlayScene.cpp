@@ -86,13 +86,7 @@ void PlayScene::Initialize(Game* game)
     m_dropItemB.back()->SetPosition(Vector3(10, 30, 30));
 
     m_floor.emplace_back(std::make_unique<Floor>(this));
-    m_floor.back()->SetPosition({ -100,0,-100 });
-    m_floor.emplace_back(std::make_unique<Floor>(this));
-    m_floor.back()->SetPosition({  100,0,-100 });
-    m_floor.emplace_back(std::make_unique<Floor>(this));
-    m_floor.back()->SetPosition({ -100,0, 100 });
-    m_floor.emplace_back(std::make_unique<Floor>(this));
-    m_floor.back()->SetPosition({  100,0, 100 });
+    m_floor.back()->SetPosition({ 0,0,0 });
 
     m_skyDome = std::make_unique<SkyDome>();
     m_skyDome->Initialize(Vector3::Zero);
@@ -254,7 +248,7 @@ void PlayScene::Render()
     CreateShadow();
 
     // ポストプロセス無しでの描画
-    m_postProcess->BeginNormal();
+    //m_postProcess->BeginNormal();
 
     m_skyDome->Render();
 
@@ -292,7 +286,7 @@ void PlayScene::Render()
 
     // Bloom-------------------------------------
 
-    m_postProcess->BeginBloom();
+    //m_postProcess->BeginBloom();
     for (auto& dropItem : m_dropItem)
     {
         dropItem->Render();
@@ -310,7 +304,7 @@ void PlayScene::Render()
 
     //-------------------------------------------
 
-    m_postProcess->combinationRT();
+    //m_postProcess->combinationRT();
 
     // UI
     m_targetArea->Render(m_player->GetTarget());

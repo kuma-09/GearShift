@@ -7,7 +7,9 @@
 
 #include "Game/Object/Bullet/LaserBullet.h"
 #include "Game/Object/Bullet/HomingBullet.h"
-#include "Game/Object/Bullet/FixedEnemyBullet.h"
+#include "Game/Object/Bullet/EnemyBullet.h"
+
+#include "Game/Enemy/BossState/BossMissileState.h"
 
 class State;
 
@@ -24,9 +26,15 @@ public:
 	void Render();
 	void Finalize();
 
+	void Shot() {};
+	void ShotMissile();
+	void ShotGatling();
 
-	void Shot();
+	void ReloadGatling();
+
 	void ChangeState(State* state);
+
+	State* GetMissileState() { return m_missileState.get(); }
 
 	void Collision(Collider* collider);
 
@@ -82,9 +90,9 @@ private:
 	const int MAX_HOMING_BULLET = 10;
 
 	std::vector<std::unique_ptr<LaserBullet>>      m_laserBullet;
-	std::vector<std::unique_ptr<FixedEnemyBullet>> m_fixedBullets;
+	std::vector<std::unique_ptr<EnemyBullet>> m_fixedBullets;
 	std::vector<std::unique_ptr<HomingBullet>>     m_homingBullets;
 
 	State* m_state;
+	std::unique_ptr<BossMissileState> m_missileState;
 };
-

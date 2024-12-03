@@ -73,6 +73,7 @@ void Game::Initialize(HWND window, int width, int height)
     m_debugString = std::make_unique<DebugString>(m_graphics->GetDeviceResources()->GetD3DDevice(),
         m_graphics->GetDeviceResources()->GetD3DDeviceContext(),
         L"Resources/Fonts/SegoeUI_18.spritefont");
+    m_debugString->SetColor(DirectX::Colors::Black);
 
     m_spriteBatch = std::make_unique<SpriteBatch>(m_deviceResources->GetD3DDeviceContext());
 

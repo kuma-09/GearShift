@@ -206,6 +206,7 @@
     <ClInclude Include="Game\Components\Trail.h" />
     <ClInclude Include="Game\DeferredRendering.h" />
     <ClInclude Include="Game\Enemy\BossEnemy.h" />
+    <ClInclude Include="Game\Enemy\BossState\BossGatlingState.h" />
     <ClInclude Include="Game\Enemy\BossState\BossMissileState.h" />
     <ClInclude Include="Game\Enemy\BossState\BossMoveState.h" />
     <ClInclude Include="Game\Enemy\Enemy.h" />
@@ -309,6 +310,7 @@
     <ClCompile Include="Game\Components\Trail.cpp" />
     <ClCompile Include="Game\DeferredRendering.cpp" />
     <ClCompile Include="Game\Enemy\BossEnemy.cpp" />
+    <ClCompile Include="Game\Enemy\BossState\BossGatlingState.cpp" />
     <ClCompile Include="Game\Enemy\BossState\BossMissileState.cpp" />
     <ClCompile Include="Game\Enemy\BossState\BossMoveState.cpp" />
     <ClCompile Include="Game\Enemy\Enemy.cpp" />
