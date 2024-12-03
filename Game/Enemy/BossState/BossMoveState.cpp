@@ -28,7 +28,7 @@ void BossMoveState::Update(float elapsedTime)
 		}
 		else
 		{
-			m_enemy->SetVelocity(DirectX::SimpleMath::Vector3{ float(rand() % 2 * 2 - 1) * 0.1f,0,0 });
+			m_enemy->SetVelocity(DirectX::SimpleMath::Vector3{ float(rand() % 2 * 2 - 1) * SPEED,0,0 });
 			m_enemy->ChangeState(m_enemy->GetAttackState());
 		}
 	}

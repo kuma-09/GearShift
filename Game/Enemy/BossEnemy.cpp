@@ -28,9 +28,9 @@ BossEnemy::BossEnemy(IScene* scene,GameObject* target)
 	AddComponent<Physics>();
 	AddComponent<Collider>();
 	AddComponent<HPBar>();
-	//AddComponent<Look>();
-	//GetComponent<Look>()->Initialize(false, true);
-	//GetComponent<Look>()->SetTarget(this, target);
+	AddComponent<Look>();
+	GetComponent<Look>()->Initialize(false, true);
+	GetComponent<Look>()->SetTarget(this, target);
 
 	for (int i = 0; i < MAX_FIXED_BULLET; i++)
 	{
