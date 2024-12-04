@@ -15,7 +15,7 @@ public:
 private:
 	Enemy* m_enemy;
 
-	const float SPEED = 0.25f;
+	const float SPEED = 0.2f;
 	const float SHOT_INTERVAL = 0.3f;
 	float m_totalTime;
 };

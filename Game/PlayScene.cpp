@@ -88,7 +88,6 @@ void PlayScene::Initialize(Game* game)
     m_dropItemB.back()->SetPosition(Vector3(10, 30, 30));
 
     m_floor.emplace_back(std::make_unique<Floor>(this));
-    m_floor.back()->SetPosition({ 0,0,0 });
 
     m_skyDome = std::make_unique<SkyDome>();
     m_skyDome->Initialize(Vector3::Zero);
@@ -391,9 +390,9 @@ void PlayScene::CreateHitParticle(DirectX::SimpleMath::Matrix world)
     for (int i = 0; i < particleValue; i++)
     {
 
-        float velocityX = (float)HitParticle::get_rand(-20, 20) / 500.0f;
-        float velocityY = (float)HitParticle::get_rand(-20, 20) / 500.0f;
-        float velocityZ = (float)HitParticle::get_rand(-20, 20) / 500.0f;
+        float velocityX = (float)HitParticle::get_rand(-10, 10) / 500.0f;
+        float velocityY = (float)HitParticle::get_rand(-10, 10) / 500.0f;
+        float velocityZ = (float)HitParticle::get_rand(-10, 10) / 500.0f;
 
         m_hitParticle.emplace_back(std::make_unique<HitParticle>());
         m_hitParticle.back()->Initialize(pos, Vector3(velocityX, velocityY, velocityZ));

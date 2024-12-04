@@ -11,10 +11,11 @@ Floor::Floor(IScene* scene)
 	AddComponent<Collider>();
 	AddComponent<ModelDraw>();
 	SetScale({ 6,1,6 });
+	GetComponent<Collider>()->SetInitalePosition({0, -1, 0});
 	GetComponent<Collider>()->SetSize({ 300, 1, 300 });
 	GetComponent<Collider>()->SetTypeID(Collider::Floor);
 	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetFloorModel());
-	SetPosition({ 0,-1,0 });
+	SetPosition({ 0,1,0 });
 	
 	Matrix world = Matrix::CreateScale(GetScale());
 	world *= Matrix::CreateTranslation(GetPosition());

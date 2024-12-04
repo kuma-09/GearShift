@@ -85,7 +85,7 @@ void LeftLeg::Render()
 	}
 	if (static_cast<Player*>(GetOwner())->GetOnFloor())
 	{
-		//GetComponent<Emitter>()->Render(GetPosition() - DirectX::SimpleMath::Vector3{ 0,1.f,0 });
+		GetComponent<Emitter>()->Render(GetPosition() - DirectX::SimpleMath::Vector3{ 0,1.f,0 });
 	}
 	//GetComponent<Collider>()->Render();
 }

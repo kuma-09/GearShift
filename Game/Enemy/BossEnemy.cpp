@@ -89,7 +89,7 @@ void BossEnemy::Initialize()
 	{
 		bullet->Initialize(this);
 	}
-	//m_state->Initialize();
+	m_state->Initialize();
 	Matrix world = Matrix::Identity;
 	world = Matrix::CreateScale(GetScale());
 	world *= Matrix::CreateFromQuaternion(GetQuaternion());

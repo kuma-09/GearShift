@@ -51,7 +51,6 @@ void Attack::Update(float elapsedTime)
 	}
 	else
 	{
-		static_cast<PlayScene*>(m_player->GetScene())->CreateHitParticle(m_player->GetWorld(), m_player->GetQuaternion());
 		m_player->SetVelocity(Vector3(m_velocity.x * boostSpeed, m_velocity.y * boostSpeed, m_velocity.z * boostSpeed));
 	}
 
@@ -85,11 +84,11 @@ void Attack::Render()
 	auto view = Graphics::GetInstance()->GetViewMatrix();
 	auto proj = Graphics::GetInstance()->GetProjectionMatrix();
 
-	//Resources::GetInstance()->GetEntyuModel()->Draw(context, *state, DirectX::SimpleMath::Matrix::Identity, view, proj, false, [&]
-	//	{
-	//		m_shader->RenderStart(m_world, view, proj);
-	//	}
-	//);
+	Resources::GetInstance()->GetEntyuModel()->Draw(context, *state, DirectX::SimpleMath::Matrix::Identity, view, proj, false, [&]
+		{
+			m_shader->RenderStart(m_world, view, proj);
+		}
+	);
 }
 
 void Attack::Finalize()

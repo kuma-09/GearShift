@@ -8,6 +8,7 @@
 #include "Framework/Audio.h"
 
 #include "Game/System/HitStop.h"
+#include "Framework/Easing.h"
 
 Sword::Sword(IScene* scene, Collider::TypeID id)
 {
@@ -81,15 +82,16 @@ void Sword::Update(float elapsedTime)
 	using namespace DirectX::SimpleMath;
 
 
-
+	float rotate = Easing::InQuart(m_rotate, 0.25f);
 	if (GetState() == USED)
 	{
-		m_rotate += elapsedTime * 500;
-		if (m_rotate >= 200)
+		m_rotate += elapsedTime;
+		if (rotate >= 1)
 		{
 			m_isHit = true;
 		}
 	}
+
 
 
 	SetPosition(m_owner->GetPosition() + Vector3::Transform({ 0,0,-1 }, m_owner->GetQuaternion()));
@@ -98,31 +100,29 @@ void Sword::Update(float elapsedTime)
 	SetQuaternion(m_owner->GetQuaternion());
 
 	Matrix world = Matrix::Identity;
-	for (int i = 0; i < 5; i++)
+	for (int i = 3; i < 5; i++)
 	{
 		world = Matrix::CreateScale(GetScale());
 		world *= Matrix::CreateTranslation(Vector3{ 0,0,i * -1.f });
 		if (GetState() == USED)
 		{
-			world *= Matrix::CreateFromAxisAngle(Vector3(2, 2, 0), XMConvertToRadians(100 - m_rotate));
+			world *= Matrix::CreateFromAxisAngle(Vector3(2, 2, 0), XMConvertToRadians(100 - rotate * 200));
 		}
 		world *= Matrix::CreateFromQuaternion(GetQuaternion());
 		world *= Matrix::CreateTranslation(GetPosition());
+		static_cast<PlayScene*>(m_owner->GetScene())->CreateHitParticle(world);
 	}
-	GetComponent<Trail>()->SetPos(GetPosition(), {world._41, world._42, world._43});
+	if (!m_isHit)
+	{
+		GetComponent<Trail>()->SetPos(GetPosition(), { world._41, world._42, world._43 });
+	}
 	world = Matrix::CreateScale(GetScale());
 	if (GetState() == USED)
 	{
-
-		world *= Matrix::CreateFromAxisAngle(Vector3(2, 2, 0), XMConvertToRadians(100 - m_rotate));
-	}
-	else
-	{
-		world *= Matrix::CreateFromQuaternion(Quaternion::CreateFromYawPitchRoll(XMConvertToRadians(100), XMConvertToRadians(15), 0));
+		world *= Matrix::CreateFromAxisAngle(Vector3(2, 2, 0), XMConvertToRadians(100 - rotate * 200));
 	}
 	world *= Matrix::CreateFromQuaternion(GetQuaternion());
 	world *= Matrix::CreateTranslation(GetPosition());
-	static_cast<PlayScene*>(m_owner->GetScene())->CreateHitParticle(world);
 	SetWorld(world);
 
 }
