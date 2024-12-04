@@ -226,16 +226,15 @@ void PlayScene::Update(float elapsedTime)
     }
     
 
-    // HP表示用のUI
-    std::vector<float> hp;
-    hp.emplace_back(m_player->GetPart(Part::Head)->GetComponent<HP>()->GetHP() / m_player->GetPart(Part::Head)->GetMaxHP());
-    hp.emplace_back(m_player->GetPart(Part::BodyTop)->GetComponent<HP>()->GetHP() / m_player->GetPart(Part::BodyTop)->GetMaxHP());
-    hp.emplace_back(m_player->GetPart(Part::LeftArm)->GetComponent<HP>()->GetHP() / m_player->GetPart(Part::LeftArm)->GetMaxHP());
-    hp.emplace_back(m_player->GetPart(Part::RightArm)->GetComponent<HP>()->GetHP() / m_player->GetPart(Part::RightArm)->GetMaxHP());
-    hp.emplace_back(m_player->GetPart(Part::LeftLeg)->GetComponent<HP>()->GetHP() / m_player->GetPart(Part::LeftLeg)->GetMaxHP());
-    hp.emplace_back(m_player->GetPart(Part::RightLeg)->GetComponent<HP>()->GetHP() / m_player->GetPart(Part::RightLeg)->GetMaxHP());
-
-    m_hpUI->Update(hp);
+    // HP表示用のUI--------------------------
+    //std::vector<float> hp;
+    //hp.emplace_back(m_player->GetPart(Part::Head)->GetComponent<HP>()->GetHP() / m_player->GetPart(Part::Head)->GetMaxHP());
+    //hp.emplace_back(m_player->GetPart(Part::BodyTop)->GetComponent<HP>()->GetHP() / m_player->GetPart(Part::BodyTop)->GetMaxHP());
+    //hp.emplace_back(m_player->GetPart(Part::LeftArm)->GetComponent<HP>()->GetHP() / m_player->GetPart(Part::LeftArm)->GetMaxHP());
+    //hp.emplace_back(m_player->GetPart(Part::RightArm)->GetComponent<HP>()->GetHP() / m_player->GetPart(Part::RightArm)->GetMaxHP());
+    //hp.emplace_back(m_player->GetPart(Part::LeftLeg)->GetComponent<HP>()->GetHP() / m_player->GetPart(Part::LeftLeg)->GetMaxHP());
+    //hp.emplace_back(m_player->GetPart(Part::RightLeg)->GetComponent<HP>()->GetHP() / m_player->GetPart(Part::RightLeg)->GetMaxHP());
+    //m_hpUI->Update(hp);
 
 }
 
@@ -248,7 +247,7 @@ void PlayScene::Render()
     CreateShadow();
 
     // ポストプロセス無しでの描画
-    //m_postProcess->BeginNormal();
+    m_postProcess->BeginNormal();
 
     m_skyDome->Render();
 
@@ -286,7 +285,7 @@ void PlayScene::Render()
 
     // Bloom-------------------------------------
 
-    //m_postProcess->BeginBloom();
+    m_postProcess->BeginBloom();
     for (auto& dropItem : m_dropItem)
     {
         dropItem->Render();
@@ -304,11 +303,10 @@ void PlayScene::Render()
 
     //-------------------------------------------
 
-    //m_postProcess->combinationRT();
+    m_postProcess->combinationRT();
 
     // UI
     m_targetArea->Render(m_player->GetTarget());
-    m_hpUI->Render();
     m_player->RenderPlayerUI();
     m_bulletMagazine->Render();
     m_exBulletMagazine->Render();

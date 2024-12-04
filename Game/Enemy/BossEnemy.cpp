@@ -159,9 +159,6 @@ void BossEnemy::Render()
 	m_state->Render();
 	RenderParts();
 
-
-
-
 	if (GetComponent<HP>()->GetHP() <= 0) return;
 	GetComponent<HPBar>()->Render(GetPosition());
 	GetComponent<Collider>()->Render();

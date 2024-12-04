@@ -4,6 +4,7 @@
 #include "Game/Player/Player.h"
 #include "Game/Components/Collider.h"
 #include "Game/Components/ModelDraw.h"
+#include "Game/Components/Trail.h"
 #include <random>
 
 EnemyBullet::EnemyBullet(IScene* scene, Collider::TypeID id)
@@ -11,9 +12,11 @@ EnemyBullet::EnemyBullet(IScene* scene, Collider::TypeID id)
 	SetScene(scene);
 	AddComponent<Collider>();
 	AddComponent<ModelDraw>();
+	AddComponent<Trail>();
 	GetComponent<Collider>()->SetTypeID(id);
 	GetComponent<Collider>()->SetSize({ 0.1f,0.1f,0.1f });
-	SetScale({ 0.5f,0.5f,0.5f });
+	GetComponent<Trail>()->Initialize(L"Resources/Textures/particle.png", 10);
+	SetScale({ 0.25f,0.25f,0.25f });
 	SetState(BulletState::UNUSED);
 }
 
@@ -42,6 +45,8 @@ void EnemyBullet::Shot(GameObject* target)
 {
 	using namespace DirectX::SimpleMath;
 
+	GetComponent<Trail>()->ClearBuffer();
+
 	Vector3 velocity = Vector3::Zero;
 	SetPosition(GetOwner()->GetPosition());
 	GetOwner()->GetQuaternion();
@@ -64,8 +69,6 @@ void EnemyBullet::Shot(GameObject* target)
 
 	SetVelocity(velocity * SPEED);
 	SetState(BulletState::FLYING);
-
-
 }
 
 void EnemyBullet::Hit()
@@ -88,6 +91,8 @@ void EnemyBullet::Update(float elapsedTime)
 
 	SetPosition(GetPosition() + GetVelocity());
 
+	GetComponent<Trail>()->SetPos(GetPosition() - Vector3(0, 0.5f, 0), GetPosition() + Vector3(0, 0.5f, 0));
+
 	Matrix world = Matrix::CreateScale(GetScale());
 	world *= Matrix::CreateFromQuaternion(GetQuaternion());
 	world *= Matrix::CreateTranslation(GetPosition());
@@ -98,7 +103,9 @@ void EnemyBullet::Render()
 {
 	if (GetState() == FLYING)
 	{
-		GetComponent<ModelDraw>()->Render(GetWorld(),false);
+		GetComponent<ModelDraw>()->Render(GetWorld(),false,DirectX::Colors::Red);
+		GetComponent<Collider>()->Render();
+		GetComponent<Trail>()->Render(DirectX::Colors::Red);
 	}
 
 }

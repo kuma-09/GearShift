@@ -182,7 +182,7 @@ void Player::RenderPlayerUI()
 {
 	if (GetBulletSize() == 0 && GetExBulletSize() == 0) m_reload->Render();
 	m_energyGage->Render();
-	GetComponent<HPBar>()->Render(GetPosition());
+	GetComponent<HPBar>()->Render({-0.8f,0.9f});
 }
 
 void Player::Finalize()

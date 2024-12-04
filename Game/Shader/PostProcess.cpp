@@ -44,8 +44,8 @@ void PostProcess::Initialize()
     m_finalRenderTexture->SetDevice(device);
 
     // レンダーテクスチャの作成（ブルーム用）
-    rect.right /= 4;
-    rect.bottom /= 4;
+    rect.right /= SCREENSIZE;
+    rect.bottom /= SCREENSIZE;
 
     m_blur1RT = std::make_unique<DX::RenderTexture>(DXGI_FORMAT_B8G8R8A8_UNORM);
     m_blur1RT->SetDevice(device);
@@ -202,7 +202,7 @@ void PostProcess::combinationRT()
 
     // ビューポートを変更する
     D3D11_VIEWPORT vp_blur =
-    { 0.0f, 0.0f, rect.right / 4.0f, rect.bottom / 4.0f, 0.0f, 1.0f };
+    { 0.0f, 0.0f, rect.right / SCREENSIZE, rect.bottom / SCREENSIZE, 0.0f, 1.0f };
     context->RSSetViewports(1, &vp_blur);
 
     m_basicPostProcess->SetEffect(BasicPostProcess::BloomExtract);

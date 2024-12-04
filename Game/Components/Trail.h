@@ -9,7 +9,7 @@ public:
 	Trail();
 	void Initialize(const wchar_t* path,int bufferSize);
 	void Update(float elapsedTime);                               //頂点バッファを更新する
-	void Render();
+	void Render(DirectX::XMVECTORF32 color = DirectX::Colors::White);
 	void SetPos(DirectX::XMFLOAT3 head, DirectX::XMFLOAT3 tail);  //現在フレームの位置を保存する
 	void ClearBuffer();
 private:
@@ -35,6 +35,7 @@ private:
 		DirectX::XMMATRIX world;
 		DirectX::XMMATRIX view;
 		DirectX::XMMATRIX proj;
+		DirectX::XMVECTOR color;
 	};
 
 	Microsoft::WRL::ComPtr<ID3D11Buffer> m_constantBuffer;

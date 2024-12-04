@@ -15,7 +15,7 @@ Sword::Sword(IScene* scene, Collider::TypeID id)
 	AddComponent<Trail>();
 	GetComponent<Collider>()->SetTypeID(Collider::PlayerSword);
 	GetComponent<Collider>()->SetSize({ 5,4,5 });
-	GetComponent<Trail>()->Initialize(L"Resources/Textures/particle.png", 10);
+	GetComponent<Trail>()->Initialize(L"Resources/Textures/green.png", 10);
 	SetScale({7.5f, 7.5f, 7.5f});
 	SetState(SwordState::UNUSED);
 
@@ -89,7 +89,7 @@ void Sword::Update(float elapsedTime)
 	}
 
 
-	SetPosition(m_owner->GetPosition() + Vector3::Transform({0,0,-1},m_owner->GetQuaternion()));
+	SetPosition(m_owner->GetPosition() + Vector3::Transform({ 0,0,-1 }, m_owner->GetQuaternion()));
 	ComponentsUpdate(elapsedTime);
 	SetPosition(m_owner->GetPosition());
 	SetQuaternion(m_owner->GetQuaternion());
@@ -98,16 +98,15 @@ void Sword::Update(float elapsedTime)
 	for (int i = 0; i < 5; i++)
 	{
 		world = Matrix::CreateScale(GetScale());
-		world *= Matrix::CreateTranslation(Vector3{ 0,0,i / 2.f * -1.f});
+		world *= Matrix::CreateTranslation(Vector3{ 0,0,i * -1.f });
 		if (GetState() == USED)
 		{
 			world *= Matrix::CreateFromAxisAngle(Vector3(2, 2, 0), XMConvertToRadians(100 - m_rotate));
 		}
 		world *= Matrix::CreateFromQuaternion(GetQuaternion());
 		world *= Matrix::CreateTranslation(GetPosition());
-		static_cast<PlayScene*>(m_owner->GetScene())->CreateHitParticle(world);
 	}
-	GetComponent<Trail>()->SetPos(GetPosition(), GetPosition() + Vector3(0, 1, 0));
+	GetComponent<Trail>()->SetPos(GetPosition(), {world._41, world._42, world._43});
 	world = Matrix::CreateScale(GetScale());
 	if (GetState() == USED)
 	{
@@ -120,7 +119,7 @@ void Sword::Update(float elapsedTime)
 	}
 	world *= Matrix::CreateFromQuaternion(GetQuaternion());
 	world *= Matrix::CreateTranslation(GetPosition());
-
+	static_cast<PlayScene*>(m_owner->GetScene())->CreateHitParticle(world);
 	SetWorld(world);
 
 }

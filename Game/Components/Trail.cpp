@@ -67,7 +67,7 @@ void Trail::Update(float elapsedTime)
 	
 }
 
-void Trail::Render()
+void Trail::Render(DirectX::XMVECTORF32 color)
 {
 	using namespace DirectX::SimpleMath;
 	auto device = Graphics::GetInstance()->GetDeviceResources()->GetD3DDevice();
@@ -77,6 +77,11 @@ void Trail::Render()
 	auto view = Graphics::GetInstance()->GetViewMatrix();
 	auto proj = Graphics::GetInstance()->GetProjectionMatrix();
 	
+	//	半透明描画指定
+	ID3D11BlendState* blendstate = state->NonPremultiplied();
+	//	透明判定処理
+	context->OMSetBlendState(blendstate, nullptr, 0xFFFFFFFF);
+
 	// 定数バッファを更新
 	D3D11_MAPPED_SUBRESOURCE mappedResource;
 	// GPUが定数バッファに対してアクセスを行わないようにする
@@ -85,12 +90,13 @@ void Trail::Render()
 	cb.world = Matrix::Identity.Transpose();
 	cb.view = view.Transpose();
 	cb.proj = proj.Transpose();
+	cb.color = color;
 	*static_cast<ConstantBuffer*>(mappedResource.pData) = cb;
 	// GPUが定数バッファに対してのアクセスを許可する
 	context->Unmap(m_constantBuffer.Get(), 0);
 	// ピクセルシェーダ使用する定数バッファを設定
 	ID3D11Buffer* cbuffer[] = { m_constantBuffer.Get() };
-	context->PSSetConstantBuffers(0, 1, cbuffer);
+	context->PSSetConstantBuffers(1, 1, cbuffer);
 	context->VSSetConstantBuffers(0, 1, cbuffer);
 
 	ID3D11SamplerState* sampler[1] = { state->LinearWrap() };

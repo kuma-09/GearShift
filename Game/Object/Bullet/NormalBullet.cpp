@@ -114,8 +114,8 @@ void NormalBullet::Render()
 {
 	if (GetState() == FLYING)
 	{
-		GetComponent<ModelDraw>()->Render(GetWorld(), false);
-		GetComponent<Trail>()->Render();
+		GetComponent<ModelDraw>()->Render(GetWorld(), false,DirectX::Colors::Yellow);
+		GetComponent<Trail>()->Render(DirectX::Colors::Yellow);
 	}
 }
 

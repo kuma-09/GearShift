@@ -11,6 +11,7 @@ public:
 
 	void Initialize();
 	void Update(float elapsedTime);
+	void Render(DirectX::SimpleMath::Vector2 position);
 	void Render(DirectX::SimpleMath::Vector3 position);
 	void Finalize();
 

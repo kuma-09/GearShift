@@ -3,6 +3,7 @@ cbuffer Parmetaers : register(b0)
     matrix world;
     matrix view;
     matrix proj;
+    float4 color;
 }
 
 struct VS_INPUT
