@@ -28,7 +28,7 @@ void Move::Update(float elapsedTime)
     const auto& gpState = m_inputManager->GetGamePadState();
 
     // ƒpƒbƒh‚Ì“ü—Íî•ñ
-    Vector3 input = Vector3{ gpState.thumbSticks.leftX,0, -gpState.thumbSticks.leftY } * elapsedTime;
+    Vector3 input = Vector3{ gpState.thumbSticks.leftX,0, -gpState.thumbSticks.leftY };
     input.Normalize();
     input *= 0.05f;
 

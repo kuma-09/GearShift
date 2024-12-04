@@ -25,6 +25,8 @@
 #include "UI/ExBulletMagazine.h"
 
 
+#include "System/HitStop.h"
+
 PlayScene::PlayScene()
     :
     m_deviceResources{},
@@ -116,6 +118,9 @@ void PlayScene::Initialize(Game* game)
 void PlayScene::Update(float elapsedTime)
 {
     using namespace DirectX::SimpleMath;
+
+    HitStop::Update(elapsedTime);
+    if (HitStop::GetIsStop()) return;
 
     // Œo‰ßŽžŠÔ‚ðŒvŽZ
     m_totalTime += elapsedTime;

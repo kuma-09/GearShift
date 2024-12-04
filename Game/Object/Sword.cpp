@@ -7,6 +7,8 @@
 #include "Game/PlayScene.h"
 #include "Framework/Audio.h"
 
+#include "Game/System/HitStop.h"
+
 Sword::Sword(IScene* scene, Collider::TypeID id)
 {
 	SetScene(scene);
@@ -69,6 +71,7 @@ void Sword::Hit()
 		m_owner->GetComponent<Camera>()->shake();
 		SetState(USED);
 		Audio::GetInstance()->PlaySoundSE_Slash();
+		HitStop::SetStopTime(0.025f);
 	}
 }
 
