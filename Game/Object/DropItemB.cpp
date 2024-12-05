@@ -87,4 +87,8 @@ void DropItemB::Collision(Collider* collider)
 	{
 		Collider::CheckHit(this, collider->GetOwner());
 	}
+	if (collider->GetTypeID() == Collider::Player)
+	{
+
+	}
 }

@@ -10,9 +10,7 @@
 
 LeftArm::LeftArm()
 {
-	AddComponent<HP>();
 	AddComponent<ModelDraw>();
-	AddComponent<Collider>();
 	SetTypeID(TypeID::LeftArm);
 	m_isHit = false;
 }
@@ -25,11 +23,7 @@ LeftArm::~LeftArm()
 void LeftArm::Initialize(int hp,IScene* scene)
 {
 	SetScene(scene);
-	GetComponent<HP>()->SetHP(hp);
-	SetMaxHP(float(hp));
 	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetlArmModel());
-	GetComponent<Collider>()->SetSize({ 0.3f,0.5f,0.3f });
-	GetComponent<Collider>()->SetInitalePosition({ 0,-0.3f,0 });
 }
 
 void LeftArm::Update(float elapsedTime)
@@ -56,22 +50,9 @@ void LeftArm::Update(float elapsedTime)
 
 void LeftArm::Render()
 {
-	if (GetComponent<HP>()->GetHP() > 0)
-	{
-		if (!m_isHit)
-		{
-			GetComponent<ModelDraw>()->Render(GetWorld(), false);
-		}
-		else
-		{
-			GetComponent<ModelDraw>()->Render(GetWorld(), false, DirectX::Colors::Red);
-		}
-	}
-	else
-	{
-		//GetComponent<ModelDraw>()->Render(GetWorld(), false, DirectX::Colors::Black);
-	}
-	//GetComponent<Collider>()->Render();
+
+	GetComponent<ModelDraw>()->Render(GetWorld(), false);
+
 }
 
 void LeftArm::Finalize()
@@ -80,25 +61,25 @@ void LeftArm::Finalize()
 
 void LeftArm::Collision(Collider* collider)
 {
-	// パーツとの当たり判定
-	if (GetComponent<Collider>()->GetBoundingBox()->Intersects(*collider->GetBoundingBox()))
-	{
-		Bullet* bulletObject = static_cast<Bullet*>(collider->GetOwner());
-		if (bulletObject->GetState() == Bullet::FLYING)
-		{
-			if (GetComponent<HP>()->GetHP() > 0)
-			{
-				GetOwner()->GetComponent<Camera>()->shake();
-				GetComponent<HP>()->SetHP(GetComponent<HP>()->GetHP() - 1);
-				bulletObject->Hit();
-				static_cast<PlayScene*>(GetOwner()->GetScene())->SetNoise();
-				m_isHit = true;
-			}
-			else
-			{
-				//auto game = static_cast<PlayScene*>(GetOwner()->GetScene())->GetGame();
-				//game->ChangeScene(game->GetGameOverScene());
-			}
-		}
-	}
+	//// パーツとの当たり判定
+	//if (GetComponent<Collider>()->GetBoundingBox()->Intersects(*collider->GetBoundingBox()))
+	//{
+	//	Bullet* bulletObject = static_cast<Bullet*>(collider->GetOwner());
+	//	if (bulletObject->GetState() == Bullet::FLYING)
+	//	{
+	//		if (GetComponent<HP>()->GetHP() > 0)
+	//		{
+	//			GetOwner()->GetComponent<Camera>()->shake();
+	//			GetComponent<HP>()->SetHP(GetComponent<HP>()->GetHP() - 1);
+	//			bulletObject->Hit();
+	//			static_cast<PlayScene*>(GetOwner()->GetScene())->SetNoise();
+	//			m_isHit = true;
+	//		}
+	//		else
+	//		{
+	//			//auto game = static_cast<PlayScene*>(GetOwner()->GetScene())->GetGame();
+	//			//game->ChangeScene(game->GetGameOverScene());
+	//		}
+	//	}
+	//}
 }

@@ -51,7 +51,7 @@ void Shadow::Initialize()
     m_lightRotate = Quaternion::CreateFromYawPitchRoll(
         XMConvertToRadians(0.0f), XMConvertToRadians(80.0f), 0.0f);
 
-    m_lightTheta = 120.0f;
+    m_lightTheta = 90.f;
 
     RECT rect = { 0, 0, SHADOWMAP_SIZE, SHADOWMAP_SIZE };
 
@@ -231,8 +231,6 @@ void Shadow::Draw(bool texture, DirectX::XMVECTORF32 color)
     SimpleMath::Matrix m = view * proj;
     cbuffer.lightViewProj = XMMatrixTranspose(m);
     cbuffer.lightPosition = m_lightPosition;
-    cbuffer.lightDirection = lightDir;
-    cbuffer.lightAmbient = SimpleMath::Color(0.3f, 0.3f, 0.3f);
     cbuffer.color = color;
 
     *static_cast<ConstantBuffer*>(mappedResource.pData) = cbuffer;

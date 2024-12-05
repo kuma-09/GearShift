@@ -15,6 +15,7 @@ EnemyBullet::EnemyBullet(IScene* scene, Collider::TypeID id)
 	AddComponent<Trail>();
 	GetComponent<Collider>()->SetTypeID(id);
 	GetComponent<Collider>()->SetSize({ 0.1f,0.1f,0.1f });
+	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetCubeModel());
 	GetComponent<Trail>()->Initialize(L"Resources/Textures/particle.png", 10);
 	SetScale({ 0.25f,0.25f,0.25f });
 	SetState(BulletState::UNUSED);
@@ -30,9 +31,6 @@ void EnemyBullet::Initialize(GameObject* object)
 	using namespace DirectX::SimpleMath;
 
 	SetOwner(object);
-
-	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetCubeModel());
-
 	Vector3 velocity = Vector3::Zero;
 	SetPosition(Vector3::Zero);
 	SetQuaternion(Quaternion::Identity);

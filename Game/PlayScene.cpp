@@ -200,46 +200,12 @@ void PlayScene::Update(float elapsedTime)
     // プレイヤーがドロップアイテムに触れている時
     for (auto it = m_dropItem.begin(); it != m_dropItem.end(); it++)
     {
-        if (m_player->GetComponent<Collider>()->
-            GetBoundingBox()->Intersects(
-                *it->get()->GetComponent<Collider>()->GetBoundingBox()))
-        {
-            it->get()->SetHit(true);
-            Audio::GetInstance()->PlaySoundSE_PowerUp();
-            RemoveItem(it);
-            break;
-        }
-        else it->get()->SetHit(false);
     }
 
     // プレイヤーがドロップアイテムに触れている時
     for (auto it = m_dropItemB.begin(); it != m_dropItemB.end(); it++)
     {
-        if (m_player->GetComponent<Collider>()->
-            GetBoundingBox()->Intersects(
-                *it->get()->GetComponent<Collider>()->GetBoundingBox()))
-        {
-            it->get()->SetHit(true);
-            Audio::GetInstance()->PlaySoundSE_PowerUp();
-            m_player->AddWepon(it->get()->GetPart());
-            UpdateBulletMagazine();
-            RemoveItemB(it);
-            break;
-        }
-        else it->get()->SetHit(false);
     }
-    
-
-    // HP表示用のUI--------------------------
-    //std::vector<float> hp;
-    //hp.emplace_back(m_player->GetPart(Part::Head)->GetComponent<HP>()->GetHP() / m_player->GetPart(Part::Head)->GetMaxHP());
-    //hp.emplace_back(m_player->GetPart(Part::BodyTop)->GetComponent<HP>()->GetHP() / m_player->GetPart(Part::BodyTop)->GetMaxHP());
-    //hp.emplace_back(m_player->GetPart(Part::LeftArm)->GetComponent<HP>()->GetHP() / m_player->GetPart(Part::LeftArm)->GetMaxHP());
-    //hp.emplace_back(m_player->GetPart(Part::RightArm)->GetComponent<HP>()->GetHP() / m_player->GetPart(Part::RightArm)->GetMaxHP());
-    //hp.emplace_back(m_player->GetPart(Part::LeftLeg)->GetComponent<HP>()->GetHP() / m_player->GetPart(Part::LeftLeg)->GetMaxHP());
-    //hp.emplace_back(m_player->GetPart(Part::RightLeg)->GetComponent<HP>()->GetHP() / m_player->GetPart(Part::RightLeg)->GetMaxHP());
-    //m_hpUI->Update(hp);
-
 }
 
 /// <summary> 描画処理 </summary>
@@ -248,10 +214,10 @@ void PlayScene::Render()
     using namespace DirectX;
 
     // シャドウマップ作成
-    CreateShadow();
+    //CreateShadow();
 
     // ポストプロセス無しでの描画
-    m_postProcess->BeginNormal();
+    //m_postProcess->BeginNormal();
 
     m_skyDome->Render();
 
@@ -289,7 +255,7 @@ void PlayScene::Render()
 
     // Bloom-------------------------------------
 
-    m_postProcess->BeginBloom();
+    //m_postProcess->BeginBloom();
     for (auto& dropItem : m_dropItem)
     {
         dropItem->Render();
@@ -307,7 +273,7 @@ void PlayScene::Render()
 
     //-------------------------------------------
 
-    m_postProcess->combinationRT();
+    //m_postProcess->combinationRT();
 
     // UI
     m_targetArea->Render(m_player->GetTarget());
@@ -453,6 +419,14 @@ void PlayScene::CreateShadow()
     m_player->CreateShadow();
 
     Resources::GetInstance()->GetShadow()->EndDepth();
+}
+
+void PlayScene::ObjectsRender(std::vector<std::unique_ptr<GameObject>> objects)
+{
+    for (auto& object : objects)
+    {
+        object->Render();
+    }
 }
 
 // Jsonから読み取った座標にオブジェクトを生成

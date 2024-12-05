@@ -53,6 +53,7 @@ public:
 private:
 
 	void CreateShadow();
+	void ObjectsRender(std::vector<std::unique_ptr<GameObject>> objects);
 	void CreateObject(std::string className, DirectX::SimpleMath::Vector3 pos);
 	// “G‚ğíœ
 	std::vector<std::unique_ptr<Enemy>>::iterator RemoveEnemy(std::vector<std::unique_ptr<Enemy>>::iterator it);

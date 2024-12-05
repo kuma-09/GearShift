@@ -19,7 +19,6 @@ public:
 	void Finalize();
 
 	std::vector<std::unique_ptr<Bullet>> GetPart() { return std::move(m_bullet); }
-	void SetHit(bool isHit) { m_isHit = isHit; }
 
 	void Collision(Collider* collider);
 

@@ -33,15 +33,19 @@ void PostProcess::Initialize()
     // レンダーテクスチャの作成（シーン全体）
     m_offscreenRT_Bloom = std::make_unique<DX::RenderTexture>(DXGI_FORMAT_B8G8R8A8_UNORM);
     m_offscreenRT_Bloom->SetDevice(device);
+    m_offscreenRT_Bloom->SetWindow(rect);
 
     m_offscreenRT = std::make_unique<DX::RenderTexture>(DXGI_FORMAT_B8G8R8A8_UNORM);
     m_offscreenRT->SetDevice(device);
+    m_offscreenRT->SetWindow(rect);
 
     m_offscreenRT_Normal = std::make_unique<DX::RenderTexture>(DXGI_FORMAT_B8G8R8A8_UNORM);
     m_offscreenRT_Normal->SetDevice(device);
+    m_offscreenRT_Normal->SetWindow(rect);
 
     m_finalRenderTexture = std::make_unique<DX::RenderTexture>(DXGI_FORMAT_B8G8R8A8_UNORM);
     m_finalRenderTexture->SetDevice(device);
+    m_finalRenderTexture->SetWindow(rect);
 
     // レンダーテクスチャの作成（ブルーム用）
     rect.right /= SCREENSIZE;
@@ -106,11 +110,6 @@ void PostProcess::Initialize()
 
 void PostProcess::Update(float elapsedTime)
 {
-    RECT rect = m_graphics->GetDeviceResources()->GetOutputSize();
-    m_offscreenRT_Bloom->SetWindow(rect);
-    m_offscreenRT->SetWindow(rect);
-    m_offscreenRT_Normal->SetWindow(rect);
-    m_finalRenderTexture->SetWindow(rect);
     if (m_isStartNoise)
     {
         m_nowTime -= elapsedTime;

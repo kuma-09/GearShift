@@ -53,8 +53,6 @@ private:
 	{
 		DirectX::XMMATRIX lightViewProj;	// ライトの投影空間へ座標変換する行列
 		DirectX::XMVECTOR lightPosition;	// ライトの位置
-		DirectX::XMVECTOR lightDirection;	// ライトの方向
-		DirectX::XMVECTOR lightAmbient;		// ライトの環境光
 		DirectX::XMVECTOR color;			// モデルの色
 	};
 
