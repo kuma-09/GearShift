@@ -1,8 +1,8 @@
 #include "pch.h"	
-#include "HitEffect.h"
+#include "ExplosionEffect.h"
 #include "Framework/Graphics.h"
 
-void HitEffect::Initialize()
+void ExplosionEffect::Initialize()
 {
 	using namespace DirectX;
 
@@ -29,23 +29,23 @@ void HitEffect::Initialize()
 	DX::ThrowIfFailed(
 		CreateWICTextureFromFile(
 			device,									// デバイスコンテキスト
-			L"Resources/Textures/smoke_white_big.png",	// 画像ファイルのパス
+			L"Resources/Textures/explosion00.png",	// 画像ファイルのパス
 			nullptr,								// 内部的なテクスチャ
 			m_texture.ReleaseAndGetAddressOf()		// シェーダリソースビュー(表示用)
 		)
 	);
 }
 
-void HitEffect::Set(DirectX::SimpleMath::Vector3 pos)
+void ExplosionEffect::Set(DirectX::SimpleMath::Vector3 pos)
 {
 	using namespace DirectX;
 	using namespace DirectX::SimpleMath;
 
 
 
-	for (int i = 0; i < 3; i++)
+	for (int i = 0; i < MAX_EFFECT_NUM; i++)
 	{
-		m_posLife.insert({ pos + Vector3(rand() % 3,rand() % 3,rand() % 3),0.0f});
+		m_posLife.insert({ pos + Vector3(rand() % 3,rand() % 3,rand() % 3),0.0f - i * 0.1f});
 	}
 
 
@@ -53,7 +53,7 @@ void HitEffect::Set(DirectX::SimpleMath::Vector3 pos)
 	m_v = 0;
 }
 
-void HitEffect::Update(float elapsedTime)
+void ExplosionEffect::Update(float elapsedTime)
 {
 
 	for (auto it = m_posLife.begin(); it != m_posLife.end();)
@@ -71,14 +71,14 @@ void HitEffect::Update(float elapsedTime)
 
 }
 
-void HitEffect::Render()
+void ExplosionEffect::Render()
 {
 	using namespace DirectX::SimpleMath;
 
-	auto context = Graphics::GetInstance()->GetDeviceResources()->GetD3DDeviceContext();
-	auto states = Graphics::GetInstance()->GetCommonStates();
-	auto view = Graphics::GetInstance()->GetViewMatrix();
-	auto proj = Graphics::GetInstance()->GetProjectionMatrix();
+	auto context = m_graphics->GetDeviceResources()->GetD3DDeviceContext();
+	auto states =  m_graphics->GetCommonStates();
+	auto& view =    m_graphics->GetViewMatrix();
+	auto& proj =    m_graphics->GetProjectionMatrix();
 
 	// 各種パラメータを更新する
 	context->OMSetBlendState(states->NonPremultiplied(), nullptr, 0xFFFFFFFF);// ブレンドステート
@@ -93,8 +93,9 @@ void HitEffect::Render()
 
 	for (auto& posLife : m_posLife)
 	{
+		if (posLife.second < 0) continue;
 		// 各種変換
-		Matrix world = Matrix::CreateScale(1.0f * (0.1f + posLife.second));
+		Matrix world = Matrix::CreateScale(1.0f * (0.2f + posLife.second));
 		world *= Matrix::CreateTranslation(posLife.first + Vector3{0,posLife.second,0});
 
 		// ワールド行列を更新する
@@ -113,21 +114,6 @@ void HitEffect::Render()
 		m_basicEffect->SetColorAndAlpha({1, 0.25f,0, 1 - posLife.second});
 		m_basicEffect->Apply(context);				// ベーシックエフェクトを更新する
 
-		//int n = int(posLife.second);
-		//int y = n / 3;
-		//int x = n % 3;
-
-		//// UV座標指定用の配列
-		//constexpr float u[4]{ 0.0f, 0.34f, 0.67f, 1.0f };
-		//constexpr float v[4]{ 0.0f, 0.34f, 0.67f, 1.0f };
-
-		//m_vertices[0] = { Vector3(-3.0f , 3.0f,0), Vector2(u[x],     v[y]) };	//左上
-		//m_vertices[1] = { Vector3( 3.0f , 3.0f,0),  Vector2(u[x + 1], v[y]) };	//右上
-		//m_vertices[2] = { Vector3(-3.0f ,-3.0f,0), Vector2(u[x],     v[y + 1]) };	//左下
-		//m_vertices[3] = { Vector3( 3.0f ,-3.0f,0),  Vector2(u[x + 1], v[y + 1]) };	//右下
-
-		
-
 		m_vertices[0] = { Vector3(-3.0f , 3.0f,0), Vector2( 0, 0) };	//左上
 		m_vertices[1] = { Vector3( 3.0f , 3.0f,0), Vector2( 1, 0) };	//右上
 		m_vertices[2] = { Vector3(-3.0f ,-3.0f,0), Vector2( 0, 1) };	//左下
@@ -141,6 +127,6 @@ void HitEffect::Render()
 
 }
 
-void HitEffect::Finalize()
+void ExplosionEffect::Finalize()
 {
 }

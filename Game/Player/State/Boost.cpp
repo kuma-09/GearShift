@@ -47,7 +47,6 @@ void Boost::Update(float elapsedTime)
 	m_player->GetEnergyGage()->UseEnergyPoint(1);
 	if (m_totalTime <= m_boostTime / 2)
 	{
-		m_player->GetComponent<Physics>()->Reset();
 		m_player->ChangeState(m_player->GetIdol());
 	}
 	if (mouse.rightButton || gpState.buttons.b)

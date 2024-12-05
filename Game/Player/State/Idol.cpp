@@ -4,6 +4,8 @@
 #include "Boost.h"
 #include "Attack.h"
 
+#include "Game/Components/Physics.h"
+
 
 
 Idol::Idol(Player* player)
@@ -18,7 +20,7 @@ Idol::~Idol()
 
 void Idol::Initialize()
 {
-
+	m_player->GetComponent<Physics>()->Reset();
 }
 
 void Idol::Update(float elapsedTime)

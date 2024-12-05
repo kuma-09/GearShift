@@ -100,7 +100,7 @@ void PlayScene::Initialize(Game* game)
 
     m_hpUI = std::make_unique<HPUI>();
 
-    m_hitEffect = std::make_unique<HitEffect>();
+    m_hitEffect = std::make_unique<ExplosionEffect>();
     m_hitEffect->Initialize();
 
     m_startAnimation = std::make_unique<StartAnimation>();
@@ -214,10 +214,10 @@ void PlayScene::Render()
     using namespace DirectX;
 
     // シャドウマップ作成
-    //CreateShadow();
+    CreateShadow();
 
     // ポストプロセス無しでの描画
-    //m_postProcess->BeginNormal();
+    m_postProcess->BeginNormal();
 
     m_skyDome->Render();
 
@@ -255,7 +255,7 @@ void PlayScene::Render()
 
     // Bloom-------------------------------------
 
-    //m_postProcess->BeginBloom();
+    m_postProcess->BeginBloom();
     for (auto& dropItem : m_dropItem)
     {
         dropItem->Render();
@@ -273,7 +273,7 @@ void PlayScene::Render()
 
     //-------------------------------------------
 
-    //m_postProcess->combinationRT();
+    m_postProcess->combinationRT();
 
     // UI
     m_targetArea->Render(m_player->GetTarget());

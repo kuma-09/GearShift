@@ -36,7 +36,7 @@ void ModelDraw::Render(DirectX::SimpleMath::Matrix world, bool texture, DirectX:
 
 	m_model->Draw(context, *state, world, view, projection, false, [&]
 	{
-		//Shadow::Draw(texture, color);
+		Shadow::Draw(texture, color);
 		//DeferredRendering::DrawGBuffer(texture);
 	});
 }

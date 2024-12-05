@@ -4,7 +4,7 @@
 #include "Framework/Resources.h"
 #include "Framework/InputManager.h"
 #include "Framework/DeviceResources.h"
-#include "Particle/HitEffect.h"
+#include "Particle/ExplosionEffect.h"
 #include "UI/CircleGage.h"
 
 class TestScene final : public IScene

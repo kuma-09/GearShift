@@ -4,7 +4,7 @@
 #include "Framework/Resources.h"
 #include "map"
 
-class HitEffect
+class ExplosionEffect
 {
 public:
 
@@ -28,7 +28,11 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_texture;
 
 	std::map<DirectX::SimpleMath::Vector3, float> m_posLife;
+	// •\¦ŠÔ
 	const float MAX_LIFETIME = 9;
+	// ”š•—‚Ì”
+	const int   MAX_EFFECT_NUM = 5;
+
 
 	int m_u;
 	int m_v;

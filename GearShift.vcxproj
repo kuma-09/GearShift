@@ -239,7 +239,7 @@
     <ClInclude Include="Game\Object\Wall\BillB.h" />
     <ClInclude Include="Game\Object\Wall\Wall.h" />
     <ClInclude Include="Game\Particle\Emitter.h" />
-    <ClInclude Include="Game\Particle\HitEffect.h" />
+    <ClInclude Include="Game\Particle\ExplosionEffect.h" />
     <ClInclude Include="Game\Particle\HitParticle.h" />
     <ClInclude Include="Game\Particle\Particle.h" />
     <ClInclude Include="Game\Particle\ShaderParticle.h">
@@ -343,7 +343,7 @@
     <ClCompile Include="Game\Object\Wall\BillB.cpp" />
     <ClCompile Include="Game\Object\Wall\Wall.cpp" />
     <ClCompile Include="Game\Particle\Emitter.cpp" />
-    <ClCompile Include="Game\Particle\HitEffect.cpp" />
+    <ClCompile Include="Game\Particle\ExplosionEffect.cpp" />
     <ClCompile Include="Game\Particle\HitParticle.cpp" />
     <ClCompile Include="Game\Particle\Particle.cpp" />
     <ClCompile Include="Game\Parts\BodyTop.cpp" />

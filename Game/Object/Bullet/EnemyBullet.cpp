@@ -49,15 +49,15 @@ void EnemyBullet::Shot(GameObject* target)
 	SetPosition(GetOwner()->GetPosition());
 	GetOwner()->GetQuaternion();
 
+	// ランダムな方向に弾をばらけさせる
 	std::random_device seed_gen;
 	std::mt19937 mt(seed_gen());
-
 	std::uniform_real_distribution<float> dist(-DIFFUSION, DIFFUSION);
-
 	float resultx = dist(mt);
 	float resulty = dist(mt);
 	float resultz = dist(mt);
 
+	// プレイヤーの移動先+ランダムな方向を射撃目標にする
 	Vector3 predictionPosition = LinePrediction(static_cast<Player*>(target)) + Vector3(resultx, resulty, resultz);
 
 	velocity += Vector3::Transform(Vector3::Backward * SPEED, Quaternion::FromToRotation(GetOwner()->GetPosition(), predictionPosition));
@@ -102,10 +102,8 @@ void EnemyBullet::Render()
 	if (GetState() == FLYING)
 	{
 		GetComponent<ModelDraw>()->Render(GetWorld(),false,DirectX::Colors::Red);
-		GetComponent<Collider>()->Render();
 		GetComponent<Trail>()->Render(DirectX::Colors::Red);
 	}
-
 }
 
 void EnemyBullet::Collision(Collider* collider)

@@ -68,7 +68,7 @@ void BossEnemy::Initialize()
 	using namespace DirectX::SimpleMath;
 
 
-	GetComponent<HP>()->SetHP(100);
+	GetComponent<HP>()->SetHP(25);
 	SetTarget(GetTarget());
 	SetPart(Part::Head, std::make_unique<BossHead>(GetTarget()));
 	SetPart(Part::BodyTop, std::make_unique<BossLeg>());

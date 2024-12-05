@@ -67,6 +67,9 @@ void Emitter::Render(DirectX::SimpleMath::Vector3 pos)
 {
     using namespace DirectX::SimpleMath;
 
+    auto view = m_graphics->GetViewMatrix();
+    auto projection = m_graphics->GetProjectionMatrix();
+
     if (m_totalTime >= m_interval && GetOwner()->GetVelocity() != Vector3::Zero)
     {
         m_totalTime = 0;
@@ -74,13 +77,8 @@ void Emitter::Render(DirectX::SimpleMath::Vector3 pos)
         m_particles.back()->Initialize(pos, m_lifeTime);
     }
 
-
     m_graphics->GetBasicEffect()->SetTexture(m_texture.Get());
 
-    auto view = m_graphics->GetViewMatrix();
-    auto projection = m_graphics->GetProjectionMatrix();
-
-    m_graphics->GetBasicEffect()->SetTexture(m_texture.Get());
 
     for (auto& particle : m_particles)
     {

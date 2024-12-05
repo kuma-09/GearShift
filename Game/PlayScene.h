@@ -23,7 +23,7 @@ class Camera;
 class HPUI;
 class Reload;
 class HitParticle;
-class HitEffect;
+class ExplosionEffect;
 class StartAnimation;
 class BulletMagazine;
 class ExBulletMagazine;
@@ -95,7 +95,7 @@ private:
 	// ヒットパーティクル
 	std::vector<std::unique_ptr<HitParticle>> m_hitParticle;
 	// 撃破エフェクト
-	std::unique_ptr<HitEffect> m_hitEffect;
+	std::unique_ptr<ExplosionEffect> m_hitEffect;
 
 
 	std::unique_ptr<StartAnimation> m_startAnimation;
