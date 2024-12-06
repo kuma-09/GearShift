@@ -69,7 +69,7 @@ private:
 	bool m_isNoise;
 	bool m_isBoost;
 	float m_nowTime;
-	const float SCREENSIZE = 8.0f;
+	const float PIXELSIZE = 8.0f;
 	const float m_maxStartNoiseTime = 1.0f;
 	const float m_maxNoiseTime = 0.2f;
 	const float m_maxBoostBlur = 0.5f;

@@ -16,6 +16,6 @@ private:
 	Enemy* m_enemy;
 
 	const float STATE_INTERVAL = 1.0f;
-	const float SPEED = 0.5f;
+	const float SPEED = 0.3f;
 	float m_totalTime;
 };

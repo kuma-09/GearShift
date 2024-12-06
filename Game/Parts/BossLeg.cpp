@@ -64,26 +64,7 @@ void BossLeg::Update(float elapsedTime)
 
 void BossLeg::Render()
 {
-	if (GetComponent<HP>()->GetHP() > 0)
-	{
-		if (!m_isHit)
-		{
-			GetComponent<ModelDraw>()->Render(GetWorld(), false);
-		}
-		else
-		{
-			GetComponent<ModelDraw>()->Render(GetWorld(), false, DirectX::Colors::Red);
-		}
-	}
-	else
-	{
-		//GetComponent<ModelDraw>()->Render(GetWorld(), false, DirectX::Colors::Black);
-	}
-	if (static_cast<Player*>(GetOwner())->GetOnFloor())
-	{
-		//GetComponent<Emitter>()->Render(GetPosition() - DirectX::SimpleMath::Vector3{ 0,1.f,0 });
-	}
-	GetComponent<Collider>()->Render();
+	GetComponent<ModelDraw>()->Render(GetWorld(), false);
 }
 
 void BossLeg::Finalize()

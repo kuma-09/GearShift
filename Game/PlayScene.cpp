@@ -200,11 +200,33 @@ void PlayScene::Update(float elapsedTime)
     // プレイヤーがドロップアイテムに触れている時
     for (auto it = m_dropItem.begin(); it != m_dropItem.end(); it++)
     {
+        if (m_player->GetComponent<Collider>()->
+            GetBoundingBox()->Intersects(
+                *it->get()->GetComponent<Collider>()->GetBoundingBox()))
+        {
+            it->get()->SetHit(true);
+            Audio::GetInstance()->PlaySoundSE_PowerUp();
+            RemoveItem(it);
+            break;
+        }
+        else it->get()->SetHit(false);
     }
 
     // プレイヤーがドロップアイテムに触れている時
     for (auto it = m_dropItemB.begin(); it != m_dropItemB.end(); it++)
     {
+        if (m_player->GetComponent<Collider>()->
+            GetBoundingBox()->Intersects(
+                *it->get()->GetComponent<Collider>()->GetBoundingBox()))
+        {
+            it->get()->SetHit(true);
+            Audio::GetInstance()->PlaySoundSE_PowerUp();
+            m_player->AddWepon(it->get()->GetPart());
+            UpdateBulletMagazine();
+            RemoveItemB(it);
+            break;
+        }
+        else it->get()->SetHit(false);
     }
 }
 

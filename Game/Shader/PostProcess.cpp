@@ -48,8 +48,8 @@ void PostProcess::Initialize()
     m_finalRenderTexture->SetWindow(rect);
 
     // レンダーテクスチャの作成（ブルーム用）
-    rect.right /= SCREENSIZE;
-    rect.bottom /= SCREENSIZE;
+    rect.right /= PIXELSIZE;
+    rect.bottom /= PIXELSIZE;
 
     m_blur1RT = std::make_unique<DX::RenderTexture>(DXGI_FORMAT_B8G8R8A8_UNORM);
     m_blur1RT->SetDevice(device);
@@ -201,7 +201,7 @@ void PostProcess::combinationRT()
 
     // ビューポートを変更する
     D3D11_VIEWPORT vp_blur =
-    { 0.0f, 0.0f, rect.right / SCREENSIZE, rect.bottom / SCREENSIZE, 0.0f, 1.0f };
+    { 0.0f, 0.0f, rect.right / PIXELSIZE, rect.bottom / PIXELSIZE, 0.0f, 1.0f };
     context->RSSetViewports(1, &vp_blur);
 
     m_basicPostProcess->SetEffect(BasicPostProcess::BloomExtract);
@@ -252,19 +252,8 @@ void PostProcess::combinationRT()
     ////// -------------------------------------------------------------------------- //
     m_dualPostProcess->SetEffect(DualPostProcess::BloomCombine);
     m_dualPostProcess->SetBloomCombineParameters(5.0f, 1.0f, 1.0f, 1.0f);
-    m_dualPostProcess->SetSourceTexture(offscreenSRV_Bloom);
-    m_dualPostProcess->SetSourceTexture2(blur1SRV);
-    m_dualPostProcess->Process(context);
-
-    context->ClearRenderTargetView(finalRTV, Colors::Black);
-    context->ClearDepthStencilView(depthStencil, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
-    context->OMSetRenderTargets(1, &finalRTV, depthStencil);
-
-
-    m_dualPostProcess->SetEffect(DualPostProcess::Merge);
-    m_dualPostProcess->SetMergeParameters(1, 1);
     m_dualPostProcess->SetSourceTexture(offscreenSRV_Normal);
-    m_dualPostProcess->SetSourceTexture2(offscreenSRV);
+    m_dualPostProcess->SetSourceTexture2(blur1SRV);
     m_dualPostProcess->Process(context);
 
     context->ClearRenderTargetView(renderTarget, Colors::Black);
@@ -290,7 +279,7 @@ void PostProcess::combinationRT()
     context->PSSetSamplers(0, 1, sampler);
     context->RSSetState(state->CullNone());
     context->IASetInputLayout(m_inputLayout.Get());
-    context->PSSetShaderResources(0, 1, &finalSRV);
+    context->PSSetShaderResources(0, 1, &offscreenSRV);
 
     if (!m_isNoise)
     {
@@ -314,5 +303,8 @@ void PostProcess::combinationRT()
     m_batch->Begin();
     m_batch->DrawQuad(m_vertex[0], m_vertex[1], m_vertex[3], m_vertex[2]);
     m_batch->End();
+
+    context->VSSetShader(nullptr, nullptr, 0);
+    context->PSSetShader(nullptr, nullptr, 0);
 
 }

@@ -63,22 +63,8 @@ void BossHead::Update(float elapsedTime)
 
 void BossHead::Render()
 {
-	if (GetComponent<HP>()->GetHP() > 0)
-	{
-		if (!m_isHit)
-		{
-			GetComponent<ModelDraw>()->Render(GetWorld(), false);
-		}
-		else
-		{
-			GetComponent<ModelDraw>()->Render(GetWorld(), false, DirectX::Colors::Red);
-		}
-	}
-	else
-	{
-		//GetComponent<ModelDraw>()->Render(GetWorld(), false, DirectX::Colors::Black);
-	}
-	GetComponent<Collider>()->Render();
+
+	GetComponent<ModelDraw>()->Render(GetWorld(), false);
 }
 
 void BossHead::Finalize()
