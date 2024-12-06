@@ -22,6 +22,7 @@ RightArm::~RightArm()
 
 void RightArm::Initialize(int hp,IScene* scene)
 {
+	UNREFERENCED_PARAMETER(hp);
 	SetScene(scene);
 	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetrArmModel());
 }
@@ -60,6 +61,7 @@ void RightArm::Finalize()
 
 void RightArm::Collision(Collider* collider)
 {
+	UNREFERENCED_PARAMETER(collider);
 	//// ÉpÅ[ÉcÇ∆ÇÃìñÇΩÇËîªíË
 	//if (GetComponent<Collider>()->GetBoundingBox()->Intersects(*collider->GetBoundingBox()))
 	//{

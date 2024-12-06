@@ -22,6 +22,7 @@ LeftArm::~LeftArm()
 
 void LeftArm::Initialize(int hp,IScene* scene)
 {
+	UNREFERENCED_PARAMETER(hp);
 	SetScene(scene);
 	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetlArmModel());
 }
@@ -61,6 +62,7 @@ void LeftArm::Finalize()
 
 void LeftArm::Collision(Collider* collider)
 {
+	UNREFERENCED_PARAMETER(collider);
 	//// ÉpÅ[ÉcÇ∆ÇÃìñÇΩÇËîªíË
 	//if (GetComponent<Collider>()->GetBoundingBox()->Intersects(*collider->GetBoundingBox()))
 	//{

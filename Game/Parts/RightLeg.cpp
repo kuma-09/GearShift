@@ -24,6 +24,7 @@ RightLeg::~RightLeg()
 
 void RightLeg::Initialize(int hp,IScene* scene)
 {
+	UNREFERENCED_PARAMETER(hp);
 	SetScene(scene);
 	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetrLegModel());
 	GetComponent<Emitter>()->Initialize(L"Resources/Textures/smoke_white.png", 0.1f, 0.1f, 0.2f);
@@ -80,6 +81,7 @@ void RightLeg::Finalize()
 
 void RightLeg::Collision(Collider* collider)
 {
+	UNREFERENCED_PARAMETER(collider);
 	//// ÉpÅ[ÉcÇ∆ÇÃìñÇΩÇËîªíË
 	//if (GetComponent<Collider>()->GetBoundingBox()->Intersects(*collider->GetBoundingBox()))
 	//{

@@ -22,6 +22,7 @@ Head::~Head()
 
 void Head::Initialize(int hp,IScene* scene)
 {
+	UNREFERENCED_PARAMETER(hp);
 	SetScene(scene);
 	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetHeadModel());
 }
@@ -56,6 +57,7 @@ void Head::Finalize()
 
 void Head::Collision(Collider* collider)
 {
+	UNREFERENCED_PARAMETER(collider);
 	//// ÉpÅ[ÉcÇ∆ÇÃìñÇΩÇËîªíË
 	//if (GetComponent<Collider>()->GetBoundingBox()->Intersects(*collider->GetBoundingBox()))
 	//{

@@ -12,7 +12,7 @@ Attack::Attack(Player* player)
 {
 	m_player = player;
 	m_totalTime = m_boostTime;
-	m_sword = std::make_unique<Sword>(m_player->GetScene(), Collider::PlayerBullet);
+	m_sword = std::make_unique<Sword>(m_player->GetScene(), Collider::PlayerSword);
 	m_shader = std::make_unique<Shader>();
 	m_shader->CreateShader();
 }

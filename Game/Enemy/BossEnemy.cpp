@@ -51,6 +51,7 @@ BossEnemy::BossEnemy(IScene* scene,GameObject* target)
 	SetEnemyAttack(std::make_unique<BossGatlingState>(this));
 	SetEnemyMove(std::make_unique<BossMoveState>(this));
 	m_missileState = std::make_unique<BossMissileState>(this);
+	m_tackleState = std::make_unique<BossTackleState>(this);
 	SetScale({ 3.0f,3.0f,3.0f });
 
 	m_state = GetMoveState();
@@ -166,20 +167,8 @@ void BossEnemy::Render()
 
 void BossEnemy::Finalize()
 {
-	//dynamic_cast<PlayScene*>(GetScene())->RemoveCollider(m_bullet->GetComponent<Collider>());
-}
 
-//void BossEnemy::Shot()
-//{
-//	for (auto& bullet : m_laserBullet)
-//	{
-//		if (bullet->GetState() == Bullet::BulletState::UNUSED)
-//		{
-//			bullet->Shot(static_cast<Player*>(GetTarget()));
-//			break;
-//		}
-//	}
-//}
+}
 
 void BossEnemy::ShotMissile()
 {

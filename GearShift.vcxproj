@@ -209,6 +209,7 @@
     <ClInclude Include="Game\Enemy\BossState\BossGatlingState.h" />
     <ClInclude Include="Game\Enemy\BossState\BossMissileState.h" />
     <ClInclude Include="Game\Enemy\BossState\BossMoveState.h" />
+    <ClInclude Include="Game\Enemy\BossState\BossTackleState.h" />
     <ClInclude Include="Game\Enemy\Enemy.h" />
     <ClInclude Include="Game\Enemy\FixedEnemy.h" />
     <ClInclude Include="Game\Enemy\HomingEnemy.h" />
@@ -314,6 +315,7 @@
     <ClCompile Include="Game\Enemy\BossState\BossGatlingState.cpp" />
     <ClCompile Include="Game\Enemy\BossState\BossMissileState.cpp" />
     <ClCompile Include="Game\Enemy\BossState\BossMoveState.cpp" />
+    <ClCompile Include="Game\Enemy\BossState\BossTackleState.cpp" />
     <ClCompile Include="Game\Enemy\Enemy.cpp" />
     <ClCompile Include="Game\Enemy\FixedEnemy.cpp" />
     <ClCompile Include="Game\Enemy\HomingEnemy.cpp" />

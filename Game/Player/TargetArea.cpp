@@ -78,6 +78,7 @@ bool TargetArea::Update(Player* player , GameObject* target)
 
 void TargetArea::Render(GameObject* target)
 {
+    _Unreferenced_parameter_(target);
     using namespace DirectX::SimpleMath;
 
 

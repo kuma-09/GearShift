@@ -16,7 +16,7 @@ Sword::Sword(IScene* scene, Collider::TypeID id)
 	AddComponent<Collider>();
 	AddComponent<ModelDraw>();
 	AddComponent<Trail>();
-	GetComponent<Collider>()->SetTypeID(Collider::PlayerSword);
+	GetComponent<Collider>()->SetTypeID(id);
 	GetComponent<Collider>()->SetSize({ 5,4,5 });
 	GetComponent<Trail>()->Initialize(L"Resources/Textures/green.png", 10);
 	SetScale({7.5f, 7.5f, 7.5f});

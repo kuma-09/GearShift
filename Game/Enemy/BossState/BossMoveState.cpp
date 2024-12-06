@@ -26,15 +26,24 @@ void BossMoveState::Update(float elapsedTime)
 		{
 			m_enemy->SetVelocity(DirectX::SimpleMath::Vector3{ 0,0,-SPEED });
 			Initialize();
-			//m_enemy->ChangeState(m_enemy->GetAttackState());
 			m_enemy->ChangeState(static_cast<BossEnemy*>(m_enemy)->GetMissileState());
 			m_totalTime = 0;
 		}
 		else
 		{
-			m_enemy->SetVelocity(DirectX::SimpleMath::Vector3{ float(rand() % 2 * 2 - 1) * SPEED,0,0 });
-			m_enemy->ChangeState(m_enemy->GetAttackState());
-			m_totalTime = 0;
+			switch (rand() % 2)
+			{
+			case 0:
+				m_enemy->SetVelocity(DirectX::SimpleMath::Vector3{ float(rand() % 2 * 2 - 1) * SPEED,0,0 });
+				m_enemy->ChangeState(m_enemy->GetAttackState());
+				m_totalTime = 0;
+				break;
+			case 1:
+				m_enemy->ChangeState(static_cast<BossEnemy*>(m_enemy)->GetTackleState());
+				m_totalTime = 0;
+			default:
+				break;
+			}
 		}
 	}
 }

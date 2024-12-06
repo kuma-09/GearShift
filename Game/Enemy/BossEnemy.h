@@ -10,6 +10,7 @@
 #include "Game/Object/Bullet/EnemyBullet.h"
 
 #include "Game/Enemy/BossState/BossMissileState.h"
+#include "Game/Enemy/BossState/BossTackleState.h"
 
 class State;
 
@@ -35,6 +36,7 @@ public:
 	void ChangeState(State* state);
 
 	State* GetMissileState() { return m_missileState.get(); }
+	State* GetTackleState() { return m_tackleState.get(); }
 
 	void Collision(Collider* collider);
 
@@ -43,7 +45,7 @@ public:
 	{
 		m_pPart[partType] = std::move(part);
 		m_pPart[partType]->SetOwner(this);
-		m_pPart[partType]->Initialize(10, GetScene());
+		m_pPart[partType]->Initialize(10,GetScene());
 	}
 
 	// ƒp[ƒc‚ğæ“¾
@@ -95,4 +97,5 @@ private:
 
 	State* m_state;
 	std::unique_ptr<BossMissileState> m_missileState;
+	std::unique_ptr<BossTackleState> m_tackleState;
 };
