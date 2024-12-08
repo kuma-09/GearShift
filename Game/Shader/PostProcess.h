@@ -10,9 +10,19 @@ public:
 
 	void Initialize();
 	void Update(float elapsedTime);
+
+	// 通常の描画レンダーターゲットに変更
 	void BeginNormal();
+
+	// ブルーム適用用のレンダーターゲットに変更
 	void BeginBloom();
+
+	// レンダーテクスチャを合成
 	void combinationRT();
+
+	// 最終結果にノイズを適用
+	void ApplyNoise(ID3D11DeviceContext* context);
+
 	void SetNoise(bool isNoise) { m_isNoise = isNoise; }
 
 private:
@@ -69,9 +79,9 @@ private:
 	bool m_isNoise;
 	bool m_isBoost;
 	float m_nowTime;
-	const float PIXELSIZE = 8.0f;
+	const float PIXELSIZE = 16.0f;
 	const float m_maxStartNoiseTime = 1.0f;
-	const float m_maxNoiseTime = 0.2f;
+	const float m_maxNoiseTime = 0.25f;
 	const float m_maxBoostBlur = 0.5f;
 
 };

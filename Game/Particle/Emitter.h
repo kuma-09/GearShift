@@ -14,12 +14,11 @@ public:
 	~Emitter();
 
 	void Initialize(const wchar_t* path, float size = 1.0f, float interval = 0.05f, float lifeTime = 1.0f);
-
 	void Update(float elapsedTime);
-
-	void Render(DirectX::SimpleMath::Vector3 pos);
-
+	void Render();
 	void Finalize();
+
+	void SetParticle(DirectX::SimpleMath::Vector3 pos);
 private:
 	Graphics* m_graphics;
 	DX::DeviceResources* m_deviceResources;

@@ -45,7 +45,7 @@ void BossHead::Update(float elapsedTime)
 	using namespace DirectX::SimpleMath;
 
 	Quaternion quaternion = GetOwner()->GetQuaternion();
-	Vector3 pos{ 0.0f, 6.5f,0.0f };
+	Vector3 pos{ 0.0f, 2.0f,0.0f };
 	Vector3 velocity = Vector3::Zero;
 	SetPosition(GetOwner()->GetPosition() + Vector3::Transform(pos, quaternion));
 	SetVelocity(GetOwner()->GetVelocity());

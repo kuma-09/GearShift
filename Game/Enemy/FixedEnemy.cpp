@@ -142,6 +142,10 @@ void FixedEnemy::Collision(Collider* collider)
 			static_cast<PlayScene*>(GetScene())->CreateHitParticle(GetWorld());
 			bulletObject->Hit();
 		}
+		else if (bulletObject->GetState() == Sword::USED)
+		{
+			bulletObject->Hit();
+		}
 	}
 	if (collider->GetTypeID() == Collider::Floor ||
 		collider->GetTypeID() == Collider::Wall)

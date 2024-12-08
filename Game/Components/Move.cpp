@@ -74,7 +74,7 @@ void Move::Update(float elapsedTime)
     {
         Vector3 velocity = GetOwner()->GetVelocity();
         velocity.x *= -1;
-        quaternion = Quaternion::CreateFromRotationMatrix(Matrix::CreateLookAt(GetOwner()->GetPosition(), GetOwner()->GetPosition() + velocity, Vector3(0, 1, 0)));
+        quaternion = Quaternion::CreateFromRotationMatrix(Matrix::CreateLookAt(GetOwner()->GetPosition(), GetOwner()->GetPosition() + velocity, Vector3::Up));
         GetOwner()->SetQuaternion(Quaternion::Lerp(GetOwner()->GetQuaternion(), quaternion,0.1f));
     }
 

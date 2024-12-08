@@ -78,7 +78,6 @@ void NormalBullet::Hit()
 		SetVelocity(Vector3::Zero);
 		SetState(BulletState::USED);
 
-		Audio::GetInstance()->PlaySoundSE_Hit();
 		GetComponent<Trail>()->ClearBuffer();
 	}
 }

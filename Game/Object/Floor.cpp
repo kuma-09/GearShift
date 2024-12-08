@@ -34,5 +34,5 @@ void Floor::Render()
 	Matrix world = Matrix::CreateScale(GetScale());
 	world *= Matrix::CreateTranslation(GetPosition());
 	GetComponent<ModelDraw>()->Render(world,true);
-	GetComponent<Collider>()->Render();
+	//GetComponent<Collider>()->Render();
 }

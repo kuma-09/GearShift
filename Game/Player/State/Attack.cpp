@@ -51,6 +51,7 @@ void Attack::Update(float elapsedTime)
 	}
 	else
 	{
+		static_cast<PlayScene*>(m_player->GetScene())->CreateHitParticle(m_player->GetWorld(), m_player->GetQuaternion());
 		m_player->SetVelocity(Vector3(m_velocity.x * boostSpeed, m_velocity.y * boostSpeed, m_velocity.z * boostSpeed));
 	}
 

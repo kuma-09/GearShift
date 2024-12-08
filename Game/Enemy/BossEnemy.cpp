@@ -74,7 +74,7 @@ void BossEnemy::Initialize()
 	SetPart(Part::Head, std::make_unique<BossHead>(GetTarget()));
 	SetPart(Part::BodyTop, std::make_unique<BossLeg>());
 	GetComponent<Collider>()->SetTypeID(Collider::TypeID::Enemy);
-	GetComponent<Collider>()->SetSize({ 2,1,3 });
+	GetComponent<Collider>()->SetSize({ 6,5,6 });
 	GetComponent<HPBar>()->Initialize();
 	for (auto& bullet : m_fixedBullets)
 	{
@@ -161,8 +161,8 @@ void BossEnemy::Render()
 	RenderParts();
 
 	if (GetComponent<HP>()->GetHP() <= 0) return;
-	GetComponent<HPBar>()->Render(GetPosition());
-	GetComponent<Collider>()->Render();
+	GetComponent<HPBar>()->Render(GetPosition() + Vector3{ 0,-0.9f,0 });
+	//GetComponent<Collider>()->Render();
 }
 
 void BossEnemy::Finalize()
@@ -227,6 +227,10 @@ void BossEnemy::Collision(Collider* collider)
 		{
 			GetComponent<HP>()->SetHP(GetComponent<HP>()->GetHP() - 5);
 			static_cast<PlayScene*>(GetScene())->CreateHitParticle(GetWorld());
+			bulletObject->Hit();
+		}
+		else if(bulletObject->GetState() == Sword::USED)
+		{
 			bulletObject->Hit();
 		}
 	}

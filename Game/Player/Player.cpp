@@ -284,6 +284,7 @@ void Player::Collision(Collider* collider)
 			if (GetComponent<HP>()->GetHP() <= 0)
 			{
 				auto game = static_cast<PlayScene*>(GetScene())->GetGame();
+				static_cast<PlayScene*>(GetScene())->CreateHitEffect(GetPosition());
 				game->ChangeScene(game->GetGameOverScene());
 			}
 		}

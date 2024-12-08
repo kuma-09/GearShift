@@ -95,7 +95,7 @@ void ExplosionEffect::Render()
 	{
 		if (posLife.second < 0) continue;
 		// 各種変換
-		Matrix world = Matrix::CreateScale(1.0f * (0.2f + posLife.second));
+		Matrix world = Matrix::CreateScale(1.0f * (0.5f + posLife.second));
 		world *= Matrix::CreateTranslation(posLife.first + Vector3{0,posLife.second,0});
 
 		// ワールド行列を更新する

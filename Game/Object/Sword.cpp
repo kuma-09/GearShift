@@ -17,7 +17,7 @@ Sword::Sword(IScene* scene, Collider::TypeID id)
 	AddComponent<ModelDraw>();
 	AddComponent<Trail>();
 	GetComponent<Collider>()->SetTypeID(id);
-	GetComponent<Collider>()->SetSize({ 5,4,5 });
+	GetComponent<Collider>()->SetSize({ 0.5f,0.5f,0.5f });
 	GetComponent<Trail>()->Initialize(L"Resources/Textures/green.png", 10);
 	SetScale({7.5f, 7.5f, 7.5f});
 	SetState(SwordState::UNUSED);
@@ -66,13 +66,10 @@ void Sword::Hit()
 
 	if (GetState()!=USED)
 	{
-		Vector3 velocity = Vector3::Zero;
-		SetPosition(m_owner->GetPosition());
-		SetQuaternion(m_owner->GetQuaternion());
-		m_owner->GetComponent<Camera>()->shake();
 		SetState(USED);
 		Audio::GetInstance()->PlaySoundSE_Slash();
-		HitStop::SetStopTime(0.025f);
+		m_owner->GetComponent<Camera>()->shake();
+		HitStop::SetStopTime(0.055f);
 	}
 }
 
@@ -92,8 +89,6 @@ void Sword::Update(float elapsedTime)
 		}
 	}
 
-
-
 	SetPosition(m_owner->GetPosition() + Vector3::Transform({ 0,0,-1 }, m_owner->GetQuaternion()));
 	ComponentsUpdate(elapsedTime);
 	SetPosition(m_owner->GetPosition());
@@ -110,10 +105,11 @@ void Sword::Update(float elapsedTime)
 		}
 		world *= Matrix::CreateFromQuaternion(GetQuaternion());
 		world *= Matrix::CreateTranslation(GetPosition());
-		static_cast<PlayScene*>(m_owner->GetScene())->CreateHitParticle(world);
+		if (GetState() == USED) static_cast<PlayScene*>(m_owner->GetScene())->CreateHitParticle(world);
 	}
 	if (!m_isHit)
 	{
+		GetComponent<Collider>()->GetBoundingBox()->Center = { world._41, world._42, world._43 };
 		GetComponent<Trail>()->SetPos(GetPosition(), { world._41, world._42, world._43 });
 	}
 	world = Matrix::CreateScale(GetScale());
@@ -129,10 +125,10 @@ void Sword::Update(float elapsedTime)
 
 void Sword::Render()
 {	
+	GetComponent<Collider>()->Render();
 	if (GetState() == USED)
 	{
 		GetComponent<ModelDraw>()->Render(GetWorld(),false,DirectX::Colors::White);
-		GetComponent<Collider>()->Render();
 		GetComponent<Trail>()->Render();
 	}
 

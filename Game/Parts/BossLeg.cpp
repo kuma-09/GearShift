@@ -42,7 +42,7 @@ void BossLeg::Update(float elapsedTime)
 	using namespace DirectX::SimpleMath;
 
 	Quaternion quaternion = GetOwner()->GetQuaternion();
-	Vector3 pos{ 0.0f, 3.0f,0.0f };
+	Vector3 pos{ 0.0f, -1.0f,0.0f };
 	Vector3 velocity = Vector3::Zero;
 	if (GetOwner()->GetComponent<Move>())
 	{

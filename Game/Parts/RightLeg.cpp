@@ -27,7 +27,7 @@ void RightLeg::Initialize(int hp,IScene* scene)
 	UNREFERENCED_PARAMETER(hp);
 	SetScene(scene);
 	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetrLegModel());
-	GetComponent<Emitter>()->Initialize(L"Resources/Textures/smoke_white.png", 0.1f, 0.1f, 0.2f);
+	GetComponent<Emitter>()->Initialize(L"Resources/Textures/smoke_white.png", 0.3f, 0.1f, 0.2f);
 }
 
 void RightLeg::Update(float elapsedTime)
@@ -68,10 +68,10 @@ void RightLeg::Update(float elapsedTime)
 void RightLeg::Render()
 {
 	GetComponent<ModelDraw>()->Render(GetWorld(), false);
-
+	GetComponent<Emitter>()->Render();
 	if (static_cast<Player*>(GetOwner())->GetOnFloor())
 	{
-		//GetComponent<Emitter>()->Render(GetPosition() - DirectX::SimpleMath::Vector3{ 0,1.f,0 });
+		GetComponent<Emitter>()->SetParticle(GetPosition() - DirectX::SimpleMath::Vector3{ 0,1.f,0 });
 	}
 }
 

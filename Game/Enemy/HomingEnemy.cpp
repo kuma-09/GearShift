@@ -2,6 +2,7 @@
 #include "HomingEnemy.h"
 #include <iostream>
 #include <algorithm>
+#include "Framework/Audio.h"
 #include "Game/Components/HP.h"
 #include "Game/Components/Look.h"
 #include "Game/Components/ModelDraw.h"
@@ -9,10 +10,10 @@
 #include "Game/Components/HPBar.h"
 #include "Game/Object/Bullet/EnemyBullet.h"
 #include "Game/Object/Bullet/HomingBullet.h"
+#include "Game/Object/Sword.h"
 #include "Game/PlayScene.h"
 #include "Game/Enemy/State/EnemyAttackState.h"
 #include "Game/Enemy/State/EnemyMoveState.h"
-#include "Game/Object/Sword.h"
 
 HomingEnemy::HomingEnemy(IScene* scene,GameObject* target)
 {
@@ -107,6 +108,7 @@ void HomingEnemy::Render()
 
 void HomingEnemy::Finalize()
 {
+	Audio::GetInstance()->PlaySoundSE_Hit();
 	for (auto& bullet : m_bullet)
 	{
 		static_cast<PlayScene*>(GetScene())->RemoveCollider(bullet->GetComponent<Collider>());
@@ -151,6 +153,10 @@ void HomingEnemy::Collision(Collider* collider)
 		{
 			GetComponent<HP>()->SetHP(GetComponent<HP>()->GetHP() - 5);
 			static_cast<PlayScene*>(GetScene())->CreateHitParticle(GetWorld());
+			bulletObject->Hit();
+		}
+		else if (bulletObject->GetState() == Sword::USED)
+		{
 			bulletObject->Hit();
 		}
 	}

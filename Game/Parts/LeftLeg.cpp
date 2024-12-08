@@ -28,7 +28,7 @@ void LeftLeg::Initialize(int hp,IScene* scene)
 	UNREFERENCED_PARAMETER(hp);
 	SetScene(scene);
 	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetlLegModel());
-	GetComponent<Emitter>()->Initialize(L"Resources/Textures/smoke_white.png", 0.1f, 0.1f, 0.3f);
+	GetComponent<Emitter>()->Initialize(L"Resources/Textures/smoke_white.png", 0.3f, 0.1f, 0.3f);
 }
 
 void LeftLeg::Update(float elapsedTime)
@@ -64,10 +64,10 @@ void LeftLeg::Update(float elapsedTime)
 void LeftLeg::Render()
 {
 	GetComponent<ModelDraw>()->Render(GetWorld(), false);
-
+	GetComponent<Emitter>()->Render();
 	if (static_cast<Player*>(GetOwner())->GetOnFloor())
 	{
-		//GetComponent<Emitter>()->Render(GetPosition() - DirectX::SimpleMath::Vector3{ 0,1.f,0 });
+		GetComponent<Emitter>()->SetParticle(GetPosition() - DirectX::SimpleMath::Vector3{ 0,1.f,0 });
 	}
 }
 

@@ -63,19 +63,12 @@ void Emitter::Update(float elapseTime)
     }
 }
 
-void Emitter::Render(DirectX::SimpleMath::Vector3 pos)
+void Emitter::Render()
 {
     using namespace DirectX::SimpleMath;
 
     auto view = m_graphics->GetViewMatrix();
     auto projection = m_graphics->GetProjectionMatrix();
-
-    if (m_totalTime >= m_interval && GetOwner()->GetVelocity() != Vector3::Zero)
-    {
-        m_totalTime = 0;
-        m_particles.emplace_back(std::make_unique<Particle>());
-        m_particles.back()->Initialize(pos, m_lifeTime);
-    }
 
     m_graphics->GetBasicEffect()->SetTexture(m_texture.Get());
 
@@ -89,4 +82,15 @@ void Emitter::Render(DirectX::SimpleMath::Vector3 pos)
 void Emitter::Finalize()
 {
 
+}
+
+void Emitter::SetParticle(DirectX::SimpleMath::Vector3 pos)
+{
+
+    if (m_totalTime >= m_interval && GetOwner()->GetVelocity() != DirectX::SimpleMath::Vector3::Zero)
+    {
+        m_totalTime = 0;
+        m_particles.emplace_back(std::make_unique<Particle>());
+        m_particles.back()->Initialize(pos, m_lifeTime);
+    }
 }

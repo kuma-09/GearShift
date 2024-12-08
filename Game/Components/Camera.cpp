@@ -19,14 +19,10 @@ Camera::Camera()
 
 Camera::~Camera()
 {
-
 }
 
 void Camera::Initialize()
 {
-
-
-
 }
 
 void Camera::Update(float elapsedTime)
@@ -61,22 +57,30 @@ void Camera::Update(float elapsedTime)
     DirectX::SimpleMath::Vector3 eye{ 0.0f,CAMERA_HEIGHT,CAMERA_DISTANCE };
 
 
-    // ターゲットの向いている方向に追従する
-    eye = DirectX::SimpleMath::Vector3::Transform(eye, m_quaternion);
+
 
     if (m_enemy)
     {
-        m_targetPosition = m_enemy->GetPosition();
-        // カメラ座標を計算する
-        m_eyePosition = m_player->GetPosition();
+        // ターゲットの向いている方向に追従する
+        eye = DirectX::SimpleMath::Vector3::Transform(eye, m_quaternion);
+        m_targetPosition += (m_enemy->GetPosition() - m_targetPosition) * CAMERA_TARGET_RATE;
+        m_eyePosition += (m_player->GetPosition() + eye - m_eyePosition) * CAMERA_EYE_RATE;
+        m_quaternion = Quaternion::CreateFromRotationMatrix(Matrix::CreateLookAt(m_eyePosition, m_targetPosition, Vector3::Down));
+        //m_quaternion = Quaternion::CreateFromYawPitchRoll({ m_rotateY ,m_rotateX ,0 });
 
-        float z = m_eyePosition.z - m_targetPosition.z;
-        float x = m_eyePosition.x - m_targetPosition.x;
+        //m_targetPosition = m_enemy->GetPosition();
+        //// カメラ座標を計算する
+        //m_eyePosition = m_player->GetPosition();
 
-        m_quaternion = Quaternion::CreateFromYawPitchRoll(DirectX::XMConvertToRadians(atan2f(x,z)), 0, 0);
+        //float z = m_eyePosition.z - m_targetPosition.z;
+        //float x = m_eyePosition.x - m_targetPosition.x;
+
+        //m_quaternion = Quaternion::CreateFromYawPitchRoll(DirectX::XMConvertToRadians(atan2f(x,z)), 0, 0);
     }
     else
     {
+        // ターゲットの向いている方向に追従する
+        eye = DirectX::SimpleMath::Vector3::Transform(eye, m_quaternion);
         m_targetPosition += (m_player->GetPosition() - m_targetPosition) * CAMERA_TARGET_RATE;
         // カメラ座標を計算する
         m_eyePosition += (m_targetPosition + eye - m_eyePosition) * CAMERA_EYE_RATE;

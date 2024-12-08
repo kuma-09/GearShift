@@ -252,8 +252,19 @@ void PostProcess::combinationRT()
     ////// -------------------------------------------------------------------------- //
     m_dualPostProcess->SetEffect(DualPostProcess::BloomCombine);
     m_dualPostProcess->SetBloomCombineParameters(5.0f, 1.0f, 1.0f, 1.0f);
-    m_dualPostProcess->SetSourceTexture(offscreenSRV_Normal);
+    m_dualPostProcess->SetSourceTexture(offscreenSRV_Bloom);
     m_dualPostProcess->SetSourceTexture2(blur1SRV);
+    m_dualPostProcess->Process(context);
+
+    context->ClearRenderTargetView(finalRTV, Colors::Black);
+    context->ClearDepthStencilView(depthStencil, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
+    context->OMSetRenderTargets(1, &finalRTV, depthStencil);
+
+
+    m_dualPostProcess->SetEffect(DualPostProcess::Merge);
+    m_dualPostProcess->SetMergeParameters(1, 1);
+    m_dualPostProcess->SetSourceTexture(offscreenSRV_Normal);
+    m_dualPostProcess->SetSourceTexture2(offscreenSRV);
     m_dualPostProcess->Process(context);
 
     context->ClearRenderTargetView(renderTarget, Colors::Black);
@@ -279,8 +290,14 @@ void PostProcess::combinationRT()
     context->PSSetSamplers(0, 1, sampler);
     context->RSSetState(state->CullNone());
     context->IASetInputLayout(m_inputLayout.Get());
-    context->PSSetShaderResources(0, 1, &offscreenSRV);
+    context->PSSetShaderResources(0, 1, &finalSRV);
 
+    ApplyNoise(context);
+
+}
+
+void PostProcess::ApplyNoise(ID3D11DeviceContext* context)
+{
     if (!m_isNoise)
     {
         if (m_isStartNoise)
@@ -306,5 +323,5 @@ void PostProcess::combinationRT()
 
     context->VSSetShader(nullptr, nullptr, 0);
     context->PSSetShader(nullptr, nullptr, 0);
-
 }
+
