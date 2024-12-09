@@ -81,6 +81,9 @@ void Game::Initialize(HWND window, int width, int height)
     DeferredRendering::Initialize();
     ForwardRendering::Initialize();
     m_scene = GetTitleScene();
+    GetPlayScene();
+    GetResultScene();
+    GetGameOverScene();
     m_scene->Initialize(this);
 
 }

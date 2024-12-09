@@ -24,6 +24,8 @@ public:
 	void ApplyNoise(ID3D11DeviceContext* context);
 
 	void SetNoise(bool isNoise) { m_isNoise = isNoise; }
+	void SetDamage(bool isDamage) { m_isDamage = isDamage; }
+	void SetBoost(bool isBoost) { m_isBoost = isBoost; }
 
 private:
 
@@ -77,11 +79,12 @@ private:
 	
 	bool m_isStartNoise;
 	bool m_isNoise;
+	bool m_isDamage;
 	bool m_isBoost;
 	float m_nowTime;
 	const float PIXELSIZE = 16.0f;
 	const float m_maxStartNoiseTime = 1.0f;
 	const float m_maxNoiseTime = 0.25f;
+	const float m_maxDamageNoiseTime = 0.25f;
 	const float m_maxBoostBlur = 0.5f;
-
 };

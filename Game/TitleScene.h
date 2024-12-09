@@ -37,9 +37,12 @@ private:
 	std::unique_ptr<UI> m_titleLogo;
 	std::unique_ptr<UI> m_menuBack;
 	std::unique_ptr<Menu> m_menu;
+	std::unique_ptr<Menu> m_stageMenu;
 
 	float m_nowTime;
+	float m_stageNowTime;
 	float m_menuPosition;
+	float m_stageMenuPosition;
 
 	bool m_isStageSelect;
 	

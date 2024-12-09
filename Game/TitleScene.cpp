@@ -39,9 +39,17 @@ void TitleScene::Initialize(Game* game)
     m_menu->AddUI(L"Resources/Textures/Option.png",{0,550}, {0.5f,0.5f});
     m_menu->AddUI(L"Resources/Textures/Exit.png",  {0,650}, {0.5f,0.5f});
     m_menu->Initialize();
+
+    m_stageMenu = std::make_unique<Menu>();
+    m_stageMenu->AddUI(L"Resources/Textures/Stage1.png", { 0,150 }, { 1.f,1.f });
+    m_stageMenu->AddUI(L"Resources/Textures/Stage2.png", { 0,350 }, { 1.f,1.f });
+    m_stageMenu->AddUI(L"Resources/Textures/Stage3.png", { 0,550 }, { 1.f,1.f });
+    m_stageMenu->Initialize();
+
     m_menuBack = std::make_unique<UI>(L"Resources/Textures/SceneChangeBlack.png");
     m_menuBack->Initialize();
     m_nowTime = 0;
+    m_stageNowTime = 0;
     m_isStageSelect = false;
 }
 
@@ -59,14 +67,28 @@ void TitleScene::Update(float elapsedTime)
 
 
     m_nowTime += elapsedTime;
-    m_menu->Update();
+    if (m_isStageSelect)
+    {
+        m_stageNowTime += elapsedTime;
+        m_stageMenuPosition = Easing::InOutQuart(m_stageNowTime, 1.0f);
+        m_stageMenu->Update();
+    }
+    else
+    {
+        m_menu->Update();
+    }
     m_menuPosition = Easing::InOutQuart(m_nowTime, 1.0f);
     if (kb->pressed.Space || gp->a)
     {
+        if (m_isStageSelect)
+        {
+            GetGame()->ChangeScene(GetGame()->GetPlayScene());
+        }
         switch (m_menu->GetActiveUI())
         {
         case 0:
-            GetGame()->ChangeScene(GetGame()->GetPlayScene());
+            //GetGame()->ChangeScene(GetGame()->GetPlayScene());
+            m_isStageSelect = true;
             break;
         case 1:
             break;
@@ -113,6 +135,12 @@ void TitleScene::Render()
 
     m_titleLogo->Render(Vector2::Zero,Colors::White,Vector2::Zero,{0.5f,0.5f});
     m_menu->Render(Vector2{ 1500 - m_menuPosition * 1280,0});
+
+    if (m_isStageSelect)
+    {
+        m_menuBack->Render(Vector2{ 1920 - m_stageMenuPosition * 1280,360 }, DirectX::XMVECTORF32({ 1,1,1,0.5f }), Vector2(640, 360), Vector2(0.9f, 0.9f));
+        m_stageMenu->Render(Vector2{ 1920 - m_stageMenuPosition * 1280,0   });
+    }
 
 }
 

@@ -57,7 +57,7 @@ void ResultScene::Render()
     Graphics::GetInstance()->GetScreenSize(x,y);
 
     m_backGround->Render(Vector2::Zero);
-    m_result->Render(Vector2(x / 3.5f, y / 2.5f));
+    m_result->Render(Vector2(x / 4.0f, y / 2.5f));
 
 }
 

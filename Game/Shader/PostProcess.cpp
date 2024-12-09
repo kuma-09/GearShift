@@ -48,8 +48,8 @@ void PostProcess::Initialize()
     m_finalRenderTexture->SetWindow(rect);
 
     // レンダーテクスチャの作成（ブルーム用）
-    rect.right /= PIXELSIZE;
-    rect.bottom /= PIXELSIZE;
+    rect.right /= int(PIXELSIZE);
+    rect.bottom /= int(PIXELSIZE);
 
     m_blur1RT = std::make_unique<DX::RenderTexture>(DXGI_FORMAT_B8G8R8A8_UNORM);
     m_blur1RT->SetDevice(device);
@@ -105,6 +105,8 @@ void PostProcess::Initialize()
 
     m_isStartNoise = true;  
     m_isNoise = false;
+    m_isBoost = false;
+    m_isDamage = false;
     m_nowTime = m_maxStartNoiseTime;
 }
 
@@ -125,6 +127,15 @@ void PostProcess::Update(float elapsedTime)
         if (m_nowTime >= m_maxNoiseTime)
         {
             m_isNoise = false;
+            m_nowTime = 0;
+        }
+    }
+    if (m_isDamage)
+    {
+        m_nowTime += elapsedTime;
+        if (m_nowTime >= m_maxDamageNoiseTime)
+        {
+            m_isDamage = false;
             m_nowTime = 0;
         }
     }
