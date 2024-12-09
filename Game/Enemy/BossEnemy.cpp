@@ -61,7 +61,6 @@ BossEnemy::BossEnemy(IScene* scene,GameObject* target)
 BossEnemy::~BossEnemy()
 {
 	//RemoveAllComponents();
-
 }
 
 void BossEnemy::Initialize()
@@ -161,7 +160,7 @@ void BossEnemy::Render()
 	RenderParts();
 
 	if (GetComponent<HP>()->GetHP() <= 0) return;
-	GetComponent<HPBar>()->Render(GetPosition() + Vector3{ 0,-0.9f,0 });
+	GetComponent<HPBar>()->Render(GetPosition() + Vector3{ 0,5.0f,0 });
 	//GetComponent<Collider>()->Render();
 }
 

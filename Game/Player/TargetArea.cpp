@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "TargetArea.h"
 #include "Game/Player/Player.h"
+#include "Game/Components/HPBar.h"
+
 
 TargetArea::TargetArea()
 {

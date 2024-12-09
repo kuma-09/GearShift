@@ -4,6 +4,34 @@
 #include "Game/Components/ModelDraw.h"
 #include "Game/Components/Collider.h"
 
+DropItem::DropItem(IScene* scene)
+{
+	SetScene(scene);
+	AddComponent<Physics>();
+	AddComponent<Collider>();
+	GetComponent<Collider>()->SetTypeID(Collider::TypeID::DropItem);
+	GetComponent<Collider>()->SetSize(DirectX::SimpleMath::Vector3::One * 2);
+	AddComponent<ModelDraw>();
+	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetDropItemModel());
+
+	using namespace DirectX;
+
+	SetScale({ m_dropItemModelSize,m_dropItemModelSize,m_dropItemModelSize });
+
+	// モデルのエフェクト情報を更新する
+	Resources::GetInstance()->GetDropItemModel()->UpdateEffects([](IEffect* effect)
+		{
+			// ベーシックエフェクトを設定する
+			BasicEffect* basicEffect = dynamic_cast<BasicEffect*>(effect);
+			if (basicEffect)
+			{
+				// モデルを自発光させる
+				basicEffect->SetEmissiveColor(Colors::White);
+			}
+		}
+	);
+}
+
 DropItem::DropItem(IScene* scene, std::unique_ptr<Part> part)
 {
 

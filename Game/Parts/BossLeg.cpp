@@ -52,7 +52,7 @@ void BossLeg::Update(float elapsedTime)
 	SetVelocity(GetOwner()->GetVelocity());
 	Matrix world = Matrix::Identity;
 	world = Matrix::CreateScale(GetScale());
-	world *= Matrix::CreateFromQuaternion(quaternion);
+	world *= Matrix::CreateFromQuaternion(-quaternion);
 	world *= Matrix::CreateTranslation(GetPosition());
 
 	SetWorld(world);

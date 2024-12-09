@@ -10,6 +10,7 @@ private:
 
 
 public:
+	DropItem(IScene* scene);
 	DropItem(IScene* scene, std::unique_ptr<Part> part);
 	DropItem(IScene* scene, std::unique_ptr<Bullet> bullet);
 	~DropItem();

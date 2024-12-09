@@ -156,9 +156,8 @@ void HomingBullet::Render()
 	{
 		GetComponent<ModelDraw>()->Render(GetWorld(), false);
 		GetComponent<Emitter>()->SetParticle(GetPosition() + DirectX::SimpleMath::Vector3((rand() % 3 - 1) * 0.25f, (rand() % 3 - 1) * 0.25f, (rand() % 3 - 1) * 0.25f));
-		GetComponent<Emitter>()->Render();
 	}
-	//GetComponent<Emitter>()->Render(GetPosition() + DirectX::SimpleMath::Vector3((rand() % 3 - 1) * 0.25f, (rand() % 3 - 1) * 0.25f, (rand() % 3 - 1) * 0.25f));
+	GetComponent<Emitter>()->Render();
 }
 
 void HomingBullet::Collision(Collider* collider)
