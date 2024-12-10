@@ -91,7 +91,7 @@ public:
 
     GameOverScene* GetGameOverScene()
     {
-        if (m_resultScene)
+        if (m_gameOverScene)
         {
             return m_gameOverScene.get();
         }

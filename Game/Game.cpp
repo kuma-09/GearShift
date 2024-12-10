@@ -84,6 +84,7 @@ void Game::Initialize(HWND window, int width, int height)
     GetPlayScene();
     GetResultScene();
     GetGameOverScene();
+
     m_scene->Initialize(this);
 
 }
@@ -114,7 +115,7 @@ void Game::Update(DX::StepTimer const& timer)
         ExitGame();
     }
 
-    if (m_sceneMask->IsClose() || m_sceneMask->IsOpen())
+    if (!m_sceneMask->IsClose() || !m_sceneMask->IsOpen())
     {
         if (m_sceneMask->Update(elapsedTime))
         {
@@ -136,7 +137,6 @@ void Game::Update(DX::StepTimer const& timer)
                 m_gameOverScene.reset();
             }
             m_scene = nullptr;
-
             m_scene = m_tmpScene;
             m_scene->Initialize(this);
         }
@@ -325,10 +325,8 @@ void Game::OnDeviceRestored()
 
 void Game::ChangeScene(IScene* scene)
 {
-
     m_sceneMask->Close();
     m_tmpScene = scene;
-
 }
 
 #pragma endregion
