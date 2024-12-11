@@ -70,11 +70,11 @@ void Boost::Render()
 	auto view = Graphics::GetInstance()->GetViewMatrix();
 	auto proj = Graphics::GetInstance()->GetProjectionMatrix();
 
-	Resources::GetInstance()->GetEntyuModel()->Draw(context, *state, DirectX::SimpleMath::Matrix::Identity, view, proj, false, [&]
-		{
-			m_shader->RenderStart(m_world, view, proj);
-		}
-	);
+	//Resources::GetInstance()->GetEntyuModel()->Draw(context, *state, DirectX::SimpleMath::Matrix::Identity, view, proj, false, [&]
+	//	{
+	//		m_shader->RenderStart(m_world, view, proj);
+	//	}
+	//);
 }
 
 void Boost::Finalize()

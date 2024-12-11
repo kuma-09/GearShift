@@ -10,26 +10,29 @@ public:
 	static void BeginGBuffer();
 	static void DrawGBuffer(bool texture = false);
 	static void DeferredLighting();
+	static void TranslucentBegin();
 
-	static DX::RenderTexture* GetAlbedoRenderTexture() { return m_albedoRT.get(); }
-	static DX::RenderTexture* GetNormalRenderTexture() { return m_normalRT.get(); }
-	static DX::RenderTexture* GetDepthRenderTexture() { return m_depthRT.get(); }
+	static void GBufferShow();
+
+	static DX::RenderTexture* GetAlbedoRenderTexture() { return s_albedoRT.get(); }
+	static DX::RenderTexture* GetNormalRenderTexture() { return s_normalRT.get(); }
+	static DX::RenderTexture* GetDepthRenderTexture() { return s_depthRT.get(); }
 private:
 	// レンダーテクスチャ
-	static std::unique_ptr<DX::RenderTexture> m_albedoRT;
-	static std::unique_ptr<DX::RenderTexture> m_normalRT;
-	static std::unique_ptr<DX::RenderTexture> m_depthRT;
-	static std::unique_ptr<DX::RenderTexture> m_deferredRT;
+	static std::unique_ptr<DX::RenderTexture> s_albedoRT;
+	static std::unique_ptr<DX::RenderTexture> s_normalRT;
+	static std::unique_ptr<DX::RenderTexture> s_depthRT;
+	static std::unique_ptr<DX::RenderTexture> s_deferredRT;
 	// GBuffer書き込み用のシェーダー
-	static Microsoft::WRL::ComPtr<ID3D11VertexShader> m_vertexShader;
-	static Microsoft::WRL::ComPtr<ID3D11PixelShader> m_pixelShader;
-	static Microsoft::WRL::ComPtr<ID3D11PixelShader> m_pixelShader_tex;
+	static Microsoft::WRL::ComPtr<ID3D11VertexShader> s_vertexShader;
+	static Microsoft::WRL::ComPtr<ID3D11PixelShader> s_pixelShader;
+	static Microsoft::WRL::ComPtr<ID3D11PixelShader> s_pixelShader_tex;
 	// DeferredLighting時のシェーダー
-	static Microsoft::WRL::ComPtr<ID3D11VertexShader> m_vertexShader_light;
-	static Microsoft::WRL::ComPtr<ID3D11PixelShader> m_pixelShader_light;
+	static Microsoft::WRL::ComPtr<ID3D11VertexShader> s_vertexShader_light;
+	static Microsoft::WRL::ComPtr<ID3D11PixelShader> s_pixelShader_light;
 	// Deferred+Forward用のシェーダー
-	static Microsoft::WRL::ComPtr<ID3D11VertexShader> m_vertexShader_combient;
-	static Microsoft::WRL::ComPtr<ID3D11PixelShader>  m_pixelShader_combient;
+	static Microsoft::WRL::ComPtr<ID3D11VertexShader> s_vertexShader_combient;
+	static Microsoft::WRL::ComPtr<ID3D11PixelShader>  s_pixelShader_combient;
 	//定数バッファ
 	struct ConstBuffer
 	{
@@ -37,16 +40,18 @@ private:
 		DirectX::XMMATRIX matProj;
 		DirectX::XMMATRIX inverseViewProj;
 	};
-	static Microsoft::WRL::ComPtr<ID3D11Buffer> m_constantBuffer;
+	static Microsoft::WRL::ComPtr<ID3D11Buffer> s_constantBuffer;
 
 	// インプットレイアウト
-	static Microsoft::WRL::ComPtr<ID3D11InputLayout> m_inputLayoutGBuffer;
+	static Microsoft::WRL::ComPtr<ID3D11InputLayout> s_inputLayoutGBuffer;
 	static Microsoft::WRL::ComPtr<ID3D11InputLayout> m_inputLayoutLight;
 	static const std::vector<D3D11_INPUT_ELEMENT_DESC> INPUT_LAYOUT_G;
 	static const std::vector<D3D11_INPUT_ELEMENT_DESC> INPUT_LAYOUT_L;
+	// スプライトバッチ(デバッグ用
+	static std::unique_ptr<DirectX::SpriteBatch> s_spriteBatch;
 	// プリミティブバッチ
-	static std::unique_ptr<DirectX::PrimitiveBatch<DirectX::VertexPositionTexture>> m_batch;
+	static std::unique_ptr<DirectX::PrimitiveBatch<DirectX::VertexPositionTexture>> s_batch;
 	// 頂点情報
-	static DirectX::VertexPositionTexture m_vertex[4];
+	static DirectX::VertexPositionTexture s_vertex[4];
 };
 
