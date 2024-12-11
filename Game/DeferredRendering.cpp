@@ -21,7 +21,7 @@ const std::vector<D3D11_INPUT_ELEMENT_DESC> DeferredRendering::INPUT_LAYOUT_L =
 std::unique_ptr<DX::RenderTexture> DeferredRendering::s_albedoRT;
 std::unique_ptr<DX::RenderTexture> DeferredRendering::s_normalRT;
 std::unique_ptr<DX::RenderTexture> DeferredRendering::s_depthRT;
-std::unique_ptr<DX::RenderTexture> DeferredRendering::s_deferredRT;
+std::unique_ptr<DX::RenderTexture> DeferredRendering::s_shadowMapRT;
 Microsoft::WRL::ComPtr<ID3D11VertexShader> DeferredRendering::s_vertexShader;
 Microsoft::WRL::ComPtr<ID3D11PixelShader> DeferredRendering::s_pixelShader;
 Microsoft::WRL::ComPtr<ID3D11PixelShader> DeferredRendering::s_pixelShader_tex;
@@ -30,6 +30,10 @@ Microsoft::WRL::ComPtr<ID3D11PixelShader> DeferredRendering::s_pixelShader_light
 Microsoft::WRL::ComPtr<ID3D11VertexShader> DeferredRendering::s_vertexShader_combient;
 Microsoft::WRL::ComPtr<ID3D11PixelShader> DeferredRendering::s_pixelShader_combient;
 Microsoft::WRL::ComPtr<ID3D11Buffer> DeferredRendering::s_constantBuffer;
+
+DirectX::SimpleMath::Matrix  DeferredRendering::s_lightViewProj;
+DirectX::SimpleMath::Vector3 DeferredRendering::s_lightPosition;
+
 // インプットレイアウト
 Microsoft::WRL::ComPtr<ID3D11InputLayout> DeferredRendering::s_inputLayoutGBuffer;
 Microsoft::WRL::ComPtr<ID3D11InputLayout> DeferredRendering::m_inputLayoutLight;
@@ -47,7 +51,7 @@ void DeferredRendering::Initialize()
 	s_albedoRT = std::make_unique<DX::RenderTexture>(DXGI_FORMAT_R8G8B8A8_UNORM);
 	s_normalRT = std::make_unique<DX::RenderTexture>(DXGI_FORMAT_R10G10B10A2_UNORM);
 	s_depthRT  = std::make_unique<DX::RenderTexture>(DXGI_FORMAT_R32_FLOAT);
-	s_deferredRT = std::make_unique<DX::RenderTexture>(DXGI_FORMAT_R8G8B8A8_UNORM);
+	s_shadowMapRT = std::make_unique<DX::RenderTexture>(DXGI_FORMAT_R32_FLOAT);
 
 	auto device = Graphics::GetInstance()->GetDeviceResources()->GetD3DDevice();
 	auto context = Graphics::GetInstance()->GetDeviceResources()->GetD3DDeviceContext();
@@ -56,12 +60,12 @@ void DeferredRendering::Initialize()
 	s_albedoRT->SetDevice(device);
 	s_normalRT->SetDevice(device);
 	s_depthRT->SetDevice(device);
-	s_deferredRT->SetDevice(device);
+	s_shadowMapRT->SetDevice(device);
 
 	s_albedoRT->SetWindow(rect);
 	s_normalRT->SetWindow(rect);
 	s_depthRT->SetWindow(rect);
-	s_deferredRT->SetWindow(rect);
+	s_shadowMapRT->SetWindow(rect);
 
 	BinaryFile vs = BinaryFile::LoadFile(L"Resources/Shaders/GBufferVS.cso");
 	BinaryFile ps = BinaryFile::LoadFile(L"Resources/Shaders/GBufferPS.cso");
@@ -102,6 +106,11 @@ void DeferredRendering::Initialize()
 	DX::ThrowIfFailed(
 		device->CreateBuffer(&bufferDesc, nullptr, s_constantBuffer.ReleaseAndGetAddressOf())
 	);
+
+	auto view = DirectX::SimpleMath::Matrix::CreateLookAt(DirectX::SimpleMath::Vector3(5, 5, 5), { 0,0,0 }, DirectX::SimpleMath::Vector3::Up);
+	auto proj = DirectX::SimpleMath::Matrix::CreatePerspectiveFieldOfView(DirectX::XMConvertToRadians(cosf(DirectX::XMConvertToRadians(90.0f / 2.0f))), 1.0f, 0.1f, 1000.0f);
+
+	s_lightViewProj = view * proj;
 
 	// スプライトバッチの生成
 	s_spriteBatch = std::make_unique<DirectX::SpriteBatch>(context);
@@ -144,6 +153,8 @@ void DeferredRendering::BeginGBuffer()
 	cb->matView = view.Transpose();
 	cb->matProj = projection.Transpose();
 	cb->inverseViewProj = DirectX::SimpleMath::Matrix::Identity.Invert();
+	cb->lightViewProj = DirectX::XMMatrixTranspose(s_lightViewProj);
+	cb->lightPosition = DirectX::SimpleMath::Vector3(5, 5, 5);
 	// マップを解除する
 	context->Unmap(s_constantBuffer.Get(), 0);
 

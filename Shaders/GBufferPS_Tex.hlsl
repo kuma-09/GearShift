@@ -5,6 +5,8 @@ cbuffer Parameters : register(b1)
     matrix matView;
     matrix matProj;
     matrix inverseViewProj;
+    matrix lightViewProj;
+    float3 lightPosition;
 }
 
 struct PS_INPUT
@@ -13,6 +15,7 @@ struct PS_INPUT
     float3 Normal : NORMAL;
     float2 TexCoord : TEXCOORD;
     float4 Color : COLOR;
+    float4 LightDepth : Position;
 };
 
 struct PS_OUTPUT

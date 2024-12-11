@@ -22,7 +22,7 @@ private:
 	static std::unique_ptr<DX::RenderTexture> s_albedoRT;
 	static std::unique_ptr<DX::RenderTexture> s_normalRT;
 	static std::unique_ptr<DX::RenderTexture> s_depthRT;
-	static std::unique_ptr<DX::RenderTexture> s_deferredRT;
+	static std::unique_ptr<DX::RenderTexture> s_shadowMapRT;
 	// GBuffer書き込み用のシェーダー
 	static Microsoft::WRL::ComPtr<ID3D11VertexShader> s_vertexShader;
 	static Microsoft::WRL::ComPtr<ID3D11PixelShader> s_pixelShader;
@@ -33,14 +33,21 @@ private:
 	// Deferred+Forward用のシェーダー
 	static Microsoft::WRL::ComPtr<ID3D11VertexShader> s_vertexShader_combient;
 	static Microsoft::WRL::ComPtr<ID3D11PixelShader>  s_pixelShader_combient;
+
 	//定数バッファ
 	struct ConstBuffer
 	{
 		DirectX::XMMATRIX matView;
 		DirectX::XMMATRIX matProj;
 		DirectX::XMMATRIX inverseViewProj;
+		DirectX::XMMATRIX lightViewProj;
+		DirectX::XMVECTOR lightPosition;
 	};
+
 	static Microsoft::WRL::ComPtr<ID3D11Buffer> s_constantBuffer;
+
+	static DirectX::SimpleMath::Matrix  s_lightViewProj;
+	static DirectX::SimpleMath::Vector3 s_lightPosition;
 
 	// インプットレイアウト
 	static Microsoft::WRL::ComPtr<ID3D11InputLayout> s_inputLayoutGBuffer;

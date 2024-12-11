@@ -5,6 +5,8 @@ cbuffer Parameters : register(b1)
     matrix matView;
     matrix matProj;
     matrix inverseViewProj;
+    matrix lightViewProj;
+    float3 lightPosition;
 }
 
 struct VS_INPUT
@@ -21,6 +23,7 @@ struct PS_OUTPUT
     float3 Normal : NORMAL;
     float2 TexCoord : TEXCOORD;
     float4 Color : COLOR;
+    float4 LightDepth : Position;
 };
 
 PS_OUTPUT main(VS_INPUT input)
@@ -35,6 +38,9 @@ PS_OUTPUT main(VS_INPUT input)
     output.TexCoord   = input.TexCoord;
     // êFèÓïÒ
     output.Color      = input.Color;
- 
+    
+    output.LightDepth = mul(float4(input.Position, 1), World);
+    output.LightDepth = mul(output.LightDepth, lightViewProj);
+
     return output;
 }

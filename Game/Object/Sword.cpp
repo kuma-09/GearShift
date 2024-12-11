@@ -128,7 +128,7 @@ void Sword::Render()
 	//GetComponent<Collider>()->Render();
 	if (GetState() == USED)
 	{
-		GetComponent<ModelDraw>()->Render(GetWorld(),false,DirectX::Colors::White);
+		//GetComponent<ModelDraw>()->Render(GetWorld(),false);
 		GetComponent<Trail>()->Render();
 	}
 
