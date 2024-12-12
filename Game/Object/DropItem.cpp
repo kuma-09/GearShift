@@ -12,7 +12,7 @@ DropItem::DropItem(IScene* scene)
 	GetComponent<Collider>()->SetTypeID(Collider::TypeID::DropItem);
 	GetComponent<Collider>()->SetSize(DirectX::SimpleMath::Vector3::One * 2);
 	AddComponent<ModelDraw>();
-	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetDropItemModel());
+	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetDropItemModel(),true);
 
 	using namespace DirectX;
 
@@ -98,12 +98,12 @@ void DropItem::Update(float elapsedTime)
 
 void DropItem::CreateShadow()
 {
-	GetComponent<ModelDraw>()->CreateShadow(GetWorld());
+	GetComponent<ModelDraw>()->CreateShadow();
 }
 
 void DropItem::Render()
 {
-	GetComponent<ModelDraw>()->Render(GetWorld(),true);
+	GetComponent<ModelDraw>()->Render();
 	if (m_isHit)
 	{
 		//m_menu->Render();

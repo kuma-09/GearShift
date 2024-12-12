@@ -76,7 +76,7 @@ void FixedEnemyBullet::Render()
 {
 	if (GetState() == FLYING)
 	{
-		GetComponent<ModelDraw>()->Render(GetWorld(), false);
+		GetComponent<ModelDraw>()->Render();
 	}
 }
 

@@ -64,7 +64,7 @@ void BossHead::Update(float elapsedTime)
 void BossHead::Render()
 {
 
-	GetComponent<ModelDraw>()->Render(GetWorld(), false);
+	GetComponent<ModelDraw>()->Render();
 }
 
 void BossHead::Finalize()

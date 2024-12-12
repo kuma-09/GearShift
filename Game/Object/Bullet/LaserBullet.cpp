@@ -77,7 +77,7 @@ void LaserBullet::Render()
 {
 	if (GetState() == FLYING)
 	{
-		GetComponent<ModelDraw>()->Render(GetWorld(), false);
+		GetComponent<ModelDraw>()->Render();
 		GetComponent<Collider>()->Render();
 	}
 }

@@ -47,7 +47,7 @@ void HomingEnemy::Initialize()
 
 	GetComponent<HP>()->SetHP(10);
 	GetComponent<Look>()->SetTarget(this, GetTarget());
-	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetDiceModel());
+	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetDiceModel(),true);
 	GetComponent<Collider>()->SetTypeID(Collider::TypeID::Enemy);
 	GetComponent<Collider>()->SetSize({1,1,1});
 	GetComponent<HPBar>()->Initialize();
@@ -90,7 +90,7 @@ void HomingEnemy::Update(float elapsedTime)
 
 void HomingEnemy::CreateShader()
 {
-	GetComponent<ModelDraw>()->CreateShadow(GetWorld());
+	GetComponent<ModelDraw>()->CreateShadow();
 }
 
 void HomingEnemy::Render()
@@ -100,7 +100,7 @@ void HomingEnemy::Render()
 		bullet->Render();
 	}
 	m_state->Render();
-	GetComponent<ModelDraw>()->Render(GetWorld(),true);
+	GetComponent<ModelDraw>()->Render();
 	GetComponent<HPBar>()->Render(GetPosition());
 	// “–‚½‚è”»’è‚Ì•`‰æ
 	//GetComponent<Collider>()->Render();

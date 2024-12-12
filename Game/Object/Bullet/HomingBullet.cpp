@@ -142,22 +142,20 @@ void HomingBullet::Update(float elapsedTime)
 		m_velocity += acceleration * elapsedTime;
 		m_position += m_velocity * elapsedTime;
 		SetPosition(m_position);
+
+		GetComponent<Emitter>()->SetParticle(GetPosition() + DirectX::SimpleMath::Vector3((rand() % 3 - 1) * 0.25f, (rand() % 3 - 1) * 0.25f, (rand() % 3 - 1) * 0.25f));
 	}
 	
 	Matrix world = Matrix::CreateScale(GetScale());
 	world *= Matrix::CreateFromQuaternion(GetQuaternion());
 	world *= Matrix::CreateTranslation(GetPosition());
 	SetWorld(world);
+
+
 }
 
 void HomingBullet::Render()
 {
-	if (GetState() == FLYING)
-	{
-		GetComponent<ModelDraw>()->Render(GetWorld(), false);
-		GetComponent<Emitter>()->SetParticle(GetPosition() + DirectX::SimpleMath::Vector3((rand() % 3 - 1) * 0.25f, (rand() % 3 - 1) * 0.25f, (rand() % 3 - 1) * 0.25f));
-	}
-	GetComponent<Emitter>()->Render();
 }
 
 void HomingBullet::Collision(Collider* collider)

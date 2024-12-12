@@ -6,6 +6,8 @@
 #include "Framework/BinaryFile.h"
 #include "Framework/Easing.h"
 
+#include "Manager/RenderManager.h"
+
 void TitleScene::Initialize(Game* game)
 {
     using namespace DirectX;
@@ -113,7 +115,7 @@ void TitleScene::Render()
 
 
 
-    m_player->CreateShadow();
+     m_player->CreateShadow();
 
     m_skydome->Render();
     m_player->Render();
@@ -153,5 +155,5 @@ void TitleScene::RenderUI()
 
 void TitleScene::Finalize()
 {
-
+    RenderManager::Clear();
 }

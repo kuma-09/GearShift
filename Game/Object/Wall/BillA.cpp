@@ -37,7 +37,7 @@ void BillA::Update(float elapsedtime)
 
 void BillA::CreateShadow()
 {
-	GetComponent<ModelDraw>()->CreateShadow(GetWorld());
+	GetComponent<ModelDraw>()->CreateShadow();
 }
 
 void BillA::Render()
@@ -45,5 +45,5 @@ void BillA::Render()
 	using namespace DirectX::SimpleMath;
 
 	//GetComponent<Collider>()->Render();
-	GetComponent<ModelDraw>()->Render(GetWorld(),false);
+	GetComponent<ModelDraw>()->Render();
 }

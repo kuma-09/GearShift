@@ -101,7 +101,7 @@ void EnemyBullet::Render()
 {
 	if (GetState() == FLYING)
 	{
-		GetComponent<ModelDraw>()->Render(GetWorld(),false,DirectX::Colors::Red);
+		GetComponent<ModelDraw>()->Render();
 		GetComponent<Trail>()->Render(DirectX::Colors::Red);
 	}
 }

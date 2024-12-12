@@ -47,7 +47,7 @@ void Head::Update(float elapsedTime)
 
 void Head::Render()
 {
-	GetComponent<ModelDraw>()->Render(GetWorld(), false);
+	GetComponent<ModelDraw>()->Render();
 
 }
 

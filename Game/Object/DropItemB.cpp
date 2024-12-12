@@ -12,7 +12,7 @@ DropItemB::DropItemB(IScene* scene, std::vector<std::unique_ptr<Bullet>> wepons)
 	GetComponent<Collider>()->SetTypeID(Collider::TypeID::DropItem);
 	GetComponent<Collider>()->SetSize(DirectX::SimpleMath::Vector3::One * 2);
 	AddComponent<ModelDraw>();
-	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetDropItemModel());
+	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetDropItemModel(),true);
 
 	m_bullet = std::move(wepons);
 
@@ -68,12 +68,12 @@ void DropItemB::Update(float elapsedTime)
 
 void DropItemB::CreateShadow()
 {
-	GetComponent<ModelDraw>()->CreateShadow(GetWorld());
+	GetComponent<ModelDraw>()->CreateShadow();
 }
 
 void DropItemB::Render()
 {
-	GetComponent<ModelDraw>()->Render(GetWorld(), true, DirectX::Colors::Red);
+	GetComponent<ModelDraw>()->Render();
 }
 
 void DropItemB::Finalize()

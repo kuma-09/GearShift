@@ -13,11 +13,13 @@ public:
 	static void RenderDepth();
 	static void EndDepth();
 
-	static void Draw(bool texture, DirectX::XMVECTORF32 color = DirectX::Colors::White);
+	static void ShadowMapShow();
 
 private:
 	// デバイスリソース
 	static Graphics* m_graphics;
+
+	static std::unique_ptr<DirectX::SpriteBatch> s_spriteBatch;
 
 	//	入力レイアウト
 	static const std::vector<D3D11_INPUT_ELEMENT_DESC> INPUT_LAYOUT;
@@ -41,12 +43,6 @@ private:
 	// ピクセルシェーダー(深度用)
 	static Microsoft::WRL::ComPtr<ID3D11PixelShader> m_PS_Depth;
 
-	// 頂点シェーダー
-	static Microsoft::WRL::ComPtr<ID3D11VertexShader> m_VS;
-	// ピクセルシェーダー
-	static Microsoft::WRL::ComPtr<ID3D11PixelShader> m_PS;
-	static Microsoft::WRL::ComPtr<ID3D11PixelShader> m_PS_Tex;
-
 	// 定数バッファ-------------
 	// 定数バッファの構造体
 	struct ConstantBuffer
@@ -56,18 +52,8 @@ private:
 		DirectX::XMVECTOR color;			// モデルの色
 	};
 
-	// 定数バッファの構造体
-	struct ConstantBuffer2
-	{
-		float fCosTheta;		// ライトのfov/2
-		float pad[3];
-	};
-
 	// 定数バッファへのポインタ
 	static Microsoft::WRL::ComPtr<ID3D11Buffer> m_CBuffer;
-
-	// 定数バッファへのポインタ
-	static Microsoft::WRL::ComPtr<ID3D11Buffer> m_CBuffer2;
 
 	// シャドウマップテクスチャ---
 	// シャドウマップのサイズ
@@ -77,8 +63,4 @@ private:
 	static std::unique_ptr<DX::RenderTexture> m_shadowMapRT;
 	// シャドウマップ用（デプスステンシル）
 	static std::unique_ptr<DepthStencil> m_shadowMapDS;
-
-	static ID3D11RenderTargetView* m_rtv;
-	static ID3D11ShaderResourceView* m_srv;
-	static ID3D11DepthStencilView* m_dsv;
 };

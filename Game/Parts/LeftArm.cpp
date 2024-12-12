@@ -52,7 +52,7 @@ void LeftArm::Update(float elapsedTime)
 void LeftArm::Render()
 {
 
-	GetComponent<ModelDraw>()->Render(GetWorld(), false);
+	GetComponent<ModelDraw>()->Render();
 
 }
 

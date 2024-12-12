@@ -24,3 +24,14 @@ cbuffer Parameters : register(b0)
     float4x4 WorldViewProj          : packoffset(c22);
 };
 
+cbuffer Parameters : register(b1)
+{
+    float4x4 LightViewProj : packoffset(c0);
+    float4 LightPos : packoffset(c4);
+    float4 Color : packoffset(c5);
+};
+
+cbuffer Parameters : register(b2)
+{
+    float fCosTheta : packoffset(c0);
+};

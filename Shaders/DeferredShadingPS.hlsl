@@ -3,7 +3,7 @@
 Texture2D<float4> AlbedoMap : register(t1);
 Texture2D<float4> NormalMap : register(t2);
 Texture2D<float4> DepthMap  : register(t3);
-Texture2D<float4> ShadowMap : register(t4);
+//Texture2D<float4> ShadowMap : register(t4);
 
 cbuffer Parameters : register(b1)
 {
@@ -33,7 +33,7 @@ float4 main(PS_INPUT input) : SV_TARGET
     // 深度値
 	float depth = 1 - DepthMap.Sample(Sampler, input.Texture).r;
     // ライトからの深度値
-    float lightDepth = ShadowMap.Sample(Sampler, input.Texture).r;
+    //float lightDepth = ShadowMap.Sample(Sampler, input.Texture).r;
     // ワールド座標
 	float3 Position = ReconstructWorldPositionFromDepth(input.Texture, depth);
 	
@@ -42,7 +42,7 @@ float4 main(PS_INPUT input) : SV_TARGET
 	// diffuse------------------------------
     float3 toLight = normalize(-LightDirection[0]);
     float intensity1 = max(dot(normal, toLight), 0.0f);
-    float3 diffuse = albedo.rgb * LightDiffuseColor[0] * intensity1 + 0.5f;
+    float3 diffuse = albedo.rgb * LightDiffuseColor[0] * intensity1 + 0.65f;
 	
 	// specular-----------------------------
     float toEye = normalize(EyePosition - Position);

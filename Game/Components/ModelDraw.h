@@ -10,14 +10,16 @@ public:
 	ModelDraw();
 	~ModelDraw();
 
-	void Initialize(DirectX::Model* model);
+	void Initialize(DirectX::Model* model,bool texture = false);
 	void Update(float elapsedTime);
-	void Render(DirectX::SimpleMath::Matrix world, bool texture = false, DirectX::XMVECTORF32 color = DirectX::Colors::White);
-	void CreateShadow(DirectX::SimpleMath::Matrix world);
+	void Render();
+	void CreateShadow();
 	void Finalize();
 
 private:
 	Graphics* m_graphics;
 	DirectX::Model* m_model;
+	DirectX::SimpleMath::Matrix m_world;
+	bool m_isTexture;
 };
 

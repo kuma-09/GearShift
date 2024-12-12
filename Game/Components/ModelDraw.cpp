@@ -3,10 +3,12 @@
 #include "Game/GameObject.h"
 #include "Game/Shader/Shader.h"
 #include "Game/DeferredRendering.h"
+#include "Game/Manager/RenderManager.h"
 
 ModelDraw::ModelDraw()
 	:
-	m_model{}
+	m_model{},
+	m_isTexture{}
 {
 	m_graphics = Graphics::GetInstance();
 }
@@ -16,9 +18,11 @@ ModelDraw::~ModelDraw()
 	Finalize();
 }
 
-void ModelDraw::Initialize(DirectX::Model* model)
+void ModelDraw::Initialize(DirectX::Model* model,bool texture)
 {
 	m_model = model;
+	m_isTexture = texture;
+	RenderManager::Add(this);
 }
 
 void ModelDraw::Update(float elapsedTime)
@@ -27,26 +31,28 @@ void ModelDraw::Update(float elapsedTime)
 	
 }
 
-void ModelDraw::Render(DirectX::SimpleMath::Matrix world, bool texture, DirectX::XMVECTORF32 color)
+void ModelDraw::Render()
 {
 	auto context = m_graphics->GetDeviceResources()->GetD3DDeviceContext();
 	auto state = m_graphics->GetCommonStates();
 	auto view = m_graphics->GetViewMatrix();
 	auto projection = m_graphics->GetProjectionMatrix();
+	auto world = GetOwner()->GetWorld();
 
 	m_model->Draw(context, *state, world, view, projection, false, [&]
 	{
 		//Shadow::Draw(texture, color);
-		DeferredRendering::DrawGBuffer(texture);
+		DeferredRendering::DrawGBuffer(m_isTexture);
 	});
 }
 
-void ModelDraw::CreateShadow(DirectX::SimpleMath::Matrix world)
+void ModelDraw::CreateShadow()
 {
 	auto context = m_graphics->GetDeviceResources()->GetD3DDeviceContext();
 	auto state = m_graphics->GetCommonStates();
 	auto view = m_graphics->GetViewMatrix();
 	auto projection = m_graphics->GetProjectionMatrix();
+	auto world = GetOwner()->GetWorld();
 
 	m_model->Draw(context, *state, world, view, projection, false, [&]
 		{
@@ -56,5 +62,5 @@ void ModelDraw::CreateShadow(DirectX::SimpleMath::Matrix world)
 
 void ModelDraw::Finalize()
 {
-
+	RenderManager::Remove(this);
 }

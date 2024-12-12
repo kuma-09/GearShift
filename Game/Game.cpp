@@ -12,8 +12,9 @@
 #include "Game/TitleScene.h"
 #include "Game/DeferredRendering.h"
 #include "Game/ForwardRendering.h"
+#include "Game/Manager/RenderManager.h"
 
-#include "Game/Shader/Shadow.h"
+#include "Game/Shader/ShadowMap.h"
 
 extern void ExitGame() noexcept;
 
@@ -82,11 +83,14 @@ void Game::Initialize(HWND window, int width, int height)
     //ChangeScene(GetTitleScene());
     DeferredRendering::Initialize();
     ForwardRendering::Initialize();
-    m_scene = GetTitleScene();
+    ShadowMap::Initialize();
+    GetTitleScene();
     GetPlayScene();
     GetResultScene();
     GetGameOverScene();
 
+
+    m_scene = GetTitleScene();
     m_scene->Initialize(this);
 
 }
@@ -175,7 +179,7 @@ void Game::Render()
     // TODO: Add your rendering code here.
 
     // シャドウマップを作成
-    m_scene->CreateShadow();
+    RenderManager::CreateShadowMap();
 
     // DeferredRendering開始
     DeferredRendering::BeginGBuffer();
@@ -189,7 +193,7 @@ void Game::Render()
     m_scene->RenderUI();
 
     DeferredRendering::GBufferShow();
-    Shadow::ShadowMapShow();
+    ShadowMap::ShadowMapShow();
 
     // シーン切り替え時のマスク
     if (m_sceneMask->IsClose() || m_sceneMask->IsOpen())

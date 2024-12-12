@@ -24,8 +24,9 @@
 #include "UI/BulletMagazine.h"
 #include "UI/ExBulletMagazine.h"
 
-
 #include "System/HitStop.h"
+
+#include "Manager/RenderManager.h"
 
 PlayScene::PlayScene()
     :
@@ -236,84 +237,20 @@ void PlayScene::Update(float elapsedTime)
 /// <summary> 描画処理 </summary>
 void PlayScene::Render()
 {
-    using namespace DirectX;
-
-    // シャドウマップ作成
-    //CreateShadow();
-
-    // ポストプロセス無しでの描画
-    //m_postProcess->BeginNormal();
-
     m_skyDome->Render();
-
-    for (auto& wall : m_wall)
-    {
-        wall->Render();
-    }
-    for (auto& floor : m_floor)
-    {
-        floor->Render();
-    }
-
-    for (auto& dropItem : m_dropItem)
-    {
-        dropItem->Render();
-    }
-    for (auto& dropItem : m_dropItemB)
-    {
-        dropItem->Render();
-    }
-    m_player->Render();
-    for (auto& enemy : m_Enemy)
-    {
-        enemy->Render();
-    }
-    m_player->RenderState();
-    for (auto& particle : m_hitParticle)
-    {
-        //particle->Render(m_graphics->GetViewMatrix(), m_graphics->GetProjectionMatrix());
-    }
-    //m_hitEffect->Render();
-
-
-
-
-    // Bloom-------------------------------------
-
-    //m_postProcess->BeginBloom();
-    //for (auto& dropItem : m_dropItem)
-    //{
-    //    dropItem->Render();
-    //}
-    //for (auto& dropItem : m_dropItemB)
-    //{
-    //    dropItem->Render();
-    //}
-    //m_player->RenderState();
-    //for (auto& particle : m_hitParticle)
-    //{
-    //    particle->Render(m_graphics->GetViewMatrix(), m_graphics->GetProjectionMatrix());
-    //}
-    //m_hitEffect->Render();
-
-    //-------------------------------------------
-
-    //m_postProcess->combinationRT();
-
-    // UI
-    //m_targetArea->Render(m_player->GetTarget());
-    //m_player->RenderPlayerUI();
-    //m_bulletMagazine->Render();
-    //m_exBulletMagazine->Render();
-    //m_startAnimation->Render();
-
+    RenderManager::RenderObjects();
 }
 
 void PlayScene::TranslucentRender()
 {
+    RenderManager::RenderParticle();
     for (auto& particle : m_hitParticle)
     {
         particle->Render(m_graphics->GetViewMatrix(), m_graphics->GetProjectionMatrix());
+    }
+    if (m_player->GetTarget())
+    {
+        m_player->GetTarget()->GetComponent<HPBar>()->Render(m_player->GetTarget()->GetPosition());
     }
     m_hitEffect->Render();
 }
@@ -321,12 +258,7 @@ void PlayScene::TranslucentRender()
 void PlayScene::RenderUI()
 {
     // UI
-    if (m_player->GetTarget())
-    {
-        m_player->GetTarget()->GetComponent<HPBar>()->Render(m_player->GetTarget()->GetPosition());
-    }
-    m_targetArea->Render(m_player->GetTarget());
-    m_hpUI->Render();
+    m_targetArea->Render(m_targetArea->GetTarget());
     m_player->RenderPlayerUI();
     m_bulletMagazine->Render();
     m_exBulletMagazine->Render();
@@ -429,30 +361,6 @@ void PlayScene::CreateHitEffect(DirectX::SimpleMath::Vector3 pos)
 /// </summary>
 void PlayScene::CreateShadow()
 {
-    Resources::GetInstance()->GetShadow()->BeginDepth();
-
-    for (auto& wall : m_wall)
-    {
-        wall->CreateShadow();
-    }
-
-    for (auto& enemy : m_Enemy)
-    {
-        enemy->CreateShader();
-    }
-
-    for (auto& dropItem : m_dropItem)
-    {
-        dropItem->CreateShadow();
-    }
-    for (auto& dropItem : m_dropItemB)
-    {
-        dropItem->CreateShadow();
-    }
-
-    m_player->CreateShadow();
-
-    Resources::GetInstance()->GetShadow()->EndDepth();
 }
 
 void PlayScene::ObjectsRender(std::vector<std::unique_ptr<GameObject>> objects)

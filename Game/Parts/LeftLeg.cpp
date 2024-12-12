@@ -58,17 +58,17 @@ void LeftLeg::Update(float elapsedTime)
 
 	ComponentsUpdate(elapsedTime);
 
+	if (static_cast<Player*>(GetOwner())->GetOnFloor())
+	{
+		GetComponent<Emitter>()->SetParticle(GetPosition() - DirectX::SimpleMath::Vector3{ 0,1.f,0 });
+	}
+
 	m_isHit = false;
 }
 
 void LeftLeg::Render()
 {
-	GetComponent<ModelDraw>()->Render(GetWorld(), false);
-	GetComponent<Emitter>()->Render();
-	if (static_cast<Player*>(GetOwner())->GetOnFloor())
-	{
-		GetComponent<Emitter>()->SetParticle(GetPosition() - DirectX::SimpleMath::Vector3{ 0,1.f,0 });
-	}
+
 }
 
 void LeftLeg::Finalize()
@@ -78,27 +78,6 @@ void LeftLeg::Finalize()
 void LeftLeg::Collision(Collider* collider)
 {
 	UNREFERENCED_PARAMETER(collider);
-	//// ÉpÅ[ÉcÇ∆ÇÃìñÇΩÇËîªíË
-	//if (GetComponent<Collider>()->GetBoundingBox()->Intersects(*collider->GetBoundingBox()))
-	//{
-	//	Bullet* bulletObject = static_cast<Bullet*>(collider->GetOwner());
-	//	if (bulletObject->GetState() == Bullet::FLYING)
-	//	{
-	//		if (GetComponent<HP>()->GetHP() > 0)
-	//		{
-	//			GetOwner()->GetComponent<Camera>()->shake();
-	//			GetComponent<HP>()->SetHP(GetComponent<HP>()->GetHP() - 1);
-	//			bulletObject->Hit();
-	//			static_cast<PlayScene*>(GetOwner()->GetScene())->SetNoise();
-	//			m_isHit = true;
-	//		}
-	//		else
-	//		{
-	//			//auto game = static_cast<PlayScene*>(GetOwner()->GetScene())->GetGame();
-	//			//game->ChangeScene(game->GetGameOverScene());
-	//		}
-	//	}
-	//}
 }
 
 void LeftLeg::Action()

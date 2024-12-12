@@ -3,20 +3,20 @@
 #include "Framework/Easing.h"
 #include <cmath>
 #include "Game/GameObject.h"
+#include "Game/Manager/RenderManager.h"
 
 
 Emitter::Emitter()
 {
-
-
     m_graphics = Graphics::GetInstance();
     m_deviceResources = m_graphics->GetDeviceResources();
     m_resources = Resources::GetInstance();
+    RenderManager::Add(this);
 }
 
 Emitter::~Emitter()
 {
-
+    Finalize();
 }
 
 void Emitter::Initialize(const wchar_t* path, float size,float interval, float lifeTime)
@@ -81,7 +81,7 @@ void Emitter::Render()
 
 void Emitter::Finalize()
 {
-
+    RenderManager::Remove(this);
 }
 
 void Emitter::SetParticle(DirectX::SimpleMath::Vector3 pos)

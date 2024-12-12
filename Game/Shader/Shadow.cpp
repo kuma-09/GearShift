@@ -8,10 +8,7 @@
 /// </summary>
 const std::vector<D3D11_INPUT_ELEMENT_DESC> Shadow::INPUT_LAYOUT =
 {
-    { "SV_POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0,  D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-    { "NORMAL"  , 0, DXGI_FORMAT_R32G32B32_FLOAT, 0,  D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
-    { "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT,    0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-    { "COLOR" ,   0, DXGI_FORMAT_R8G8B8A8_UNORM, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+    { "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0,  D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 };
 
 Graphics* Shadow::m_graphics;
@@ -311,6 +308,6 @@ void Shadow::ShadowMapShow()
     RECT rect = { 0,0,SHADOWMAP_SIZE,SHADOWMAP_SIZE };
 
     s_spriteBatch->Begin();
-    s_spriteBatch->Draw(m_srv, Vector2{ 1280,0 }, &rect, DirectX::Colors::White, 0.0f, Vector2{SHADOWMAP_SIZE,0}, 1.0f);
+    s_spriteBatch->Draw(m_srv, Vector2{ 1280,0 }, &rect, DirectX::Colors::White, 0.0f, Vector2{SHADOWMAP_SIZE,0}, 0.5f);
     s_spriteBatch->End();
 }

@@ -4,7 +4,7 @@
 cbuffer Parameters : register(b1)
 {
     float4x4 LightViewProj : packoffset(c0);
-    float4 LightPos : packoffset(c4);
+    float3 LightPos : packoffset(c4);
     float4 Color : packoffset(c5);
 };
 

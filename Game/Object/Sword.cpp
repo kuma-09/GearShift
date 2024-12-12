@@ -14,7 +14,7 @@ Sword::Sword(IScene* scene, Collider::TypeID id)
 {
 	SetScene(scene);
 	AddComponent<Collider>();
-	AddComponent<ModelDraw>();
+	//AddComponent<ModelDraw>();
 	AddComponent<Trail>();
 	GetComponent<Collider>()->SetTypeID(id);
 	GetComponent<Collider>()->SetSize({ 0.5f,0.5f,0.5f });
@@ -34,7 +34,7 @@ void Sword::Initalize(GameObject* object)
 	using namespace DirectX::SimpleMath;
 
 	m_owner = object;
-	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetSwordModel());
+	//GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetSwordModel());
 
 	Vector3 velocity = Vector3::Zero;
 	SetPosition(m_owner->GetPosition());

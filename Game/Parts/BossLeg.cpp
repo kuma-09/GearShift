@@ -64,7 +64,7 @@ void BossLeg::Update(float elapsedTime)
 
 void BossLeg::Render()
 {
-	GetComponent<ModelDraw>()->Render(GetWorld(), false);
+	GetComponent<ModelDraw>()->Render();
 }
 
 void BossLeg::Finalize()

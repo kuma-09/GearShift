@@ -14,7 +14,7 @@ Floor::Floor(IScene* scene)
 	GetComponent<Collider>()->SetInitalePosition({0, -1, 0});
 	GetComponent<Collider>()->SetSize({ 300, 1, 300 });
 	GetComponent<Collider>()->SetTypeID(Collider::Floor);
-	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetFloorModel());
+	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetFloorModel(),true);
 	SetPosition({ 0,1,0 });
 	
 	Matrix world = Matrix::CreateScale(GetScale());
@@ -33,6 +33,7 @@ void Floor::Render()
 
 	Matrix world = Matrix::CreateScale(GetScale());
 	world *= Matrix::CreateTranslation(GetPosition());
-	GetComponent<ModelDraw>()->Render(world,true);
+	SetWorld(world);
+	GetComponent<ModelDraw>()->Render();
 	//GetComponent<Collider>()->Render();
 }

@@ -51,7 +51,7 @@ void RightArm::Update(float elapsedTime)
 
 void RightArm::Render()
 {
-			GetComponent<ModelDraw>()->Render(GetWorld(),false);
+			GetComponent<ModelDraw>()->Render();
 }
 
 void RightArm::Finalize()

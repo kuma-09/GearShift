@@ -52,7 +52,7 @@ void BodyTop::Update(float elapsedTime)
 void BodyTop::Render()
 {
 
-	GetComponent<ModelDraw>()->Render(GetWorld(), false);
+	GetComponent<ModelDraw>()->Render();
 
 }
 

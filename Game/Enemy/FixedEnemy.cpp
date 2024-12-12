@@ -73,15 +73,20 @@ void FixedEnemy::Update(float elapsedTime)
 	m_bullet->Update(elapsedTime);
 	ComponentsUpdate(elapsedTime);
 
-
 	// ç¿ïWÇÃà⁄ìÆ
 	SetPosition(GetPosition() + Vector3::Transform(GetVelocity(), GetQuaternion()));
 
+	Matrix world = Matrix::Identity;
+	world = Matrix::CreateScale(GetScale());
+	world *= Matrix::CreateFromQuaternion(GetQuaternion());
+	world *= Matrix::CreateTranslation(GetPosition() + Vector3{ 0,-0.9f,0 });
+
+	SetWorld(world);
 }
 
 void FixedEnemy::CreateShader()
 {
-	GetComponent<ModelDraw>()->CreateShadow(GetWorld());
+	GetComponent<ModelDraw>()->CreateShadow();
 }
 
 void FixedEnemy::Render()
@@ -91,16 +96,8 @@ void FixedEnemy::Render()
 	m_bullet->Render();
 	m_state->Render();
 
-	Matrix world = Matrix::Identity;
-	world = Matrix::CreateScale(GetScale());
-	world *= Matrix::CreateFromQuaternion(GetQuaternion());
-	world *= Matrix::CreateTranslation(GetPosition() + Vector3{ 0,-0.9f,0 });
-
-	SetWorld(world);
-
-
 	if (GetComponent<HP>()->GetHP() <= 0) return;
-	GetComponent<ModelDraw>()->Render(GetWorld(), false);
+	GetComponent<ModelDraw>()->Render();
 	GetComponent<HPBar>()->Render(GetPosition());
 	//GetComponent<Collider>()->Render();
 }

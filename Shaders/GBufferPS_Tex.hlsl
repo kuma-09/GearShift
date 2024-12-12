@@ -13,7 +13,6 @@ struct PS_INPUT
     float3 Normal : NORMAL;
     float2 TexCoord : TEXCOORD;
     float4 Color : COLOR;
-    float4 LightDepth : Position;
 };
 
 struct PS_OUTPUT

@@ -125,7 +125,7 @@ void DeferredRendering::BeginGBuffer()
 	auto view = Graphics::GetInstance()->GetViewMatrix();
 	auto projection = Graphics::GetInstance()->GetProjectionMatrix();
 
-	ID3D11RenderTargetView* renderTargets[4] = { albedoRTV, normalRTV, depthRTV};
+	ID3D11RenderTargetView* renderTargets[3] = { albedoRTV, normalRTV, depthRTV};
 	// -------------------------------------------------------------------------- //
 	// レンダーターゲットを変更
 	// -------------------------------------------------------------------------- //
@@ -180,9 +180,14 @@ void DeferredRendering::DeferredLighting()
 	auto depthStencil = Graphics::GetInstance()->GetDeviceResources()->GetDepthStencilView();
 	auto view = Graphics::GetInstance()->GetViewMatrix();
 	auto projection = Graphics::GetInstance()->GetProjectionMatrix();
+	auto states = Graphics::GetInstance()->GetCommonStates();
 
 	context->ClearRenderTargetView(renderTarget, DirectX::Colors::CornflowerBlue);
 	context->OMSetRenderTargets(1, &renderTarget, nullptr);
+
+	// 各種パラメータを更新する
+	//context->OMSetDepthStencilState(states->DepthRead(), 0);		// 深度バッファ/ステンシルバッファ
+	context->RSSetState(states->CullNone());						// カリング
 
 	auto const viewport = Graphics::GetInstance()->GetDeviceResources()->GetScreenViewport();
 	context->RSSetViewports(1, &viewport);
