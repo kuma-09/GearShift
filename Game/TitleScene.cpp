@@ -113,9 +113,7 @@ void TitleScene::Render()
 
 
 
-    Resources::GetInstance()->GetShadow()->BeginDepth();
     m_player->CreateShadow();
-    Resources::GetInstance()->GetShadow()->EndDepth();
 
     m_skydome->Render();
     m_player->Render();
@@ -123,12 +121,12 @@ void TitleScene::Render()
     {
         for (int n = 0; n < 2; n++)
         {
-            Matrix world = Matrix::CreateTranslation(Vector3{ -50 + float(i) * 100 ,1, -50 + float(n) * 100 } + Vector3::Zero );
-            Resources::GetInstance()->GetFloorModel()->Draw(context, *state, world, view, proj, false, [&]
-                {
-                    Resources::GetInstance()->GetShadow()->Draw(true);
-                }
-            );
+            //Matrix world = Matrix::CreateTranslation(Vector3{ -50 + float(i) * 100 ,1, -50 + float(n) * 100 } + Vector3::Zero );
+            //Resources::GetInstance()->GetFloorModel()->Draw(context, *state, world, view, proj, false, [&]
+            //    {
+            //        Resources::GetInstance()->GetShadow()->Draw(true);
+            //    }
+            //);
         }
     }
 

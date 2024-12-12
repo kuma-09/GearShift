@@ -5,8 +5,6 @@ cbuffer Parameters : register(b1)
     matrix matView;
     matrix matProj;
     matrix inverseViewProj;
-    matrix lightViewProj;
-    float3 lightPosition;
 }
 
 struct PS_INPUT
@@ -23,6 +21,11 @@ struct PS_OUTPUT
     float4 rt1 : SV_Target1;
     float4 rt2 : SV_Target2;
 };
+
+float LinearizeDepth(float depth, float near, float far)
+{
+    return (2.0 * near) / (far + near - depth * (far - near));
+}
 
 // ƒƒCƒ“ŠÖ”
 PS_OUTPUT main(PS_INPUT input)

@@ -22,7 +22,6 @@ private:
 	static std::unique_ptr<DX::RenderTexture> s_albedoRT;
 	static std::unique_ptr<DX::RenderTexture> s_normalRT;
 	static std::unique_ptr<DX::RenderTexture> s_depthRT;
-	static std::unique_ptr<DX::RenderTexture> s_shadowMapRT;
 	// GBuffer書き込み用のシェーダー
 	static Microsoft::WRL::ComPtr<ID3D11VertexShader> s_vertexShader;
 	static Microsoft::WRL::ComPtr<ID3D11PixelShader> s_pixelShader;
@@ -40,8 +39,6 @@ private:
 		DirectX::XMMATRIX matView;
 		DirectX::XMMATRIX matProj;
 		DirectX::XMMATRIX inverseViewProj;
-		DirectX::XMMATRIX lightViewProj;
-		DirectX::XMVECTOR lightPosition;
 	};
 
 	static Microsoft::WRL::ComPtr<ID3D11Buffer> s_constantBuffer;

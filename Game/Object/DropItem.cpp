@@ -7,7 +7,7 @@
 DropItem::DropItem(IScene* scene)
 {
 	SetScene(scene);
-	AddComponent<Physics>();
+	//AddComponent<Physics>();
 	AddComponent<Collider>();
 	GetComponent<Collider>()->SetTypeID(Collider::TypeID::DropItem);
 	GetComponent<Collider>()->SetSize(DirectX::SimpleMath::Vector3::One * 2);
@@ -36,7 +36,7 @@ DropItem::DropItem(IScene* scene, std::unique_ptr<Part> part)
 {
 
 	SetScene(scene);
-	AddComponent<Physics>();
+	//AddComponent<Physics>();
 	AddComponent<Collider>();
 	GetComponent<Collider>()->SetTypeID(Collider::TypeID::DropItem);
 	GetComponent<Collider>()->SetSize(DirectX::SimpleMath::Vector3::One * 2);

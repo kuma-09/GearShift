@@ -15,9 +15,13 @@ public:
 
 	static void Draw(bool texture,DirectX::XMVECTORF32 color = DirectX::Colors::White);
 
+	static void ShadowMapShow();
+
 private:
 	// デバイスリソース
 	static Graphics* m_graphics;
+
+	static std::unique_ptr<DirectX::SpriteBatch> s_spriteBatch;
 
 	//	入力レイアウト
 	static const std::vector<D3D11_INPUT_ELEMENT_DESC> INPUT_LAYOUT;

@@ -1,11 +1,16 @@
-#include "SM_Common.hlsli"
+#include "Common.hlsli"
+
+// 追加する定数バッファ
+cbuffer Parameters : register(b1)
+{
+    float4x4 LightViewProj : packoffset(c0);
+    float4 LightPos : packoffset(c4);
+    float4 Color : packoffset(c5);
+};
 
 struct VS_INPUT
 {
-    float4 Position : SV_Position;
-    float3 Normal   : NORMAL;
-    float2 TexCoord : TEXCOORD0;
-    float4 Color    : COLOR;
+    float4 Position : Position;
 };
 
 struct Output

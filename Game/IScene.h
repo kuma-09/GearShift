@@ -17,6 +17,8 @@ public:
 
 	virtual void Update(float elapsedTime) = 0;
 
+	virtual void CreateShadow() {};
+
 	virtual void Render() = 0;
 
 	virtual void TranslucentRender() {};

@@ -5,8 +5,6 @@ cbuffer Parameters : register(b1)
     matrix matView;
     matrix matProj;
     matrix inverseViewProj;
-    matrix lightViewProj;
-    float3 lightPosition;
 }
 
 struct PS_INPUT

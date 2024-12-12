@@ -39,9 +39,10 @@ public:
 	
 	void Update(float elapsedTime) override;
 	
+	void CreateShadow() override;
 	void Render() override;
 	void TranslucentRender() override;
-	void RenderUI();
+	void RenderUI() override;
 	void Finalize() override;
 
 	void UpdateBulletMagazine();
@@ -53,7 +54,6 @@ public:
 	void CreateHitEffect(DirectX::SimpleMath::Vector3 pos);
 private:
 
-	void CreateShadow();
 	void ObjectsRender(std::vector<std::unique_ptr<GameObject>> objects);
 	void CreateObject(std::string className, DirectX::SimpleMath::Vector3 pos);
 	// “G‚ğíœ

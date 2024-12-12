@@ -3,6 +3,7 @@
 Texture2D<float4> AlbedoMap : register(t1);
 Texture2D<float4> NormalMap : register(t2);
 Texture2D<float4> DepthMap  : register(t3);
+Texture2D<float4> ShadowMap : register(t4);
 
 cbuffer Parameters : register(b1)
 {
@@ -30,7 +31,9 @@ float4 main(PS_INPUT input) : SV_TARGET
     // ノーマル
     float3 normal = NormalMap.Sample(Sampler, input.Texture).rgb;
     // 深度値
-	float depth = DepthMap.Sample(Sampler, input.Texture).r;
+	float depth = 1 - DepthMap.Sample(Sampler, input.Texture).r;
+    // ライトからの深度値
+    float lightDepth = ShadowMap.Sample(Sampler, input.Texture).r;
     // ワールド座標
 	float3 Position = ReconstructWorldPositionFromDepth(input.Texture, depth);
 	

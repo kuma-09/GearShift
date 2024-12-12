@@ -13,6 +13,8 @@
 #include "Game/DeferredRendering.h"
 #include "Game/ForwardRendering.h"
 
+#include "Game/Shader/Shadow.h"
+
 extern void ExitGame() noexcept;
 
 using namespace DirectX;
@@ -172,6 +174,9 @@ void Game::Render()
 
     // TODO: Add your rendering code here.
 
+    // シャドウマップを作成
+    m_scene->CreateShadow();
+
     // DeferredRendering開始
     DeferredRendering::BeginGBuffer();
     m_scene->Render();
@@ -184,6 +189,7 @@ void Game::Render()
     m_scene->RenderUI();
 
     DeferredRendering::GBufferShow();
+    Shadow::ShadowMapShow();
 
     // シーン切り替え時のマスク
     if (m_sceneMask->IsClose() || m_sceneMask->IsOpen())

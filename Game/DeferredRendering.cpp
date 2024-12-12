@@ -21,7 +21,6 @@ const std::vector<D3D11_INPUT_ELEMENT_DESC> DeferredRendering::INPUT_LAYOUT_L =
 std::unique_ptr<DX::RenderTexture> DeferredRendering::s_albedoRT;
 std::unique_ptr<DX::RenderTexture> DeferredRendering::s_normalRT;
 std::unique_ptr<DX::RenderTexture> DeferredRendering::s_depthRT;
-std::unique_ptr<DX::RenderTexture> DeferredRendering::s_shadowMapRT;
 Microsoft::WRL::ComPtr<ID3D11VertexShader> DeferredRendering::s_vertexShader;
 Microsoft::WRL::ComPtr<ID3D11PixelShader> DeferredRendering::s_pixelShader;
 Microsoft::WRL::ComPtr<ID3D11PixelShader> DeferredRendering::s_pixelShader_tex;
@@ -51,8 +50,7 @@ void DeferredRendering::Initialize()
 	s_albedoRT = std::make_unique<DX::RenderTexture>(DXGI_FORMAT_R8G8B8A8_UNORM);
 	s_normalRT = std::make_unique<DX::RenderTexture>(DXGI_FORMAT_R10G10B10A2_UNORM);
 	s_depthRT  = std::make_unique<DX::RenderTexture>(DXGI_FORMAT_R32_FLOAT);
-	s_shadowMapRT = std::make_unique<DX::RenderTexture>(DXGI_FORMAT_R32_FLOAT);
-
+	
 	auto device = Graphics::GetInstance()->GetDeviceResources()->GetD3DDevice();
 	auto context = Graphics::GetInstance()->GetDeviceResources()->GetD3DDeviceContext();
 	auto rect = Graphics::GetInstance()->GetDeviceResources()->GetOutputSize();
@@ -60,13 +58,11 @@ void DeferredRendering::Initialize()
 	s_albedoRT->SetDevice(device);
 	s_normalRT->SetDevice(device);
 	s_depthRT->SetDevice(device);
-	s_shadowMapRT->SetDevice(device);
-
+	
 	s_albedoRT->SetWindow(rect);
 	s_normalRT->SetWindow(rect);
 	s_depthRT->SetWindow(rect);
-	s_shadowMapRT->SetWindow(rect);
-
+	
 	BinaryFile vs = BinaryFile::LoadFile(L"Resources/Shaders/GBufferVS.cso");
 	BinaryFile ps = BinaryFile::LoadFile(L"Resources/Shaders/GBufferPS.cso");
 	BinaryFile ps_tex = BinaryFile::LoadFile(L"Resources/Shaders/GBufferPS_Tex.cso");
@@ -107,11 +103,6 @@ void DeferredRendering::Initialize()
 		device->CreateBuffer(&bufferDesc, nullptr, s_constantBuffer.ReleaseAndGetAddressOf())
 	);
 
-	auto view = DirectX::SimpleMath::Matrix::CreateLookAt(DirectX::SimpleMath::Vector3(5, 5, 5), { 0,0,0 }, DirectX::SimpleMath::Vector3::Up);
-	auto proj = DirectX::SimpleMath::Matrix::CreatePerspectiveFieldOfView(DirectX::XMConvertToRadians(cosf(DirectX::XMConvertToRadians(90.0f / 2.0f))), 1.0f, 0.1f, 1000.0f);
-
-	s_lightViewProj = view * proj;
-
 	// スプライトバッチの生成
 	s_spriteBatch = std::make_unique<DirectX::SpriteBatch>(context);
 	// プリミティブバッチの作成
@@ -134,7 +125,7 @@ void DeferredRendering::BeginGBuffer()
 	auto view = Graphics::GetInstance()->GetViewMatrix();
 	auto projection = Graphics::GetInstance()->GetProjectionMatrix();
 
-	ID3D11RenderTargetView* renderTargets[3] = { albedoRTV, normalRTV,depthRTV };
+	ID3D11RenderTargetView* renderTargets[4] = { albedoRTV, normalRTV, depthRTV};
 	// -------------------------------------------------------------------------- //
 	// レンダーターゲットを変更
 	// -------------------------------------------------------------------------- //
@@ -149,17 +140,15 @@ void DeferredRendering::BeginGBuffer()
 	D3D11_MAPPED_SUBRESOURCE mappedResource;
 	context->Map(s_constantBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
 	ConstBuffer* cb = static_cast<ConstBuffer*>(mappedResource.pData);
-	auto viewproj = view * projection;
 	cb->matView = view.Transpose();
 	cb->matProj = projection.Transpose();
-	cb->inverseViewProj = DirectX::SimpleMath::Matrix::Identity.Invert();
-	cb->lightViewProj = DirectX::XMMatrixTranspose(s_lightViewProj);
-	cb->lightPosition = DirectX::SimpleMath::Vector3(5, 5, 5);
+	cb->inverseViewProj = (view * projection).Invert();
 	// マップを解除する
 	context->Unmap(s_constantBuffer.Get(), 0);
 
 	// 定数バッファの設定
 	ID3D11Buffer* cbuf[] = { s_constantBuffer.Get() };
+	context->VSSetConstantBuffers(1, 1, cbuf);
 	context->PSSetConstantBuffers(1, 1, cbuf);
 }
 
@@ -189,6 +178,8 @@ void DeferredRendering::DeferredLighting()
 	auto device = Graphics::GetInstance()->GetDeviceResources()->GetD3DDevice();
 	auto renderTarget = Graphics::GetInstance()->GetDeviceResources()->GetRenderTargetView();
 	auto depthStencil = Graphics::GetInstance()->GetDeviceResources()->GetDepthStencilView();
+	auto view = Graphics::GetInstance()->GetViewMatrix();
+	auto projection = Graphics::GetInstance()->GetProjectionMatrix();
 
 	context->ClearRenderTargetView(renderTarget, DirectX::Colors::CornflowerBlue);
 	context->OMSetRenderTargets(1, &renderTarget, nullptr);
@@ -199,6 +190,21 @@ void DeferredRendering::DeferredLighting()
 	ID3D11ShaderResourceView* albedo = s_albedoRT->GetShaderResourceView();
 	ID3D11ShaderResourceView* normal = s_normalRT->GetShaderResourceView();
 	ID3D11ShaderResourceView* depth = s_depthRT->GetShaderResourceView();
+
+	// 定数バッファをマップする
+	D3D11_MAPPED_SUBRESOURCE mappedResource;
+	context->Map(s_constantBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+	ConstBuffer* cb = static_cast<ConstBuffer*>(mappedResource.pData);
+	cb->matView = view.Transpose();
+	cb->matProj = projection.Transpose();
+	cb->inverseViewProj = (view * projection).Invert();
+	// マップを解除する
+	context->Unmap(s_constantBuffer.Get(), 0);
+	// 定数バッファの設定
+	ID3D11Buffer* cbuf[] = { s_constantBuffer.Get() };
+	context->VSSetConstantBuffers(1, 1, cbuf);
+	context->PSSetConstantBuffers(1, 1, cbuf);
+
 
 	// シェーダを設定する
 	context->PSSetShaderResources(1, 1, &albedo);
@@ -226,7 +232,6 @@ void DeferredRendering::TranslucentBegin()
 	auto depthStencil = Graphics::GetInstance()->GetDeviceResources()->GetDepthStencilView();
 
 	context->ClearRenderTargetView(renderTarget, DirectX::Colors::CornflowerBlue);
-	//context->ClearDepthStencilView(depthStencil, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 	context->OMSetRenderTargets(1, &renderTarget, nullptr);
 
 	auto const viewport = Graphics::GetInstance()->GetDeviceResources()->GetScreenViewport();

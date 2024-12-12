@@ -82,7 +82,7 @@ void PlayScene::Initialize(Game* game)
     }
 
     m_dropItem.emplace_back(std::make_unique<DropItem>(this));
-    m_dropItem.back()->SetPosition(Vector3(40, 5, -30));
+    m_dropItem.back()->SetPosition(Vector3(5, 10, 5));
 
     m_dropItemB.emplace_back(std::make_unique<DropItemB>(this, std::move(bullets)));
     m_dropItemB.back()->SetPosition(Vector3(10, 3, 10));

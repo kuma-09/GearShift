@@ -1,294 +1,181 @@
-//--------------------------------------------------------------------------------------
-// File: ShadowMap.cpp
-//
-// シャドウマップクラス
-//
-// Date: 2022.6.19
-// Author: Hideyasu Imase
-//--------------------------------------------------------------------------------------
 #include "pch.h"
 #include "ShadowMap.h"
-#include "VertexTypes.h"
+#include "Framework/BinaryFile.h"
+#include "Framework/Resources.h"
 
-using namespace DirectX;
-using namespace DirectX::SimpleMath;
-using namespace Imase;
-
-// 深度バイアス（初期値 0.1 バイアス値の計算は m_offset / ライトの影響範囲）
-const float ShadowMap::DEFALT_OFFSET = 0.2f;
-
-// シャドウマップ作成時のニアークリップの値
-const float ShadowMap::NEAR_CLIP = 0.1f;
-
-ShadowMap::ShadowMap()
-	: m_gaussianFilterEnable(true)
-	, m_vsmFilterEnable(true)
-	, m_resolution(ShadowMap::DEFALT_RESOLUTION)
-	, m_viewPort{}
-	, m_offset(ShadowMap::DEFALT_OFFSET)
-	, m_path{}
+/// <summary>
+/// インプットレイアウト
+/// </summary>
+const std::vector<D3D11_INPUT_ELEMENT_DESC> ShadowMap::INPUT_LAYOUT =
 {
+    { "SV_POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0,  D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+    { "NORMAL"  , 0, DXGI_FORMAT_R32G32B32_FLOAT, 0,  D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
+    { "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT,    0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+    { "COLOR" ,   0, DXGI_FORMAT_R8G8B8A8_UNORM, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+};
+
+Graphics* ShadowMap::m_graphics;
+Microsoft::WRL::ComPtr<ID3D11InputLayout>  ShadowMap::m_inputLayout;
+Microsoft::WRL::ComPtr<ID3D11SamplerState> ShadowMap::m_shadowMapSampler;
+DirectX::SimpleMath::Vector3    ShadowMap::m_lightPosition;
+DirectX::SimpleMath::Quaternion ShadowMap::m_lightRotate;
+float ShadowMap::m_lightTheta;
+Microsoft::WRL::ComPtr<ID3D11VertexShader> ShadowMap::m_VS_Depth;
+Microsoft::WRL::ComPtr<ID3D11PixelShader>  ShadowMap::m_PS_Depth;
+
+Microsoft::WRL::ComPtr<ID3D11Buffer> ShadowMap::m_CBuffer;
+Microsoft::WRL::ComPtr<ID3D11Buffer> ShadowMap::m_CBuffer2;
+std::unique_ptr<DX::RenderTexture> ShadowMap::m_shadowMapRT;
+std::unique_ptr<DepthStencil>      ShadowMap::m_shadowMapDS;
+
+ID3D11RenderTargetView* ShadowMap::m_rtv;
+ID3D11ShaderResourceView* ShadowMap::m_srv;
+ID3D11DepthStencilView* ShadowMap::m_dsv;
+
+void ShadowMap::Initialize()
+{
+    using namespace DirectX;
+    using namespace DirectX::SimpleMath;
+
+    m_graphics = Graphics::GetInstance();
+    auto device = m_graphics->GetDeviceResources()->GetD3DDevice();
+    auto context = m_graphics->GetDeviceResources()->GetD3DDeviceContext();
+
+    // ライトの位置
+    m_lightPosition = Vector3{ 0,100, -30 };
+
+    // ライトの回転
+    m_lightRotate = Quaternion::CreateFromYawPitchRoll(
+        XMConvertToRadians(0.0f), XMConvertToRadians(80.0f), 0.0f);
+
+    m_lightTheta = 90.f;
+
+    RECT rect = { 0, 0, SHADOWMAP_SIZE, SHADOWMAP_SIZE };
+
+    // レンダーテクスチャの作成（シャドウマップ用）
+    m_shadowMapRT = std::make_unique<DX::RenderTexture>(DXGI_FORMAT_R32_FLOAT);
+    m_shadowMapRT->SetDevice(device);
+    m_shadowMapRT->SetWindow(rect);
+
+    // デプスステンシルの作成（シャドウマップ用）
+    m_shadowMapDS = std::make_unique<DepthStencil>(DXGI_FORMAT_D32_FLOAT);
+    m_shadowMapDS->SetDevice(device);
+    m_shadowMapDS->SetWindow(rect);
+
+    // 定数バッファの作成
+    D3D11_BUFFER_DESC bufferDesc = {};
+    bufferDesc.ByteWidth = static_cast<UINT>(sizeof(ConstantBuffer));	// 確保するサイズ（16の倍数で設定する）
+    // GPU (読み取り専用) と CPU (書き込み専用) の両方からアクセスできるリソース
+    bufferDesc.Usage = D3D11_USAGE_DYNAMIC;
+    bufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;	// 定数バッファとして扱う
+    bufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;	// CPUが内容を変更できるようにする
+    DX::ThrowIfFailed(device->CreateBuffer(&bufferDesc, nullptr, m_CBuffer.ReleaseAndGetAddressOf()));
+
+    // 定数バッファの作成
+    bufferDesc.ByteWidth = static_cast<UINT>(sizeof(ConstantBuffer2));	// 確保するサイズ（16の倍数で設定する）
+    bufferDesc.Usage = D3D11_USAGE_DEFAULT;	// GPUの読み取りと書き込みが可能な一般的なリソース
+    bufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;	// 定数バッファとして扱う
+    bufferDesc.CPUAccessFlags = 0;	// CPUはアクセスしないので0
+    DX::ThrowIfFailed(device->CreateBuffer(&bufferDesc, nullptr, m_CBuffer2.ReleaseAndGetAddressOf()));
+
+    // 定数バッファの内容更新
+    ConstantBuffer2 cb = {};
+    cb.fCosTheta = cosf(XMConvertToRadians(m_lightTheta / 2.0f));
+    context->UpdateSubresource(m_CBuffer2.Get(), 0, nullptr, &cb, 0, 0);
+
+    BinaryFile vs_depth = BinaryFile::LoadFile(L"Resources/Shaders/SM_VS_Depth.cso");
+    BinaryFile ps_depth = BinaryFile::LoadFile(L"Resources/Shaders/SM_PS_Depth.cso");
+    BinaryFile vs = BinaryFile::LoadFile(L"Resources/Shaders/SM_VS.cso");
+    BinaryFile ps = BinaryFile::LoadFile(L"Resources/Shaders/SM_PS.cso");
+    BinaryFile ps_tex = BinaryFile::LoadFile(L"Resources/Shaders/SM_PS_Tex.cso");
+
+    //	インプットレイアウトの作成
+    device->CreateInputLayout(&INPUT_LAYOUT[0],
+        static_cast<UINT>(INPUT_LAYOUT.size()),
+        vs_depth.GetData(), vs_depth.GetSize(),
+        m_inputLayout.GetAddressOf());
+
+    // 頂点シェーダーの作成（シャドウマップ用）
+    DX::ThrowIfFailed(
+        device->CreateVertexShader(vs_depth.GetData(), vs_depth.GetSize(), nullptr, m_VS_Depth.ReleaseAndGetAddressOf())
+    );
+
+    // ピクセルシェーダーの作成（シャドウマップ用）
+    DX::ThrowIfFailed(
+        device->CreatePixelShader(ps_depth.GetData(), ps_depth.GetSize(), nullptr, m_PS_Depth.ReleaseAndGetAddressOf())
+    );
+
+    // サンプラーの作成（シャドウマップ用）
+    D3D11_SAMPLER_DESC sampler_desc = CD3D11_SAMPLER_DESC(D3D11_DEFAULT);
+    sampler_desc.Filter = D3D11_FILTER_COMPARISON_MIN_MAG_MIP_LINEAR;
+    sampler_desc.AddressU = D3D11_TEXTURE_ADDRESS_BORDER;
+    sampler_desc.AddressV = D3D11_TEXTURE_ADDRESS_BORDER;
+    sampler_desc.AddressW = D3D11_TEXTURE_ADDRESS_BORDER;
+    sampler_desc.ComparisonFunc = D3D11_COMPARISON_LESS;
+    device->CreateSamplerState(&sampler_desc, m_shadowMapSampler.ReleaseAndGetAddressOf());
 }
 
-// 初期化関数
-void ShadowMap::Initialize(ID3D11Device* device, const wchar_t* path, UINT resolution)
+void ShadowMap::BeginDepth()
 {
-	SetDirectory(path);
+    using namespace DirectX;
+    using namespace DirectX::SimpleMath;
 
-	// シャドウマップの解像度
-	m_resolution = resolution;
+    auto context = m_graphics->GetDeviceResources()->GetD3DDeviceContext();
+    // リソースの割り当てを解除する（shadowMapRT）
+    ID3D11ShaderResourceView* nullsrv[] = { nullptr };
+    context->PSSetShaderResources(1, 1, nullsrv);
 
-	// シェーダーの読み込み
-	std::vector<uint8_t> vs_ShadowMap = DX::ReadData(GetFullName(L"SM_VS_Depth.cso"));
-	std::vector<uint8_t> ps_ShadowMap = DX::ReadData(GetFullName(L"SM_PS_Depth.cso"));
-	std::vector<uint8_t> vs_ShadowModel = DX::ReadData(GetFullName(L"SM_VS.cso"));
-	std::vector<uint8_t> ps_ShadowModel = DX::ReadData(GetFullName(L"SM_PS.cso"));
-	std::vector<uint8_t> ps_ShadowModel_Tex = DX::ReadData(GetFullName(L"SM_PS_Texture.cso"));
+    m_rtv = m_shadowMapRT->GetRenderTargetView();
+    m_srv = m_shadowMapRT->GetShaderResourceView();
+    m_dsv = m_shadowMapDS->GetDepthStencilView();
 
-	// シェーダーの作成
-	device->CreateVertexShader(vs_ShadowMap.data(), vs_ShadowMap.size(), nullptr, m_VS_ShadowMap.ReleaseAndGetAddressOf());
-	device->CreatePixelShader(ps_ShadowMap.data(), ps_ShadowMap.size(), nullptr, m_PS_ShadowMap.ReleaseAndGetAddressOf());
-	device->CreateVertexShader(vs_ShadowModel.data(), vs_ShadowModel.size(), nullptr, m_VS_ShadowModel.ReleaseAndGetAddressOf());
-	device->CreatePixelShader(ps_ShadowModel.data(), ps_ShadowModel.size(), nullptr, m_PS_ShadowModel.ReleaseAndGetAddressOf());
-	device->CreatePixelShader(ps_ShadowModel_Tex.data(), ps_ShadowModel_Tex.size(), nullptr, m_PS_ShadowModel_Texture.ReleaseAndGetAddressOf());
+    // レンダーターゲットを変更（shadowMapRT）
+    context->ClearRenderTargetView(m_rtv, SimpleMath::Color(1.0f, 1.0f, 1.0f, 1.0f));
+    context->ClearDepthStencilView(m_dsv, D3D11_CLEAR_DEPTH, 1.0f, 0);
+    // ピクセルシェーダーからリソースをアンバインド
+    ID3D11ShaderResourceView* nullSRV[1] = { nullptr };
+    context->PSSetShaderResources(0, 1, nullSRV);
+    // ピクセルシェーダーからリソースをアンバインド
+    context->OMSetRenderTargets(1, &m_rtv, m_dsv);
 
-	// 入力レイアウトの作成
-	DX::ThrowIfFailed(
-		device->CreateInputLayout(
-			VertexPositionNormalTangentColorTexture::InputElements, VertexPositionNormalTangentColorTexture::InputElementCount,
-			vs_ShadowModel.data(), vs_ShadowModel.size(),
-			m_shadowMapInputLayout.GetAddressOf()
-		)
-	);
+    // ビューポートを設定
+    D3D11_VIEWPORT vp = { 0.0f, 0.0f, SHADOWMAP_SIZE, SHADOWMAP_SIZE, 0.0f, 1.0f };
+    context->RSSetViewports(1, &vp);
+}
 
-	{
-		// テクスチャの作成（深度バッファ用）
-		D3D11_TEXTURE2D_DESC desc = {};
-		desc.Width = m_resolution;   // 幅
-		desc.Height = m_resolution;  // 高さ
-		desc.MipLevels = 1;       // ミップマップ レベル数
-		desc.ArraySize = 1;       // 配列サイズ
-		desc.Format = DXGI_FORMAT_D16_UNORM;  // フォーマット
-		desc.SampleDesc.Count = 1;  // マルチサンプリングの設定
-		desc.SampleDesc.Quality = 0;  // マルチサンプリングの品質
-		desc.Usage = D3D11_USAGE_DEFAULT;      // デフォルト使用法
-		desc.BindFlags = D3D11_BIND_DEPTH_STENCIL; // 深度バッファとして使用
-		desc.CPUAccessFlags = 0;   // CPUからはアクセスしない
-		desc.MiscFlags = 0;   // その他の設定なし
-		DX::ThrowIfFailed(device->CreateTexture2D(&desc, nullptr, m_depathTexture2D.GetAddressOf()));
-	}
+void ShadowMap::RenderDepth()
+{
+    using namespace DirectX;
+    using namespace DirectX::SimpleMath;
 
-	{
-		// テクスチャの作成（シャドウマップ作成用）
-		D3D11_TEXTURE2D_DESC desc = {};
-		desc.Width = m_resolution;   // 幅
-		desc.Height = m_resolution;  // 高さ
-		desc.MipLevels = 1;       // ミップマップ レベル数
-		desc.ArraySize = 1;       // 配列サイズ
-		desc.Format = DXGI_FORMAT_R16G16_FLOAT;  // フォーマット
-		desc.SampleDesc.Count = 1;  // マルチサンプリングの設定
-		desc.SampleDesc.Quality = 0;  // マルチサンプリングの品質
-		desc.Usage = D3D11_USAGE_DEFAULT;      // デフォルト使用法
-		desc.BindFlags = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE; // 深度/ステンシル、シェーダ リソース ビューとして使用
-		desc.CPUAccessFlags = 0;   // CPUからはアクセスしない
-		desc.MiscFlags = 0;   // その他の設定なし
-		// 深度書き込み用
-		DX::ThrowIfFailed(device->CreateTexture2D(&desc, nullptr, m_shadowMapTexture2D.GetAddressOf()));
+    auto context = m_graphics->GetDeviceResources()->GetD3DDeviceContext();
 
-	}
-
-	{
-		// 深度/ステンシル ビューの作成
-		D3D11_DEPTH_STENCIL_VIEW_DESC desc = {};
-		desc.Format = DXGI_FORMAT_D16_UNORM;
-		desc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
-		desc.Flags = 0;
-		desc.Texture2D.MipSlice = 0;
-		DX::ThrowIfFailed(device->CreateDepthStencilView(m_depathTexture2D.Get(), &desc, m_DSV.GetAddressOf()));
-	}
-
-	{
-		// レンダーターゲットビューの設定
-		D3D11_RENDER_TARGET_VIEW_DESC desc;
-		desc.Format = DXGI_FORMAT_R16G16_FLOAT;
-		desc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
-		desc.Texture2D.MipSlice = 0;
-		DX::ThrowIfFailed(device->CreateRenderTargetView(m_shadowMapTexture2D.Get(), &desc, m_shadowMapRTV.GetAddressOf()));
-	}
-
-	{
-		// シェーダリソースビューの作成
-		D3D11_SHADER_RESOURCE_VIEW_DESC desc;
-		desc.Format = DXGI_FORMAT_R16G16_FLOAT; // フォーマット
-		desc.ViewDimension = D3D_SRV_DIMENSION_TEXTURE2D;  // 2Dテクスチャ
-		desc.Texture2D.MostDetailedMip = 0;   // 最初のミップマップ レベル
-		desc.Texture2D.MipLevels = static_cast<UINT>(-1);  // すべてのミップマップ レベル
-		DX::ThrowIfFailed(device->CreateShaderResourceView(m_shadowMapTexture2D.Get(), &desc, m_shadowMapSRV.GetAddressOf()));
-	}
-
-	// ビューポート
-	m_viewPort.TopLeftX = 0.0f;		// ビューポート領域の左上X座標。
-	m_viewPort.TopLeftY = 0.0f;		// ビューポート領域の左上Y座標。
-	m_viewPort.Width = static_cast<FLOAT>(m_resolution);	// ビューポート領域の幅
-	m_viewPort.Height = static_cast<FLOAT>(m_resolution);	// ビューポート領域の高さ
-	m_viewPort.MinDepth = 0.0f;		// ビューポート領域の深度値の最小値
-	m_viewPort.MaxDepth = 1.0f;		// ビューポート領域の深度値の最大値
-
-	// 定数バッファの作成
-	{
-		D3D11_BUFFER_DESC desc = {};
-		// バッファサイズは１６の倍数でないといけない
-		size_t size = sizeof(ConstantBuffer);
-		if (size % 16) size++;
-		desc.ByteWidth = static_cast<UINT>(size * 16);
-		desc.Usage = D3D11_USAGE_DYNAMIC;
-		desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-		desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-		DX::ThrowIfFailed(device->CreateBuffer(&desc, nullptr, m_shadowMapConstantBuffer.GetAddressOf()));
-	}
-
-	{
-		// シャドウマップ用サンプラーの作成
-		D3D11_SAMPLER_DESC desc;
-		desc.Filter = D3D11_FILTER_ANISOTROPIC;
-		desc.MipLODBias = 0.0f;
-		desc.MaxAnisotropy = 2;
-		desc.ComparisonFunc = D3D11_COMPARISON_NEVER;
-		desc.MinLOD = -FLT_MAX;
-		desc.MaxLOD = FLT_MAX;
-		desc.AddressU = D3D11_TEXTURE_ADDRESS_BORDER;
-		desc.AddressV = D3D11_TEXTURE_ADDRESS_BORDER;
-		desc.AddressW = D3D11_TEXTURE_ADDRESS_BORDER;
-		desc.BorderColor[0] = 1.0f;
-		desc.BorderColor[1] = 1.0f;
-		desc.BorderColor[2] = 1.0f;
-		desc.BorderColor[3] = 1.0f;
-		DX::ThrowIfFailed(device->CreateSamplerState(&desc, m_sampler.GetAddressOf()));
-	}
+    //	インプットレイアウトの登録
+    context->IASetInputLayout(m_inputLayout.Get());
+    context->VSSetShader(m_VS_Depth.Get(), nullptr, 0);
+    context->PSSetShader(m_PS_Depth.Get(), nullptr, 0);
 
 }
 
-void ShadowMap::Begin(
-	ID3D11DeviceContext* context,
-	DirectX::SimpleMath::Vector3 lightPos,
-	DirectX::SimpleMath::Vector3 targetPos,
-	float maxDepth
-)
+void ShadowMap::EndDepth()
 {
-	// デバイスコンテキストのクリア
-	context->ClearState();
+    using namespace DirectX;
+    using namespace DirectX::SimpleMath;
 
-	// 深度バッファをクリア
-	context->ClearDepthStencilView(m_DSV.Get(), D3D11_CLEAR_DEPTH, 1.0f, 0);
+    auto context = m_graphics->GetDeviceResources()->GetD3DDeviceContext();
 
-	// レンダーターゲットをクリア
-	context->ClearRenderTargetView(m_shadowMapRTV.Get(), Colors::White);
+    // -------------------------------------------------------------------------- //
+    // レンダーターゲットとビューポートを元に戻す
+    // -------------------------------------------------------------------------- //
+    auto renderTarget = m_graphics->GetDeviceResources()->GetRenderTargetView();
+    auto depthStencil = m_graphics->GetDeviceResources()->GetDepthStencilView();
 
-	// レンダーターゲットを設定
-	context->OMSetRenderTargets(1, m_shadowMapRTV.GetAddressOf(), m_DSV.Get());
+    context->ClearRenderTargetView(renderTarget, Colors::CornflowerBlue);
+    context->ClearDepthStencilView(depthStencil, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 
-	// ビューポートの設定
-	context->RSSetViewports(1, &m_viewPort);
-
-	//----------------------------------//
-	// 定数バッファを設定               //
-	//----------------------------------//
-	{
-		D3D11_MAPPED_SUBRESOURCE mappedResource;
-		DX::ThrowIfFailed(
-			context->Map(m_shadowMapConstantBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource)
-		);
-
-		ConstantBuffer buffer = {};
-
-		Vector3 vec = targetPos - lightPos;
-		Matrix lightView = Matrix::CreateLookAt(lightPos, targetPos, CalcUpVector(vec));
-		Matrix projection = Matrix::CreatePerspectiveFieldOfView(XMConvertToRadians(45.0f), 1.0f, NEAR_CLIP, NEAR_CLIP + maxDepth);
-		Matrix lightViewProj = lightView * projection;
-		buffer.lightViewProj = XMMatrixTranspose(lightViewProj);
-		buffer.lightPosition = lightPos;
-		buffer.maxDepth = maxDepth;
-		buffer.offset = m_offset / maxDepth;
-		//		buffer.VSMFilterEnable = m_vsmFilterEnable;
-		buffer.VSMFilterEnable = false;
-
-		*static_cast<ConstantBuffer*>(mappedResource.pData) = buffer;
-		context->Unmap(m_shadowMapConstantBuffer.Get(), 0);
-	}
-	//----------------------------------//
-	// 定数バッファを設定（終）         //
-	//----------------------------------//
+    ID3D11ShaderResourceView* nullSRV[2] = { nullptr };
+    context->PSSetShaderResources(0, 2, nullSRV);
+    context->OMSetRenderTargets(1, &renderTarget, depthStencil);
+    auto const viewport = m_graphics->GetDeviceResources()->GetScreenViewport();
+    context->RSSetViewports(1, &viewport);
 }
-
-// シャドウマップ作成時に呼び出すカスタムステート
-void ShadowMap::DrawShadowMap(ID3D11DeviceContext* context)
-{
-	// 入力レイアウトの設定
-	context->IASetInputLayout(m_shadowMapInputLayout.Get());
-
-	// 頂点シェーダーの設定
-	context->VSSetShader(m_VS_ShadowMap.Get(), nullptr, 0);
-	context->VSSetConstantBuffers(1, 1, m_shadowMapConstantBuffer.GetAddressOf());
-
-	// ピクセルシェーダーの設定
-	context->PSSetShader(m_PS_ShadowMap.Get(), nullptr, 0);
-	context->PSSetConstantBuffers(1, 1, m_shadowMapConstantBuffer.GetAddressOf());
-}
-
-// 影付きのモデルを描画したい時に呼び出すカスタムステート
-// テクスチャなしのモデルを表示したい場合は第２引数をfalseにする事
-void ShadowMap::DrawShadow(ID3D11DeviceContext* context, bool texture)
-{
-	// 入力レイアウトの設定
-	context->IASetInputLayout(m_shadowMapInputLayout.Get());
-
-	// 頂点シェーダーの設定
-	context->VSSetShader(m_VS_ShadowModel.Get(), nullptr, 0);
-	context->VSSetConstantBuffers(1, 1, m_shadowMapConstantBuffer.GetAddressOf());
-
-	// ピクセルシェーダーの設定
-	if (texture)
-	{
-		// テクスチャ有
-		context->PSSetShader(m_PS_ShadowModel_Texture.Get(), nullptr, 0);
-	}
-	else
-	{
-		// テクスチャなし
-		context->PSSetShader(m_PS_ShadowModel.Get(), nullptr, 0);
-	}
-	context->PSSetConstantBuffers(1, 1, m_shadowMapConstantBuffer.GetAddressOf());
-	context->PSSetSamplers(1, 1, m_sampler.GetAddressOf());
-
-	// シャドウマップをシェダーリソースビューへ設定する
-	context->PSSetShaderResources(1, 1, m_shadowMapSRV.GetAddressOf());
-}
-
-// csoの入っているディレクトの設定関数
-void ShadowMap::SetDirectory(const wchar_t* path)
-{
-	if (path)
-	{
-		m_path = path;
-		if (m_path[m_path.size() - 1] != L'/')
-		{
-			m_path += L"/";
-		}
-	}
-	else
-	{
-		m_path.clear();
-	}
-}
-
-// 上方向ベクトルを算出する関数
-DirectX::SimpleMath::Vector3 ShadowMap::CalcUpVector(const DirectX::SimpleMath::Vector3& v)
-{
-	Matrix rotY = Matrix::CreateRotationY(atan2f(v.z, v.x));
-	Vector3 tmp = Vector3::Transform(v, rotY);
-	Vector3 up = Vector3(-tmp.y, tmp.x, tmp.z);
-	up = Vector3::Transform(up, rotY.Invert());
-	up.Normalize();
-	return up;
-}
-
