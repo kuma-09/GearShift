@@ -13,6 +13,10 @@ public:
 	static void RenderDepth();
 	static void EndDepth();
 
+	static DirectX::SimpleMath::Matrix GetLightView();
+	static DirectX::SimpleMath::Matrix GetLightProj();
+
+	static DX::RenderTexture* GetShadowRenderTexture();
 	static void ShadowMapShow();
 
 private:

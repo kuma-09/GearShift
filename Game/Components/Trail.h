@@ -7,6 +7,7 @@ class Trail : public IComponent
 public:
 
 	Trail();
+	~Trail();
 	void Initialize(const wchar_t* path,int bufferSize);
 	void Update(float elapsedTime);                               //頂点バッファを更新する
 	void Render(DirectX::XMVECTORF32 color = DirectX::Colors::White);

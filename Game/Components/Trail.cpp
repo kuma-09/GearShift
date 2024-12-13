@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Trail.h"
 #include "Framework/BinaryFile.h"
+#include "Game/Manager/RenderManager.h"
 
 /// <summary>
 /// インプットレイアウト
@@ -15,6 +16,9 @@ Trail::Trail()
 {
 	auto context = Graphics::GetInstance()->GetDeviceResources()->GetD3DDeviceContext();
 	auto device = Graphics::GetInstance()->GetDeviceResources()->GetD3DDevice();
+
+	RenderManager::Add(this);
+
 	m_batch = std::make_unique<DirectX::PrimitiveBatch<DirectX::VertexPositionTexture>>(context);
 	m_bufferCount = 0;
 
@@ -44,6 +48,11 @@ Trail::Trail()
 	bufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 	DX::ThrowIfFailed(device->CreateBuffer(&bufferDesc, nullptr, m_constantBuffer.ReleaseAndGetAddressOf()));
 
+}
+
+Trail::~Trail()
+{
+	RenderManager::Remove(this);
 }
 
 void Trail::Initialize(const wchar_t* path, int bufferSize)

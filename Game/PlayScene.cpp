@@ -27,6 +27,7 @@
 #include "System/HitStop.h"
 
 #include "Manager/RenderManager.h"
+#include "Manager/ObjectManager.h"
 
 PlayScene::PlayScene()
     :
@@ -147,7 +148,9 @@ void PlayScene::Update(float elapsedTime)
     m_hitEffect->Update(elapsedTime);
 
     // プレイヤーの更新
-    m_player->Update(elapsedTime);
+    //m_player->Update(elapsedTime);
+
+    ObjectManager::Update(elapsedTime);
 
     for (auto& dropItem : m_dropItem)
     {
@@ -163,31 +166,16 @@ void PlayScene::Update(float elapsedTime)
     }
     for (auto& enemy : m_Enemy)
     {
-        enemy->Update(elapsedTime);
         m_targetArea->Update(m_player.get(), enemy.get());
+        if (enemy->GetComponent<HP>()->GetHP() < 0)
+        {
+            ObjectManager::Remove(enemy.get());
+            CreateHitEffect(enemy->GetPosition());
+            m_player->SetTarget(nullptr);
+        }
     }
 
     m_player->SetTarget(m_targetArea->GetTarget());
-
-    std::vector<Enemy*> inAreaEnemy;
-
-    // 体力の無い敵を削除
-    for (auto it = m_Enemy.begin(); it != m_Enemy.end();)
-    {
-        if (it->get()->GetComponent<HP>()->GetHP() > 0)
-        {
-            it++;
-        }
-        else
-        {
-            CreateHitEffect(it->get()->GetPosition());
-            it = RemoveEnemy(it);
-            if (m_Enemy.empty())
-            {
-                GetGame()->ChangeScene(GetGame()->GetResultScene());
-            }
-        }
-    }
 
     // 当たり判定
     for (auto& collider : GetColliders())
@@ -201,37 +189,7 @@ void PlayScene::Update(float elapsedTime)
         }
     }
 
-    // プレイヤーがドロップアイテムに触れている時
-    for (auto it = m_dropItem.begin(); it != m_dropItem.end(); it++)
-    {
-        if (m_player->GetComponent<Collider>()->
-            GetBoundingBox()->Intersects(
-                *it->get()->GetComponent<Collider>()->GetBoundingBox()))
-        {
-            it->get()->SetHit(true);
-            Audio::GetInstance()->PlaySoundSE_PowerUp();
-            RemoveItem(it);
-            break;
-        }
-        else it->get()->SetHit(false);
-    }
-
-    // プレイヤーがドロップアイテムに触れている時
-    for (auto it = m_dropItemB.begin(); it != m_dropItemB.end(); it++)
-    {
-        if (m_player->GetComponent<Collider>()->
-            GetBoundingBox()->Intersects(
-                *it->get()->GetComponent<Collider>()->GetBoundingBox()))
-        {
-            it->get()->SetHit(true);
-            Audio::GetInstance()->PlaySoundSE_PowerUp();
-            m_player->AddWepon(it->get()->GetPart());
-            UpdateBulletMagazine();
-            RemoveItemB(it);
-            break;
-        }
-        else it->get()->SetHit(false);
-    }
+    ObjectManager::Delete();
 }
 
 /// <summary> 描画処理 </summary>
@@ -378,36 +336,42 @@ void PlayScene::CreateObject(std::string className, DirectX::SimpleMath::Vector3
     if (className == "Player")
     {
          m_player = std::make_unique<Player>(this);
+         ObjectManager::Add(m_player.get());
          m_player->Initialize();
          m_player->SetPosition(pos);
     }
     if (className == "BillA")
     {
         m_wall.emplace_back(std::make_unique<BillA>(this));
+        ObjectManager::Add(m_wall.back().get());
         m_wall.back()->SetPosition(pos);
         m_wall.back()->Initialize();
     }
     if (className == "BillB")
     {
         m_wall.emplace_back(std::make_unique<BillB>(this));
+        ObjectManager::Add(m_wall.back().get());
         m_wall.back()->SetPosition(pos);
         m_wall.back()->Initialize();
     }
     if (className == "HomingEnemy")
     {
         m_Enemy.emplace_back(std::make_unique<HomingEnemy>(this, m_player.get()));
+        ObjectManager::Add(m_Enemy.back().get());
         m_Enemy.back()->SetPosition(pos);
         m_Enemy.back()->Initialize();
     }
     if (className == "FixedEnemy")
     {
         m_Enemy.emplace_back(std::make_unique<FixedEnemy>(this, m_player.get()));
+        ObjectManager::Add(m_Enemy.back().get());
         m_Enemy.back()->SetPosition(pos);
         m_Enemy.back()->Initialize();
     }
     if (className == "BossEnemy")
     {
         m_Enemy.emplace_back(std::make_unique<BossEnemy>(this, m_player.get()));
+        ObjectManager::Add(m_Enemy.back().get());
         m_Enemy.back()->SetPosition(pos);
         m_Enemy.back()->Initialize();
     }

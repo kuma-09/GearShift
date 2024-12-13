@@ -69,6 +69,7 @@ public:
 	IScene* GetScene() { return m_scene; }
 
 public:
+	virtual void Initialize() {};
 	virtual void Update(float elapsedTime) = 0;
 	virtual void Render() {};
 	virtual void Collision(Collider* collider) { UNREFERENCED_PARAMETER(collider); };

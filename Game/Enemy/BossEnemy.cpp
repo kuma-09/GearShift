@@ -19,7 +19,7 @@
 #include "Game/Parts/BossHead.h"
 #include "Game/Parts/BossLeg.h"
 
-
+#include "Game/Manager/ObjectManager.h"
 
 BossEnemy::BossEnemy(IScene* scene,GameObject* target)
 {
@@ -60,7 +60,6 @@ BossEnemy::BossEnemy(IScene* scene,GameObject* target)
 
 BossEnemy::~BossEnemy()
 {
-	//RemoveAllComponents();
 }
 
 void BossEnemy::Initialize()
@@ -166,7 +165,6 @@ void BossEnemy::Render()
 
 void BossEnemy::Finalize()
 {
-
 }
 
 void BossEnemy::ShotMissile()
@@ -237,6 +235,5 @@ void BossEnemy::Collision(Collider* collider)
 		collider->GetTypeID() == Collider::Wall)
 	{
 		Collider::CheckHit(this, collider->GetOwner());
-
 	}
 }

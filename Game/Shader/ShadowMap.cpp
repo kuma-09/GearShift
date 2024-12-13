@@ -195,6 +195,39 @@ void ShadowMap::EndDepth()
     context->RSSetViewports(1, &viewport);
 }
 
+DirectX::SimpleMath::Matrix ShadowMap::GetLightView()
+{
+    using namespace DirectX;
+
+    // ライトの方向
+    SimpleMath::Vector3 lightDir = SimpleMath::Vector3::Transform(SimpleMath::Vector3(0.0f, 0.0f, 1.0f), m_lightRotate);
+
+    // ビュー行列を作成
+    auto view = SimpleMath::Matrix::CreateLookAt(
+        m_lightPosition,
+        m_lightPosition + lightDir,
+        SimpleMath::Vector3::UnitY
+    );
+
+    return view;
+}
+
+DirectX::SimpleMath::Matrix ShadowMap::GetLightProj()
+{
+    using namespace DirectX;
+
+    // 射影行列を作成
+    auto proj = SimpleMath::Matrix::CreatePerspectiveFieldOfView(
+        XMConvertToRadians(m_lightTheta), 1.0f, 0.1f, 100.0f);
+
+    return proj;
+}
+
+
+DX::RenderTexture* ShadowMap::GetShadowRenderTexture()
+{
+    return m_shadowMapRT.get();
+}
 
 void ShadowMap::ShadowMapShow()
 {

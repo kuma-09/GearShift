@@ -10,7 +10,6 @@ public:
 	static void BeginGBuffer();
 	static void DrawGBuffer(bool texture = false);
 	static void DeferredLighting();
-	static void TranslucentBegin();
 
 	static void GBufferShow();
 
@@ -39,6 +38,8 @@ private:
 		DirectX::XMMATRIX matView;
 		DirectX::XMMATRIX matProj;
 		DirectX::XMMATRIX inverseViewProj;
+		DirectX::XMMATRIX lightView;
+		DirectX::XMMATRIX lightProj;
 	};
 
 	static Microsoft::WRL::ComPtr<ID3D11Buffer> s_constantBuffer;

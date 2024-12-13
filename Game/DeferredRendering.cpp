@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "DeferredRendering.h"
+#include "Game/Shader/ShadowMap.h"
 #include "Framework/Graphics.h"
 #include "Framework/BinaryFile.h"
 
@@ -184,9 +185,6 @@ void DeferredRendering::DeferredLighting()
 
 	context->ClearRenderTargetView(renderTarget, DirectX::Colors::CornflowerBlue);
 	context->OMSetRenderTargets(1, &renderTarget, nullptr);
-
-	// 各種パラメータを更新する
-	//context->OMSetDepthStencilState(states->DepthRead(), 0);		// 深度バッファ/ステンシルバッファ
 	context->RSSetState(states->CullNone());						// カリング
 
 	auto const viewport = Graphics::GetInstance()->GetDeviceResources()->GetScreenViewport();
@@ -195,6 +193,7 @@ void DeferredRendering::DeferredLighting()
 	ID3D11ShaderResourceView* albedo = s_albedoRT->GetShaderResourceView();
 	ID3D11ShaderResourceView* normal = s_normalRT->GetShaderResourceView();
 	ID3D11ShaderResourceView* depth = s_depthRT->GetShaderResourceView();
+	ID3D11ShaderResourceView* shadow = ShadowMap::GetShadowRenderTexture()->GetShaderResourceView();
 
 	// 定数バッファをマップする
 	D3D11_MAPPED_SUBRESOURCE mappedResource;
@@ -203,6 +202,8 @@ void DeferredRendering::DeferredLighting()
 	cb->matView = view.Transpose();
 	cb->matProj = projection.Transpose();
 	cb->inverseViewProj = (view * projection).Invert();
+	cb->lightView = ShadowMap::GetLightView().Transpose();
+	cb->lightProj = ShadowMap::GetLightProj().Transpose();
 	// マップを解除する
 	context->Unmap(s_constantBuffer.Get(), 0);
 	// 定数バッファの設定
@@ -215,6 +216,7 @@ void DeferredRendering::DeferredLighting()
 	context->PSSetShaderResources(1, 1, &albedo);
 	context->PSSetShaderResources(2, 1, &normal);
 	context->PSSetShaderResources(3, 1, &depth);
+	context->PSSetShaderResources(4, 1, &shadow);
 	context->VSSetShader(s_vertexShader_light.Get(), nullptr, 0);
 	context->PSSetShader(s_pixelShader_light.Get(), nullptr, 0);
 	context->IASetInputLayout(m_inputLayoutLight.Get());
@@ -224,43 +226,9 @@ void DeferredRendering::DeferredLighting()
 	s_batch->End();
 
 	// リソースを使用する前にシェーダーリソーススロットを解除
-	ID3D11ShaderResourceView* nullSRV[3] = { nullptr,nullptr,nullptr };
-	context->PSSetShaderResources(1, 3, nullSRV);
+	ID3D11ShaderResourceView* nullSRV[4] = { nullptr,nullptr,nullptr,nullptr };
+	context->PSSetShaderResources(1, 4, nullSRV);
 	context->OMSetRenderTargets(1, &renderTarget, depthStencil);
-}
-
-void DeferredRendering::TranslucentBegin()
-{
-	auto context = Graphics::GetInstance()->GetDeviceResources()->GetD3DDeviceContext();
-	auto device = Graphics::GetInstance()->GetDeviceResources()->GetD3DDevice();
-	auto renderTarget = Graphics::GetInstance()->GetDeviceResources()->GetRenderTargetView();
-	auto depthStencil = Graphics::GetInstance()->GetDeviceResources()->GetDepthStencilView();
-
-	context->ClearRenderTargetView(renderTarget, DirectX::Colors::CornflowerBlue);
-	context->OMSetRenderTargets(1, &renderTarget, nullptr);
-
-	auto const viewport = Graphics::GetInstance()->GetDeviceResources()->GetScreenViewport();
-	context->RSSetViewports(1, &viewport);
-
-	ID3D11ShaderResourceView* albedo = s_albedoRT->GetShaderResourceView();
-	ID3D11ShaderResourceView* normal = s_normalRT->GetShaderResourceView();
-	ID3D11ShaderResourceView* depth = s_depthRT->GetShaderResourceView();
-
-	// シェーダを設定する
-	context->PSSetShaderResources(1, 1, &albedo);
-	context->PSSetShaderResources(2, 1, &normal);
-	context->PSSetShaderResources(3, 1, &depth);
-	context->VSSetShader(s_vertexShader_light.Get(), nullptr, 0);
-	context->PSSetShader(s_pixelShader_light.Get(), nullptr, 0);
-	context->IASetInputLayout(m_inputLayoutLight.Get());
-
-	s_batch->Begin();
-	s_batch->DrawQuad(s_vertex[0], s_vertex[1], s_vertex[3], s_vertex[2]);
-	s_batch->End();
-
-	// リソースを使用する前にシェーダーリソーススロットを解除
-	ID3D11ShaderResourceView* nullSRV[3] = { nullptr,nullptr,nullptr };
-	context->PSSetShaderResources(1, 3, nullSRV);
 }
 
 void DeferredRendering::GBufferShow()
