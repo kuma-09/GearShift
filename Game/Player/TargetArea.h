@@ -12,7 +12,7 @@ public:
 
 	void Initialize();
 	void ClearTarget();
-	bool Update(Player* plaer, GameObject* target);
+	bool Update(GameObject* plaer, GameObject* target);
 	void Render(GameObject* target);
 	void Finalize();
 

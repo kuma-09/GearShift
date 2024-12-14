@@ -7,6 +7,21 @@
 #include "Components/IComponent.h"
 #include "IScene.h"
 
+namespace Type
+{
+	enum TypeID
+	{
+		None,
+		Player,
+		PlayerBullet,
+		PlayerSword,
+		Enemy,
+		EnemyBullet,
+		Wall,
+		DropItem,
+		Floor
+	};
+}
 
 class GameObject
 {
@@ -68,6 +83,9 @@ public:
 	void SetScene(IScene* scene) { m_scene = scene; }
 	IScene* GetScene() { return m_scene; }
 
+	void SetType(Type::TypeID type) { m_typeID = type; }
+	const Type::TypeID GetType() { return m_typeID; }
+	
 public:
 	virtual void Initialize() {};
 	virtual void Update(float elapsedTime) = 0;
@@ -75,6 +93,7 @@ public:
 	virtual void Collision(Collider* collider) { UNREFERENCED_PARAMETER(collider); };
 private:
 	IScene* m_scene = nullptr;
+	Type::TypeID m_typeID;
 
 	// ç¿ïWÇ»Ç«
 	DirectX::SimpleMath::Vector3	m_position = DirectX::SimpleMath::Vector3::Zero;

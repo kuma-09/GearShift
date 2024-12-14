@@ -60,6 +60,7 @@ BossEnemy::BossEnemy(IScene* scene,GameObject* target)
 
 BossEnemy::~BossEnemy()
 {
+
 }
 
 void BossEnemy::Initialize()
@@ -123,6 +124,11 @@ void BossEnemy::Update(float elapsedTime)
 	// ç¿ïWÇÃà⁄ìÆ
 	SetPosition(GetPosition() + Vector3::Transform(GetVelocity(), GetQuaternion()));
 
+	if (GetComponent<HP>()->GetHP() <= 0)
+	{
+		ObjectManager::Remove(this);
+		static_cast<PlayScene*>(GetScene())->CreateHitEffect(GetPosition());
+	}
 }
 
 void BossEnemy::CreateShader()

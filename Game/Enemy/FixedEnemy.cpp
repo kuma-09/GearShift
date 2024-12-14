@@ -15,7 +15,7 @@
 #include "Game/Enemy/State/EnemyAttackState.h"
 #include "Game/Enemy/State/EnemyMoveState.h"
 
-
+#include "Game/Manager/ObjectManager.h"
 
 FixedEnemy::FixedEnemy(IScene* scene,GameObject* target)
 {
@@ -82,6 +82,12 @@ void FixedEnemy::Update(float elapsedTime)
 	world *= Matrix::CreateTranslation(GetPosition() + Vector3{ 0,-0.9f,0 });
 
 	SetWorld(world);
+
+	if (GetComponent<HP>()->GetHP() <= 0)
+	{
+		ObjectManager::Remove(this);
+		static_cast<PlayScene*>(GetScene())->CreateHitEffect(GetPosition());
+	}
 }
 
 void FixedEnemy::CreateShader()
@@ -104,7 +110,7 @@ void FixedEnemy::Render()
 
 void FixedEnemy::Finalize()
 {
-	dynamic_cast<PlayScene*>(GetScene())->RemoveCollider(m_bullet->GetComponent<Collider>());
+	//dynamic_cast<PlayScene*>(GetScene())->RemoveCollider(m_bullet->GetComponent<Collider>());
 }
 
 void FixedEnemy::Shot()
@@ -148,6 +154,5 @@ void FixedEnemy::Collision(Collider* collider)
 		collider->GetTypeID() == Collider::Wall)
 	{
 		Collider::CheckHit(this, collider->GetOwner());
-
 	}
 }

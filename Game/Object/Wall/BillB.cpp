@@ -18,21 +18,22 @@ BillB::~BillB()
 
 void BillB::Initialize()
 {
-	using namespace DirectX::SimpleMath;
-
 	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetBillBModel());
 	SetScale({ 4, 8, 4 });
 	GetComponent<Collider>()->SetSize(GetScale());
 	GetComponent<Collider>()->GetBoundingBox()->Center = GetPosition();
-
-	Matrix world = Matrix::Identity;
-	world *= Matrix::CreateTranslation(Vector3{ GetPosition().x,GetPosition().y - GetScale().y,GetPosition().z });
-	SetWorld(world);
 }
 
 void BillB::Update(float elapsedtime)
 {
+	using namespace DirectX::SimpleMath;
 	UNREFERENCED_PARAMETER(elapsedtime);
+	Matrix world = Matrix::Identity;
+	world *= Matrix::CreateTranslation(Vector3{ GetPosition().x,GetPosition().y - GetScale().y,GetPosition().z });
+	SetWorld(world);
+
+	GetComponent<Collider>()->SetSize(GetScale());
+	GetComponent<Collider>()->GetBoundingBox()->Center = GetPosition();
 }
 
 void BillB::CreateShadow()

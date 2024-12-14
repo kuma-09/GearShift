@@ -6,20 +6,17 @@
 #include "Framework/Microsoft/DebugDraw.h"
 #include "Framework/Audio.h"
 #include "Framework/Json.h"
-#include "Game/Components/HP.h"
-#include "Game/Components/Camera.h"
-#include "Game/Components/Collider.h"
-#include "Game/Components/HPBar.h"
-#include "Game/Components/ModelDraw.h"
 
-
+#include "Player/Player.h"
+#include "Enemy/FixedEnemy.h"
+#include "Enemy/HomingEnemy.h"
+#include "Enemy/BossEnemy.h"
 #include "Game/Object/Wall/BillA.h"
 #include "Game/Object/Wall/BillB.h"
 #include "Game/Object/Bullet/HomingBullet.h"
 
 #include "Game/Particle/HitParticle.h"
 
-#include "UI/HPUI.h"
 #include "Game/Animation/StartAnimation.h"
 #include "UI/BulletMagazine.h"
 #include "UI/ExBulletMagazine.h"
@@ -103,8 +100,6 @@ void PlayScene::Initialize(Game* game)
     m_postProcess = std::make_unique<PostProcess>();
     m_postProcess->Initialize();
 
-    m_hpUI = std::make_unique<HPUI>();
-
     m_hitEffect = std::make_unique<ExplosionEffect>();
     m_hitEffect->Initialize();
 
@@ -149,6 +144,15 @@ void PlayScene::Update(float elapsedTime)
 
     // プレイヤーの更新
     //m_player->Update(elapsedTime);
+    auto enemys = ObjectManager::GetTypeObjects(Type::Enemy);
+
+    for (auto& enemy : enemys)
+    {
+        m_targetArea->Update(m_player.lock().get(), enemy.lock().get());
+    }
+
+    static_cast<Player*>(m_player.lock().get())->SetTarget(m_targetArea->GetTarget());
+
 
     ObjectManager::Update(elapsedTime);
 
@@ -164,18 +168,6 @@ void PlayScene::Update(float elapsedTime)
     {
         floor->Update(elapsedTime);
     }
-    for (auto& enemy : m_Enemy)
-    {
-        m_targetArea->Update(m_player.get(), enemy.get());
-        if (enemy->GetComponent<HP>()->GetHP() < 0)
-        {
-            ObjectManager::Remove(enemy.get());
-            CreateHitEffect(enemy->GetPosition());
-            m_player->SetTarget(nullptr);
-        }
-    }
-
-    m_player->SetTarget(m_targetArea->GetTarget());
 
     // 当たり判定
     for (auto& collider : GetColliders())
@@ -206,10 +198,10 @@ void PlayScene::TranslucentRender()
     {
         particle->Render(m_graphics->GetViewMatrix(), m_graphics->GetProjectionMatrix());
     }
-    if (m_player->GetTarget())
-    {
-        m_player->GetTarget()->GetComponent<HPBar>()->Render(m_player->GetTarget()->GetPosition());
-    }
+    //if (m_player->GetTarget())
+    //{
+    //    m_player->GetTarget()->GetComponent<HPBar>()->Render(m_player->GetTarget()->GetPosition());
+    //}
     m_hitEffect->Render();
 }
 
@@ -217,7 +209,7 @@ void PlayScene::RenderUI()
 {
     // UI
     m_targetArea->Render(m_targetArea->GetTarget());
-    m_player->RenderPlayerUI();
+    static_cast<Player*>(m_player.lock().get())->RenderPlayerUI();
     m_bulletMagazine->Render();
     m_exBulletMagazine->Render();
     m_startAnimation->Render();
@@ -226,40 +218,12 @@ void PlayScene::RenderUI()
 /// <summary> 終了処理 </summary>
 void PlayScene::Finalize()
 {
-    GetColliders().clear();
-    m_player.reset();
-
-    for (auto& enemy: m_Enemy)
-    {
-        enemy.reset();
-    }
-    m_Enemy.clear();
-
-    for (auto& dropItem : m_dropItem)
-    {
-        dropItem.reset();
-    }
-    m_dropItem.clear();
-
-    for (auto& dropItem : m_dropItemB)
-    {
-        dropItem.reset();
-    }
-    m_dropItemB.clear();
-
-
-    for (auto& hitParticle: m_hitParticle)
-    {
-        hitParticle.reset();
-    }
-    m_hitParticle.clear();
-    
 }
 
 void PlayScene::UpdateBulletMagazine()
 {
-    m_bulletMagazine->Initialize(m_player->GetBulletSize());
-    m_exBulletMagazine->Initialize(m_player->GetExBulletSize());
+    m_bulletMagazine->Initialize(static_cast<Player*>(m_player.lock().get())->GetBulletSize());
+    m_exBulletMagazine->Initialize(static_cast<Player*>(m_player.lock().get())->GetExBulletSize());
 }
 
 void PlayScene::SetNoise()
@@ -314,86 +278,33 @@ void PlayScene::CreateHitEffect(DirectX::SimpleMath::Vector3 pos)
     m_hitEffect->Set(pos);
 }
 
-/// <summary>
-/// 影用のテクスチャを作成
-/// </summary>
-void PlayScene::CreateShadow()
-{
-}
-
-void PlayScene::ObjectsRender(std::vector<std::unique_ptr<GameObject>> objects)
-{
-    for (auto& object : objects)
-    {
-        object->Render();
-    }
-}
-
 // Jsonから読み取った座標にオブジェクトを生成
 void PlayScene::CreateObject(std::string className, DirectX::SimpleMath::Vector3 pos)
 {
     using namespace DirectX::SimpleMath;
     if (className == "Player")
     {
-         m_player = std::make_unique<Player>(this);
-         ObjectManager::Add(m_player.get());
-         m_player->Initialize();
-         m_player->SetPosition(pos);
+        m_player = ObjectManager::Add(std::make_shared<Player>(this),pos);
     }
     if (className == "BillA")
     {
-        m_wall.emplace_back(std::make_unique<BillA>(this));
-        ObjectManager::Add(m_wall.back().get());
-        m_wall.back()->SetPosition(pos);
-        m_wall.back()->Initialize();
+        ObjectManager::Add(std::make_shared<BillA>(this),pos);
     }
     if (className == "BillB")
     {
-        m_wall.emplace_back(std::make_unique<BillB>(this));
-        ObjectManager::Add(m_wall.back().get());
-        m_wall.back()->SetPosition(pos);
-        m_wall.back()->Initialize();
+        ObjectManager::Add(std::make_shared<BillB>(this),pos);
     }
     if (className == "HomingEnemy")
     {
-        m_Enemy.emplace_back(std::make_unique<HomingEnemy>(this, m_player.get()));
-        ObjectManager::Add(m_Enemy.back().get());
-        m_Enemy.back()->SetPosition(pos);
-        m_Enemy.back()->Initialize();
+        ObjectManager::Add(std::make_shared<HomingEnemy>(this,m_player.lock().get()),pos, Type::Enemy);
     }
     if (className == "FixedEnemy")
     {
-        m_Enemy.emplace_back(std::make_unique<FixedEnemy>(this, m_player.get()));
-        ObjectManager::Add(m_Enemy.back().get());
-        m_Enemy.back()->SetPosition(pos);
-        m_Enemy.back()->Initialize();
+        ObjectManager::Add(std::make_shared<FixedEnemy>(this, m_player.lock().get()),pos, Type::Enemy);
     }
     if (className == "BossEnemy")
     {
-        m_Enemy.emplace_back(std::make_unique<BossEnemy>(this, m_player.get()));
-        ObjectManager::Add(m_Enemy.back().get());
-        m_Enemy.back()->SetPosition(pos);
-        m_Enemy.back()->Initialize();
+        ObjectManager::Add(std::make_shared<BossEnemy>(this, m_player.lock().get()),pos, Type::Enemy);
     }
     
-}
-
-std::vector<std::unique_ptr<Enemy>>::iterator PlayScene::RemoveEnemy(std::vector<std::unique_ptr<Enemy>>::iterator it)
-{
-    it->get()->Finalize();
-    m_player->SetTarget(nullptr);
-    return it = m_Enemy.erase(it);
-}
-
-void PlayScene::RemoveItem(std::vector<std::unique_ptr<DropItem>>::iterator it)
-{
-    //Part::TypeID typeID = it->get()->GetPartType();
-    //m_player->SetPart(typeID, it->get()->GetPart());
-    m_player->GetComponent<HP>()->SetHP(m_player->GetComponent<HP>()->GetHP() + 5);
-    it = m_dropItem.erase(it);
-}
-
-void PlayScene::RemoveItemB(std::vector<std::unique_ptr<DropItemB>>::iterator it)
-{
-    it = m_dropItemB.erase(it);
 }

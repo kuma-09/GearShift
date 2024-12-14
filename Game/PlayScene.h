@@ -4,23 +4,16 @@
 #include "Framework/InputManager.h"
 #include "Framework/DeviceResources.h"
 #include "Game/Particle/Emitter.h"
-#include "Player/Player.h"
-#include "Enemy/FixedEnemy.h"
-#include "Enemy/HomingEnemy.h"
-#include "Enemy/BossEnemy.h"
-#include "Game/Object/Wall/Wall.h"
 #include "Game/Object/DropItem.h"
 #include "Game/Object/DropItemB.h"
 #include "Game/Object/SkyDome.h"
 #include "Game/Object/Floor.h"
-
-#include "Game/Player/TargetArea.h"
+#include "Game/Player/Player.h"
+#include "Game/Player/TargetArea.h" 
 #include "Shader/PostProcess.h"
-
 #include "Framework/DebugString.h"
 
 class Camera;
-class HPUI;
 class Reload;
 class HitParticle;
 class ExplosionEffect;
@@ -39,7 +32,6 @@ public:
 	
 	void Update(float elapsedTime) override;
 	
-	void CreateShadow() override;
 	void Render() override;
 	void TranslucentRender() override;
 	void RenderUI() override;
@@ -54,14 +46,7 @@ public:
 	void CreateHitEffect(DirectX::SimpleMath::Vector3 pos);
 private:
 
-	void ObjectsRender(std::vector<std::unique_ptr<GameObject>> objects);
 	void CreateObject(std::string className, DirectX::SimpleMath::Vector3 pos);
-	// 敵を削除
-	std::vector<std::unique_ptr<Enemy>>::iterator RemoveEnemy(std::vector<std::unique_ptr<Enemy>>::iterator it);
-
-	// アイテムを削除
-	void RemoveItem(std::vector<std::unique_ptr<DropItem>>::iterator it);
-	void RemoveItemB(std::vector<std::unique_ptr<DropItemB>>::iterator it);
 
 private:
 
@@ -74,11 +59,7 @@ private:
 	// ゲームオブジェクトをまとめたポインタ配列
 	std::vector<GameObject*> m_gameObjects;
 	// プレイヤー
-	std::unique_ptr<Player> m_player;
-	// エネミー配列
-	std::vector<std::unique_ptr<Enemy>> m_Enemy;
-	// 壁配列
-	std::vector<std::unique_ptr<Wall>> m_wall;
+	std::weak_ptr<GameObject> m_player;
 	// アイテム配列
 	std::vector<std::unique_ptr<DropItem>> m_dropItem;
 	std::vector<std::unique_ptr<DropItemB>> m_dropItemB;
@@ -91,8 +72,6 @@ private:
 
 	std::vector<std::unique_ptr<Bullet>> m_bullets;
 
-	// HPの表示UI
-	std::unique_ptr<HPUI> m_hpUI;
 	// ヒットパーティクル
 	std::vector<std::unique_ptr<HitParticle>> m_hitParticle;
 	// 撃破エフェクト

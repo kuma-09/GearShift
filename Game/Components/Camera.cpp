@@ -54,7 +54,7 @@ void Camera::Update(float elapsedTime)
     // カメラのデフォルトの座標ベクトル
     DirectX::SimpleMath::Vector3 eye{ 0.0f,CAMERA_HEIGHT,CAMERA_DISTANCE };
 
-    if (m_enemy)
+     if (m_enemy)
     {
         // カメラのデフォルトの座標ベクトル
         DirectX::SimpleMath::Vector3 eye{ 0.0f,-CAMERA_HEIGHT,CAMERA_DISTANCE };
@@ -62,7 +62,7 @@ void Camera::Update(float elapsedTime)
         eye = DirectX::SimpleMath::Vector3::Transform(eye, m_quaternion);
         m_targetPosition += (m_enemy->GetPosition() - m_targetPosition) * (CAMERA_TARGET_RATE * 0.25f);
         m_eyePosition += (m_player->GetPosition() + eye - m_eyePosition) * (CAMERA_EYE_RATE * 0.25f);
-        m_quaternion = Quaternion::Lerp(m_quaternion,Quaternion::CreateFromRotationMatrix(Matrix::CreateLookAt(m_eyePosition, m_targetPosition, Vector3::Down)),elapsedTime);
+        m_quaternion = Quaternion::Lerp(m_quaternion,Quaternion::CreateFromRotationMatrix(Matrix::CreateLookAt(m_eyePosition, m_targetPosition, Vector3::Down)),0.25f);
     }
     else
     {

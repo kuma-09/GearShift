@@ -15,6 +15,8 @@
 #include "Game/Enemy/State/EnemyAttackState.h"
 #include "Game/Enemy/State/EnemyMoveState.h"
 
+#include "Game/Manager/ObjectManager.h"
+
 HomingEnemy::HomingEnemy(IScene* scene,GameObject* target)
 {
 	SetScene(scene);
@@ -86,6 +88,12 @@ void HomingEnemy::Update(float elapsedTime)
 	world *= Matrix::CreateTranslation(GetPosition());
 
 	SetWorld(world);
+
+	if (GetComponent<HP>()->GetHP() <= 0)
+	{
+		ObjectManager::Remove(this);
+		static_cast<PlayScene*>(GetScene())->CreateHitEffect(GetPosition());
+	}
 }
 
 void HomingEnemy::CreateShader()

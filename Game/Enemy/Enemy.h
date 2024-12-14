@@ -3,6 +3,7 @@
 #include "Framework/DeviceResources.h"
 #include "Framework/Resources.h"
 #include "Game/GameObject.h"
+#include "Game/Player/Player.h"
 #include "State/EnemyAttackState.h"
 #include "State/EnemyMoveState.h"
 

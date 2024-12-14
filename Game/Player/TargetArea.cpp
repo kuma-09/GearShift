@@ -51,7 +51,7 @@ void TargetArea::ClearTarget()
     m_target = nullptr;
 }
 
-bool TargetArea::Update(Player* player , GameObject* target)
+bool TargetArea::Update(GameObject* player , GameObject* target)
 {
     using namespace DirectX::SimpleMath;
 
