@@ -4,17 +4,16 @@
 #include "Game/Components/Collider.h"
 #include "Game/Components/Physics.h"
 
-DropItemB::DropItemB(IScene* scene, std::vector<std::unique_ptr<Bullet>> wepons)
+DropItemB::DropItemB(IScene* scene)
 {
 	SetScene(scene);
 	AddComponent<Physics>();
 	AddComponent<Collider>();
-	GetComponent<Collider>()->SetTypeID(Collider::TypeID::DropItem);
+	GetComponent<Collider>()->SetTypeID(Collider::TypeID::DropItemB);
 	GetComponent<Collider>()->SetSize(DirectX::SimpleMath::Vector3::One * 2);
 	AddComponent<ModelDraw>();
 	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetDropItemModel(),true);
 
-	m_bullet = std::move(wepons);
 
 	using namespace DirectX;
 

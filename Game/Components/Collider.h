@@ -1,6 +1,7 @@
 #pragma once
 #include "IComponent.h"
 #include "Framework/Graphics.h"
+#include "Game/Manager/CollisionManager.h"
 
 
 class Collider : public IComponent
@@ -15,6 +16,7 @@ public:
 		EnemyBullet,
 		Wall,
 		DropItem,
+		DropItemB,
 		Floor
 	};
 

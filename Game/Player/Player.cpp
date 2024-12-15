@@ -289,6 +289,14 @@ void Player::Collision(Collider* collider)
 			}
 		}
 	}
+
+	if (collider->GetTypeID() == Collider::DropItemB)
+	{
+		for (auto& bullet : m_exBullet)
+		{
+			bullet->Initialize(this);
+		}
+	}
 	
 	if (collider->GetTypeID() == Collider::Floor)
 	{
@@ -341,6 +349,11 @@ void Player::CreateBullets()
 		m_defaultBullet.emplace_back(std::make_unique<NormalBullet>(GetScene(), Collider::TypeID::PlayerBullet));
 		m_defaultBullet.back()->Initialize(this);
 	}
-	// 特殊弾はクリア
-	m_exBullet.clear();
+
+	// ホーミング弾を作成
+	for (int i = 0; i < MAX_EXBULLET_COUNT; i++)
+	{
+		m_exBullet.emplace_back(std::make_unique<HomingBullet>(GetScene(), Collider::TypeID::PlayerBullet));
+		m_exBullet.back()->Initialize(this);
+	}
 }

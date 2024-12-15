@@ -79,7 +79,6 @@ void BossHead::Collision(Collider* collider)
 		Bullet* bulletObject = static_cast<Bullet*>(collider->GetOwner());
 		if (bulletObject->GetState() == Bullet::FLYING)
 		{
-				GetOwner()->GetComponent<Camera>()->shake();
 				GetComponent<HP>()->SetHP(GetComponent<HP>()->GetHP() - 1);
 				bulletObject->Hit();
 				static_cast<PlayScene*>(GetOwner()->GetScene())->SetNoise();

@@ -47,6 +47,11 @@ void ObjectManager::Delete()
 	s_deleteObjects.clear();
 }
 
+void ObjectManager::Clear()
+{
+	s_gameObjects.clear();
+}
+
 std::vector<std::weak_ptr<GameObject>> ObjectManager::GetTypeObjects(Type::TypeID type)
 {
 	std::vector<std::weak_ptr<GameObject>> results;

@@ -25,6 +25,7 @@
 
 #include "Manager/RenderManager.h"
 #include "Manager/ObjectManager.h"
+#include "Manager/CollisionManager.h"
 
 PlayScene::PlayScene()
     :
@@ -39,7 +40,7 @@ PlayScene::PlayScene()
 
 PlayScene::~PlayScene()
 {
-    Finalize();
+    //Finalize();
 }
 
 /// <summary> èâä˙âªèàóù </summary>
@@ -69,25 +70,6 @@ void PlayScene::Initialize(Game* game)
     {
         CreateObject(str[i], pos[i]);
     }
-
-
-    std::vector<std::unique_ptr<Bullet>> bullets;
-    std::vector<std::unique_ptr<Bullet>> bullets2;
-
-    for (int i = 0; i < 10; i++)
-    {
-        bullets.emplace_back(std::make_unique<HomingBullet>(this, Collider::PlayerBullet));
-        bullets2.emplace_back(std::make_unique<HomingBullet>(this, Collider::PlayerBullet));
-    }
-
-    m_dropItem.emplace_back(std::make_unique<DropItem>(this));
-    m_dropItem.back()->SetPosition(Vector3(5, 10, 5));
-
-    m_dropItemB.emplace_back(std::make_unique<DropItemB>(this, std::move(bullets)));
-    m_dropItemB.back()->SetPosition(Vector3(10, 3, 10));
-
-    m_dropItemB.emplace_back(std::make_unique<DropItemB>(this, std::move(bullets2)));
-    m_dropItemB.back()->SetPosition(Vector3(10, 30, 30));
 
     m_floor.emplace_back(std::make_unique<Floor>(this));
 
@@ -160,26 +142,12 @@ void PlayScene::Update(float elapsedTime)
     {
         dropItem->Update(elapsedTime);
     }
-    for (auto& dropItem : m_dropItemB)
-    {
-        dropItem->Update(elapsedTime);
-    }
     for (auto& floor : m_floor)
     {
         floor->Update(elapsedTime);
     }
 
-    // ìñÇΩÇËîªíË
-    for (auto& collider : GetColliders())
-    {
-        for (auto& enemyCollider : GetColliders())
-        {
-            if (collider->GetBoundingBox()->Intersects(*enemyCollider->GetBoundingBox()))
-            {
-                collider->GetOwner()->Collision(enemyCollider);
-            }
-        }
-    }
+    CollisionManager::Update();
 
     ObjectManager::Delete();
 }
@@ -218,6 +186,8 @@ void PlayScene::RenderUI()
 /// <summary> èIóπèàóù </summary>
 void PlayScene::Finalize()
 {
+    ObjectManager::Clear();
+    RenderManager::Clear();
 }
 
 void PlayScene::UpdateBulletMagazine()
@@ -306,5 +276,8 @@ void PlayScene::CreateObject(std::string className, DirectX::SimpleMath::Vector3
     {
         ObjectManager::Add(std::make_shared<BossEnemy>(this, m_player.lock().get()),pos, Type::Enemy);
     }
-    
+    if (className == "DropItemB")
+    {
+        ObjectManager::Add(std::make_shared<DropItemB>(this),pos);
+    }   
 }

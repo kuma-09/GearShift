@@ -74,17 +74,6 @@ public:
 
 
 	void Collision(Collider* collider);
-	
-	void AddWepon(std::vector<std::unique_ptr<Bullet>> bullets)
-	{
-
-		m_exBullet = std::move(bullets);
-		m_exBulletSize = int(m_exBullet.size());
-		for (auto& bullet: m_exBullet)
-		{
-			bullet->Initialize(this);
-		}
-	}
 
 private:
 	void Reload();
@@ -128,6 +117,8 @@ private:
 
 	// 弾の最大数
 	static const int MAX_BULLET_COUNT = 30;
+	// 追加弾の最大数
+	static const int MAX_EXBULLET_COUNT = 10;
 
 	// 一フレーム前の座標
 	DirectX::SimpleMath::Vector3 m_prePosition;

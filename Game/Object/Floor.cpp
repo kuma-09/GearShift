@@ -35,5 +35,19 @@ void Floor::Render()
 	world *= Matrix::CreateTranslation(GetPosition());
 	SetWorld(world);
 	GetComponent<ModelDraw>()->Render();
+
+	//for (int i = 0; i < 2; i++)
+	//{
+	//    for (int n = 0; n < 2; n++)
+	//    {
+	//        //Matrix world = Matrix::CreateTranslation(Vector3{ -50 + float(i) * 100 ,1, -50 + float(n) * 100 } + Vector3::Zero );
+	//        //Resources::GetInstance()->GetFloorModel()->Draw(context, *state, world, view, proj, false, [&]
+	//        //    {
+	//        //        Resources::GetInstance()->GetShadow()->Draw(true);
+	//        //    }
+	//        //);
+	//    }
+	//}
+
 	//GetComponent<Collider>()->Render();
 }

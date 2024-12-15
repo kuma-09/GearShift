@@ -34,6 +34,7 @@ private:
 	std::unique_ptr<TitleCamera> m_camera;
 	std::unique_ptr<SkyDome> m_skydome;
 	std::unique_ptr<TitlePlayer> m_player;
+	std::unique_ptr<Floor> m_floor;
 	std::unique_ptr<UI> m_titleLogo;
 	std::unique_ptr<UI> m_menuBack;
 	std::unique_ptr<Menu> m_menu;

@@ -56,16 +56,19 @@ void RenderManager::RenderParticle()
 
 void RenderManager::Remove(ModelDraw* component)
 {
+	if (s_modelDraws.empty()) return;
 	s_modelDraws.erase(std::remove(s_modelDraws.begin(), s_modelDraws.end(), component), s_modelDraws.end());
 }
 
 void RenderManager::Remove(Emitter* component)
 {
+	if (s_emitters.empty()) return;
 	s_emitters.erase(std::remove(s_emitters.begin(), s_emitters.end(), component), s_emitters.end());
 }
 
 void RenderManager::Remove(Trail* component)
 {
+	if (s_trail.empty()) return;
 	s_trail.erase(std::remove(s_trail.begin(), s_trail.end(), component), s_trail.end());
 }
 

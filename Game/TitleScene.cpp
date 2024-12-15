@@ -30,11 +30,13 @@ void TitleScene::Initialize(Game* game)
     m_player = std::make_unique<TitlePlayer>(this);
     m_player->SetPosition(Vector3{ 0,2.4,0 });
     m_player->Initialize();
-
     
     m_camera = std::make_unique<TitleCamera>();
     m_camera->Initialize(m_player.get());
     m_camera->SetPosition(Vector3{ 0,5,-5 });
+
+    m_floor = std::make_unique<Floor>(this);
+
 
     m_menu = std::make_unique<Menu>();
     m_menu->AddUI(L"Resources/Textures/Start.png", {0,450}, {0.5f,0.5f});
@@ -108,40 +110,8 @@ void TitleScene::Render()
     using namespace DirectX;
     using namespace DirectX::SimpleMath;
 
-    auto context = m_graphics->GetDeviceResources()->GetD3DDeviceContext();
-    auto state = m_graphics->GetCommonStates();
-    auto view = m_graphics->GetViewMatrix();
-    auto proj = m_graphics->GetProjectionMatrix();
-
-
-
-     m_player->CreateShadow();
-
     m_skydome->Render();
-    m_player->Render();
-    for (int i = 0; i < 2; i++)
-    {
-        for (int n = 0; n < 2; n++)
-        {
-            //Matrix world = Matrix::CreateTranslation(Vector3{ -50 + float(i) * 100 ,1, -50 + float(n) * 100 } + Vector3::Zero );
-            //Resources::GetInstance()->GetFloorModel()->Draw(context, *state, world, view, proj, false, [&]
-            //    {
-            //        Resources::GetInstance()->GetShadow()->Draw(true);
-            //    }
-            //);
-        }
-    }
-
-
-    m_titleLogo->Render(Vector2::Zero,Colors::White,Vector2::Zero,{0.5f,0.5f});
-    m_menu->Render(Vector2{ 1500 - m_menuPosition * 1280,0});
-
-    if (m_isStageSelect)
-    {
-        m_menuBack->Render(Vector2{ 1920 - m_stageMenuPosition * 1280,360 }, DirectX::XMVECTORF32({ 1,1,1,0.5f }), Vector2(640, 360), Vector2(0.9f, 0.9f));
-        m_stageMenu->Render(Vector2{ 1920 - m_stageMenuPosition * 1280,0   });
-    }
-
+    RenderManager::RenderObjects();
 }
 
 void TitleScene::RenderUI()
@@ -151,6 +121,12 @@ void TitleScene::RenderUI()
 
     m_titleLogo->Render(Vector2::Zero,Colors::White,Vector2::Zero,{0.5f,0.5f});
     m_menu->Render(Vector2{ 1500 - m_menuPosition * 1280,0});
+
+    if (m_isStageSelect)
+    {
+        m_menuBack->Render(Vector2{ 1920 - m_stageMenuPosition * 1280,360 }, DirectX::XMVECTORF32({ 1,1,1,0.5f }), Vector2(640, 360), Vector2(0.9f, 0.9f));
+        m_stageMenu->Render(Vector2{ 1920 - m_stageMenuPosition * 1280,0   });
+    }
 }
 
 void TitleScene::Finalize()

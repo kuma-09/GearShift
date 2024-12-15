@@ -37,6 +37,7 @@
 		{"Object_Name": "HomingEnemy","position":{"x":  0.0, "y":  5.0, "z": -20.0}},
 		{"Object_Name": "HomingEnemy","position":{"x": 32.0, "y":  5.0, "z": -30.0}},
 		{"Object_Name": "FixedEnemy" ,"position":{"x": 30.0, "y":  5.0, "z": -40.0}},
-		{"Object_Name": "BossEnemy"  ,"position":{"x": 32.0, "y":  5.0, "z": -50.0}}
+		{"Object_Name": "BossEnemy"  ,"position":{"x": 32.0, "y":  5.0, "z": -50.0}},
+		{"Object_Name": "DropItemB"  ,"position":{"x":  0.0, "y":  5.0, "z":   0.0}}
 	]
 }

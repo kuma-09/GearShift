@@ -9,6 +9,7 @@ public:
 	static void Update(float elapsedTime);
 	static void Remove(GameObject* object);
 	static void Delete();
+	static void Clear();
 
 	static std::vector<std::weak_ptr<GameObject>> GetTypeObjects(Type::TypeID type);
 private:

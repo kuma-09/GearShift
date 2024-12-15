@@ -117,11 +117,6 @@ void HomingEnemy::Render()
 void HomingEnemy::Finalize()
 {
 	Audio::GetInstance()->PlaySoundSE_Hit();
-	for (auto& bullet : m_bullet)
-	{
-		static_cast<PlayScene*>(GetScene())->RemoveCollider(bullet->GetComponent<Collider>());
-	}
-
 }
 
 void HomingEnemy::Shot()

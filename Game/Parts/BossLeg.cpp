@@ -81,16 +81,9 @@ void BossLeg::Collision(Collider* collider)
 		{
 			if (GetComponent<HP>()->GetHP() > 0)
 			{
-				GetOwner()->GetComponent<Camera>()->shake();
 				GetComponent<HP>()->SetHP(GetComponent<HP>()->GetHP() - 1);
 				bulletObject->Hit();
-				static_cast<PlayScene*>(GetOwner()->GetScene())->SetNoise();
 				m_isHit = true;
-			}
-			else
-			{
-				//auto game = static_cast<PlayScene*>(GetOwner()->GetScene())->GetGame();
-				//game->ChangeScene(game->GetGameOverScene());
 			}
 		}
 	}
@@ -98,5 +91,4 @@ void BossLeg::Collision(Collider* collider)
 
 void BossLeg::Action()
 {
-	static_cast<Player*>(GetOwner())->Shot();
 }

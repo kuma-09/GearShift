@@ -4,6 +4,7 @@
 #include "Game/GameObject.h"
 #include "Framework/Microsoft/DebugDraw.h"
 #include "Game/PlayScene.h"
+#include "Game/Manager/CollisionManager.h"
 
 Collider::Collider()
 {
@@ -12,14 +13,12 @@ Collider::Collider()
 	m_boudingBox->Center = DirectX::SimpleMath::Vector3::Zero;
 	m_boudingBox->Extents = DirectX::SimpleMath::Vector3(0.5f, 0.5f, 0.5f);
     m_initalePosition = DirectX::SimpleMath::Vector3::Zero;
+    CollisionManager::Add(this);
 }
 
 Collider::~Collider()
 {
-    if (GetOwner()->GetScene())
-    {
-        GetOwner()->GetScene()->RemoveCollider(this);
-    }
+    CollisionManager::Remove(this);
 }
 
 void Collider::Initialize()
@@ -61,7 +60,6 @@ void Collider::SetInitalePosition(DirectX::SimpleMath::Vector3 pos)
 void Collider::SetTypeID(TypeID id)
 {
     m_typeID = id;
-    GetOwner()->GetScene()->AddCollider(this);
 }
 
 /// <summary>
