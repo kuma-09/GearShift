@@ -12,4 +12,5 @@ float4 main(PS_INPUT input) : SV_TARGET
 {
     // Z’l‚ğo—Í‚·‚é
     return LinearizeDepth(input.Position.z,0.1f,100.0f);
+    //return 1 - input.Position.z;
 }

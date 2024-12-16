@@ -190,12 +190,20 @@ void Game::Render()
     // Particleを表示
     m_scene->TranslucentRender();
 
-    // ForwardRenderingでUIを表示
-    m_scene->RenderUI();
+    auto renderTarget = m_graphics->GetDeviceResources()->GetRenderTargetView();
+
+    m_graphics->GetDeviceResources()->GetD3DDeviceContext()->OMSetRenderTargets(1,&renderTarget, nullptr);
+
+    m_spriteBatch->Begin();
+    m_spriteBatch->Draw(DeferredRendering::GetFinalRenderTexture()->GetShaderResourceView(), Vector2::Zero);
+    m_spriteBatch->End();
 
     Noise::ApplyNoise(DeferredRendering::GetFinalRenderTexture()->GetShaderResourceView());
 
-    DeferredRendering::GBufferShow();
+    // ForwardRenderingでUIを表示
+    m_scene->RenderUI();
+
+    //DeferredRendering::GBufferShow();
     ShadowMap::ShadowMapShow();
 
     // シーン切り替え時のマスク
@@ -222,7 +230,7 @@ void Game::Clear()
     auto renderTarget = m_deviceResources->GetRenderTargetView();
     auto depthStencil = m_deviceResources->GetDepthStencilView();
 
-    context->ClearRenderTargetView(renderTarget, Colors::CornflowerBlue);
+    context->ClearRenderTargetView(renderTarget, Colors::Black);
     context->ClearDepthStencilView(depthStencil, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
     context->OMSetRenderTargets(1, &renderTarget, depthStencil);
 

@@ -187,7 +187,7 @@ void DeferredRendering::DeferredLighting()
 	auto projection = Graphics::GetInstance()->GetProjectionMatrix();
 	auto states = Graphics::GetInstance()->GetCommonStates();
 
-	context->ClearRenderTargetView(renderTarget, DirectX::Colors::CornflowerBlue);
+	//context->ClearRenderTargetView(renderTarget, DirectX::Colors::Black);
 	context->OMSetRenderTargets(1, &renderTarget, nullptr);
 	context->RSSetState(states->CullNone());						// ƒJƒŠƒ“ƒO
 

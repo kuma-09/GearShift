@@ -38,7 +38,7 @@ void ShadowMap::Initialize()
     s_spriteBatch = std::make_unique<DirectX::SpriteBatch>(context);
 
     // ライトの位置
-    m_lightPosition = Vector3{ 0,30, 0 };
+    m_lightPosition = Vector3{ 0,100, 0 };
 
     // ライトの回転
     m_lightRotate = Quaternion::CreateFromYawPitchRoll(
@@ -131,7 +131,7 @@ void ShadowMap::BeginDepth()
     // ビュー行列を作成
     auto view = SimpleMath::Matrix::CreateLookAt(
         m_lightPosition,
-        m_lightPosition + lightDir,
+        DirectX::SimpleMath::Vector3::Zero,
         SimpleMath::Vector3::UnitY
     );
 
@@ -185,7 +185,7 @@ void ShadowMap::EndDepth()
     auto renderTarget = m_graphics->GetDeviceResources()->GetRenderTargetView();
     auto depthStencil = m_graphics->GetDeviceResources()->GetDepthStencilView();
 
-    context->ClearRenderTargetView(renderTarget, Colors::CornflowerBlue);
+    context->ClearRenderTargetView(renderTarget, Colors::Black);
     context->ClearDepthStencilView(depthStencil, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 
     ID3D11ShaderResourceView* nullSRV[2] = { nullptr };
@@ -201,11 +201,11 @@ DirectX::SimpleMath::Matrix ShadowMap::GetLightView()
 
     // ライトの方向
     SimpleMath::Vector3 lightDir = SimpleMath::Vector3::Transform(SimpleMath::Vector3(0.0f, 0.0f, 1.0f), m_lightRotate);
-
+    lightDir.Normalize();
     // ビュー行列を作成
     auto view = SimpleMath::Matrix::CreateLookAt(
         m_lightPosition,
-        m_lightPosition + lightDir,
+        DirectX::SimpleMath::Vector3::Zero,
         SimpleMath::Vector3::UnitY
     );
 

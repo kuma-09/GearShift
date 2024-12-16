@@ -7,6 +7,7 @@
 #include "Game/Components/Camera.h"
 #include "Game/PlayScene.h"
 
+#include "Game/Shader/PostProcess/Noise.h"
 
 Boost::Boost(Player* player)
 {
@@ -30,6 +31,7 @@ void Boost::Initialize()
 	m_player->GetComponent<Camera>()->shake();
 	static_cast<PlayScene*>(m_player->GetScene())->SetNoise();
 	Audio::GetInstance()->PlaySoundSE_Boost();
+	Noise::SetNoise(true);
 }
 
 void Boost::Update(float elapsedTime)

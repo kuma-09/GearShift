@@ -84,6 +84,7 @@ void Noise::ApplyNoise(ID3D11ShaderResourceView* srv)
     auto context = m_graphics->GetDeviceResources()->GetD3DDeviceContext();
     auto states  = m_graphics->GetCommonStates();
     auto renderTarget = m_graphics->GetDeviceResources()->GetRenderTargetView();
+    auto depthStencil = m_graphics->GetDeviceResources()->GetDepthStencilView();
 
 
     // 定数バッファを更新
@@ -103,8 +104,8 @@ void Noise::ApplyNoise(ID3D11ShaderResourceView* srv)
     context->PSSetSamplers(0, 1, sampler);
     context->RSSetState(states->CullNone());
 
-    context->ClearRenderTargetView(renderTarget,DirectX::Colors::CornflowerBlue);
-    context->OMSetRenderTargets(1, &renderTarget, nullptr);
+    context->ClearRenderTargetView(renderTarget,DirectX::Colors::Black);
+    context->OMSetRenderTargets(1, &renderTarget, depthStencil);
     context->RSSetState(states->CullNone());						// カリング
 
     context->IASetInputLayout(m_inputLayout.Get());
