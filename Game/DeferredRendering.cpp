@@ -22,6 +22,7 @@ const std::vector<D3D11_INPUT_ELEMENT_DESC> DeferredRendering::INPUT_LAYOUT_L =
 std::unique_ptr<DX::RenderTexture> DeferredRendering::s_albedoRT;
 std::unique_ptr<DX::RenderTexture> DeferredRendering::s_normalRT;
 std::unique_ptr<DX::RenderTexture> DeferredRendering::s_depthRT;
+std::unique_ptr<DX::RenderTexture> DeferredRendering::s_finalRT;
 Microsoft::WRL::ComPtr<ID3D11VertexShader> DeferredRendering::s_vertexShader;
 Microsoft::WRL::ComPtr<ID3D11PixelShader> DeferredRendering::s_pixelShader;
 Microsoft::WRL::ComPtr<ID3D11PixelShader> DeferredRendering::s_pixelShader_tex;
@@ -51,7 +52,8 @@ void DeferredRendering::Initialize()
 	s_albedoRT = std::make_unique<DX::RenderTexture>(DXGI_FORMAT_R8G8B8A8_UNORM);
 	s_normalRT = std::make_unique<DX::RenderTexture>(DXGI_FORMAT_R10G10B10A2_UNORM);
 	s_depthRT  = std::make_unique<DX::RenderTexture>(DXGI_FORMAT_R32_FLOAT);
-	
+	s_finalRT = std::make_unique<DX::RenderTexture>(DXGI_FORMAT_R8G8B8A8_UNORM);
+
 	auto device = Graphics::GetInstance()->GetDeviceResources()->GetD3DDevice();
 	auto context = Graphics::GetInstance()->GetDeviceResources()->GetD3DDeviceContext();
 	auto rect = Graphics::GetInstance()->GetDeviceResources()->GetOutputSize();
@@ -59,10 +61,12 @@ void DeferredRendering::Initialize()
 	s_albedoRT->SetDevice(device);
 	s_normalRT->SetDevice(device);
 	s_depthRT->SetDevice(device);
-	
+	s_finalRT->SetDevice(device);
+
 	s_albedoRT->SetWindow(rect);
 	s_normalRT->SetWindow(rect);
 	s_depthRT->SetWindow(rect);
+	s_finalRT->SetWindow(rect);
 	
 	BinaryFile vs = BinaryFile::LoadFile(L"Resources/Shaders/GBufferVS.cso");
 	BinaryFile ps = BinaryFile::LoadFile(L"Resources/Shaders/GBufferPS.cso");
@@ -177,7 +181,7 @@ void DeferredRendering::DeferredLighting()
 {
 	auto context = Graphics::GetInstance()->GetDeviceResources()->GetD3DDeviceContext();
 	auto device = Graphics::GetInstance()->GetDeviceResources()->GetD3DDevice();
-	auto renderTarget = Graphics::GetInstance()->GetDeviceResources()->GetRenderTargetView();
+	auto renderTarget = s_finalRT->GetRenderTargetView();
 	auto depthStencil = Graphics::GetInstance()->GetDeviceResources()->GetDepthStencilView();
 	auto view = Graphics::GetInstance()->GetViewMatrix();
 	auto projection = Graphics::GetInstance()->GetProjectionMatrix();

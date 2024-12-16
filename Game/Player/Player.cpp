@@ -154,23 +154,6 @@ void Player::CreateShadow()
 
 void Player::Render()
 {
-
-
-	for (auto& bullet : m_defaultBullet)
-	{
-		bullet->Render();
-	}
-	if (!m_exBullet.empty())
-	{
-		for (auto& bullet : m_exBullet)
-		{
-			bullet->Render();
-		}
-	}
-
-	RenderParts();
-	GetComponent<Trail>()->Render();
-
 }
 
 void Player::RenderState()

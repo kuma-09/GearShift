@@ -124,8 +124,7 @@ void PlayScene::Update(float elapsedTime)
     }
     m_hitEffect->Update(elapsedTime);
 
-    // プレイヤーの更新
-    //m_player->Update(elapsedTime);
+    // オブジェクトの更新
     auto enemys = ObjectManager::GetTypeObjects(Type::Enemy);
 
     for (auto& enemy : enemys)
@@ -138,10 +137,6 @@ void PlayScene::Update(float elapsedTime)
 
     ObjectManager::Update(elapsedTime);
 
-    for (auto& dropItem : m_dropItem)
-    {
-        dropItem->Update(elapsedTime);
-    }
     for (auto& floor : m_floor)
     {
         floor->Update(elapsedTime);
@@ -275,6 +270,10 @@ void PlayScene::CreateObject(std::string className, DirectX::SimpleMath::Vector3
     if (className == "BossEnemy")
     {
         ObjectManager::Add(std::make_shared<BossEnemy>(this, m_player.lock().get()),pos, Type::Enemy);
+    }
+    if (className == "DropItem")
+    {
+        ObjectManager::Add(std::make_shared<DropItem>(this), pos);
     }
     if (className == "DropItemB")
     {

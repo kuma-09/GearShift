@@ -277,6 +277,7 @@
     <ClInclude Include="Game\Player\TargetArea.h" />
     <ClInclude Include="Game\SceneMask.h" />
     <ClInclude Include="Game\Shader\PostProcess.h" />
+    <ClInclude Include="Game\Shader\PostProcess\Noise.h" />
     <ClInclude Include="Game\Shader\Shader.h" />
     <ClInclude Include="Game\Shader\Shadow.h" />
     <ClInclude Include="Game\Shader\ShadowMap.h" />
@@ -384,6 +385,7 @@
     <ClCompile Include="Game\ResultScene.cpp" />
     <ClCompile Include="Game\SceneMask.cpp" />
     <ClCompile Include="Game\Shader\PostProcess.cpp" />
+    <ClCompile Include="Game\Shader\PostProcess\Noise.cpp" />
     <ClCompile Include="Game\Shader\Shader.cpp" />
     <ClCompile Include="Game\Shader\Shadow.cpp" />
     <ClCompile Include="Game\Shader\ShadowMap.cpp" />

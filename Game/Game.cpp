@@ -13,7 +13,7 @@
 #include "Game/DeferredRendering.h"
 #include "Game/ForwardRendering.h"
 #include "Game/Manager/RenderManager.h"
-
+#include "Game/Shader/PostProcess/Noise.h"
 #include "Game/Shader/ShadowMap.h"
 
 extern void ExitGame() noexcept;
@@ -84,6 +84,7 @@ void Game::Initialize(HWND window, int width, int height)
     DeferredRendering::Initialize();
     ForwardRendering::Initialize();
     ShadowMap::Initialize();
+    Noise::Initialize();
     GetTitleScene();
     GetPlayScene();
     GetResultScene();
@@ -115,7 +116,7 @@ void Game::Update(DX::StepTimer const& timer)
 
     m_inputManager->Update();
     m_audio->Update();
-
+    Noise::Update(elapsedTime);
     if (m_inputManager->GetKeyboardTracker()->pressed.Escape)
     {
         ExitGame();
@@ -191,6 +192,8 @@ void Game::Render()
 
     // ForwardRendering‚ÅUI‚ð•\Ž¦
     m_scene->RenderUI();
+
+    Noise::ApplyNoise(DeferredRendering::GetFinalRenderTexture()->GetShaderResourceView());
 
     DeferredRendering::GBufferShow();
     ShadowMap::ShadowMapShow();

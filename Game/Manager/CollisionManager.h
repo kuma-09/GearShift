@@ -10,5 +10,4 @@ public:
 	static void Remove(Collider* component);
 private:
 	static std::vector<Collider*> s_colliders;
-	
 };

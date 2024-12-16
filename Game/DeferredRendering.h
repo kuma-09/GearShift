@@ -16,11 +16,13 @@ public:
 	static DX::RenderTexture* GetAlbedoRenderTexture() { return s_albedoRT.get(); }
 	static DX::RenderTexture* GetNormalRenderTexture() { return s_normalRT.get(); }
 	static DX::RenderTexture* GetDepthRenderTexture() { return s_depthRT.get(); }
+	static DX::RenderTexture* GetFinalRenderTexture() { return s_finalRT.get(); }
 private:
 	// レンダーテクスチャ
 	static std::unique_ptr<DX::RenderTexture> s_albedoRT;
 	static std::unique_ptr<DX::RenderTexture> s_normalRT;
 	static std::unique_ptr<DX::RenderTexture> s_depthRT;
+	static std::unique_ptr<DX::RenderTexture> s_finalRT;
 	// GBuffer書き込み用のシェーダー
 	static Microsoft::WRL::ComPtr<ID3D11VertexShader> s_vertexShader;
 	static Microsoft::WRL::ComPtr<ID3D11PixelShader> s_pixelShader;

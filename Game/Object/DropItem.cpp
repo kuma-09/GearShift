@@ -7,7 +7,7 @@
 DropItem::DropItem(IScene* scene)
 {
 	SetScene(scene);
-	//AddComponent<Physics>();
+	AddComponent<Physics>();
 	AddComponent<Collider>();
 	GetComponent<Collider>()->SetTypeID(Collider::TypeID::DropItem);
 	GetComponent<Collider>()->SetSize(DirectX::SimpleMath::Vector3::One * 2);
@@ -30,38 +30,6 @@ DropItem::DropItem(IScene* scene)
 			}
 		}
 	);
-}
-
-DropItem::DropItem(IScene* scene, std::unique_ptr<Part> part)
-{
-
-	SetScene(scene);
-	//AddComponent<Physics>();
-	AddComponent<Collider>();
-	GetComponent<Collider>()->SetTypeID(Collider::TypeID::DropItem);
-	GetComponent<Collider>()->SetSize(DirectX::SimpleMath::Vector3::One * 2);
-	AddComponent<ModelDraw>();
-	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetDropItemModel());
-
-	m_part = std::move(part);
-
-	using namespace DirectX;
-
-	SetScale({ m_dropItemModelSize,m_dropItemModelSize,m_dropItemModelSize });
-
-	// モデルのエフェクト情報を更新する
-	Resources::GetInstance()->GetDropItemModel()->UpdateEffects([](IEffect* effect)
-		{
-			// ベーシックエフェクトを設定する
-			BasicEffect* basicEffect = dynamic_cast<BasicEffect*>(effect);
-			if (basicEffect)
-			{
-				// モデルを自発光させる
-				basicEffect->SetEmissiveColor(Colors::White);
-			}
-		}
-	);
-
 }
 
 DropItem::~DropItem()
