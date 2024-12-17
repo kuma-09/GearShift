@@ -45,7 +45,8 @@ private:
 	};
 
 	static Microsoft::WRL::ComPtr<ID3D11Buffer> s_constantBuffer;
-
+	// ƒTƒ“ƒvƒ‰[
+	static Microsoft::WRL::ComPtr<ID3D11SamplerState> m_shadowMapSampler;
 	static DirectX::SimpleMath::Matrix  s_lightViewProj;
 	static DirectX::SimpleMath::Vector3 s_lightPosition;
 

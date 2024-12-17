@@ -31,7 +31,7 @@ Microsoft::WRL::ComPtr<ID3D11PixelShader> DeferredRendering::s_pixelShader_light
 Microsoft::WRL::ComPtr<ID3D11VertexShader> DeferredRendering::s_vertexShader_combient;
 Microsoft::WRL::ComPtr<ID3D11PixelShader> DeferredRendering::s_pixelShader_combient;
 Microsoft::WRL::ComPtr<ID3D11Buffer> DeferredRendering::s_constantBuffer;
-
+Microsoft::WRL::ComPtr<ID3D11SamplerState> DeferredRendering::m_shadowMapSampler;
 DirectX::SimpleMath::Matrix  DeferredRendering::s_lightViewProj;
 DirectX::SimpleMath::Vector3 DeferredRendering::s_lightPosition;
 
@@ -117,6 +117,15 @@ void DeferredRendering::Initialize()
 	s_vertex[1] = { Vector3( 1.0f , 1.0f,0) , Vector2(1, 0) };	//右上
 	s_vertex[2] = { Vector3(-1.0f ,-1.0f,0) , Vector2(0, 1) };	//左下
 	s_vertex[3] = { Vector3( 1.0f ,-1.0f,0) , Vector2(1, 1) };	//右下
+
+	// サンプラーの作成（シャドウマップ用）
+	D3D11_SAMPLER_DESC sampler_desc = CD3D11_SAMPLER_DESC(D3D11_DEFAULT);
+	sampler_desc.Filter = D3D11_FILTER_COMPARISON_MIN_MAG_MIP_LINEAR;
+	sampler_desc.AddressU = D3D11_TEXTURE_ADDRESS_BORDER;
+	sampler_desc.AddressV = D3D11_TEXTURE_ADDRESS_BORDER;
+	sampler_desc.AddressW = D3D11_TEXTURE_ADDRESS_BORDER;
+	sampler_desc.ComparisonFunc = D3D11_COMPARISON_LESS;
+	device->CreateSamplerState(&sampler_desc, m_shadowMapSampler.ReleaseAndGetAddressOf());
 }
 
 void DeferredRendering::BeginGBuffer()
@@ -191,6 +200,10 @@ void DeferredRendering::DeferredLighting()
 	context->OMSetRenderTargets(1, &renderTarget, nullptr);
 	context->RSSetState(states->CullNone());						// カリング
 
+	// テクスチャサンプラーの設定
+	ID3D11SamplerState* samplers[] = { m_shadowMapSampler.Get() };
+	context->PSSetSamplers(1, 1, samplers);
+
 	auto const viewport = Graphics::GetInstance()->GetDeviceResources()->GetScreenViewport();
 	context->RSSetViewports(1, &viewport);
 
@@ -206,8 +219,8 @@ void DeferredRendering::DeferredLighting()
 	cb->matView = view.Transpose();
 	cb->matProj = projection.Transpose();
 	cb->inverseViewProj = (view * projection).Invert();
-	cb->lightView = ShadowMap::GetLightView().Transpose();
-	cb->lightProj = ShadowMap::GetLightProj().Transpose();
+	cb->lightView = ShadowMap::GetLightView();
+	cb->lightProj = ShadowMap::GetLightProj();
 	// マップを解除する
 	context->Unmap(s_constantBuffer.Get(), 0);
 	// 定数バッファの設定

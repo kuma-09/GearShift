@@ -34,12 +34,10 @@ void Sword::Initalize(GameObject* object)
 	using namespace DirectX::SimpleMath;
 
 	m_owner = object;
-	//GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetSwordModel());
-
 	Vector3 velocity = Vector3::Zero;
 	SetPosition(m_owner->GetPosition());
 	SetQuaternion(m_owner->GetQuaternion());
-
+	GetComponent<Trail>()->ClearBuffer();
 	SetVelocity(Vector3::Zero);
 	SetState(SwordState::USING);
 	m_rotate = 0;
@@ -112,6 +110,7 @@ void Sword::Update(float elapsedTime)
 		GetComponent<Collider>()->GetBoundingBox()->Center = { world._41, world._42, world._43 };
 		GetComponent<Trail>()->SetPos(GetPosition(), { world._41, world._42, world._43 });
 	}
+
 	world = Matrix::CreateScale(GetScale());
 	if (GetState() == USED)
 	{

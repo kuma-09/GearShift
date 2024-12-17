@@ -15,6 +15,7 @@
 #include "Game/Manager/RenderManager.h"
 #include "Game/Shader/PostProcess/Noise.h"
 #include "Game/Shader/ShadowMap.h"
+#include "Game/Shader/PostProcess/Bloom.h"
 
 extern void ExitGame() noexcept;
 
@@ -85,6 +86,7 @@ void Game::Initialize(HWND window, int width, int height)
     ForwardRendering::Initialize();
     ShadowMap::Initialize();
     Noise::Initialize();
+    Bloom::Initialize();
     GetTitleScene();
     GetPlayScene();
     GetResultScene();
@@ -198,13 +200,19 @@ void Game::Render()
     m_spriteBatch->Draw(DeferredRendering::GetFinalRenderTexture()->GetShaderResourceView(), Vector2::Zero);
     m_spriteBatch->End();
 
+    Bloom::BeginBloom();
+    RenderManager::RenderObjects();
+    RenderManager::RenderParticle();
+    Bloom::EndBloom();
+
     Noise::ApplyNoise(DeferredRendering::GetFinalRenderTexture()->GetShaderResourceView());
 
     // ForwardRenderingでUIを表示
     m_scene->RenderUI();
 
-    //DeferredRendering::GBufferShow();
+    DeferredRendering::GBufferShow();
     ShadowMap::ShadowMapShow();
+    Bloom::BloomTextureShow();
 
     // シーン切り替え時のマスク
     if (m_sceneMask->IsClose() || m_sceneMask->IsOpen())

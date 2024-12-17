@@ -5,6 +5,9 @@ Texture2D<float4> NormalMap : register(t2);
 Texture2D<float4> DepthMap  : register(t3);
 Texture2D<float4> ShadowMap : register(t4);
 
+// シャドウマップ用テクスチャサンプラー
+SamplerComparisonState ShadowMapSampler : register(s1);
+
 cbuffer Parameters : register(b1)
 {
     matrix matView;
@@ -13,7 +16,6 @@ cbuffer Parameters : register(b1)
     matrix lightView;
     matrix lightProj;
 }
-
 
 struct PS_INPUT
 {
@@ -27,7 +29,8 @@ float3 ReconstructWorldPositionFromDepth(float2 uv, float depth);
 // 深度値をカメラのnear,farを参照して0~1に調整
 float LinearizeDepth(float depth, float near, float far);
 
-float readShadowMap(float3 eyeDir);
+//float readShadowMap(float3 eyeDir);
+float readShadowMap(float3 worldPos);
 
 float ComputeScreenSpaceShadow(float3 worldPos, float3 lightDir);
 
@@ -39,17 +42,13 @@ float4 main(PS_INPUT input) : SV_TARGET
     float3 normal = NormalMap.Sample(Sampler, input.Texture).rgb;
     // 深度値
 	float depth = 1 - DepthMap.Sample(Sampler, input.Texture).r;
-    // ライトからの深度値
-    float lightDepth = ShadowMap.Sample(Sampler, input.Texture).r;
     // ワールド座標
 	float3 Position = ReconstructWorldPositionFromDepth(input.Texture, depth);
-	
-    
     
 	// diffuse------------------------------
     float3 toLight = normalize(-LightDirection[0]);
     float intensity1 = max(dot(normal, toLight), 0.0f);
-    float3 diffuse = albedo.rgb * LightDiffuseColor[0] * intensity1 + 0.65f;
+    float3 diffuse = albedo.rgb * (toLight) * intensity1 + 0.5f;
 	// -------------------------------------
     
 	// specular-----------------------------
@@ -59,34 +58,37 @@ float4 main(PS_INPUT input) : SV_TARGET
     float3 specular = pow(intensity2, SpecularPower) * SpecularColor;
 	// -------------------------------------
     
-    matrix lightViewToWolrdMatrix = inverse(lightView);
-    float3 light = lightViewToWolrdMatrix[3].xyz;
-    float3 lightDir = light - Position.xyz;
+    // 法線を正規化
+    float3 worldNormal = normalize(normal);
+    // 光の強さを内積から算出する
+    float3 dotL = saturate(dot(toLight, worldNormal));
 
-    normal = normalize(normal);
-    lightDir = normalize(lightDir);
-
-    float3 eyeDir = Position.xyz - EyePosition;
-    float3 reflectedEyeVector = normalize(reflect(eyeDir, normal));
-
-    float shadow = readShadowMap(eyeDir);
-    float diffuseLight = max(dot(normal, lightDir), 0) * shadow;
-    float ambientLight = 0.1;
-    shadow = ComputeScreenSpaceShadow(Position, toLight);
+    float shadow = readShadowMap(Position.xyz);
+    
+    float3 lightColor = { 0.5f, 0.5f, 0.5f };
+    
+    // ライトによる明るさを求める
+    float3 lightAmount = dotL * shadow * (1.0f - lightColor) + lightColor;
+    
+    
+    
+    //float diffuseLight = max(dot(normal, lightDir), 0) * shadow;
+    //float ambientLight = 0.1;
+    //shadow = ComputeScreenSpaceShadow(Position, toLight);
     //float3 finalColor = (diffuseLight + ambientLight) * albedo + pow(max(dot(toLight, reflectedEyeVector), 0.0), 100);
-    diffuseLight = max(dot(normal, lightDir), 0) * shadow;
-    ambientLight = 0.1;
+    //diffuseLight = max(dot(normal, lightDir), 0) * shadow;
     
+    //diffuse = albedo.rgb * (toLight) * intensity1 + shadow;
     
-    float3 finalColor = albedo.rgb * diffuse + specular;
-    finalColor *= shadow;
+    float3 finalColor = albedo.rgb * diffuse * shadow + specular;
+  
     
-	return float4(finalColor, 1);
+    return float4(finalColor, 1);
 }
 
 float3 ReconstructWorldPositionFromDepth(float2 uv, float depth)
 {
-	float4 worldPos = float4((uv.x - 0.5f) * 2, ((uv.y * -1) + 0.5f) * 2, depth, 1.0);
+    float4 worldPos = float4((uv.x - 0.5f) * 2, ((uv.y * -1) + 0.5f) * 2, depth, 1.0);
 
 	worldPos = mul(inverseViewProj, worldPos);
 	return worldPos.xyz / worldPos.w;
@@ -97,63 +99,54 @@ float LinearizeDepth(float depth, float near, float far)
     return (2.0 * near) / (far + near - depth * (far - near));
 }
 
-float readShadowMap(float3 eyeDir)
-{   
-    //matrix cameraViewToWorldMatrix = inverse(matView);
-    //matrix cameraViewToProjectedLightSpace = mul(lightProj, mul(lightView, cameraViewToWorldMatrix));
-    //float4 projectedEyeDir = mul(cameraViewToProjectedLightSpace, float4(eyeDir, 1));
-    //projectedEyeDir = projectedEyeDir / projectedEyeDir.w;
-
-    //float2 textureCoordinates = projectedEyeDir.xy * float2(0.5, 0.5) + float2(0.5, 0.5);
-
-    //const float bias = 0.0001;
-    //float depthValue = ShadowMap.Sample(Sampler, textureCoordinates) - bias;
-    //return projectedEyeDir.z * 0.5 + 0.5 < depthValue;
+float readShadowMap(float3 worldPos)
+{
+    // ライトからの投影空間にする
+    float4 LightPosPS = mul(float4(worldPos, 1), lightView);
+    LightPosPS = mul(LightPosPS, lightProj);
     
-    // ワールド空間からライトの射影空間への行列を計算
-    float4x4 worldToLightViewMatrix = mul(lightView, World);
-    float4x4 lightViewToProjectionMatrix = lightProj;
-    float4x4 cameraViewToWorldMatrix = inverse(matView);
+    LightPosPS.xyz /= LightPosPS.w;
 
-    // カメラ空間からライトの射影空間への最終行列
-    float4x4 cameraViewToProjectedLightSpace = mul(lightViewToProjectionMatrix, mul(worldToLightViewMatrix, cameraViewToWorldMatrix));
+    // 参照するシャドウマップのUV値を求める
+    float2 uv = ((LightPosPS.x - 0.5f) * 2, ((LightPosPS.y * -1) + 0.5f) * 2);
+    
+    if (uv.x < 0.5f)
+    {
+        return 1.0f;
+    }
+    
+    // UV座標が有効範囲外の場合の処理
+    //if (uv.x < 0.0f || uv.x > 1.0f || uv.y < 0.0f || uv.y > 1.0f)
+        //return 1.0f; // 範囲外は光が当たっている
+    
+    float bias = 0.0001f;
+    // シャドウマップの深度値とライト空間のピクセルのZ値を比較して影になるか調べる
+    float percentLit = 1.0f;
+    if (ShadowMap.Sample(Sampler, uv).r < LightPosPS.z - bias)
+    {
+        //percentLit = 0.0f;
+    }
+        return percentLit;
+    }
 
-    // 座標を変換して正規化
-    float4 projectedEyeDir = mul(cameraViewToProjectedLightSpace, float4(eyeDir, 1.0));
-    projectedEyeDir /= projectedEyeDir.w;
-
-    // テクスチャ座標を計算
-    float2 textureCoordinates = projectedEyeDir.xy * float2(0.5, 0.5) + float2(0.5, 0.5);
-
-    // シャドウマップから値を取得
-    const float bias = 0.001;
-    float depthValue = ShadowMap.Sample(Sampler, textureCoordinates) - bias;
-
-    // 深度比較
-    return (projectedEyeDir.z * 0.5 + 0.5) < depthValue;
-}
-
-float ComputeScreenSpaceShadow(float3 worldPos, float3 lightDir) {
+float ComputeScreenSpaceShadow(float3 worldPos, float3 lightDir) 
+{
     float shadow = 1.0; // デフォルトでは影なし
     float4 samplePos;
     
-        samplePos.xyz = worldPos;
-        samplePos = mul(float4(samplePos.xyz, 1), lightView);
-        samplePos = mul(samplePos, lightProj);
-        float2 uv = samplePos.xy / samplePos.w;
-        //uv = uv * 0.5 + 0.5;
-        uv = (uv.x - 0.5f) * 2, ((uv.y * -1) + 0.5f) * 2;
+    samplePos = mul(float4(worldPos, 1), lightView);
+    samplePos = mul(samplePos, lightProj);
+    float2 uv = samplePos.xy / samplePos.w;
+    uv = (uv.x - 0.5f) * 2, ((uv.y * -1) + 0.5f) * 2;
     
     // サンプル位置の深度値を取得
-        float sampleDepth = ShadowMap.Sample(Sampler, uv).r;
+    float sampleDepth = ShadowMap.Sample(Sampler, uv).r;
 
     // サンプル位置が既存の深度よりも遠ければ遮蔽されている
-        if (sampleDepth < samplePos.z - 0.0001f)
-        {
-            shadow = 0.5; // 影
-        }
+    if (sampleDepth < samplePos.z - 0.0001f)
+    {
+        shadow = 0.5; // 影
+    }
 
     return shadow;
 }
-
-

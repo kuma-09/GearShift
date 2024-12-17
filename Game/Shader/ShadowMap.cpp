@@ -137,7 +137,7 @@ void ShadowMap::BeginDepth()
 
     // Ë‰es—ñ‚ğì¬
     auto proj = SimpleMath::Matrix::CreatePerspectiveFieldOfView(
-        XMConvertToRadians(m_lightTheta), 1.0f, 0.1f, 100.0f);
+        XMConvertToRadians(m_lightTheta), 1.0f, 0.1f, 300.0f);
 
     D3D11_MAPPED_SUBRESOURCE mappedResource;
 
@@ -216,9 +216,12 @@ DirectX::SimpleMath::Matrix ShadowMap::GetLightProj()
 {
     using namespace DirectX;
 
+    // ‹–ìŠp‚ğİ’è‚·‚é
+    float fovAngleY = 45.0f * DirectX::XM_PI / 180.0f;
+
     // Ë‰es—ñ‚ğì¬
     auto proj = SimpleMath::Matrix::CreatePerspectiveFieldOfView(
-        XMConvertToRadians(m_lightTheta), 1.0f, 0.1f, 100.0f);
+        fovAngleY, 1.0f, 0.1f, 300.0f);
 
     return proj;
 }
