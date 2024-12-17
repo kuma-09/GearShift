@@ -18,7 +18,7 @@ Sword::Sword(IScene* scene, Collider::TypeID id)
 	AddComponent<Trail>();
 	GetComponent<Collider>()->SetTypeID(id);
 	GetComponent<Collider>()->SetSize({ 0.5f,0.5f,0.5f });
-	GetComponent<Trail>()->Initialize(L"Resources/Textures/green.png", 10);
+	GetComponent<Trail>()->Initialize(L"Resources/Textures/white.png", 10,DirectX::Colors::LightBlue);
 	SetScale({7.5f, 7.5f, 7.5f});
 	SetState(SwordState::UNUSED);
 
@@ -83,6 +83,7 @@ void Sword::Update(float elapsedTime)
 		m_rotate += elapsedTime;
 		if (rotate >= 1)
 		{
+			GetComponent<Trail>()->ClearBuffer();
 			m_isHit = true;
 		}
 	}

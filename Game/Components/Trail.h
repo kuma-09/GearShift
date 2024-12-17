@@ -8,9 +8,9 @@ public:
 
 	Trail();
 	~Trail();
-	void Initialize(const wchar_t* path,int bufferSize);
+	void Initialize(const wchar_t* path,int bufferSize, DirectX::XMVECTORF32 color = DirectX::Colors::White);
 	void Update(float elapsedTime);                               //頂点バッファを更新する
-	void Render(DirectX::XMVECTORF32 color = DirectX::Colors::White);
+	void Render();
 	void SetPos(DirectX::XMFLOAT3 head, DirectX::XMFLOAT3 tail);  //現在フレームの位置を保存する
 	void ClearBuffer();
 private:
@@ -49,6 +49,7 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11PixelShader> m_pixelShader;
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_texture;
 
+	DirectX::XMVECTORF32 m_color;
 	int m_maxBufferSize;
 	int m_bufferCount;
 };

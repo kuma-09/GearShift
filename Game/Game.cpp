@@ -201,14 +201,14 @@ void Game::Render()
     m_spriteBatch->End();
 
     Bloom::BeginBloom();
-    m_spriteBatch->Begin();
+    //m_spriteBatch->Begin();
     //m_spriteBatch->Draw(DeferredRendering::GetFinalRenderTexture()->GetShaderResourceView(), Vector2::Zero);
-    m_spriteBatch->End();
+    //m_spriteBatch->End();
     //RenderManager::RenderObjects();
     RenderManager::RenderParticle();
     Bloom::EndBloom(DeferredRendering::GetFinalRenderTexture()->GetShaderResourceView());
 
-    //Noise::ApplyNoise(DeferredRendering::GetFinalRenderTexture()->GetShaderResourceView());
+    Noise::ApplyNoise(Bloom::GetFinalRenderTexture()->GetShaderResourceView());
 
     // ForwardRendering‚ÅUI‚ð•\Ž¦
     m_scene->RenderUI();
@@ -342,7 +342,7 @@ void Game::CreateWindowSizeDependentResources()
         fovAngleY,
         aspectRatio,
         0.1f,
-        1000.0f
+        500.0f
     );
     // ŽË‰es—ñ‚ðÝ’è‚·‚é
     m_graphics->SetProjectionMatrix(projection);
@@ -362,8 +362,11 @@ void Game::OnDeviceRestored()
 
 void Game::ChangeScene(IScene* scene)
 {
-    m_sceneMask->Close();
-    m_tmpScene = scene;
+    if (!m_sceneMask->IsClose() && !m_sceneMask->IsOpen())
+    {
+        m_sceneMask->Close();
+        m_tmpScene = scene;
+    }
 }
 
 #pragma endregion

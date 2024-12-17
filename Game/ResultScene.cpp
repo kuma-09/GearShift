@@ -50,15 +50,18 @@ void ResultScene::Update(float elapsedTime)
 
 void ResultScene::Render()
 {
+}
+
+void ResultScene::RenderUI()
+{
     using namespace DirectX;
     using namespace DirectX::SimpleMath;
 
     int x, y;
-    Graphics::GetInstance()->GetScreenSize(x,y);
+    Graphics::GetInstance()->GetScreenSize(x, y);
 
     m_backGround->Render(Vector2::Zero);
     m_result->Render(Vector2(x / 4.0f, y / 2.5f));
-
 }
 
 void ResultScene::Finalize()

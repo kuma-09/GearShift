@@ -13,6 +13,7 @@ public:
 	static void EndBloom(ID3D11ShaderResourceView* srv);
 
 	static void BloomTextureShow();
+	static DX::RenderTexture* GetFinalRenderTexture() { return m_finalRenderTexture.get(); }
 private:
 
 	static Graphics* m_graphics;
@@ -25,6 +26,7 @@ private:
 	// ポストプロセス用
 	// レンダーテクスチャ(シーン全体)
 	static std::unique_ptr<DX::RenderTexture> m_offscreenRT_Bloom;
+	static std::unique_ptr<DX::RenderTexture> m_finalRenderTexture;
 
 	// レンダーテクスチャ(ブルーム用)
 	static std::unique_ptr<DX::RenderTexture> m_blur1RT;

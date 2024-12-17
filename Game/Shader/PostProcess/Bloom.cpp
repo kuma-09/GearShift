@@ -6,6 +6,7 @@ Graphics*                                                                Bloom::
 std::unique_ptr<DirectX::SpriteBatch>                                    Bloom::s_spriteBatch;
 DirectX::VertexPositionTexture                                           Bloom::m_vertex[4];
 std::unique_ptr<DX::RenderTexture>                                       Bloom::m_offscreenRT_Bloom;
+std::unique_ptr<DX::RenderTexture>                                       Bloom::m_finalRenderTexture;
 std::unique_ptr<DX::RenderTexture>                                       Bloom::m_blur1RT;
 std::unique_ptr<DX::RenderTexture>                                       Bloom::m_blur2RT;
 std::unique_ptr<DirectX::PrimitiveBatch<DirectX::VertexPositionTexture>> Bloom::m_batch;
@@ -27,6 +28,10 @@ void Bloom::Initialize()
     m_offscreenRT_Bloom = std::make_unique<DX::RenderTexture>(DXGI_FORMAT_B8G8R8A8_UNORM);
     m_offscreenRT_Bloom->SetDevice(device);
     m_offscreenRT_Bloom->SetWindow(rect);
+
+    m_finalRenderTexture = std::make_unique<DX::RenderTexture>(DXGI_FORMAT_B8G8R8A8_UNORM);
+    m_finalRenderTexture->SetDevice(device);
+    m_finalRenderTexture->SetWindow(rect);
 
     // レンダーテクスチャの作成（ブルーム用）
     rect.right  /= int(PIXELSIZE);
@@ -89,6 +94,7 @@ void Bloom::EndBloom(ID3D11ShaderResourceView* srv)
     auto depthStencil = m_graphics->GetDeviceResources()->GetDepthStencilView();
     auto offscreenRTV_Bloom = m_offscreenRT_Bloom->GetRenderTargetView();
     auto offscreenSRV_Bloom = m_offscreenRT_Bloom->GetShaderResourceView();
+    auto finalRTV = m_finalRenderTexture->GetRenderTargetView();
 
     // 画面のサイズを取得
     RECT rect = m_graphics->GetDeviceResources()->GetOutputSize();
@@ -160,9 +166,8 @@ void Bloom::EndBloom(ID3D11ShaderResourceView* srv)
     m_dualPostProcess->SetSourceTexture2(blur1SRV);
     m_dualPostProcess->Process(context);
 
-    context->ClearRenderTargetView(renderTarget, Colors::Black);
-    context->ClearDepthStencilView(depthStencil, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
-    context->OMSetRenderTargets(1, &renderTarget, depthStencil);
+    context->ClearRenderTargetView(finalRTV, Colors::Black);
+    context->OMSetRenderTargets(1, &finalRTV, nullptr);
 
     m_dualPostProcess->SetEffect(DualPostProcess::Merge);
     m_dualPostProcess->SetMergeParameters(1, 1);

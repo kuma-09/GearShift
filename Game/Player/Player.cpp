@@ -71,7 +71,7 @@ void Player::Initialize()
 	GetComponent<Camera>()->SetTarget(this, nullptr);
 	GetComponent<HP>()->SetHP(10);
 	GetComponent<HPBar>()->Initialize();
-	GetComponent<Trail>()->Initialize(L"Resources/Textures/particle.png", 10);
+	GetComponent<Trail>()->Initialize(L"Resources/Textures/particle.png", 10,DirectX::Colors::LightBlue);
 	SetOnFloor(false);
 
 	m_energyGage = std::make_unique<EnergyGage>();
@@ -287,6 +287,7 @@ void Player::Collision(Collider* collider)
 		{
 			bullet->Initialize(this);
 		}
+		static_cast<PlayScene*>(GetScene())->UpdateBulletMagazine();
 	}
 	
 	if (collider->GetTypeID() == Collider::Floor)

@@ -55,10 +55,11 @@ Trail::~Trail()
 	RenderManager::Remove(this);
 }
 
-void Trail::Initialize(const wchar_t* path, int bufferSize)
+void Trail::Initialize(const wchar_t* path, int bufferSize, DirectX::XMVECTORF32 color)
 {
 	auto device = Graphics::GetInstance()->GetDeviceResources()->GetD3DDevice();
 
+	m_color = color;
 	m_maxBufferSize = bufferSize;
 	m_buffer.resize(bufferSize);
 
@@ -76,7 +77,7 @@ void Trail::Update(float elapsedTime)
 	
 }
 
-void Trail::Render(DirectX::XMVECTORF32 color)
+void Trail::Render()
 {
 	using namespace DirectX::SimpleMath;
 	auto device = Graphics::GetInstance()->GetDeviceResources()->GetD3DDevice();
@@ -99,7 +100,7 @@ void Trail::Render(DirectX::XMVECTORF32 color)
 	cb.world = Matrix::Identity.Transpose();
 	cb.view = view.Transpose();
 	cb.proj = proj.Transpose();
-	cb.color = color;
+	cb.color = m_color;
 	*static_cast<ConstantBuffer*>(mappedResource.pData) = cb;
 	// GPUが定数バッファに対してのアクセスを許可する
 	context->Unmap(m_constantBuffer.Get(), 0);

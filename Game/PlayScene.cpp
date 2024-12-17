@@ -126,7 +126,10 @@ void PlayScene::Update(float elapsedTime)
 
     // オブジェクトの更新
     auto enemys = ObjectManager::GetTypeObjects(Type::Enemy);
-
+    if (enemys.empty())
+    {
+        GetGame()->ChangeScene(GetGame()->GetResultScene());
+    }
     for (auto& enemy : enemys)
     {
         m_targetArea->Update(m_player.lock().get(), enemy.lock().get());
@@ -202,7 +205,7 @@ void PlayScene::CreateHitParticle(DirectX::SimpleMath::Matrix world)
 {
     using namespace DirectX::SimpleMath;
 
-    int particleValue = HitParticle::get_rand(1, 1);
+    int particleValue = HitParticle::get_rand(1, 5);
     Vector3 pos = { world._41,world._42,world._43 };
 
 

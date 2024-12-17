@@ -19,7 +19,7 @@ NormalBullet::NormalBullet(IScene* scene, Collider::TypeID id)
 	GetComponent<Collider>()->SetTypeID(id);
 	GetComponent<Collider>()->SetSize({ 0.5f,0.5f,0.5f });
 	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetCubeModel());
-	GetComponent<Trail>()->Initialize(L"Resources/Textures/particle.png", 10);
+	GetComponent<Trail>()->Initialize(L"Resources/Textures/particle.png", 10,DirectX::Colors::Yellow);
 	SetScale({ 0.1f,0.1f,0.1f });
 }
 
@@ -114,7 +114,7 @@ void NormalBullet::Render()
 	if (GetState() == FLYING)
 	{
 		GetComponent<ModelDraw>()->Render();
-		GetComponent<Trail>()->Render(DirectX::Colors::Yellow);
+		GetComponent<Trail>()->Render();
 	}
 }
 

@@ -51,6 +51,12 @@ void GameOverScene::Update(float elapsedTime)
 
 void GameOverScene::Render()
 {
+
+
+}
+
+void GameOverScene::RenderUI()
+{
     using namespace DirectX;
     using namespace DirectX::SimpleMath;
 
@@ -59,7 +65,6 @@ void GameOverScene::Render()
 
     m_backGround->Render(Vector2::Zero);
     m_result->Render(Vector2(x / 3.5f, y / 2.5f));
-
 }
 
 void GameOverScene::Finalize()
