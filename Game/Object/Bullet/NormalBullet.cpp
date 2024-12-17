@@ -37,7 +37,7 @@ void NormalBullet::Initialize(GameObject* object)
 	Vector3 velocity = Vector3::Zero;
 	SetPosition(Vector3::Zero);
 	SetQuaternion(Quaternion::Identity);
-
+	GetComponent<Trail>()->ClearBuffer();
 	SetVelocity(Vector3::Zero);
 	SetState(BulletState::UNUSED);
 }

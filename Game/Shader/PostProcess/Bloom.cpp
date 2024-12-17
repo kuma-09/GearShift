@@ -11,7 +11,7 @@ std::unique_ptr<DX::RenderTexture>                                       Bloom::
 std::unique_ptr<DirectX::PrimitiveBatch<DirectX::VertexPositionTexture>> Bloom::m_batch;
 std::unique_ptr<DirectX::BasicPostProcess>                               Bloom::m_basicPostProcess;
 std::unique_ptr<DirectX::DualPostProcess>                                Bloom::m_dualPostProcess;
-const float Bloom::PIXELSIZE = 16.0f;
+const float Bloom::PIXELSIZE = 8.0f;
 
 void Bloom::Initialize()
 {
@@ -29,7 +29,7 @@ void Bloom::Initialize()
     m_offscreenRT_Bloom->SetWindow(rect);
 
     // レンダーテクスチャの作成（ブルーム用）
-    rect.right /= int(PIXELSIZE);
+    rect.right  /= int(PIXELSIZE);
     rect.bottom /= int(PIXELSIZE);
 
     m_blur1RT = std::make_unique<DX::RenderTexture>(DXGI_FORMAT_B8G8R8A8_UNORM);
@@ -73,12 +73,12 @@ void Bloom::BeginBloom()
     // -------------------------------------------------------------------------- //
     ID3D11ShaderResourceView* nullsrv[] = { nullptr };
     context->PSSetShaderResources(1, 1, nullsrv);
-    context->ClearRenderTargetView(m_offscreenRT_Bloom->GetRenderTargetView(), Colors::Black);
+    context->ClearRenderTargetView(offscreenRTV_Bloom, Colors::Black);
     context->OMSetRenderTargets(1, &offscreenRTV_Bloom, depthStencil);
     // -------------------------------------------------------------------------- //
 }
 
-void Bloom::EndBloom()
+void Bloom::EndBloom(ID3D11ShaderResourceView* srv)
 {
     using namespace DirectX;
     using namespace DirectX::SimpleMath;
@@ -110,7 +110,7 @@ void Bloom::EndBloom()
     context->RSSetViewports(1, &vp_blur);
 
     m_basicPostProcess->SetEffect(BasicPostProcess::BloomExtract);
-    m_basicPostProcess->SetBloomExtractParameter(0.5f);
+    m_basicPostProcess->SetBloomExtractParameter(0.25f);
     m_basicPostProcess->SetSourceTexture(offscreenSRV_Bloom);
     m_basicPostProcess->Process(context);
 
@@ -128,7 +128,7 @@ void Bloom::EndBloom()
     m_basicPostProcess->SetBloomBlurParameters(true, 2.0f, 1.0f);
     m_basicPostProcess->SetSourceTexture(blur1SRV);
     m_basicPostProcess->Process(context);
-    ID3D11ShaderResourceView* nullsrv[] = { nullptr };
+    ID3D11ShaderResourceView* nullsrv[] = { nullptr};
     context->PSSetShaderResources(0, 1, nullsrv);
     // -------------------------------------------------------------------------- //
     // Pass3 blur2 → blur1 縦にぼかす
@@ -164,6 +164,12 @@ void Bloom::EndBloom()
     context->ClearDepthStencilView(depthStencil, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
     context->OMSetRenderTargets(1, &renderTarget, depthStencil);
 
+    m_dualPostProcess->SetEffect(DualPostProcess::Merge);
+    m_dualPostProcess->SetMergeParameters(1, 1);
+    m_dualPostProcess->SetSourceTexture(srv);
+    m_dualPostProcess->SetSourceTexture2(offscreenSRV_Bloom);
+    m_dualPostProcess->Process(context);
+
 }
 
 void Bloom::BloomTextureShow()
@@ -174,6 +180,6 @@ void Bloom::BloomTextureShow()
     RECT rect = { 0,0,1280,720 };
 
     s_spriteBatch->Begin();
-    //s_spriteBatch->Draw(srv, Vector2{ 1280,720 }, &rect, DirectX::Colors::White, 0.0f, Vector2{ 1280,720 }, 0.5f);
+    s_spriteBatch->Draw(srv, Vector2{ 1280,720 }, &rect, DirectX::Colors::White, 0.0f, Vector2{ 1280,720 }, 0.5f);
     s_spriteBatch->End();
 }

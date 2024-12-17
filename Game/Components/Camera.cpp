@@ -127,7 +127,7 @@ void Camera::shake()
 void Camera::SetTarget(GameObject* player, GameObject* enemy)
 {
     m_player = player;
-    m_enemy  = enemy;
+    //m_enemy  = enemy;
 }
 
 

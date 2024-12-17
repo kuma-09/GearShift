@@ -60,7 +60,7 @@ void Attack::Update(float elapsedTime)
 		m_sword->SetState(Sword::USED);
 	}
 
-	m_player->GetEnergyGage()->UseEnergyPoint(1);
+	m_player->GetEnergyGage()->UseEnergyPoint(0.5f);
 	m_sword->Update(elapsedTime);
 
 	if (mouse->PRESSED == mouse->rightButton)

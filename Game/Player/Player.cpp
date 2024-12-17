@@ -250,7 +250,15 @@ int Player::GetMaxBulletSize()
 
 int Player::GetExBulletSize()
 {
-	return m_exBulletSize;
+	int value = 0;
+	for (auto& bullet : m_exBullet)
+	{
+		if (bullet->GetState() == Bullet::UNUSED)
+		{
+			value++;
+		}
+	}
+	return value;
 }
 
 void Player::Collision(Collider* collider)

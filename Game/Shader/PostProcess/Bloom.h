@@ -10,7 +10,7 @@ public:
 
 	// ブルーム適用用のレンダーターゲットに変更
 	static void BeginBloom();
-	static void EndBloom();
+	static void EndBloom(ID3D11ShaderResourceView* srv);
 
 	static void BloomTextureShow();
 private:

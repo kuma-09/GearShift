@@ -112,16 +112,16 @@ float readShadowMap(float3 worldPos)
     
     if (uv.x < 0.5f)
     {
-        return 1.0f;
+        //return 1.0f;
     }
     
     // UV座標が有効範囲外の場合の処理
-    //if (uv.x < 0.0f || uv.x > 1.0f || uv.y < 0.0f || uv.y > 1.0f)
-        //return 1.0f; // 範囲外は光が当たっている
+    if (uv.x > 0.0f && uv.x < 1.0f && uv.y > 0.0f && uv.y < 1.0f)
+        return 1.0f; // 範囲外は光が当たっている
     
     float bias = 0.0001f;
     // シャドウマップの深度値とライト空間のピクセルのZ値を比較して影になるか調べる
-    float percentLit = 1.0f;
+    float percentLit = 0.5f;
     if (ShadowMap.Sample(Sampler, uv).r < LightPosPS.z - bias)
     {
         //percentLit = 0.0f;

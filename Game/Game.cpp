@@ -201,18 +201,21 @@ void Game::Render()
     m_spriteBatch->End();
 
     Bloom::BeginBloom();
-    RenderManager::RenderObjects();
+    m_spriteBatch->Begin();
+    //m_spriteBatch->Draw(DeferredRendering::GetFinalRenderTexture()->GetShaderResourceView(), Vector2::Zero);
+    m_spriteBatch->End();
+    //RenderManager::RenderObjects();
     RenderManager::RenderParticle();
-    Bloom::EndBloom();
+    Bloom::EndBloom(DeferredRendering::GetFinalRenderTexture()->GetShaderResourceView());
 
-    Noise::ApplyNoise(DeferredRendering::GetFinalRenderTexture()->GetShaderResourceView());
+    //Noise::ApplyNoise(DeferredRendering::GetFinalRenderTexture()->GetShaderResourceView());
 
     // ForwardRenderingでUIを表示
     m_scene->RenderUI();
 
-    DeferredRendering::GBufferShow();
-    ShadowMap::ShadowMapShow();
-    Bloom::BloomTextureShow();
+    //DeferredRendering::GBufferShow();
+    //ShadowMap::ShadowMapShow();
+    //Bloom::BloomTextureShow();
 
     // シーン切り替え時のマスク
     if (m_sceneMask->IsClose() || m_sceneMask->IsOpen())
