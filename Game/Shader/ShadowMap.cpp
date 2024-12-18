@@ -38,7 +38,7 @@ void ShadowMap::Initialize()
     s_spriteBatch = std::make_unique<DirectX::SpriteBatch>(context);
 
     // ライトの位置
-    m_lightPosition = Vector3{ 0,100, 0 };
+    m_lightPosition = Vector3{ 0,100, 50 };
 
     // ライトの回転
     m_lightRotate = Quaternion::CreateFromYawPitchRoll(
@@ -137,7 +137,7 @@ void ShadowMap::BeginDepth()
 
     // 射影行列を作成
     auto proj = SimpleMath::Matrix::CreatePerspectiveFieldOfView(
-        XMConvertToRadians(m_lightTheta), 1.0f, 0.1f, 300.0f);
+        XMConvertToRadians(m_lightTheta / 2.f), 1.0f, 0.1f, 300.0f);
 
     D3D11_MAPPED_SUBRESOURCE mappedResource;
 

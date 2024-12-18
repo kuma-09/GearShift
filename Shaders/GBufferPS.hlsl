@@ -40,7 +40,7 @@ PS_OUTPUT main(PS_INPUT input)
     float4 position = mul(float4(input.Position.xyz, 1), matView);
     position = mul(position, matProj);
     position = input.Position;
-    float depth = position.z / position.w;
+    float depth = position.z;
     output.rt2 = float4(depth, 0, 0, 0);
     
     return output;

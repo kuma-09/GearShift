@@ -185,6 +185,6 @@ void Bloom::BloomTextureShow()
     RECT rect = { 0,0,1280,720 };
 
     s_spriteBatch->Begin();
-    s_spriteBatch->Draw(srv, Vector2{ 1280,720 }, &rect, DirectX::Colors::White, 0.0f, Vector2{ 1280,720 }, 0.5f);
+    s_spriteBatch->Draw(srv, Vector2{ 1280,720 }, &rect, DirectX::Colors::White, 0.0f, Vector2{ 1280,720 }, 0.25f);
     s_spriteBatch->End();
 }
