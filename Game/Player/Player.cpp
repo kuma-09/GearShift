@@ -33,6 +33,8 @@
 
 #include "BoostGage.h"
 
+#include "Game/Shader/ShadowMap.h"
+
 
 Player::Player(IScene* scene)
 	:m_target{}
@@ -135,7 +137,7 @@ void Player::Update(float elapsedTime)
 
 	SetPrePosition(GetPosition());
 	SetPosition(GetPosition() + GetVelocity());
-
+	ShadowMap::SetLightPosition(GetPosition());
 	GetComponent<Trail>()->SetPos(GetPosition() - Vector3(0,0.5f, 0), GetPosition() + Vector3(0, 0.5f, 0));
 
 	Matrix world = Matrix::Identity;

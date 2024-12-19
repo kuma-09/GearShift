@@ -16,6 +16,7 @@ std::unique_ptr<DirectX::SpriteBatch> ShadowMap::s_spriteBatch;
 Microsoft::WRL::ComPtr<ID3D11InputLayout>  ShadowMap::m_inputLayout;
 Microsoft::WRL::ComPtr<ID3D11SamplerState> ShadowMap::m_shadowMapSampler;
 DirectX::SimpleMath::Vector3    ShadowMap::m_lightPosition;
+DirectX::SimpleMath::Vector3    ShadowMap::m_targetPosition;
 DirectX::SimpleMath::Quaternion ShadowMap::m_lightRotate;
 float ShadowMap::m_lightTheta;
 Microsoft::WRL::ComPtr<ID3D11VertexShader> ShadowMap::m_VS_Depth;
@@ -38,13 +39,14 @@ void ShadowMap::Initialize()
     s_spriteBatch = std::make_unique<DirectX::SpriteBatch>(context);
 
     // ライトの位置
-    m_lightPosition = Vector3{ 5, 10, 110 };
+    m_lightPosition = Vector3{ 20, 20, 20 };
+    m_targetPosition = Vector3::Zero;
 
     // ライトの回転
     m_lightRotate = Quaternion::CreateFromYawPitchRoll(
         XMConvertToRadians(0.0f), XMConvertToRadians(90.0f), 0.0f);
 
-    m_lightTheta = 90.f;
+    m_lightTheta = 30.f;
 
     RECT rect = { 0, 0, SHADOWMAP_SIZE, SHADOWMAP_SIZE };
 
@@ -131,13 +133,13 @@ void ShadowMap::BeginDepth()
     // ビュー行列を作成
     auto view = SimpleMath::Matrix::CreateLookAt(
         m_lightPosition,
-        Vector3{ 5, 5, -100 },
+        m_targetPosition,
         SimpleMath::Vector3::UnitY
     );
 
     // 射影行列を作成
     auto proj = SimpleMath::Matrix::CreatePerspectiveFieldOfView(
-        XMConvertToRadians(m_lightTheta), 1.0f, 0.1f, 300.0f);
+        XMConvertToRadians(m_lightTheta), 1.0f, 0.1f, 100.0f);
 
     D3D11_MAPPED_SUBRESOURCE mappedResource;
 
@@ -195,6 +197,12 @@ void ShadowMap::EndDepth()
     context->RSSetViewports(1, &viewport);
 }
 
+void ShadowMap::SetLightPosition(DirectX::SimpleMath::Vector3 targetPos)
+{
+    m_lightPosition = targetPos + DirectX::SimpleMath::Vector3{ 10, 20, 5 };
+    m_targetPosition = targetPos;
+}
+
 DirectX::SimpleMath::Matrix ShadowMap::GetLightView()
 {
     using namespace DirectX;
@@ -205,7 +213,7 @@ DirectX::SimpleMath::Matrix ShadowMap::GetLightView()
     // ビュー行列を作成
     auto view = SimpleMath::Matrix::CreateLookAt(
         m_lightPosition,
-        DirectX::SimpleMath::Vector3{ 5, 5, 100 },
+        m_targetPosition,
         SimpleMath::Vector3::UnitY
     );
 
@@ -216,12 +224,9 @@ DirectX::SimpleMath::Matrix ShadowMap::GetLightProj()
 {
     using namespace DirectX;
 
-    // 視野角を設定する
-    //float fovAngleY = 45.0f * DirectX::XM_PI / 180.0f;
-
     // 射影行列を作成
     auto proj = SimpleMath::Matrix::CreatePerspectiveFieldOfView(
-        DirectX::XMConvertToRadians(90.0f), 1.0f, 0.1f, 300.0f);
+        DirectX::XMConvertToRadians(m_lightTheta), 1.0f, 0.1f, 100.0f);
 
     return proj;
 }

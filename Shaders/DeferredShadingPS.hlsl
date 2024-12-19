@@ -6,7 +6,7 @@ Texture2D<float4> DepthMap  : register(t3);
 Texture2D<float4> ShadowMap : register(t4);
 
 // シャドウマップ用テクスチャサンプラー
-SamplerComparisonState ShadowMapSampler : register(s1);
+SamplerState ShadowMapSampler : register(s1);
 
 cbuffer Parameters : register(b1)
 {
@@ -48,9 +48,9 @@ float4 main(PS_INPUT input) : SV_TARGET
     // -------------------------------------
     
 	// diffuse------------------------------
-    float3 toLight = normalize(Position.xyz - float3(5, 20, 100));
+    float3 toLight = normalize(-LightDirection[0]);
     float intensity1 = max(dot(normal, toLight), 0.0f);
-    float3 diffuse = albedo.rgb * (toLight) * intensity1 + 0.5f;
+    float3 diffuse = albedo.rgb * toLight * intensity1 + 0.1f;
 	// -------------------------------------
     
 	// specular-----------------------------
@@ -64,7 +64,7 @@ float4 main(PS_INPUT input) : SV_TARGET
     float shadow = readShadowMap(Position);
     // -------------------------------------
 
-    float3 finalColor = albedo.rgb * (diffuse * shadow) + specular;
+    float3 finalColor = diffuse * shadow;
 
     return float4(finalColor, 1);
 }
@@ -94,15 +94,15 @@ float readShadowMap(float3 worldPos)
     float2 uv = uv = (LightPosPS.xy) * float2(0.5f, -0.5f) + 0.5f;
     
     // UV座標が有効範囲外の場合の処理
-    //if(uv.x > 1.0f || uv.x < 0.0f || uv.y > 1.0f || uv.y < 0.0f)
-    //{
-    //    return 0.5f;
-    //}
+    if (uv.x > 1.0f || uv.x < 0.0f || uv.y > 1.0f || uv.y < 0.0f)
+    {
+        return 0.5f;
+    }
     
     float bias = 0.000005f;
     // シャドウマップの深度値とライト空間のピクセルのZ値を比較して影になるか調べる
     float percentLit = 1.0f;
-    if (ShadowMap.Sample(Sampler, uv).r < LightPosPS.z - CalculateShadowBias(LightPosPS.z,bias,bias))
+    if (ShadowMap.Sample(ShadowMapSampler, uv).r < LightPosPS.z - CalculateShadowBias(LightPosPS.z,bias,bias))
     {
         percentLit = 0.5f;
     }

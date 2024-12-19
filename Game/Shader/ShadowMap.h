@@ -13,6 +13,8 @@ public:
 	static void RenderDepth();
 	static void EndDepth();
 
+	static void SetLightPosition(DirectX::SimpleMath::Vector3 targetPos);
+
 	static DirectX::SimpleMath::Matrix GetLightView();
 	static DirectX::SimpleMath::Matrix GetLightProj();
 
@@ -34,6 +36,9 @@ private:
 	// ライト------------------
 	// ライトの位置
 	static DirectX::SimpleMath::Vector3 m_lightPosition;
+
+	// ライトの注視点
+	static DirectX::SimpleMath::Vector3 m_targetPosition;
 
 	// ライトの回転
 	static DirectX::SimpleMath::Quaternion m_lightRotate;

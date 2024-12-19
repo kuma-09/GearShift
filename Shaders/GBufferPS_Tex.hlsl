@@ -33,7 +33,7 @@ PS_OUTPUT main(PS_INPUT input)
     PS_OUTPUT output;
     
     // テクスチャカラー
-    output.rt0 = Texture.Sample(Sampler, input.TexCoord) * DiffuseColor;
+    output.rt0 = Texture.Sample(Sampler, input.TexCoord);
     // ワールドNORMAL
     output.rt1 = float4(input.Normal, 1.0f);
     // 深度

@@ -120,11 +120,11 @@ void DeferredRendering::Initialize()
 
 	// サンプラーの作成（シャドウマップ用）
 	D3D11_SAMPLER_DESC sampler_desc = CD3D11_SAMPLER_DESC(D3D11_DEFAULT);
-	sampler_desc.Filter = D3D11_FILTER_COMPARISON_MIN_MAG_MIP_LINEAR;
-	sampler_desc.AddressU = D3D11_TEXTURE_ADDRESS_BORDER;
-	sampler_desc.AddressV = D3D11_TEXTURE_ADDRESS_BORDER;
-	sampler_desc.AddressW = D3D11_TEXTURE_ADDRESS_BORDER;
-	sampler_desc.ComparisonFunc = D3D11_COMPARISON_LESS;
+	sampler_desc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
+	sampler_desc.AddressU = D3D11_TEXTURE_ADDRESS_CLAMP;
+	sampler_desc.AddressV = D3D11_TEXTURE_ADDRESS_CLAMP;
+	sampler_desc.AddressW = D3D11_TEXTURE_ADDRESS_CLAMP;
+	//sampler_desc.ComparisonFunc = D3D11_COMPARISON_LESS;
 	device->CreateSamplerState(&sampler_desc, m_shadowMapSampler.ReleaseAndGetAddressOf());
 }
 
@@ -227,7 +227,7 @@ void DeferredRendering::DeferredLighting()
 	ID3D11Buffer* cbuf[] = { s_constantBuffer.Get() };
 	context->VSSetConstantBuffers(1, 1, cbuf);
 	context->PSSetConstantBuffers(1, 1, cbuf);
-
+	context->PSSetSamplers(1, 1, m_shadowMapSampler.GetAddressOf());
 
 	// シェーダを設定する
 	context->PSSetShaderResources(1, 1, &albedo);
