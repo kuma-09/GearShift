@@ -213,9 +213,9 @@ void Game::Render()
     // ForwardRenderingでUIを表示
     m_scene->RenderUI();
 
-    DeferredRendering::GBufferShow();
-    ShadowMap::ShadowMapShow();
-    Bloom::BloomTextureShow();
+    //DeferredRendering::GBufferShow();
+    //ShadowMap::ShadowMapShow();
+    //Bloom::BloomTextureShow();
 
     // シーン切り替え時のマスク
     if (m_sceneMask->IsClose() || m_sceneMask->IsOpen())

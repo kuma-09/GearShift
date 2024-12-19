@@ -1,8 +1,6 @@
 #include "pch.h"
 #include "TargetArea.h"
-#include "Game/Player/Player.h"
-#include "Game/Components/HPBar.h"
-
+#include "Game/Components/Camera.h"
 
 TargetArea::TargetArea()
 {
@@ -65,16 +63,19 @@ bool TargetArea::Update(GameObject* player , GameObject* target)
     float x = screenPos.x;
     float y = screenPos.y;
 
+    Vector3 pPos = Vector3::Transform(Vector3::Forward, player->GetComponent<Camera>()->GetCameraQuaternion());
+    Vector3 tPos = player->GetPosition() - target->GetPosition();
+
+    float dot = pPos.Dot(tPos);
 
     // ターゲット範囲にいるか
-    if ((x * x) + (y * y) <= m_range * m_range)
+    if ((x * x) + (y * y) <= m_range * m_range && dot < 0.5f)
     {
         m_target = target;
         return true;
     }
 
     return false;
-
 
 }
 

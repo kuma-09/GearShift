@@ -106,7 +106,6 @@ void PlayScene::Update(float elapsedTime)
     // 経過時間を計算
     m_totalTime += elapsedTime;
     m_postProcess->Update(elapsedTime);
-
     m_startAnimation->Update(elapsedTime);
     m_targetArea->ClearTarget();
 
@@ -126,20 +125,14 @@ void PlayScene::Update(float elapsedTime)
 
     // オブジェクトの更新
     auto enemys = ObjectManager::GetTypeObjects(Type::Enemy);
-    if (enemys.empty())
-    {
-        GetGame()->ChangeScene(GetGame()->GetResultScene());
-    }
+    if (enemys.empty()) GetGame()->ChangeScene(GetGame()->GetResultScene());
     for (auto& enemy : enemys)
     {
         m_targetArea->Update(m_player.lock().get(), enemy.lock().get());
     }
-
     static_cast<Player*>(m_player.lock().get())->SetTarget(m_targetArea->GetTarget());
 
-
     ObjectManager::Update(elapsedTime);
-
     for (auto& floor : m_floor)
     {
         floor->Update(elapsedTime);
