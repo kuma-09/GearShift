@@ -11,6 +11,6 @@ float LinearizeDepth(float depth, float near, float far)
 float4 main(PS_INPUT input) : SV_TARGET
 {
     // Z’l‚ğo—Í‚·‚é
-    return LinearizeDepth(input.Position.z,0.1f,300.0f);
-    //return input.Position.z;
+    //return LinearizeDepth(input.Position.z,0.1f,300.0f);
+    return input.Position.z;
 }

@@ -280,7 +280,6 @@
     <ClInclude Include="Game\Shader\PostProcess\Bloom.h" />
     <ClInclude Include="Game\Shader\PostProcess\Noise.h" />
     <ClInclude Include="Game\Shader\Shader.h" />
-    <ClInclude Include="Game\Shader\Shadow.h" />
     <ClInclude Include="Game\Shader\ShadowMap.h" />
     <ClInclude Include="Game\StageSelectScene.h" />
     <ClInclude Include="Game\State.h" />
@@ -389,7 +388,6 @@
     <ClCompile Include="Game\Shader\PostProcess\Bloom.cpp" />
     <ClCompile Include="Game\Shader\PostProcess\Noise.cpp" />
     <ClCompile Include="Game\Shader\Shader.cpp" />
-    <ClCompile Include="Game\Shader\Shadow.cpp" />
     <ClCompile Include="Game\Shader\ShadowMap.cpp" />
     <ClCompile Include="Game\StageSelectScene.cpp" />
     <ClCompile Include="Game\System\HitStop.cpp" />

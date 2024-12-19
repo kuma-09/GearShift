@@ -219,8 +219,8 @@ void DeferredRendering::DeferredLighting()
 	cb->matView = view.Transpose();
 	cb->matProj = projection.Transpose();
 	cb->inverseViewProj = (view * projection).Invert();
-	cb->lightView = ShadowMap::GetLightView();
-	cb->lightProj = ShadowMap::GetLightProj();
+	cb->lightView = ShadowMap::GetLightView().Transpose();
+	cb->lightProj = ShadowMap::GetLightProj().Transpose();
 	// マップを解除する
 	context->Unmap(s_constantBuffer.Get(), 0);
 	// 定数バッファの設定

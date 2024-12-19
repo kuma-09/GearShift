@@ -4,6 +4,7 @@
 #include "Game/Shader/Shader.h"
 #include "Game/DeferredRendering.h"
 #include "Game/Manager/RenderManager.h"
+#include "Game/Shader/ShadowMap.h"
 
 ModelDraw::ModelDraw()
 	:
@@ -56,7 +57,7 @@ void ModelDraw::CreateShadow()
 
 	m_model->Draw(context, *state, world, view, projection, false, [&]
 		{
-			Shadow::RenderDepth();
+			ShadowMap::RenderDepth();
 		});
 }
 

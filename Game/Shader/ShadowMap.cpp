@@ -38,7 +38,7 @@ void ShadowMap::Initialize()
     s_spriteBatch = std::make_unique<DirectX::SpriteBatch>(context);
 
     // ライトの位置
-    m_lightPosition = Vector3{ 0,100, 50 };
+    m_lightPosition = Vector3{ 5, 10, 110 };
 
     // ライトの回転
     m_lightRotate = Quaternion::CreateFromYawPitchRoll(
@@ -109,7 +109,7 @@ void ShadowMap::BeginDepth()
     context->PSSetShaderResources(1, 1, nullsrv);
 
     auto rtv = m_shadowMapRT->GetRenderTargetView();
-    auto srv = m_shadowMapRT->GetShaderResourceView();
+    //auto srv = m_shadowMapRT->GetShaderResourceView();
     auto dsv = m_shadowMapDS->GetDepthStencilView();
 
     // レンダーターゲットを変更（shadowMapRT）
@@ -131,13 +131,13 @@ void ShadowMap::BeginDepth()
     // ビュー行列を作成
     auto view = SimpleMath::Matrix::CreateLookAt(
         m_lightPosition,
-        DirectX::SimpleMath::Vector3::Zero,
+        Vector3{ 5, 5, -100 },
         SimpleMath::Vector3::UnitY
     );
 
     // 射影行列を作成
     auto proj = SimpleMath::Matrix::CreatePerspectiveFieldOfView(
-        XMConvertToRadians(m_lightTheta / 2.f), 1.0f, 0.1f, 300.0f);
+        XMConvertToRadians(m_lightTheta), 1.0f, 0.1f, 300.0f);
 
     D3D11_MAPPED_SUBRESOURCE mappedResource;
 
@@ -205,7 +205,7 @@ DirectX::SimpleMath::Matrix ShadowMap::GetLightView()
     // ビュー行列を作成
     auto view = SimpleMath::Matrix::CreateLookAt(
         m_lightPosition,
-        DirectX::SimpleMath::Vector3::Zero,
+        DirectX::SimpleMath::Vector3{ 5, 5, 100 },
         SimpleMath::Vector3::UnitY
     );
 
@@ -217,11 +217,11 @@ DirectX::SimpleMath::Matrix ShadowMap::GetLightProj()
     using namespace DirectX;
 
     // 視野角を設定する
-    float fovAngleY = 45.0f * DirectX::XM_PI / 180.0f;
+    //float fovAngleY = 45.0f * DirectX::XM_PI / 180.0f;
 
     // 射影行列を作成
     auto proj = SimpleMath::Matrix::CreatePerspectiveFieldOfView(
-        fovAngleY, 1.0f, 0.1f, 300.0f);
+        DirectX::XMConvertToRadians(90.0f), 1.0f, 0.1f, 300.0f);
 
     return proj;
 }

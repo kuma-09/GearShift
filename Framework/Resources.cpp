@@ -61,6 +61,4 @@ void Resources::LoadResource(Graphics* graphics)
 	delete FX;
 	FX = nullptr;
 
-	// ‰e
-	Shadow::Initialize();
 }
