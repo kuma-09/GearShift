@@ -47,8 +47,8 @@ Player::Player(IScene* scene)
 	AddComponent<Move>();
 	AddComponent<Camera>();
 	AddComponent<Look>();
-	AddComponent<Collider>();
 	AddComponent<Physics>();
+	AddComponent<Collider>();
 	AddComponent<HPBar>();
 	AddComponent<Trail>();
 
@@ -98,7 +98,7 @@ void Player::Update(float elapsedTime)
 
 	m_bulletInterval += elapsedTime;
 
-	if (mouseState.leftButton || gp->x == gp->PRESSED )
+	if (mouseState.leftButton || gp->x == gp->PRESSED)
 	{
 		Shot();
 	}
@@ -113,23 +113,28 @@ void Player::Update(float elapsedTime)
 		Reload();
 	}
 
+	if (kb->IsKeyPressed(DirectX::Keyboard::P))
+	{
+		GetScene()->GetGame()->ChangeScene(GetScene()->GetGame()->GetResultScene());
+	}
+
 	ComponentsUpdate(elapsedTime);
 	UpdateParts(elapsedTime);
 
 	if (GetOnFloor())
 	{
-		SetVelocity({ GetVelocity().x, 0, GetVelocity().z });
+		//SetVelocity({ GetVelocity().x, 0, GetVelocity().z });
 	}
 
 	m_state->Update(elapsedTime);
 
-	for (auto& bullet: m_defaultBullet)
+	for (auto& bullet : m_defaultBullet)
 	{
-			bullet->Update(elapsedTime);
+		bullet->Update(elapsedTime);
 	}
 	if (!m_exBullet.empty())
 	{
-		for (auto& bullet : m_exBullet) 
+		for (auto& bullet : m_exBullet)
 		{
 			bullet->Update(elapsedTime);
 		}
@@ -137,6 +142,7 @@ void Player::Update(float elapsedTime)
 
 	SetPrePosition(GetPosition());
 	SetPosition(GetPosition() + GetVelocity());
+	//SetPosition({GetPosition().x, 2, GetPosition().z});
 	ShadowMap::SetLightPosition(GetPosition());
 	GetComponent<Trail>()->SetPos(GetPosition() - Vector3(0,0.5f, 0), GetPosition() + Vector3(0, 0.5f, 0));
 

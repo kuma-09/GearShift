@@ -6,6 +6,7 @@
 #include "Game/PlayScene.h"
 #include "Game/Manager/CollisionManager.h"
 
+#include "Physics.h"
 Collider::Collider()
 {
 	m_graphics = Graphics::GetInstance();
@@ -29,7 +30,7 @@ void Collider::Initialize()
 void Collider::Update(float elapsedTime)
 {
     UNREFERENCED_PARAMETER(elapsedTime);
-	m_boudingBox->Center = GetOwner()->GetPosition() + m_initalePosition;
+    m_boudingBox->Center = GetOwner()->GetPosition() + m_initalePosition;
 }
 
 void Collider::Render()
@@ -74,16 +75,22 @@ void Collider::CheckHit(GameObject* object1, GameObject* object2)
     DirectX::BoundingBox* a = object1->GetComponent<Collider>()->GetBoundingBox();
     DirectX::BoundingBox* b = object2->GetComponent<Collider>()->GetBoundingBox();
 
+
     // ヒットしていなければ終わり
     if (!a->Intersects(*b)) { return; }
+
 
     // 衝突時、ＢがＡを押し戻す処理========================
 
     // AABB用のmin/maxを計算する
-    Vector3 aMin = a->Center - a->Extents;
-    Vector3 aMax = a->Center + a->Extents;
-    Vector3 bMin = b->Center - b->Extents;
-    Vector3 bMax = b->Center + b->Extents;
+    Vector3 aMin = object1->GetPosition() - a->Extents;
+    Vector3 aMax = object1->GetPosition() + a->Extents;
+    Vector3 bMin = object2->GetPosition() - b->Extents;
+    Vector3 bMax = object2->GetPosition() + b->Extents;
+    //Vector3 aMin = a->Center - a->Extents;
+    //Vector3 aMax = a->Center + a->Extents;
+    //Vector3 bMin = b->Center - b->Extents;
+    //Vector3 bMax = b->Center + b->Extents;
 
     // 各軸の差分を計算する
     float dx1 = bMax.x - aMin.x;
@@ -108,23 +115,33 @@ void Collider::CheckHit(GameObject* object1, GameObject* object2)
     if (abs(dx) <= abs(dy) && abs(dx) <= abs(dz))
     {
         pushBackVec.x += dx;
-        object1->SetVelocity({ 0, velocity.y, velocity.z });
-    }
-
-    if (abs(dy) <= abs(dx) && abs(dy) <= abs(dz))
-    {
-        pushBackVec.y += dy;
-        object1->SetVelocity({ velocity.x,0,velocity.z });
+        //object1->SetVelocity({ 0, velocity.y, velocity.z });
     }
 
     if (abs(dz) <= abs(dx) && abs(dz) <= abs(dy))
     {
         pushBackVec.z += dz;
-        object1->SetVelocity({ velocity.x,velocity.y,0 });
+        //object1->SetVelocity({ velocity.x,velocity.y,0 });
+    }
+
+    //// 押し戻す
+    object1->SetPosition(object1->GetPosition() + pushBackVec);
+    Ray ray{ object1->GetPosition(), Vector3::Down };
+    float distance = 0.0f;
+
+    if (ray.Intersects(*b, distance))
+    {
+        Vector3 hitPostion = Vector3{ ray.position + ray.direction * distance };
+
+        if (object1->GetPosition().y - a->Extents.y < hitPostion.y)
+        {
+            // 押し戻す
+            object1->SetPosition(Vector3(object1->GetPosition().x, hitPostion.y + a->Extents.y, object1->GetPosition().z));
+            //return;
+            object1->GetComponent<Physics>()->Reset();
+        }
     }
 
 
-    // 押し戻す
-    object1->SetPosition(object1->GetPosition() + pushBackVec);
     
 }

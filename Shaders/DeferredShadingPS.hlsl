@@ -50,7 +50,7 @@ float4 main(PS_INPUT input) : SV_TARGET
 	// diffuse------------------------------
     float3 toLight = normalize(-LightDirection[0]);
     float intensity1 = max(dot(normal, toLight), 0.0f);
-    float3 diffuse = albedo.rgb * toLight * intensity1 + 0.1f;
+    float3 diffuse = albedo.rgb * toLight * intensity1 + 0.25f;
 	// -------------------------------------
     
 	// specular-----------------------------
@@ -64,7 +64,7 @@ float4 main(PS_INPUT input) : SV_TARGET
     float shadow = readShadowMap(Position);
     // -------------------------------------
 
-    float3 finalColor = diffuse * shadow;
+    float3 finalColor = albedo.rgb * diffuse * shadow;
 
     return float4(finalColor, 1);
 }
@@ -96,7 +96,7 @@ float readShadowMap(float3 worldPos)
     // UVÀ•W‚ª—LŒø”ÍˆÍŠO‚Ìê‡‚Ìˆ—
     if (uv.x > 1.0f || uv.x < 0.0f || uv.y > 1.0f || uv.y < 0.0f)
     {
-        return 0.5f;
+        return 0.25f;
     }
     
     float bias = 0.000005f;
@@ -104,7 +104,7 @@ float readShadowMap(float3 worldPos)
     float percentLit = 1.0f;
     if (ShadowMap.Sample(ShadowMapSampler, uv).r < LightPosPS.z - CalculateShadowBias(LightPosPS.z,bias,bias))
     {
-        percentLit = 0.5f;
+        percentLit = 0.25f;
     }
     
     return percentLit;
