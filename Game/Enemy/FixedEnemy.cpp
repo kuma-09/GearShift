@@ -40,7 +40,6 @@ FixedEnemy::FixedEnemy(IScene* scene,GameObject* target)
 FixedEnemy::~FixedEnemy()
 {
 	//RemoveAllComponents();
-
 }
 
 void FixedEnemy::Initialize()
@@ -53,7 +52,7 @@ void FixedEnemy::Initialize()
 	GetComponent<Look>()->SetTarget(this, GetTarget());
 	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetTankBodyModel());
 	GetComponent<Collider>()->SetTypeID(Collider::TypeID::Enemy);
-	GetComponent<Collider>()->SetSize({2,1,3});
+	GetComponent<Collider>()->SetSize({2,0.5f,3});
 	GetComponent<HPBar>()->Initialize();
 	m_bullet->Initialize(this);
 	m_state->Initialize();
@@ -74,12 +73,12 @@ void FixedEnemy::Update(float elapsedTime)
 	ComponentsUpdate(elapsedTime);
 
 	// ç¿ïWÇÃà⁄ìÆ
-	SetPosition(GetPosition() + Vector3::Transform(GetVelocity(), GetQuaternion()));
+	SetPosition(GetPosition() + GetVelocity());
 
 	Matrix world = Matrix::Identity;
 	world = Matrix::CreateScale(GetScale());
 	world *= Matrix::CreateFromQuaternion(GetQuaternion());
-	world *= Matrix::CreateTranslation(GetPosition() + Vector3{ 0,-0.9f,0 });
+	world *= Matrix::CreateTranslation(GetPosition());
 
 	SetWorld(world);
 
@@ -105,12 +104,10 @@ void FixedEnemy::Render()
 	if (GetComponent<HP>()->GetHP() <= 0) return;
 	GetComponent<ModelDraw>()->Render();
 	GetComponent<HPBar>()->Render(GetPosition());
-	//GetComponent<Collider>()->Render();
 }
 
 void FixedEnemy::Finalize()
 {
-	//dynamic_cast<PlayScene*>(GetScene())->RemoveCollider(m_bullet->GetComponent<Collider>());
 }
 
 void FixedEnemy::Shot()

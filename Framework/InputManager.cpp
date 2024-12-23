@@ -55,6 +55,7 @@ void InputManager::Update()
 	// マウスの情報を更新する
 	m_mouseState = m_mouse->GetState();
 	m_mouseTracker->Update(m_mouseState);
+	
 
 	// キーボードの情報を更新する
 	m_keyboardState = m_keyboard->GetState();

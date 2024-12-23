@@ -16,6 +16,7 @@
 #include "Game/Shader/PostProcess/Noise.h"
 #include "Game/Shader/ShadowMap.h"
 #include "Game/Shader/PostProcess/Bloom.h"
+#include "Game/Manager/CollisionManager.h"
 
 extern void ExitGame() noexcept;
 
@@ -87,6 +88,7 @@ void Game::Initialize(HWND window, int width, int height)
     ShadowMap::Initialize();
     Noise::Initialize();
     Bloom::Initialize();
+    //CollisionManager::InitializeCollisionMesh(L"testFloor");
     GetTitleScene();
     GetPlayScene();
     GetResultScene();

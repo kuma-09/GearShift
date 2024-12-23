@@ -137,7 +137,7 @@ void Collider::CheckHit(GameObject* object1, GameObject* object2)
         {
             // ‰Ÿ‚µ–ß‚·
             object1->SetPosition(Vector3(object1->GetPosition().x, hitPostion.y + a->Extents.y, object1->GetPosition().z));
-            //return;
+            object1->SetVelocity({ velocity.x,0,velocity.z });
             object1->GetComponent<Physics>()->Reset();
         }
     }

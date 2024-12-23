@@ -121,11 +121,6 @@ void Player::Update(float elapsedTime)
 	ComponentsUpdate(elapsedTime);
 	UpdateParts(elapsedTime);
 
-	if (GetOnFloor())
-	{
-		//SetVelocity({ GetVelocity().x, 0, GetVelocity().z });
-	}
-
 	m_state->Update(elapsedTime);
 
 	for (auto& bullet : m_defaultBullet)
@@ -142,7 +137,6 @@ void Player::Update(float elapsedTime)
 
 	SetPrePosition(GetPosition());
 	SetPosition(GetPosition() + GetVelocity());
-	//SetPosition({GetPosition().x, 2, GetPosition().z});
 	ShadowMap::SetLightPosition(GetPosition());
 	GetComponent<Trail>()->SetPos(GetPosition() - Vector3(0,0.5f, 0), GetPosition() + Vector3(0, 0.5f, 0));
 
@@ -150,9 +144,7 @@ void Player::Update(float elapsedTime)
 	world = Matrix::CreateScale(GetScale());
 	world *= Matrix::CreateFromQuaternion(GetQuaternion());
 	world *= Matrix::CreateTranslation(GetPosition());
-
 	SetWorld(world);
-	SetOnFloor(false);
 }
 
 void Player::CreateShadow()
@@ -300,7 +292,6 @@ void Player::Collision(Collider* collider)
 	
 	if (collider->GetTypeID() == Collider::Floor)
 	{
-		SetOnFloor(true);
 		Collider::CheckHit(this, collider->GetOwner());
 	}
 	if (collider->GetTypeID() == Collider::Wall || collider->GetTypeID() == Collider::Enemy)
