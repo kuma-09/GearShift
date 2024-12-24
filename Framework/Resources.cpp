@@ -49,6 +49,7 @@ void Resources::LoadResource(Graphics* graphics)
 	m_sword      = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\Sword.sdkmesh", *graphics->GetFX());
 	m_cutoRobot  = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\BulldogLeg.sdkmesh", *graphics->GetFX());
 	m_cutoRobotHead  = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\BulldogHead.sdkmesh", *graphics->GetFX());
+	m_gun = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\gun.sdkmesh", *graphics->GetFX());
 
 	// テクスチャをロードする
 	DirectX::CreateWICTextureFromFile(

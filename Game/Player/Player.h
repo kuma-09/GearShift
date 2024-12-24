@@ -8,6 +8,8 @@
 #include "Game/UI/ReloadUI.h"
 #include "Game/Object/Bullet/Bullet.h"
 
+#include "Game/Object/Burner/Burner.h"
+
 #include <map>
 
 class Idol;
@@ -129,6 +131,8 @@ private:
 	std::unique_ptr<Jump> m_jump;
 	std::unique_ptr<Boost> m_boost;
 	std::unique_ptr<Attack> m_attack;
+
+	std::unique_ptr<Burner> m_burner;
 
 	std::unique_ptr<EnergyGage> m_energyGage;
 	std::unique_ptr<ReloadUI> m_reload;

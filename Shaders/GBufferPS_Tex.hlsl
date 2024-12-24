@@ -35,7 +35,7 @@ PS_OUTPUT main(PS_INPUT input)
     // テクスチャカラー
     output.rt0 = Texture.Sample(Sampler, input.TexCoord);
     // ワールドNORMAL
-    output.rt1 = float4(input.Normal, 1.0f);
+    output.rt1 = normalize(float4(input.Normal, 1.0f));
     // 深度
     float4 position = mul(float4(input.Position.xyz, 1), matView);
     position = mul(position, matProj);

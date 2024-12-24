@@ -2,6 +2,7 @@
 #include "Part.h"
 #include "Framework/Graphics.h"
 #include "Framework/Resources.h"
+#include "Game/Player/Gun.h"
 
 class RightArm : public Part
 {
@@ -18,5 +19,6 @@ public:
 
 private:
 	bool m_isHit;
+	std::unique_ptr<Gun> m_gun;
 };
 

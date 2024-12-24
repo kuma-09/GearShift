@@ -78,7 +78,9 @@ void Player::Initialize()
 	GetComponent<Collider>()->Initialize(Collider::Player, { 1,1.45f,1 });
 	GetComponent<Collider>()->SetActive(true);
 	GetComponent<HPBar>()->Initialize();
-	GetComponent<Trail>()->Initialize(L"Resources/Textures/particle.png", 10,DirectX::Colors::LightBlue);
+
+	m_burner = std::make_unique<Burner>();
+	m_burner->Initialize();
 
 	m_energyGage = std::make_unique<EnergyGage>();
 	m_energyGage->Initialize();
@@ -142,7 +144,8 @@ void Player::Update(float elapsedTime)
 	SetPrePosition(GetPosition());
 	SetPosition(GetPosition() + GetVelocity());
 	ShadowMap::SetLightPosition(GetPosition());
-	GetComponent<Trail>()->SetPos(GetPosition() - Vector3(0, 0.5f, 0), GetPosition() + Vector3(0, 0.5f, 0));
+	m_burner->Update(elapsedTime,GetPosition(),GetQuaternion());
+
 
 	Matrix world = Matrix::Identity;
 	world = Matrix::CreateScale(GetScale());

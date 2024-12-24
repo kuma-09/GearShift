@@ -22,5 +22,6 @@ float4 main(PS_INPUT input) : SV_Target
     //output = float4(1, 1, 1, 1);
     output.rgb *= color.rgb;
     output.a *= input.Texture.x;
+    output.b += input.Texture.x;
     return output;
 }

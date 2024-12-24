@@ -12,6 +12,7 @@ RightArm::RightArm()
 {
 	AddComponent<ModelDraw>();
 	SetTypeID(TypeID::RightArm);
+	m_gun = std::make_unique<Gun>(this);
 	m_isHit = false;
 }
 
@@ -25,25 +26,24 @@ void RightArm::Initialize(int hp,IScene* scene)
 	UNREFERENCED_PARAMETER(hp);
 	SetScene(scene);
 	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetrArmModel());
+	m_gun->Initialize();
 }
 
 void RightArm::Update(float elapsedTime)
 {
 	using namespace DirectX::SimpleMath;
-
-
-
-	Quaternion quaternion = GetOwner()->GetQuaternion();
+	SetQuaternion(Quaternion::CreateFromYawPitchRoll(0, DirectX::XMConvertToRadians(45), 0) * GetOwner()->GetQuaternion());
 	Vector3 pos{ 0.6f, 0.9f, 0.0f };
-	SetPosition(GetOwner()->GetPosition() + Vector3::Transform(pos, quaternion));
+	SetPosition(GetOwner()->GetPosition() + Vector3::Transform(pos, GetOwner()->GetQuaternion()));
 
 	Matrix world = Matrix::Identity;
 	world = Matrix::CreateScale(GetScale());
-	world *= Matrix::CreateFromQuaternion(quaternion);
+	world *= Matrix::CreateFromQuaternion(GetQuaternion());
 	world *= Matrix::CreateTranslation(GetPosition());
 
 	SetWorld(world);
 
+	m_gun->Update(elapsedTime);
 	ComponentsUpdate(elapsedTime);
 
 	m_isHit = false;
@@ -51,7 +51,6 @@ void RightArm::Update(float elapsedTime)
 
 void RightArm::Render()
 {
-			GetComponent<ModelDraw>()->Render();
 }
 
 void RightArm::Finalize()
@@ -62,25 +61,4 @@ void RightArm::Finalize()
 void RightArm::Collision(Collider* collider)
 {
 	UNREFERENCED_PARAMETER(collider);
-	//// ÉpÅ[ÉcÇ∆ÇÃìñÇΩÇËîªíË
-	//if (GetComponent<Collider>()->GetBoundingBox()->Intersects(*collider->GetBoundingBox()))
-	//{
-	//	Bullet* bulletObject = static_cast<Bullet*>(collider->GetOwner());
-	//	if (bulletObject->GetState() == Bullet::FLYING)
-	//	{
-	//		if (GetComponent<HP>()->GetHP() > 0)
-	//		{
-	//			GetOwner()->GetComponent<Camera>()->shake();
-	//			GetComponent<HP>()->SetHP(GetComponent<HP>()->GetHP() - 1);
-	//			bulletObject->Hit();
-	//			static_cast<PlayScene*>(GetOwner()->GetScene())->SetNoise();
-	//			m_isHit = true;
-	//		}
-	//		else
-	//		{
-	//			//auto game = static_cast<PlayScene*>(GetOwner()->GetScene())->GetGame();
-	//			//game->ChangeScene(game->GetGameOverScene());
-	//		}
-	//	}
-	//}
 }

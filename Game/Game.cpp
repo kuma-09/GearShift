@@ -207,7 +207,7 @@ void Game::Render()
     //m_spriteBatch->Draw(DeferredRendering::GetFinalRenderTexture()->GetShaderResourceView(), Vector2::Zero);
     //m_spriteBatch->End();
     //RenderManager::RenderObjects();
-    //RenderManager::RenderParticle();
+    RenderManager::RenderParticle();
     Bloom::EndBloom(DeferredRendering::GetFinalRenderTexture()->GetShaderResourceView());
 
     Noise::ApplyNoise(Bloom::GetFinalRenderTexture()->GetShaderResourceView());
@@ -215,7 +215,7 @@ void Game::Render()
     // ForwardRendering‚ÅUI‚ð•\Ž¦
     m_scene->RenderUI();
 
-    //DeferredRendering::GBufferShow();
+    DeferredRendering::GBufferShow();
     //ShadowMap::ShadowMapShow();
     //Bloom::BloomTextureShow();
 

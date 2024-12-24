@@ -13,10 +13,11 @@ BurnerVertical::~BurnerVertical()
 
 void BurnerVertical::Initialize()
 {
+	GetComponent<Trail>()->Initialize(L"Resources/Textures/particle.png", 10, DirectX::Colors::LightBlue);
 }
 
 void BurnerVertical::Update(float elapsedTime)
 {
 	using namespace DirectX::SimpleMath;
-	GetComponent<Trail>()->SetPos(GetPosition() - Vector3(0, 0.5f, 0),GetPosition() + Vector3(0, 0.5f, 0));
+	GetComponent<Trail>()->SetPos(GetPosition() - Vector3::Transform(Vector3(0.5f,0, 0),GetQuaternion()), GetPosition() + Vector3::Transform(Vector3(0.5f,0, 0), GetQuaternion()));
 }
