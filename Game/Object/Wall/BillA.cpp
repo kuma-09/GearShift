@@ -8,7 +8,6 @@ BillA::BillA(IScene* scene)
 	SetScene(scene);
 	AddComponent<Collider>();
 	AddComponent<ModelDraw>();
-	GetComponent<Collider>()->SetTypeID(Collider::TypeID::Wall);
 
 }
 
@@ -20,8 +19,8 @@ void BillA::Initialize()
 {
 	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetBillAModel());
 	SetScale({ 10, 8, 6 });
-	GetComponent<Collider>()->SetSize(GetScale());
-	GetComponent<Collider>()->GetBoundingBox()->Center = GetPosition();
+	GetComponent<Collider>()->Initialize(Collider::Wall, GetScale());
+	//GetComponent<Collider>()->GetBoundingBox()->Center = GetPosition();
 }
 
 void BillA::Update(float elapsedtime)
@@ -32,7 +31,6 @@ void BillA::Update(float elapsedtime)
 	world *= Matrix::CreateTranslation(Vector3{ GetPosition().x,GetPosition().y - GetScale().y,GetPosition().z });
 	SetWorld(world);
 
-	GetComponent<Collider>()->SetSize(GetScale());
 	GetComponent<Collider>()->GetBoundingBox()->Center = GetPosition();
 }
 

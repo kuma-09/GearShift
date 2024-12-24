@@ -16,7 +16,7 @@ ModelDraw::ModelDraw()
 
 ModelDraw::~ModelDraw()
 {
-	Finalize();
+	RenderManager::Remove(this);
 }
 
 void ModelDraw::Initialize(DirectX::Model* model,bool texture)
@@ -29,7 +29,6 @@ void ModelDraw::Initialize(DirectX::Model* model,bool texture)
 void ModelDraw::Update(float elapsedTime)
 {
 	UNREFERENCED_PARAMETER(elapsedTime);
-	
 }
 
 void ModelDraw::Render()
@@ -42,7 +41,6 @@ void ModelDraw::Render()
 
 	m_model->Draw(context, *state, world, view, projection, false, [&]
 	{
-		//Shadow::Draw(texture, color);
 		DeferredRendering::DrawGBuffer(m_isTexture);
 	});
 }
@@ -59,9 +57,4 @@ void ModelDraw::CreateShadow()
 		{
 			ShadowMap::RenderDepth();
 		});
-}
-
-void ModelDraw::Finalize()
-{
-	RenderManager::Remove(this);
 }

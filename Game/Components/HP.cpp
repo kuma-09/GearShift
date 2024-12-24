@@ -11,6 +11,11 @@ HP::~HP()
 
 }
 
+void HP::Initialize(int hp)
+{
+	SetHP(hp);
+}
+
 void HP::Update(float elapsedTime)
 {
 	UNREFERENCED_PARAMETER(elapsedTime);

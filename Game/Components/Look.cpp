@@ -21,7 +21,6 @@ void Look::Update(float elapsedTime)
 {
     using namespace DirectX::SimpleMath;
 
-
     if (m_to)
     {
         // プレイヤーの向いている方向を計算
@@ -41,15 +40,6 @@ void Look::Update(float elapsedTime)
     }
 }
 
-void Look::Render()
-{
-
-}
-
-void Look::Finalize()
-{
-
-}
 
 void Look::SetTarget(GameObject* from, GameObject* to)
 {

@@ -1,8 +1,6 @@
 #pragma once
 
 class Collider;
-class CollisionMesh;
-#include "Game/Object/Floor/CollisionMesh.h"
 
 class CollisionManager
 {
@@ -15,5 +13,4 @@ public:
 	static void Remove(Collider* component);
 private:
 	static std::vector<Collider*> s_colliders;
-	static std::unique_ptr<CollisionMesh> s_collisionMesh;
 };

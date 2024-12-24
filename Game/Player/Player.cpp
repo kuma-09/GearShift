@@ -11,6 +11,7 @@
 #include "Game/Components/Camera.h"
 #include "Game/Components/Look.h"
 #include "Game/Components/Trail.h"
+#include "Game/Components/PointLight.h"
 
 #include "Game/Parts/Part.h"
 #include "Game/Parts/Head.h"
@@ -51,6 +52,7 @@ Player::Player(IScene* scene)
 	AddComponent<Collider>();
 	AddComponent<HPBar>();
 	AddComponent<Trail>();
+	AddComponent<PointLight>();
 
 	// ステートの作成
 	CreateState();
@@ -67,14 +69,16 @@ Player::~Player()
 
 void Player::Initialize()
 {
-	GetComponent<Collider>()->SetTypeID(Collider::TypeID::Player);
-	GetComponent<Collider>()->SetSize({ 1,1.45f,1 });
-	GetComponent<Look>()->SetTarget(this, nullptr);
+	GetComponent<HP>()->Initialize(10);
+	GetComponent<Move>()->Initialize();
+	GetComponent<Camera>()->Initialize();
 	GetComponent<Camera>()->SetTarget(this, nullptr);
-	GetComponent<HP>()->SetHP(10);
+	GetComponent<Look>()->SetTarget(this, nullptr);
+	GetComponent<Physics>()->Initialize();
+	GetComponent<Collider>()->Initialize(Collider::Player, { 1,1.45f,1 });
+	GetComponent<Collider>()->SetActive(true);
 	GetComponent<HPBar>()->Initialize();
 	GetComponent<Trail>()->Initialize(L"Resources/Textures/particle.png", 10,DirectX::Colors::LightBlue);
-	SetOnFloor(false);
 
 	m_energyGage = std::make_unique<EnergyGage>();
 	m_energyGage->Initialize();
@@ -138,7 +142,7 @@ void Player::Update(float elapsedTime)
 	SetPrePosition(GetPosition());
 	SetPosition(GetPosition() + GetVelocity());
 	ShadowMap::SetLightPosition(GetPosition());
-	GetComponent<Trail>()->SetPos(GetPosition() - Vector3(0,0.5f, 0), GetPosition() + Vector3(0, 0.5f, 0));
+	GetComponent<Trail>()->SetPos(GetPosition() - Vector3(0, 0.5f, 0), GetPosition() + Vector3(0, 0.5f, 0));
 
 	Matrix world = Matrix::Identity;
 	world = Matrix::CreateScale(GetScale());
@@ -293,6 +297,8 @@ void Player::Collision(Collider* collider)
 	if (collider->GetTypeID() == Collider::Floor)
 	{
 		Collider::CheckHit(this, collider->GetOwner());
+		GetPart(Part::LeftLeg)->GetComponent<Emitter>()->SetParticle(GetPart(Part::LeftLeg)->GetPosition() - DirectX::SimpleMath::Vector3{ 0,1.f,0 });
+		GetPart(Part::RightLeg)->GetComponent<Emitter>()->SetParticle(GetPart(Part::RightLeg)->GetPosition() - DirectX::SimpleMath::Vector3{ 0,1.f,0 });
 	}
 	if (collider->GetTypeID() == Collider::Wall || collider->GetTypeID() == Collider::Enemy)
 	{

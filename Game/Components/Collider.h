@@ -20,39 +20,29 @@ public:
 		Floor
 	};
 
-	enum ColliderType
-	{
-		None,
-		Box,
-		Sphere,
-		Oriented
-	};
-
 	Collider();
 	~Collider();
 
-	template<typename T>
-	void Initialize(std::unique_ptr<DirectX::BoundingBox> collider) {};
-	void Initialize();
+	void Initialize(TypeID id,
+		DirectX::SimpleMath::Vector3 size = DirectX::SimpleMath::Vector3::One,
+		DirectX::SimpleMath::Vector3 initialPos = DirectX::SimpleMath::Vector3::Zero);
 	void Update(float elapsedTime);
 	void Render();
 	void Finalize();
 
-	void SetSize(DirectX::SimpleMath::Vector3 size);
 	void SetInitalePosition(DirectX::SimpleMath::Vector3 pos);
-
 	DirectX::BoundingBox* GetBoundingBox() { return m_boudingBox.get(); }
-
 	TypeID GetTypeID() { return m_typeID; }
-	void SetTypeID(TypeID id);
+	void SetActive(bool isActive) { m_isActive = isActive; }
+	bool GetActive() { return m_isActive; }
 
 	static void CheckHit(GameObject* object1, GameObject* object2);
 
 private:
 	Graphics* m_graphics;
 	TypeID m_typeID;
-	ColliderType m_colliderType;
 	std::unique_ptr<DirectX::BoundingBox> m_boudingBox;
 	DirectX::SimpleMath::Vector3 m_initalePosition;
+	bool m_isActive;
 };
 

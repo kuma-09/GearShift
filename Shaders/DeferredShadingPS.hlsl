@@ -8,6 +8,10 @@ Texture2D<float4> ShadowMap : register(t4);
 // シャドウマップ用テクスチャサンプラー
 SamplerState ShadowMapSampler : register(s1);
 
+static const float att0 = 0.0f;
+static const float att1 = 0.1f;
+static const float att2 = 0.0f;
+
 cbuffer Parameters : register(b1)
 {
     matrix matView;
@@ -15,6 +19,9 @@ cbuffer Parameters : register(b1)
     matrix inverseViewProj;
     matrix lightView;
     matrix lightProj;
+    int    lightNum;
+    float3 lightPos[128];
+    float3 lightColor[128];
 }
 
 struct PS_INPUT
@@ -50,7 +57,7 @@ float4 main(PS_INPUT input) : SV_TARGET
 	// diffuse------------------------------
     float3 toLight = normalize(-LightDirection[0]);
     float intensity1 = max(dot(normal, toLight), 0.0f);
-    float3 diffuse = albedo.rgb * toLight * intensity1 + 0.25f;
+    float3 diffuse = albedo.rgb * toLight * intensity1;
 	// -------------------------------------
     
 	// specular-----------------------------
@@ -65,6 +72,29 @@ float4 main(PS_INPUT input) : SV_TARGET
     // -------------------------------------
 
     float3 finalColor = albedo.rgb * diffuse * shadow;
+    
+    for (int i = 0; i < lightNum; i++)
+    {
+        
+        // 拡散反射光
+        float3 lightDirection = Position.xyz - lightPos[i].xyz;
+        float3 toLight = normalize(-lightDirection);
+        float lightDistance = length(lightDirection);
+        float intensity1 = max(dot(normal, toLight), 0.0f);
+        float3 diffuse = albedo.rgb * lightColor[i] * intensity1;
+        // 鏡面反射
+        float toEye = normalize(EyePosition - Position.xyz);
+        float3 halfVector = normalize(toLight + toEye);
+        float intensity2 = max(dot(normal, halfVector), 0.0f);
+        float3 specular = pow(intensity2, SpecularPower) * SpecularColor;
+    
+        // 光の減衰
+        float attenuation = 1.0f / (att0 + att1 * lightDistance + att2 * lightDistance * lightDistance);
+        diffuse *= attenuation;
+        specular *= attenuation;
+    
+        finalColor += diffuse + specular;
+    }
 
     return float4(finalColor, 1);
 }

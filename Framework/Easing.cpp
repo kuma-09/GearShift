@@ -1,5 +1,7 @@
 #include "pch.h"
 #include "Easing.h"
+#include <cmath>
+#include <algorithm>
 
 #define PI 3.141592653589793 // ‰~Žü—¦
 
@@ -95,5 +97,28 @@ namespace Easing
 		if (targetTime < time) return 1;
 		time /= targetTime;
 		return time < 0.5 ? 8 * time * time * time * time : 1 - pow(-2 * time + 2, 4) / 2;
+	}
+
+	DirectX::SimpleMath::Vector3 InOutCubic(const DirectX::SimpleMath::Vector3& start, const DirectX::SimpleMath::Vector3& end, float t)
+	{
+		t = std::max(std::min(1.0f,t),0.0f);
+		if (t < 0.5f) {
+			t = 4 * t * t * t; // ‘O”¼
+		}
+		else {
+			t = (t - 1) * (2 * t - 2) * (2 * t - 2) + 1; // Œã”¼
+		}
+		return DirectX::SimpleMath::Vector3::Lerp(start, end, t);
+	}
+
+	DirectX::SimpleMath::Vector3 InOutQuart(const DirectX::SimpleMath::Vector3& start, const DirectX::SimpleMath::Vector3& end, float t) {
+		t = std::max(std::min(1.0f, t), 0.0f);
+		if (t < 0.5f) {
+			t = 8 * t * t * t * t; // ‘O”¼
+		}
+		else {
+			t = 1 - std::pow(-2 * t + 2, 4) / 2; // Œã”¼
+		}
+		return DirectX::SimpleMath::Vector3::Lerp(start, end, t);
 	}
 }

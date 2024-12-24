@@ -14,7 +14,6 @@ public:
 	void Update(float elapsedTime);
 	void Render();
 	void CreateShadow();
-	void Finalize();
 
 private:
 	Graphics* m_graphics;

@@ -12,8 +12,7 @@ FixedEnemyBullet::FixedEnemyBullet(IScene* scene, Collider::TypeID id)
 	SetScale({ 0.5f,0.5f,0.5f });
 	AddComponent<Collider>();
 	AddComponent<ModelDraw>();
-	GetComponent<Collider>()->SetTypeID(id);
-	GetComponent<Collider>()->SetSize({ 0.5f,0.5f,0.5f });
+	GetComponent<Collider>()->Initialize(id, { 0.5f,0.5f,0.5f });
 	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetCubeModel());
 }
 
@@ -34,6 +33,7 @@ void FixedEnemyBullet::Initialize(GameObject* object)
 
 	SetVelocity(Vector3::Zero);
 	SetState(BulletState::UNUSED);
+	GetComponent<Collider>()->SetActive(false);
 }
 
 void FixedEnemyBullet::Shot(GameObject* target)
@@ -46,6 +46,7 @@ void FixedEnemyBullet::Shot(GameObject* target)
 	velocity += Vector3::Transform(Vector3::Backward * SPEED, GetOwner()->GetQuaternion());
 	SetVelocity(velocity);
 	SetState(BulletState::FLYING);
+	GetComponent<Collider>()->SetActive(true);
 }
 
 void FixedEnemyBullet::Hit()
@@ -56,6 +57,7 @@ void FixedEnemyBullet::Hit()
 	SetQuaternion(Quaternion::Identity);
 	SetVelocity(Vector3::Zero);
 	SetState(BulletState::USED);
+	GetComponent<Collider>()->SetActive(false);
 }
 
 void FixedEnemyBullet::Update(float elapsedTime)

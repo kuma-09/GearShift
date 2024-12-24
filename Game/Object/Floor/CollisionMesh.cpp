@@ -141,7 +141,6 @@ bool CollisionMesh::IntersectRay(
 	for (int i = 0; i < m_triangles.size(); i++)
 	{
 		//** ToDo::明らかに衝突しない場合は早期リターンするように変更する
-
 		// レイとポリゴンの衝突判定をとる
 		if (unitRay.Intersects(
 				m_triangles[i].triangle[0],

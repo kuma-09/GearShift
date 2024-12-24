@@ -68,12 +68,12 @@ void BossEnemy::Initialize()
 	using namespace DirectX::SimpleMath;
 
 
-	GetComponent<HP>()->SetHP(25);
+	GetComponent<HP>()->Initialize(25);
+	GetComponent<Physics>()->Initialize();
 	SetTarget(GetTarget());
 	SetPart(Part::Head, std::make_unique<BossHead>(GetTarget()));
 	SetPart(Part::BodyTop, std::make_unique<BossLeg>());
-	GetComponent<Collider>()->SetTypeID(Collider::TypeID::Enemy);
-	GetComponent<Collider>()->SetSize({ 6,5,6 });
+	GetComponent<Collider>()->Initialize(Collider::Enemy, { 6,5,6 });
 	GetComponent<HPBar>()->Initialize();
 	for (auto& bullet : m_fixedBullets)
 	{
@@ -129,6 +129,13 @@ void BossEnemy::Update(float elapsedTime)
 		ObjectManager::Remove(this);
 		static_cast<PlayScene*>(GetScene())->CreateHitEffect(GetPosition());
 	}
+
+	Matrix world = Matrix::Identity;
+	world = Matrix::CreateScale(GetScale());
+	world *= Matrix::CreateFromQuaternion(GetQuaternion());
+	world *= Matrix::CreateTranslation(GetPosition() + Vector3{ 0,-0.9f,0 });
+
+	SetWorld(world);
 }
 
 void BossEnemy::CreateShader()
@@ -140,12 +147,7 @@ void BossEnemy::Render()
 {
 	using namespace DirectX::SimpleMath;
 
-	Matrix world = Matrix::Identity;
-	world = Matrix::CreateScale(GetScale());
-	world *= Matrix::CreateFromQuaternion(GetQuaternion());
-	world *= Matrix::CreateTranslation(GetPosition() + Vector3{ 0,-0.9f,0 });
 
-	SetWorld(world);
 
 	for (auto& bullet : m_fixedBullets)
 	{
@@ -219,7 +221,7 @@ void BossEnemy::Collision(Collider* collider)
 		if (bulletObject->GetState() == Bullet::FLYING)
 		{
 			GetComponent<HP>()->SetHP(GetComponent<HP>()->GetHP() - 1);
-			static_cast<PlayScene*>(GetScene())->CreateHitParticle(GetWorld());
+			static_cast<PlayScene*>(GetScene())->CreateHitParticle(bulletObject->GetWorld());
 			bulletObject->Hit();
 		}
 	}
@@ -229,7 +231,7 @@ void BossEnemy::Collision(Collider* collider)
 		if (bulletObject->GetState() == Sword::USING)
 		{
 			GetComponent<HP>()->SetHP(GetComponent<HP>()->GetHP() - 5);
-			static_cast<PlayScene*>(GetScene())->CreateHitParticle(GetWorld());
+			static_cast<PlayScene*>(GetScene())->CreateHitParticle(bulletObject->GetWorld());
 			bulletObject->Hit();
 		}
 		else if(bulletObject->GetState() == Sword::USED)

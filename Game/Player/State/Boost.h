@@ -13,8 +13,8 @@ public:
 
 	void Initialize();
 	void Update(float elapsedTime);
-	void Render();
-	void Finalize();
+	void Render() {};
+	void Finalize() {};
 
 
 private:

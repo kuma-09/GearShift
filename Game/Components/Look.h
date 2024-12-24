@@ -12,8 +12,8 @@ public:
 
 	void Initialize(bool h , bool v);
 	void Update(float elapsedTime);
-	void Render();
-	void Finalize();
+	void Render() {};
+	void Finalize() {};
 
 	void SetTarget(GameObject* from, GameObject* to);
 

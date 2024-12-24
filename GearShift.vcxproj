@@ -211,6 +211,7 @@
     <ClInclude Include="Game\Components\Look.h" />
     <ClInclude Include="Game\Components\ModelDraw.h" />
     <ClInclude Include="Game\Components\Move.h" />
+    <ClInclude Include="Game\Components\PointLight.h" />
     <ClInclude Include="Game\Components\Trail.h" />
     <ClInclude Include="Game\DeferredRendering.h" />
     <ClInclude Include="Game\Enemy\BossEnemy.h" />
@@ -231,6 +232,7 @@
     <ClInclude Include="Game\IScene.h" />
     <ClInclude Include="Game\Manager\CollisionManager.h" />
     <ClInclude Include="Game\Manager\ObjectManager.h" />
+    <ClInclude Include="Game\Manager\PointLightManager.h" />
     <ClInclude Include="Game\Manager\RenderManager.h" />
     <ClInclude Include="Game\Object\Bullet\LaserBullet.h" />
     <ClInclude Include="Game\Object\Bullet\Bullet.h" />
@@ -239,6 +241,9 @@
     <ClInclude Include="Game\Object\Bullet\HomingBullet.h" />
     <ClInclude Include="Game\Object\Bullet\NormalBullet.h" />
     <ClInclude Include="Game\Object\Bullet\ShotgunBullet.h" />
+    <ClInclude Include="Game\Object\Burner\Burner.h" />
+    <ClInclude Include="Game\Object\Burner\BurnerHorizon.h" />
+    <ClInclude Include="Game\Object\Burner\BurnerVertical.h" />
     <ClInclude Include="Game\Object\DropItem.h" />
     <ClInclude Include="Game\Object\DropItemB.h" />
     <ClInclude Include="Game\Object\Floor.h" />
@@ -323,6 +328,7 @@
     <ClCompile Include="Game\Components\Look.cpp" />
     <ClCompile Include="Game\Components\ModelDraw.cpp" />
     <ClCompile Include="Game\Components\Move.cpp" />
+    <ClCompile Include="Game\Components\PointLight.cpp" />
     <ClCompile Include="Game\Components\Trail.cpp" />
     <ClCompile Include="Game\DeferredRendering.cpp" />
     <ClCompile Include="Game\Enemy\BossEnemy.cpp" />
@@ -342,6 +348,7 @@
     <ClCompile Include="Game\GameOverScene.cpp" />
     <ClCompile Include="Game\Manager\CollisionManager.cpp" />
     <ClCompile Include="Game\Manager\ObjectManager.cpp" />
+    <ClCompile Include="Game\Manager\PointLightManager.cpp" />
     <ClCompile Include="Game\Manager\RenderManager.cpp" />
     <ClCompile Include="Game\Object\Bullet\LaserBullet.cpp" />
     <ClCompile Include="Game\Object\Bullet\Bullet.cpp" />
@@ -350,6 +357,9 @@
     <ClCompile Include="Game\Object\Bullet\HomingBullet.cpp" />
     <ClCompile Include="Game\Object\Bullet\NormalBullet.cpp" />
     <ClCompile Include="Game\Object\Bullet\ShotgunBullet.cpp" />
+    <ClCompile Include="Game\Object\Burner\Burner.cpp" />
+    <ClCompile Include="Game\Object\Burner\BurnerHorizon.cpp" />
+    <ClCompile Include="Game\Object\Burner\BurnerVertical.cpp" />
     <ClCompile Include="Game\Object\DropItem.cpp" />
     <ClCompile Include="Game\Object\DropItemB.cpp" />
     <ClCompile Include="Game\Object\Floor.cpp" />

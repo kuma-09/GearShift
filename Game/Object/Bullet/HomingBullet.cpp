@@ -1,7 +1,10 @@
 #include "pch.h"
 #include "HomingBullet.h"
+
 #include "Game/Components/Collider.h"
 #include "Game/Components/ModelDraw.h"
+#include "Game/Components/PointLight.h"
+
 #include "Game/PlayScene.h"
 #include "Game/Player/Player.h"
 #include "random"
@@ -14,8 +17,8 @@ HomingBullet::HomingBullet(IScene* scene, Collider::TypeID id)
 	AddComponent<Collider>();
 	AddComponent<ModelDraw>();
 	AddComponent<Emitter>();
-	GetComponent<Collider>()->SetTypeID(id);
-	GetComponent<Collider>()->SetSize({ 0.1f,0.1f,0.1f });
+	AddComponent<PointLight>();
+	GetComponent<Collider>()->Initialize(id, { 0.1f,0.1f,0.1f });
 	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetCubeModel());
 	GetComponent<Emitter>()->Initialize(L"Resources/Textures/whitePuff00.png",1.0f,0.025f,0.3f);
 	SetScale({ 0.1f,0.1f,0.1f });
@@ -38,6 +41,7 @@ void HomingBullet::Initialize(GameObject* object)
 
 	SetVelocity(Vector3::Zero);
 	SetState(BulletState::UNUSED);
+	GetComponent<Collider>()->SetActive(false);
 }
 
 void HomingBullet::Shot(GameObject* object)
@@ -67,6 +71,8 @@ void HomingBullet::Shot(GameObject* object)
 	velocity += Vector3::Transform(Vector3::Forward * SPEED, GetQuaternion());
 	SetVelocity(velocity);
 	SetState(BulletState::FLYING);
+	GetComponent<Collider>()->SetActive(true);
+	GetComponent<PointLight>()->Initialize(GetPosition(),{0.25f,0.25f,0.25f});
 }
 
 void HomingBullet::Shot(GameObject* object, float period)
@@ -96,6 +102,7 @@ void HomingBullet::Shot(GameObject* object, float period)
 	velocity += Vector3::Transform(Vector3::Forward * SPEED, GetQuaternion());
 	SetVelocity(velocity);
 	SetState(BulletState::FLYING);
+	GetComponent<Collider>()->SetActive(true);
 }
 
 void HomingBullet::Hit()
@@ -106,13 +113,15 @@ void HomingBullet::Hit()
 	{
 		//static_cast<PlayScene*>(GetOwner()->GetScene())->CreateHitEffect(GetPosition());
 		Vector3 velocity = Vector3::Zero;
-		SetPosition(Vector3::Zero);
+		SetWorld(Matrix::Identity);
 		SetQuaternion(Quaternion::Identity);
 
 		SetVelocity(Vector3::Zero);
 		SetState(BulletState::USED);
 
 		Audio::GetInstance()->PlaySoundSE_Hit();
+		GetComponent<Collider>()->SetActive(false);
+		GetComponent<PointLight>()->ClearColor();
 	}
 }
 
@@ -144,12 +153,13 @@ void HomingBullet::Update(float elapsedTime)
 		SetPosition(m_position);
 
 		GetComponent<Emitter>()->SetParticle(GetPosition() + DirectX::SimpleMath::Vector3((rand() % 3 - 1) * 0.25f, (rand() % 3 - 1) * 0.25f, (rand() % 3 - 1) * 0.25f));
+		Matrix world = Matrix::CreateScale(GetScale());
+		world *= Matrix::CreateFromQuaternion(GetQuaternion());
+		world *= Matrix::CreateTranslation(GetPosition());
+		SetWorld(world);
 	}
 	
-	Matrix world = Matrix::CreateScale(GetScale());
-	world *= Matrix::CreateFromQuaternion(GetQuaternion());
-	world *= Matrix::CreateTranslation(GetPosition());
-	SetWorld(world);
+
 
 
 }

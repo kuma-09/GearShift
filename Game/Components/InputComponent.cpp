@@ -46,6 +46,3 @@ void InputComponent::Update(float elapsedTime)
     input *= 0.05f;
 }
 
-void InputComponent::Finalize()
-{
-}

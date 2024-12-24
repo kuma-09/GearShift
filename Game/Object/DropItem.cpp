@@ -9,8 +9,7 @@ DropItem::DropItem(IScene* scene)
 	SetScene(scene);
 	AddComponent<Physics>();
 	AddComponent<Collider>();
-	GetComponent<Collider>()->SetTypeID(Collider::TypeID::DropItem);
-	GetComponent<Collider>()->SetSize(DirectX::SimpleMath::Vector3::One * 2);
+	GetComponent<Collider>()->Initialize(Collider::DropItem, { 2,2,2 });
 	AddComponent<ModelDraw>();
 	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetDropItemModel(),true);
 

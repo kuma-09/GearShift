@@ -8,6 +8,7 @@
 #include "Game/Components/ModelDraw.h"
 #include "Game/Components/Collider.h"
 #include "Game/Components/HPBar.h"
+#include "Game/Components/PointLight.h"
 #include "Game/Object/Bullet/EnemyBullet.h"
 #include "Game/Object/Bullet/HomingBullet.h"
 #include "Game/Object/Sword.h"
@@ -26,6 +27,7 @@ HomingEnemy::HomingEnemy(IScene* scene,GameObject* target)
 	AddComponent<ModelDraw>();
 	AddComponent<Collider>();
 	AddComponent<HPBar>();
+	AddComponent<PointLight>();
 
 	for (int i = 0; i < BULLET_COUNT; i++)
 	{
@@ -50,9 +52,9 @@ void HomingEnemy::Initialize()
 	GetComponent<HP>()->SetHP(10);
 	GetComponent<Look>()->SetTarget(this, GetTarget());
 	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetDiceModel(),true);
-	GetComponent<Collider>()->SetTypeID(Collider::TypeID::Enemy);
-	GetComponent<Collider>()->SetSize({1,1,1});
+	GetComponent<Collider>()->Initialize(Collider::Enemy);
 	GetComponent<HPBar>()->Initialize();
+	GetComponent<PointLight>()->Initialize(GetPosition(), { 1,0,0 });
 
 	for (auto& bullet : m_bullet)
 	{

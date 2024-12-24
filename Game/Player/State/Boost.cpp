@@ -15,6 +15,7 @@ Boost::Boost(Player* player)
 	m_totalTime = m_boostTime;
 	m_shader = std::make_unique<Shader>();
 	m_shader->CreateShader();
+	
 }
 
 Boost::~Boost()
@@ -65,21 +66,3 @@ void Boost::Update(float elapsedTime)
 
 }
 
-void Boost::Render()
-{
-	auto context = Graphics::GetInstance()->GetDeviceResources()->GetD3DDeviceContext();
-	auto state = Graphics::GetInstance()->GetCommonStates();
-	auto view = Graphics::GetInstance()->GetViewMatrix();
-	auto proj = Graphics::GetInstance()->GetProjectionMatrix();
-
-	//Resources::GetInstance()->GetEntyuModel()->Draw(context, *state, DirectX::SimpleMath::Matrix::Identity, view, proj, false, [&]
-	//	{
-	//		m_shader->RenderStart(m_world, view, proj);
-	//	}
-	//);
-}
-
-void Boost::Finalize()
-{
-	
-}

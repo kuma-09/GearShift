@@ -74,7 +74,7 @@ void Trail::Initialize(const wchar_t* path, int bufferSize, DirectX::XMVECTORF32
 
 void Trail::Update(float elapsedTime)
 {
-	
+	UNREFERENCED_PARAMETER(elapsedTime);
 }
 
 void Trail::Render()

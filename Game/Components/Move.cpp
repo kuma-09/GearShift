@@ -6,18 +6,16 @@
 
 Move::Move()
 {
-	m_inputManager = InputManager::GetInstance();
-    m_velocity = DirectX::SimpleMath::Vector3::Zero;
 }
 
 Move::~Move()
 {
-
 }
 
 void Move::Initialize()
 {
-
+    m_inputManager = InputManager::GetInstance();
+    m_velocity = DirectX::SimpleMath::Vector3::Zero;
 }
 
 void Move::Update(float elapsedTime)
@@ -77,11 +75,6 @@ void Move::Update(float elapsedTime)
         quaternion = Quaternion::CreateFromRotationMatrix(Matrix::CreateLookAt(GetOwner()->GetPosition(), GetOwner()->GetPosition() + velocity, Vector3::Up));
         GetOwner()->SetQuaternion(Quaternion::Lerp(GetOwner()->GetQuaternion(), quaternion,0.1f));
     }
-
-}
-
-void Move::Finalize()
-{
 
 }
 

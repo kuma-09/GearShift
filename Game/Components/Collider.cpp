@@ -15,6 +15,7 @@ Collider::Collider()
 	m_boudingBox->Extents = DirectX::SimpleMath::Vector3(0.5f, 0.5f, 0.5f);
     m_initalePosition = DirectX::SimpleMath::Vector3::Zero;
     CollisionManager::Add(this);
+    SetActive(false);
 }
 
 Collider::~Collider()
@@ -22,9 +23,12 @@ Collider::~Collider()
     CollisionManager::Remove(this);
 }
 
-void Collider::Initialize()
+void Collider::Initialize(TypeID id, DirectX::SimpleMath::Vector3 size, DirectX::SimpleMath::Vector3 initialPos)
 {
-    
+    m_typeID = id;
+    m_boudingBox->Extents = size;
+    m_initalePosition = initialPos;
+    SetActive(true);
 }
 
 void Collider::Update(float elapsedTime)
@@ -48,19 +52,9 @@ void Collider::Finalize()
 
 }
 
-void Collider::SetSize(DirectX::SimpleMath::Vector3 size)
-{
-	m_boudingBox->Extents = size;
-}
-
 void Collider::SetInitalePosition(DirectX::SimpleMath::Vector3 pos)
 {
     m_initalePosition = pos;
-}
-
-void Collider::SetTypeID(TypeID id)
-{
-    m_typeID = id;
 }
 
 /// <summary>
@@ -138,7 +132,7 @@ void Collider::CheckHit(GameObject* object1, GameObject* object2)
             // ‰Ÿ‚µ–ß‚·
             object1->SetPosition(Vector3(object1->GetPosition().x, hitPostion.y + a->Extents.y, object1->GetPosition().z));
             object1->SetVelocity({ velocity.x,0,velocity.z });
-            object1->GetComponent<Physics>()->Reset();
+            if(object1->GetComponent<Physics>()) object1->GetComponent<Physics>()->Reset();
         }
     }
 

@@ -88,7 +88,7 @@ void Game::Initialize(HWND window, int width, int height)
     ShadowMap::Initialize();
     Noise::Initialize();
     Bloom::Initialize();
-    //CollisionManager::InitializeCollisionMesh(L"testFloor");
+    CollisionManager::InitializeCollisionMesh(L"testFloor");
     GetTitleScene();
     GetPlayScene();
     GetResultScene();
@@ -207,7 +207,7 @@ void Game::Render()
     //m_spriteBatch->Draw(DeferredRendering::GetFinalRenderTexture()->GetShaderResourceView(), Vector2::Zero);
     //m_spriteBatch->End();
     //RenderManager::RenderObjects();
-    RenderManager::RenderParticle();
+    //RenderManager::RenderParticle();
     Bloom::EndBloom(DeferredRendering::GetFinalRenderTexture()->GetShaderResourceView());
 
     Noise::ApplyNoise(Bloom::GetFinalRenderTexture()->GetShaderResourceView());
@@ -215,9 +215,9 @@ void Game::Render()
     // ForwardRenderingでUIを表示
     m_scene->RenderUI();
 
-    DeferredRendering::GBufferShow();
-    ShadowMap::ShadowMapShow();
-    Bloom::BloomTextureShow();
+    //DeferredRendering::GBufferShow();
+    //ShadowMap::ShadowMapShow();
+    //Bloom::BloomTextureShow();
 
     // シーン切り替え時のマスク
     if (m_sceneMask->IsClose() || m_sceneMask->IsOpen())

@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "DeferredRendering.h"
+#include "Manager/PointLightManager.h"
 #include "Game/Shader/ShadowMap.h"
 #include "Framework/Graphics.h"
 #include "Framework/BinaryFile.h"
@@ -83,7 +84,6 @@ void DeferredRendering::Initialize()
 	device->CreatePixelShader(ps_deferred.GetData(), ps_deferred.GetSize(), nullptr, s_pixelShader_light.ReleaseAndGetAddressOf());
 	device->CreateVertexShader(vs_combient.GetData(), vs_combient.GetSize(), nullptr, s_vertexShader_combient.ReleaseAndGetAddressOf());
 	device->CreatePixelShader(ps_combient.GetData(), ps_combient.GetSize(), nullptr, s_pixelShader_combient.ReleaseAndGetAddressOf());
-
 
 	//	インプットレイアウトの作成
 	device->CreateInputLayout(&INPUT_LAYOUT_G[0],
@@ -221,6 +221,12 @@ void DeferredRendering::DeferredLighting()
 	cb->inverseViewProj = (view * projection).Invert();
 	cb->lightView = ShadowMap::GetLightView().Transpose();
 	cb->lightProj = ShadowMap::GetLightProj().Transpose();
+	cb->lightNum = PointLightManager::GetPointLights().size();
+	for (int i = 0; i < PointLightManager::GetPointLights().size(); i++)
+	{
+		cb->lightPos[i] = PointLightManager::GetPointLights()[i]->GetPosition();
+		cb->lightColor[i] = PointLightManager::GetPointLights()[i]->GetColor();
+	}
 	// マップを解除する
 	context->Unmap(s_constantBuffer.Get(), 0);
 	// 定数バッファの設定

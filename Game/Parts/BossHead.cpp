@@ -36,8 +36,7 @@ void BossHead::Initialize(int hp, IScene* scene)
 	GetComponent<HP>()->SetHP(hp);
 	SetMaxHP(float(hp));
 	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetCutoRobotHeadModel());
-	GetComponent<Collider>()->SetSize({ 1.0f,1.0f,1.0f });
-	GetComponent<Collider>()->SetInitalePosition({ 0,-0.4f,0 });
+	GetComponent<Collider>()->Initialize(Collider::Enemy, { 1,1,1 }, { 0,-0.4f,0 });
 }
 
 void BossHead::Update(float elapsedTime)

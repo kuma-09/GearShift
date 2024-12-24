@@ -13,8 +13,7 @@ EnemyBullet::EnemyBullet(IScene* scene, Collider::TypeID id)
 	AddComponent<Collider>();
 	AddComponent<ModelDraw>();
 	AddComponent<Trail>();
-	GetComponent<Collider>()->SetTypeID(id);
-	GetComponent<Collider>()->SetSize({ 0.1f,0.1f,0.1f });
+	GetComponent<Collider>()->Initialize(id, { 0.1f,0.1f,0.1f });
 	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetCubeModel());
 	GetComponent<Trail>()->Initialize(L"Resources/Textures/particle.png", 10);
 	SetScale({ 0.25f,0.25f,0.25f });
@@ -37,6 +36,7 @@ void EnemyBullet::Initialize(GameObject* object)
 	GetComponent<Trail>()->ClearBuffer();
 	SetVelocity(Vector3::Zero);
 	SetState(BulletState::UNUSED);
+	GetComponent<Collider>()->SetActive(false);
 }
 
 void EnemyBullet::Shot(GameObject* target)
@@ -67,6 +67,7 @@ void EnemyBullet::Shot(GameObject* target)
 
 	SetVelocity(velocity * SPEED);
 	SetState(BulletState::FLYING);
+	GetComponent<Collider>()->SetActive(true);
 }
 
 void EnemyBullet::Hit()
@@ -79,6 +80,7 @@ void EnemyBullet::Hit()
 	GetComponent<Trail>()->ClearBuffer();
 	SetVelocity(Vector3::Zero);
 	SetState(BulletState::USED);
+	GetComponent<Collider>()->SetActive(false);
 }
 
 void EnemyBullet::Update(float elapsedTime)

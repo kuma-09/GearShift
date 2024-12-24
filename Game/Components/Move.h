@@ -11,7 +11,6 @@ public:
 
 	void Initialize();
 	void Update(float elapsedTime);
-	void Finalize();
 
 	DirectX::SimpleMath::Vector3 GetVelocity();
 

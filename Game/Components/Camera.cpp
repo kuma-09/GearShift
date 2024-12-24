@@ -61,7 +61,7 @@ void Camera::Update(float elapsedTime)
         DirectX::SimpleMath::Vector3 eye{ 0.0f,-CAMERA_HEIGHT,CAMERA_DISTANCE };
         // ƒ^[ƒQƒbƒg‚ÌŒü‚¢‚Ä‚¢‚é•ûŒü‚É’Ç]‚·‚é
         eye = DirectX::SimpleMath::Vector3::Transform(eye, m_quaternion);
-        m_targetPosition += (m_enemy->GetPosition() - m_targetPosition) * (CAMERA_TARGET_RATE * 0.25f);
+        m_targetPosition += (m_enemy->GetPosition() - m_targetPosition) * CAMERA_TARGET_RATE;
         m_eyePosition += (m_player->GetPosition() + eye - m_eyePosition) * (CAMERA_EYE_RATE * 0.25f);
     }
     else

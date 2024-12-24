@@ -18,4 +18,7 @@ namespace Easing
 	float InOutQuad(float time, float targetTime);
 	float InOutCubic(float time, float targetTime);
 	float InOutQuart(float time, float targetTime);
+
+	DirectX::SimpleMath::Vector3 InOutCubic(const DirectX::SimpleMath::Vector3& start, const DirectX::SimpleMath::Vector3& end, float t);
+	DirectX::SimpleMath::Vector3 InOutQuart(const DirectX::SimpleMath::Vector3& start, const DirectX::SimpleMath::Vector3& end, float t);
 };

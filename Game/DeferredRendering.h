@@ -42,6 +42,9 @@ private:
 		DirectX::XMMATRIX inverseViewProj;
 		DirectX::XMMATRIX lightView;
 		DirectX::XMMATRIX lightProj;
+		int               lightNum;
+		DirectX::XMVECTOR lightPos[128];
+		DirectX::XMVECTOR lightColor[128];
 	};
 
 	static Microsoft::WRL::ComPtr<ID3D11Buffer> s_constantBuffer;

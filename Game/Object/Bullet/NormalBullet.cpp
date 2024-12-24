@@ -16,8 +16,7 @@ NormalBullet::NormalBullet(IScene* scene, Collider::TypeID id)
 	AddComponent<Collider>();
 	AddComponent<ModelDraw>();
 	AddComponent<Trail>();
-	GetComponent<Collider>()->SetTypeID(id);
-	GetComponent<Collider>()->SetSize({ 0.5f,0.5f,0.5f });
+	GetComponent<Collider>()->Initialize(id, { 0.5f,0.5f,0.5f });
 	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetCubeModel());
 	GetComponent<Trail>()->Initialize(L"Resources/Textures/particle.png", 10,DirectX::Colors::Yellow);
 	SetScale({ 0.1f,0.1f,0.1f });
@@ -37,6 +36,7 @@ void NormalBullet::Initialize(GameObject* object)
 	Vector3 velocity = Vector3::Zero;
 	SetPosition(Vector3::Zero);
 	SetQuaternion(Quaternion::Identity);
+	GetComponent<Collider>()->SetActive(false);
 	GetComponent<Trail>()->ClearBuffer();
 	SetVelocity(Vector3::Zero);
 	SetState(BulletState::UNUSED);
@@ -61,7 +61,7 @@ void NormalBullet::Shot(GameObject* target)
 
 	SetVelocity(velocity);
 	SetState(BulletState::FLYING);
-
+	GetComponent<Collider>()->SetActive(true);
 }
 
 void NormalBullet::Hit()
@@ -72,13 +72,14 @@ void NormalBullet::Hit()
 	{
 		//static_cast<PlayScene*>(GetOwner()->GetScene())->CreateHitEffect(GetPosition());
 		Vector3 velocity = Vector3::Zero;
-		SetPosition(Vector3::Zero);
+		SetWorld(Matrix::Identity);
 		SetQuaternion(Quaternion::Identity);
 
 		SetVelocity(Vector3::Zero);
 		SetState(BulletState::USED);
 
 		GetComponent<Trail>()->ClearBuffer();
+		GetComponent<Collider>()->SetActive(false);
 	}
 }
 
@@ -88,25 +89,30 @@ void NormalBullet::Update(float elapsedTime)
 
 	ComponentsUpdate(elapsedTime);
 
-	//Vector3 velocity = GetPosition() - GetTarget()->GetPosition();
-	//velocity.Normalize();
-	m_totalTime += elapsedTime;
-	if (m_totalTime >= MAX_TIME)
+	if (GetState() == FLYING)
 	{
-		Hit();
+		//Vector3 velocity = GetPosition() - GetTarget()->GetPosition();
+		//velocity.Normalize();
+		m_totalTime += elapsedTime;
+		if (m_totalTime >= MAX_TIME)
+		{
+			Hit();
+		}
+
+		SetPosition(GetPosition() + GetVelocity() * elapsedTime);
+
+
+		Matrix world = Matrix::CreateScale(GetScale());
+		world *= Matrix::CreateFromQuaternion(GetQuaternion());
+		world *= Matrix::CreateTranslation(GetPosition());
+		SetWorld(world);
+
+		Vector3 pos = { world._41,world._42,world._43 };
+		//if (GetState() == FLYING) GetComponent<Trail>()->SetPos(pos, pos + Vector3(0,1,0));
+		if (GetState() == FLYING) GetComponent<Trail>()->SetPos(GetPosition() - Vector3(0, 0.5f, 0), GetPosition() + Vector3(0, 0.5f, 0));
 	}
-	
-	SetPosition(GetPosition() + GetVelocity() * elapsedTime);
 
 
-	Matrix world = Matrix::CreateScale(GetScale());
-	world *= Matrix::CreateFromQuaternion(GetQuaternion());
-	world *= Matrix::CreateTranslation(GetPosition());
-	SetWorld(world);
-
-	Vector3 pos = { world._41,world._42,world._43 };
-	//if (GetState() == FLYING) GetComponent<Trail>()->SetPos(pos, pos + Vector3(0,1,0));
-	if (GetState() == FLYING) GetComponent<Trail>()->SetPos(GetPosition() - Vector3(0, 0.5f, 0), GetPosition() + Vector3(0, 0.5f, 0));
 }
 
 void NormalBullet::Render()

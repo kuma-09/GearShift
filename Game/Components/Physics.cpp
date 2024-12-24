@@ -6,7 +6,6 @@
 
 Physics::Physics()
 {
-	m_velocity = 0;
 }
 
 Physics::~Physics()
@@ -16,6 +15,7 @@ Physics::~Physics()
 
 void Physics::Initialize()
 {
+	m_velocity = 0;
 }
 
 void Physics::Update(float elapsedTime)
@@ -28,11 +28,5 @@ void Physics::Update(float elapsedTime)
 		m_velocity = MAX_GRAVITY;
 	}
 	GetOwner()->SetVelocity(GetOwner()->GetVelocity() - Vector3(0, m_velocity, 0));
-
-}
-
-
-void Physics::Finalize()
-{
 
 }

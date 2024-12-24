@@ -4,6 +4,7 @@
 #include "Game/Components/Collider.h"
 #include "Game/Components/ModelDraw.h"
 #include "Game/Components/Trail.h"
+#include "Game/Components/PointLight.h"
 #include "Game/PlayScene.h"
 #include "Framework/Audio.h"
 
@@ -16,8 +17,8 @@ Sword::Sword(IScene* scene, Collider::TypeID id)
 	AddComponent<Collider>();
 	//AddComponent<ModelDraw>();
 	AddComponent<Trail>();
-	GetComponent<Collider>()->SetTypeID(id);
-	GetComponent<Collider>()->SetSize({ 0.5f,0.5f,0.5f });
+	AddComponent<PointLight>();
+	GetComponent<Collider>()->Initialize(id, { 0.5f,0.5f,0.5f});
 	GetComponent<Trail>()->Initialize(L"Resources/Textures/white.png", 10,DirectX::Colors::LightBlue);
 	SetScale({7.5f, 7.5f, 7.5f});
 	SetState(SwordState::UNUSED);
@@ -42,6 +43,8 @@ void Sword::Initalize(GameObject* object)
 	SetState(SwordState::USING);
 	m_rotate = 0;
 	m_isHit = false;
+	GetComponent<Collider>()->SetActive(true);	
+	GetComponent<PointLight>()->Initialize(GetPosition(), { 0.4f, 0.58f, 0.92f});
 }
 
 void Sword::Shot(GameObject* object)
@@ -56,6 +59,8 @@ void Sword::Shot(GameObject* object)
 
 	SetVelocity(velocity);
 	SetState(SwordState::USING);
+
+
 }
 
 void Sword::Hit()
@@ -68,6 +73,7 @@ void Sword::Hit()
 		Audio::GetInstance()->PlaySoundSE_Slash();
 		m_owner->GetComponent<Camera>()->shake();
 		HitStop::SetStopTime(0.055f);
+		GetComponent<Collider>()->SetActive(false);
 	}
 }
 
@@ -84,6 +90,7 @@ void Sword::Update(float elapsedTime)
 		if (rotate >= 1)
 		{
 			GetComponent<Trail>()->ClearBuffer();
+			GetComponent<PointLight>()->ClearColor();
 			m_isHit = true;
 		}
 	}
