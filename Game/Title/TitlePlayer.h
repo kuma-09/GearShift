@@ -6,6 +6,8 @@
 #include "Framework/DebugString.h"
 #include "Game/Player/BoostGage.h"
 
+#include "Game/Player/Gun.h"
+
 #include <map>
 
 class TitlePlayer : public GameObject
@@ -60,5 +62,6 @@ private:
 
 	// パーツ配列
 	std::unordered_map<Part::TypeID, std::unique_ptr<Part>> m_pPart;
+	std::unique_ptr<Gun> m_gun;
 
 };

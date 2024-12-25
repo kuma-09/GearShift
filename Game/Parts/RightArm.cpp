@@ -12,7 +12,6 @@ RightArm::RightArm()
 {
 	AddComponent<ModelDraw>();
 	SetTypeID(TypeID::RightArm);
-	m_gun = std::make_unique<Gun>(this);
 	m_isHit = false;
 }
 
@@ -26,7 +25,6 @@ void RightArm::Initialize(int hp,IScene* scene)
 	UNREFERENCED_PARAMETER(hp);
 	SetScene(scene);
 	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetrArmModel());
-	m_gun->Initialize();
 }
 
 void RightArm::Update(float elapsedTime)
@@ -42,8 +40,6 @@ void RightArm::Update(float elapsedTime)
 	world *= Matrix::CreateTranslation(GetPosition());
 
 	SetWorld(world);
-
-	m_gun->Update(elapsedTime);
 	ComponentsUpdate(elapsedTime);
 
 	m_isHit = false;

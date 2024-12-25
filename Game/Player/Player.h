@@ -7,7 +7,7 @@
 #include "Game/Player/BoostGage.h"
 #include "Game/UI/ReloadUI.h"
 #include "Game/Object/Bullet/Bullet.h"
-
+#include "Game/Player/Gun.h"
 #include "Game/Object/Burner/Burner.h"
 
 #include <map>
@@ -132,6 +132,7 @@ private:
 	std::unique_ptr<Boost> m_boost;
 	std::unique_ptr<Attack> m_attack;
 
+	std::unique_ptr<Gun>    m_gun;
 	std::unique_ptr<Burner> m_burner;
 
 	std::unique_ptr<EnergyGage> m_energyGage;

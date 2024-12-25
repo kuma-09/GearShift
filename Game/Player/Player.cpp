@@ -79,6 +79,9 @@ void Player::Initialize()
 	GetComponent<Collider>()->SetActive(true);
 	GetComponent<HPBar>()->Initialize();
 
+	m_gun = std::make_unique<Gun>(this);
+	m_gun->Initialize();
+
 	m_burner = std::make_unique<Burner>();
 	m_burner->Initialize();
 
@@ -119,20 +122,14 @@ void Player::Update(float elapsedTime)
 		Reload();
 	}
 
-	if (kb->IsKeyPressed(DirectX::Keyboard::P))
-	{
-		GetScene()->GetGame()->ChangeScene(GetScene()->GetGame()->GetResultScene());
-	}
-
 	ComponentsUpdate(elapsedTime);
 	UpdateParts(elapsedTime);
 
 	m_state->Update(elapsedTime);
 
-	for (auto& bullet : m_defaultBullet)
-	{
-		bullet->Update(elapsedTime);
-	}
+	// Gun‚Ì‚ ‚Õ‚Å‚Æ
+	m_gun->Update(elapsedTime);
+
 	if (!m_exBullet.empty())
 	{
 		for (auto& bullet : m_exBullet)
@@ -195,41 +192,42 @@ void Player::ChangeState(State* state)
 
 void Player::Shot()
 {
-	if (m_bulletInterval < INTERVAL)
-	{
-		return;
-	}
-	int usedCount = 0;
-	m_bulletInterval = 0;
-	for (auto& bullet : m_exBullet)
-	{
-		// “ÁŽê’e‚ð”­ŽË
-		if (bullet->GetState() == Bullet::BulletState::UNUSED && m_target)
-		{
-			m_exBulletSize--;
-			bullet->Shot(m_target);
-			static_cast<PlayScene*>(GetScene())->UpdateBulletMagazine();
-			Audio::GetInstance()->PlaySoundSE_Rocket();
-			break;
-		}
-		{
-			usedCount++;
-		}
-	}
-	// “ÁŽê’e‚ª–³‚¢ê‡’Êí’e‚ð”­ŽË‚·‚é
-	if (m_exBullet.empty() || m_exBullet.size() == usedCount)
-	{
-		for (auto& bullet : m_defaultBullet)
-		{
-			if (bullet->GetState() == Bullet::BulletState::UNUSED && m_target)
-			{
-				bullet->Shot(m_target);
-				static_cast<PlayScene*>(GetScene())->UpdateBulletMagazine();
-				Audio::GetInstance()->PlaySoundSE_Rocket();
-				break;
-			}
-		}
-	}
+	m_gun->Shot(m_target);
+	//if (m_bulletInterval < INTERVAL)
+	//{
+	//	return;
+	//}
+	//int usedCount = 0;
+	//m_bulletInterval = 0;
+	//for (auto& bullet : m_exBullet)
+	//{
+	//	// “ÁŽê’e‚ð”­ŽË
+	//	if (bullet->GetState() == Bullet::BulletState::UNUSED && m_target)
+	//	{
+	//		m_exBulletSize--;
+	//		bullet->Shot(m_target);
+	//		static_cast<PlayScene*>(GetScene())->UpdateBulletMagazine();
+	//		Audio::GetInstance()->PlaySoundSE_Rocket();
+	//		break;
+	//	}
+	//	{
+	//		usedCount++;
+	//	}
+	//}
+	//// “ÁŽê’e‚ª–³‚¢ê‡’Êí’e‚ð”­ŽË‚·‚é
+	//if (m_exBullet.empty() || m_exBullet.size() == usedCount)
+	//{
+	//	for (auto& bullet : m_defaultBullet)
+	//	{
+	//		if (bullet->GetState() == Bullet::BulletState::UNUSED && m_target)
+	//		{
+	//			bullet->Shot(m_target);
+	//			static_cast<PlayScene*>(GetScene())->UpdateBulletMagazine();
+	//			Audio::GetInstance()->PlaySoundSE_Rocket();
+	//			break;
+	//		}
+	//	}
+	//}
 }
 
 float Player::GetBoostPoint()

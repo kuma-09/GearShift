@@ -38,6 +38,8 @@ TitlePlayer::~TitlePlayer()
 void TitlePlayer::Initialize()
 {
 	using namespace DirectX::SimpleMath;
+	m_gun = std::make_unique<Gun>(this);
+	m_gun->Initialize();
 }
 
 void TitlePlayer::Update(float elapsedTime)
@@ -45,6 +47,8 @@ void TitlePlayer::Update(float elapsedTime)
 	using namespace DirectX::SimpleMath;
 
 	UpdateParts(elapsedTime);
+
+	m_gun->Update(elapsedTime);
 
 	Matrix world = Matrix::Identity;
 	world *= Matrix::CreateTranslation(GetPosition());

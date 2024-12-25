@@ -1,7 +1,10 @@
 #include "pch.h"	
 #include "Gun.h"
 #include "Framework/Resources.h"
+#include "Framework/Audio.h"
 #include "Game/Components/ModelDraw.h"
+
+#include "Game/Object/Bullet/NormalBullet.h"
 
 Gun::Gun(GameObject* owner)
 {
@@ -16,17 +19,32 @@ Gun::~Gun()
 void Gun::Initialize()
 {
 	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetGunModel());
+
+	for (int i = 0; i < MAX_BULLET_COUNT; i++)
+	{
+		m_defaultBullet.emplace_back(std::make_unique<NormalBullet>(m_owner->GetScene(), Collider::PlayerBullet));
+		m_defaultBullet.back()->Initialize(this);
+	}
+
+	m_bulletInterval = 0;
 }
 
 void Gun::Update(float elapsedTime)
 {
 	using namespace DirectX::SimpleMath;
 
+	m_bulletInterval += elapsedTime;
+
 	ComponentsUpdate(elapsedTime);
 
-	SetQuaternion(Quaternion::CreateFromYawPitchRoll(0, DirectX::XMConvertToRadians(-135),0) * m_owner->GetQuaternion());
-	SetPosition(m_owner->GetPosition() + Vector3::Transform(Vector3(0.2f,1.0f,-0.25f), GetQuaternion()));
-	//SetPosition(m_owner->GetPosition() + Vector3::Transform(pos, quaternion));
+	for (auto& bullet: m_defaultBullet)
+	{
+		bullet->Update(elapsedTime);
+	}
+
+	SetQuaternion(Quaternion::CreateFromYawPitchRoll(0, DirectX::XMConvertToRadians(-90),0) * m_owner->GetQuaternion());
+	SetPosition(m_owner->GetPosition() + Vector3::Transform(Vector3(0.75f,1.0f,0.25f), GetQuaternion()));
+	//SetPosition(m_owner->GetPosition());
 
 	Matrix world = Matrix::Identity;
 	world = Matrix::CreateScale(GetScale());
@@ -34,4 +52,24 @@ void Gun::Update(float elapsedTime)
 	world *= Matrix::CreateTranslation(GetPosition());
 
 	SetWorld(world);
+}
+
+void Gun::Shot(GameObject* target)
+{
+	if (m_bulletInterval < INTERVAL || !target)
+	{
+		return;
+	}
+	int usedCount = 0;
+	m_bulletInterval = 0;
+	for (auto& bullet : m_defaultBullet)
+	{
+		if (bullet->GetState() == Bullet::BulletState::UNUSED)
+		{
+			bullet->Shot(target);
+			//static_cast<PlayScene*>(GetScene())->UpdateBulletMagazine();
+			Audio::GetInstance()->PlaySoundSE_Rocket();
+			break;
+		}
+	}
 }
