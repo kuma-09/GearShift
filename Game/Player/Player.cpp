@@ -87,7 +87,6 @@ void Player::Initialize()
 	m_reload = std::make_unique<ReloadUI>();
 	m_reload->Initialize();
 
-	m_exBulletSize = 0;
 }
 
 void Player::Update(float elapsedTime)
@@ -130,13 +129,7 @@ void Player::Update(float elapsedTime)
 	// Gunの更新
 	m_gun->Update(elapsedTime);
 
-	if (!m_exBullet.empty())
-	{
-		for (auto& bullet : m_exBullet)
-		{
-			bullet->Update(elapsedTime);
-		}
-	}
+	m_missileLauncher->Update(elapsedTime);
 
 	SetPrePosition(GetPosition());
 	SetPosition(GetPosition() + GetVelocity());
@@ -194,6 +187,7 @@ void Player::ChangeState(State* state)
 void Player::Shot()
 {
 	m_gun->Shot(m_target);
+	m_missileLauncher->Shot(m_target);
 	m_bulletMagazine->Initialize(m_gun->GetMagazineSize());
 }
 
@@ -224,10 +218,7 @@ void Player::Collision(Collider* collider)
 
 	if (collider->GetTypeID() == Collider::DropItemB)
 	{
-		for (auto& bullet : m_exBullet)
-		{
-			bullet->Initialize(this);
-		}
+		m_missileLauncher->Reload();
 	}
 	
 	if (collider->GetTypeID() == Collider::Floor)
@@ -278,11 +269,7 @@ void Player::CreateBullets()
 	// 残弾数表示用UIの初期化
 	m_bulletMagazine = std::make_unique<BulletMagazine>();
 	m_bulletMagazine->Initialize(m_gun->GetMagazineSize());
-
-	// ホーミング弾を作成
-	for (int i = 0; i < MAX_EXBULLET_COUNT; i++)
-	{
-		m_exBullet.emplace_back(std::make_unique<HomingBullet>(GetScene(), Collider::TypeID::PlayerBullet));
-		m_exBullet.back()->Initialize(this);
-	}
+	// ミサイルランチャーの初期化
+	m_missileLauncher = std::make_unique<MissileLauncher>(this);
+	m_missileLauncher->Initialize();
 }

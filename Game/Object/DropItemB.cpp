@@ -9,9 +9,8 @@ DropItemB::DropItemB(IScene* scene)
 	SetScene(scene);
 	AddComponent<Physics>();
 	AddComponent<Collider>();
-	GetComponent<Collider>()->Initialize(Collider::DropItemB, { 2,2,2 });
 	AddComponent<ModelDraw>();
-	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetDropItemModel(),true);
+
 
 
 	using namespace DirectX;
@@ -41,7 +40,9 @@ DropItemB::~DropItemB()
 void DropItemB::Initialize()
 {
 	using namespace DirectX::SimpleMath;
-
+	GetComponent<Physics>()->Initialize();
+	GetComponent<Collider>()->Initialize(Collider::DropItemB, { 2,2,2 });
+	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetDropItemModel(), true);
 
 	Matrix world = Matrix::CreateScale(GetScale());
 	world *= Matrix::CreateFromQuaternion(GetQuaternion());

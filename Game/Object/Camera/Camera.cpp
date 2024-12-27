@@ -48,6 +48,9 @@ void Camera::Update(float elapsedTime)
     if (m_target)
     {
         SetQuaternion(Quaternion::Lerp(GetQuaternion(), Quaternion::CreateFromRotationMatrix(Matrix::CreateLookAt(GetPosition(), m_targetPosition, Vector3::Down)), 0.25f));
+        Vector3 rotate = GetQuaternion().ToEuler();
+        m_rotateX = rotate.y;
+        m_rotateY = rotate.x;
         // カメラのデフォルトの座標ベクトル
         DirectX::SimpleMath::Vector3 eye{ 0.0f,-CAMERA_HEIGHT,CAMERA_DISTANCE };
         // ターゲットの向いている方向に追従する

@@ -304,6 +304,7 @@
     <ClInclude Include="Game\UI\Menu.h" />
     <ClInclude Include="Game\UI\ReloadUI.h" />
     <ClInclude Include="Game\UI\UI.h" />
+    <ClInclude Include="Game\Player\MissileLauncher.h" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
@@ -417,6 +418,7 @@
     <ClCompile Include="Game\UI\ReloadUI.cpp" />
     <ClCompile Include="Game\UI\UI.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Game\Player\MissileLauncher.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

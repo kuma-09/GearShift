@@ -10,6 +10,7 @@
 #include "Game/UI/ExBulletMagazine.h"
 #include "Game/Object/Bullet/Bullet.h"
 #include "Game/Player/Gun.h"
+#include "Game/Player/MissileLauncher.h"
 #include "Game/Object/Burner/Burner.h"
 #include "Game/Object/Camera/Camera.h"
 
@@ -134,6 +135,7 @@ private:
 
 	std::unique_ptr<Camera> m_camera;
 	std::unique_ptr<Gun>    m_gun;
+	std::unique_ptr<MissileLauncher> m_missileLauncher;
 	std::unique_ptr<Burner> m_burner;
 
 	std::unique_ptr<EnergyGage> m_energyGage;
@@ -141,14 +143,6 @@ private:
 
 	std::unique_ptr<BulletMagazine>   m_bulletMagazine;
 	std::unique_ptr<ExBulletMagazine> m_exBulletMagazine;
-
-	// ’e”z—ñ
-	std::vector<std::unique_ptr<Bullet>> m_defaultBullet;
-	// ’Ç‰Á‚Ì’e”z—ñ
-	std::vector<std::unique_ptr<Bullet>> m_exBullet;
-	int m_exBulletSize;
-	float m_bulletInterval;
-	const float INTERVAL = 0.25f;
 
 	bool m_onFloor;
 

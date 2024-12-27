@@ -15,7 +15,7 @@ public:
 	void Update(float elapsedTime);
 	void SetTarget(GameObject* player, GameObject* target);
 
-	enum CameraType
+	enum CameraState
 	{
 		Follow,
 		Girth,

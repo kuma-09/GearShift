@@ -44,7 +44,6 @@ void Gun::Update(float elapsedTime)
 
 	SetQuaternion(Quaternion::CreateFromYawPitchRoll(0, DirectX::XMConvertToRadians(-90),0) * m_owner->GetQuaternion());
 	SetPosition(m_owner->GetPosition() + Vector3::Transform(Vector3(0.75f,1.0f,0.25f), GetQuaternion()));
-	//SetPosition(m_owner->GetPosition());
 
 	Matrix world = Matrix::Identity;
 	world = Matrix::CreateScale(GetScale());
@@ -67,7 +66,6 @@ void Gun::Shot(GameObject* target)
 		if (bullet->GetState() == Bullet::BulletState::UNUSED)
 		{
 			bullet->Shot(target);
-			//static_cast<PlayScene*>(GetScene())->UpdateBulletMagazine();
 			Audio::GetInstance()->PlaySoundSE_Rocket();
 			break;
 		}
