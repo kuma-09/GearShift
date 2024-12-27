@@ -8,7 +8,6 @@
 #include "Game/Components/Collider.h"
 #include "Game/Components/Move.h"
 #include "Game/Components/Physics.h"
-#include "Game/Components/Camera.h"
 #include "Game/Components/Look.h"
 #include "Game/Components/Trail.h"
 #include "Game/Components/PointLight.h"
@@ -46,20 +45,12 @@ Player::Player(IScene* scene)
 
 	AddComponent<HP>();
 	AddComponent<Move>();
-	AddComponent<Camera>();
 	AddComponent<Look>();
 	AddComponent<Physics>();
 	AddComponent<Collider>();
 	AddComponent<HPBar>();
 	AddComponent<Trail>();
 	AddComponent<PointLight>();
-
-	// ステートの作成
-	CreateState();
-	// パーツのセット
-	CreateDefaultParts();
-	// 弾の作成
-	CreateBullets();
 }
 
 Player::~Player()
@@ -71,16 +62,21 @@ void Player::Initialize()
 {
 	GetComponent<HP>()->Initialize(10);
 	GetComponent<Move>()->Initialize();
-	GetComponent<Camera>()->Initialize();
-	GetComponent<Camera>()->SetTarget(this, nullptr);
 	GetComponent<Look>()->SetTarget(this, nullptr);
 	GetComponent<Physics>()->Initialize();
 	GetComponent<Collider>()->Initialize(Collider::Player, { 1,1.45f,1 });
 	GetComponent<Collider>()->SetActive(true);
 	GetComponent<HPBar>()->Initialize();
 
-	m_gun = std::make_unique<Gun>(this);
-	m_gun->Initialize();
+	// ステートの作成
+	CreateState();
+	// パーツのセット
+	CreateDefaultParts();
+	// 弾の作成
+	CreateBullets();
+
+	m_camera = std::make_unique<Camera>();
+	m_camera->Initialize();
 
 	m_burner = std::make_unique<Burner>();
 	m_burner->Initialize();
@@ -91,7 +87,6 @@ void Player::Initialize()
 	m_reload = std::make_unique<ReloadUI>();
 	m_reload->Initialize();
 
-	m_bulletInterval = INTERVAL;
 	m_exBulletSize = 0;
 }
 
@@ -104,30 +99,35 @@ void Player::Update(float elapsedTime)
 
 	m_energyGage->Update(elapsedTime);
 	m_reload->Update(elapsedTime);
+	m_camera->Update(elapsedTime);
 
-	m_bulletInterval += elapsedTime;
+	// 弾を発射
+	if (mouseState.leftButton) Shot();
+	// 近接攻撃
+	if (kb->IsKeyPressed(DirectX::Keyboard::Z)) ChangeState(GetAttack());
+	// リロード
+	if (kb->IsKeyPressed(DirectX::Keyboard::R)) Reload();
 
-	if (mouseState.leftButton || gp->x == gp->PRESSED)
-	{
-		Shot();
-	}
-
-	if (kb->IsKeyPressed(DirectX::Keyboard::Z) || gp->x == gp->PRESSED)
-	{
-		ChangeState(GetAttack());
-	}
-
-	if (kb->IsKeyPressed(DirectX::Keyboard::R))
-	{
-		Reload();
-	}
-
+	SetVelocity(Vector3::Zero);
 	ComponentsUpdate(elapsedTime);
 	UpdateParts(elapsedTime);
+	Vector3 velocity = GetComponent<Move>()->GetVelocity();
+	Quaternion quaternion = Quaternion::CreateFromYawPitchRoll(m_camera->GetQuaternion().ToEuler().y, 0, 0);
+	SetVelocity(GetVelocity() + Vector3::Transform(velocity, quaternion));
+	
+	if (!GetTarget() && GetComponent<Move>()->GetIsMove())
+	{
+		velocity = GetVelocity();
+		velocity.x *= -1;
+		velocity.y = 0;
+		quaternion = Quaternion::CreateFromRotationMatrix(Matrix::CreateLookAt(GetPosition(), GetPosition() + velocity, Vector3::Up));
+		SetQuaternion(Quaternion::Lerp(GetQuaternion(), quaternion, 0.1f));
+	}
+
 
 	m_state->Update(elapsedTime);
 
-	// Gunのあぷでと
+	// Gunの更新
 	m_gun->Update(elapsedTime);
 
 	if (!m_exBullet.empty())
@@ -167,7 +167,8 @@ void Player::RenderState()
 
 void Player::RenderPlayerUI()
 {
-	if (GetBulletSize() == 0 && GetExBulletSize() == 0) m_reload->Render();
+	if (m_gun->GetMagazineSize() == 0) m_reload->Render();
+	m_bulletMagazine->Render();
 	m_energyGage->Render();
 	GetComponent<HPBar>()->Render({-0.8f,0.9f});
 }
@@ -179,7 +180,7 @@ void Player::Finalize()
 void Player::SetTarget(GameObject* target)
 {
 	m_target = target;
-	GetComponent<Camera>()->SetTarget(this, target);
+	m_camera->SetTarget(this, target);
 	GetComponent<Look>()->SetTarget(this, target);
 }
 
@@ -193,41 +194,7 @@ void Player::ChangeState(State* state)
 void Player::Shot()
 {
 	m_gun->Shot(m_target);
-	//if (m_bulletInterval < INTERVAL)
-	//{
-	//	return;
-	//}
-	//int usedCount = 0;
-	//m_bulletInterval = 0;
-	//for (auto& bullet : m_exBullet)
-	//{
-	//	// 特殊弾を発射
-	//	if (bullet->GetState() == Bullet::BulletState::UNUSED && m_target)
-	//	{
-	//		m_exBulletSize--;
-	//		bullet->Shot(m_target);
-	//		static_cast<PlayScene*>(GetScene())->UpdateBulletMagazine();
-	//		Audio::GetInstance()->PlaySoundSE_Rocket();
-	//		break;
-	//	}
-	//	{
-	//		usedCount++;
-	//	}
-	//}
-	//// 特殊弾が無い場合通常弾を発射する
-	//if (m_exBullet.empty() || m_exBullet.size() == usedCount)
-	//{
-	//	for (auto& bullet : m_defaultBullet)
-	//	{
-	//		if (bullet->GetState() == Bullet::BulletState::UNUSED && m_target)
-	//		{
-	//			bullet->Shot(m_target);
-	//			static_cast<PlayScene*>(GetScene())->UpdateBulletMagazine();
-	//			Audio::GetInstance()->PlaySoundSE_Rocket();
-	//			break;
-	//		}
-	//	}
-	//}
+	m_bulletMagazine->Initialize(m_gun->GetMagazineSize());
 }
 
 float Player::GetBoostPoint()
@@ -235,36 +202,6 @@ float Player::GetBoostPoint()
 	return m_energyGage->GetEnergyPoint();
 }
 
-int Player::GetBulletSize()
-{
-	int value = 0;
-	for (auto& bullet: m_defaultBullet)
-	{
-		if (bullet->GetState() == Bullet::UNUSED)
-		{
-			value++;
-		}
-	}
-	return value;
-}
-
-int Player::GetMaxBulletSize()
-{
-	return int(m_defaultBullet.size());
-}
-
-int Player::GetExBulletSize()
-{
-	int value = 0;
-	for (auto& bullet : m_exBullet)
-	{
-		if (bullet->GetState() == Bullet::UNUSED)
-		{
-			value++;
-		}
-	}
-	return value;
-}
 
 void Player::Collision(Collider* collider)
 {
@@ -273,7 +210,6 @@ void Player::Collision(Collider* collider)
 		Bullet* bullet = static_cast<Bullet*>(collider->GetOwner());
 		if (bullet->GetState() == Bullet::FLYING)
 		{
-			GetComponent<Camera>()->shake();
 			GetComponent<HP>()->SetHP(GetComponent<HP>()->GetHP() - 1);
 			bullet->Hit();
 			static_cast<PlayScene*>(GetScene())->SetNoise();
@@ -292,7 +228,6 @@ void Player::Collision(Collider* collider)
 		{
 			bullet->Initialize(this);
 		}
-		static_cast<PlayScene*>(GetScene())->UpdateBulletMagazine();
 	}
 	
 	if (collider->GetTypeID() == Collider::Floor)
@@ -310,11 +245,7 @@ void Player::Collision(Collider* collider)
 
 void Player::Reload()
 {
-	for (int i = 0; i < MAX_BULLET_COUNT; i++)
-	{
-		m_defaultBullet[i]->Initialize(this);
-	}
-	static_cast<PlayScene*>(GetScene())->UpdateBulletMagazine();
+	m_gun->Reload();
 }
 
 // プレイヤーのステートを作成
@@ -341,12 +272,12 @@ void Player::CreateDefaultParts()
 // 初期弾を作成
 void Player::CreateBullets()
 {
-	// デフォルトの弾を作成
-	for (int i = 0; i < MAX_BULLET_COUNT; i++)
-	{
-		m_defaultBullet.emplace_back(std::make_unique<NormalBullet>(GetScene(), Collider::TypeID::PlayerBullet));
-		m_defaultBullet.back()->Initialize(this);
-	}
+	// Gunの初期化
+	m_gun = std::make_unique<Gun>(this);
+	m_gun->Initialize();
+	// 残弾数表示用UIの初期化
+	m_bulletMagazine = std::make_unique<BulletMagazine>();
+	m_bulletMagazine->Initialize(m_gun->GetMagazineSize());
 
 	// ホーミング弾を作成
 	for (int i = 0; i < MAX_EXBULLET_COUNT; i++)

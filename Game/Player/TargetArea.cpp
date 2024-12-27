@@ -49,11 +49,10 @@ void TargetArea::ClearTarget()
     m_target = nullptr;
 }
 
-bool TargetArea::Update(GameObject* player , GameObject* target)
+bool TargetArea::Update(GameObject* player, GameObject* target,GameObject* camera)
 {
     using namespace DirectX::SimpleMath;
 
-    UNREFERENCED_PARAMETER(player);
 
 
 
@@ -63,7 +62,7 @@ bool TargetArea::Update(GameObject* player , GameObject* target)
     float x = screenPos.x;
     float y = screenPos.y;
 
-    Vector3 pPos = Vector3::Transform(Vector3::Forward, player->GetComponent<Camera>()->GetCameraQuaternion());
+    Vector3 pPos = Vector3::Transform(Vector3::Forward, camera->GetQuaternion());
     Vector3 tPos = player->GetPosition() - target->GetPosition();
 
     float dot = pPos.Dot(tPos);

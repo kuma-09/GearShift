@@ -202,7 +202,6 @@
     <ClInclude Include="Framework\StepTimer.h" />
     <ClInclude Include="Game\Animation\StartAnimation.h" />
     <ClInclude Include="Game\Components\Collider.h" />
-    <ClInclude Include="Game\Components\Camera.h" />
     <ClInclude Include="Game\Components\Physics.h" />
     <ClInclude Include="Game\Components\HP.h" />
     <ClInclude Include="Game\Components\HPBar.h" />
@@ -244,6 +243,7 @@
     <ClInclude Include="Game\Object\Burner\Burner.h" />
     <ClInclude Include="Game\Object\Burner\BurnerHorizon.h" />
     <ClInclude Include="Game\Object\Burner\BurnerVertical.h" />
+    <ClInclude Include="Game\Object\Camera\Camera.h" />
     <ClInclude Include="Game\Object\DropItem.h" />
     <ClInclude Include="Game\Object\DropItemB.h" />
     <ClInclude Include="Game\Object\Floor.h" />
@@ -321,7 +321,6 @@
     <ClCompile Include="Framework\Resources.cpp" />
     <ClCompile Include="Game\Animation\StartAnimation.cpp" />
     <ClCompile Include="Game\Components\Collider.cpp" />
-    <ClCompile Include="Game\Components\Camera.cpp" />
     <ClCompile Include="Game\Components\Physics.cpp" />
     <ClCompile Include="Game\Components\HP.cpp" />
     <ClCompile Include="Game\Components\HPBar.cpp" />
@@ -361,6 +360,7 @@
     <ClCompile Include="Game\Object\Burner\Burner.cpp" />
     <ClCompile Include="Game\Object\Burner\BurnerHorizon.cpp" />
     <ClCompile Include="Game\Object\Burner\BurnerVertical.cpp" />
+    <ClCompile Include="Game\Object\Camera\Camera.cpp" />
     <ClCompile Include="Game\Object\DropItem.cpp" />
     <ClCompile Include="Game\Object\DropItemB.cpp" />
     <ClCompile Include="Game\Object\Floor.cpp" />

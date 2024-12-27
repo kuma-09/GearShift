@@ -29,7 +29,7 @@ void Attack::Initialize()
 	m_totalTime = 0;
 	m_sword->Initalize(m_player);
 	m_player->GetEnergyGage()->UseEnergyPoint(1);
-	m_player->GetComponent<Camera>()->shake();
+	//m_player->GetComponent<Camera>()->shake();
 	static_cast<PlayScene*>(m_player->GetScene())->SetNoise();
 	Audio::GetInstance()->PlaySoundSE_Boost();
 }
@@ -80,8 +80,8 @@ void Attack::Update(float elapsedTime)
 void Attack::Render()
 {
 	m_sword->Render();
-	auto context = Graphics::GetInstance()->GetDeviceResources()->GetD3DDeviceContext();
-	auto state = Graphics::GetInstance()->GetCommonStates();
+	//auto context = Graphics::GetInstance()->GetDeviceResources()->GetD3DDeviceContext();
+	//auto state = Graphics::GetInstance()->GetCommonStates();
 	auto view = Graphics::GetInstance()->GetViewMatrix();
 	auto proj = Graphics::GetInstance()->GetProjectionMatrix();
 

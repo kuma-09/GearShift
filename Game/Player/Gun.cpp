@@ -73,3 +73,24 @@ void Gun::Shot(GameObject* target)
 		}
 	}
 }
+
+void Gun::Reload()
+{
+	for (int i = 0; i < MAX_BULLET_COUNT; i++)
+	{
+		m_defaultBullet[i]->Initialize(this);
+	}
+}
+
+size_t Gun::GetMagazineSize()
+{
+	int value = 0;
+	for (auto& bullet : m_defaultBullet)
+	{
+		if (bullet->GetState() == Bullet::UNUSED)
+		{
+			value++;
+		}
+	}
+	return value;
+}

@@ -16,6 +16,7 @@ void Move::Initialize()
 {
     m_inputManager = InputManager::GetInstance();
     m_velocity = DirectX::SimpleMath::Vector3::Zero;
+    m_isMove = false;   
 }
 
 void Move::Update(float elapsedTime)
@@ -29,12 +30,6 @@ void Move::Update(float elapsedTime)
     Vector3 input = Vector3{ gpState.thumbSticks.leftX,0, -gpState.thumbSticks.leftY };
     input.Normalize();
     input *= 0.05f;
-
-    // 親オブジェクトの向いている方向
-    Quaternion quaternion = GetOwner()->GetQuaternion();
-    quaternion = Quaternion::CreateFromYawPitchRoll(GetOwner()->GetQuaternion().ToEuler().y, 0, 0);
-    quaternion = Quaternion::CreateFromYawPitchRoll(GetOwner()->GetComponent<Camera>()->GetCameraQuaternion().ToEuler().y, 0, 0);
-
     
     bool isMove = false;
     if (input != Vector3::Zero)
@@ -63,18 +58,8 @@ void Move::Update(float elapsedTime)
         m_velocity += Vector3::Right * 0.05f;
         isMove = true;
     };
+    m_isMove = isMove;
     m_velocity = Vector3::Lerp(m_velocity, Vector3::Zero, 0.1f) * MAX_SPEED;
-
-    //m_velocity.Normalize();
-    GetOwner()->SetVelocity(Vector3::Transform(m_velocity, quaternion));
-
-    if (!static_cast<Player*>(GetOwner())->GetTarget() && isMove)
-    {
-        Vector3 velocity = GetOwner()->GetVelocity();
-        velocity.x *= -1;
-        quaternion = Quaternion::CreateFromRotationMatrix(Matrix::CreateLookAt(GetOwner()->GetPosition(), GetOwner()->GetPosition() + velocity, Vector3::Up));
-        GetOwner()->SetQuaternion(Quaternion::Lerp(GetOwner()->GetQuaternion(), quaternion,0.1f));
-    }
 
 }
 

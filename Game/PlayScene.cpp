@@ -125,11 +125,16 @@ void PlayScene::Update(float elapsedTime)
 
     // オブジェクトの更新
     auto enemys = ObjectManager::GetTypeObjects(Type::Enemy);
-    if (enemys.empty()) GetGame()->ChangeScene(GetGame()->GetResultScene());
+    if (enemys.empty())
+    {
+        GetGame()->ChangeScene(GetGame()->GetResultScene());
+    }
+
     for (auto& enemy : enemys)
     {
-        m_targetArea->Update(m_player.lock().get(), enemy.lock().get());
+        m_targetArea->Update(m_player.lock().get(), enemy.lock().get(),static_cast<Player*>(m_player.lock().get())->GetCamera());
     }
+
     static_cast<Player*>(m_player.lock().get())->SetTarget(m_targetArea->GetTarget());
 
     ObjectManager::Update(elapsedTime);
@@ -169,8 +174,8 @@ void PlayScene::RenderUI()
     // UI
     m_targetArea->Render(m_targetArea->GetTarget());
     static_cast<Player*>(m_player.lock().get())->RenderPlayerUI();
-    m_bulletMagazine->Render();
-    m_exBulletMagazine->Render();
+    //m_bulletMagazine->Render();
+    //m_exBulletMagazine->Render();
     m_startAnimation->Render();
 }
 
@@ -181,11 +186,7 @@ void PlayScene::Finalize()
     RenderManager::Clear();
 }
 
-void PlayScene::UpdateBulletMagazine()
-{
-    m_bulletMagazine->Initialize(static_cast<Player*>(m_player.lock().get())->GetBulletSize());
-    m_exBulletMagazine->Initialize(static_cast<Player*>(m_player.lock().get())->GetExBulletSize());
-}
+
 
 void PlayScene::SetNoise()
 {

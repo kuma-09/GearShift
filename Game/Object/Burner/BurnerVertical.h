@@ -10,7 +10,6 @@ public:
 	void Initialize();
 	void Update(float elapsedTime);
 
-	void Collision(Collider* collider) {};
 
 private:
 };

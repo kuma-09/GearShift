@@ -10,6 +10,9 @@ public:
 	void Initialize();
 	void Update(float elapsedTime);
 	void Shot(GameObject* target);
+	void Reload();
+
+	size_t GetMagazineSize();
 private:
 	GameObject* m_owner;
 

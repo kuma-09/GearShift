@@ -74,8 +74,8 @@ void StageSelectScene::Render()
     using namespace DirectX;
     using namespace DirectX::SimpleMath;
 
-    auto context = m_graphics->GetDeviceResources()->GetD3DDeviceContext();
-    auto state = m_graphics->GetCommonStates();
+    //auto context = m_graphics->GetDeviceResources()->GetD3DDeviceContext();
+    //auto state = m_graphics->GetCommonStates();
     auto view = m_graphics->GetViewMatrix();
     auto proj = m_graphics->GetProjectionMatrix();
 

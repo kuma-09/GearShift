@@ -29,7 +29,7 @@ void Boost::Initialize()
 	m_velocity = { m_player->GetVelocity().x,m_player->GetVelocity().z };
 	m_velocity.Normalize();
 	m_player->GetEnergyGage()->UseEnergyPoint(1);
-	m_player->GetComponent<Camera>()->shake();
+	//m_player->GetComponent<Camera>()->shake();
 	static_cast<PlayScene*>(m_player->GetScene())->SetNoise();
 	Audio::GetInstance()->PlaySoundSE_Boost();
 	Noise::SetNoise(true);

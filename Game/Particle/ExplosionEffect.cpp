@@ -88,9 +88,6 @@ void ExplosionEffect::Render()
 	context->RSSetState(states->CullNone());						// カリング
 	context->IASetInputLayout(m_inputLayout.Get());					// 入力レイアウト
 
-
-
-
 	for (auto& posLife : m_posLife)
 	{
 		if (posLife.second < 0) continue;

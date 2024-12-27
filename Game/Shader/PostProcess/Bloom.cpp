@@ -116,7 +116,7 @@ void Bloom::EndBloom(ID3D11ShaderResourceView* srv)
     context->RSSetViewports(1, &vp_blur);
 
     m_basicPostProcess->SetEffect(BasicPostProcess::BloomExtract);
-    m_basicPostProcess->SetBloomExtractParameter(0.25f);
+    m_basicPostProcess->SetBloomExtractParameter(0.45f);
     m_basicPostProcess->SetSourceTexture(offscreenSRV_Bloom);
     m_basicPostProcess->Process(context);
 

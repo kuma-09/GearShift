@@ -194,20 +194,13 @@ void Game::Render()
     // Particleを表示
     m_scene->TranslucentRender();
 
-    auto renderTarget = m_graphics->GetDeviceResources()->GetRenderTargetView();
-
-    m_graphics->GetDeviceResources()->GetD3DDeviceContext()->OMSetRenderTargets(1,&renderTarget, nullptr);
-
-    m_spriteBatch->Begin();
-    m_spriteBatch->Draw(DeferredRendering::GetFinalRenderTexture()->GetShaderResourceView(), Vector2::Zero);
-    m_spriteBatch->End();
-
     Bloom::BeginBloom();
     //m_spriteBatch->Begin();
     //m_spriteBatch->Draw(DeferredRendering::GetFinalRenderTexture()->GetShaderResourceView(), Vector2::Zero);
     //m_spriteBatch->End();
     //RenderManager::RenderObjects();
-    RenderManager::RenderParticle();
+    //RenderManager::RenderParticle();
+    m_scene->TranslucentRender();
     Bloom::EndBloom(DeferredRendering::GetFinalRenderTexture()->GetShaderResourceView());
 
     Noise::ApplyNoise(Bloom::GetFinalRenderTexture()->GetShaderResourceView());
@@ -215,19 +208,19 @@ void Game::Render()
     // ForwardRenderingでUIを表示
     m_scene->RenderUI();
 
-    DeferredRendering::GBufferShow();
-    //ShadowMap::ShadowMapShow();
-    //Bloom::BloomTextureShow();
-
     // シーン切り替え時のマスク
     if (m_sceneMask->IsClose() || m_sceneMask->IsOpen())
     {
         m_sceneMask->Render();
     }
-    m_debugString->Render(state);
+
+    // デバッグ用
+    //DeferredRendering::GBufferShow();
+    //ShadowMap::ShadowMapShow();
+    //Bloom::BloomTextureShow();
+    //m_debugString->Render(state);
 
     m_deviceResources->PIXEndEvent();
-
 
     // Show the new frame.
     m_deviceResources->Present();

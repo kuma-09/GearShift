@@ -37,8 +37,6 @@ public:
 	void RenderUI() override;
 	void Finalize() override;
 
-	void UpdateBulletMagazine();
-
 	// ヒットエフェクトを生成する関数
 	void SetNoise();
 	void CreateHitParticle(DirectX::SimpleMath::Matrix world);

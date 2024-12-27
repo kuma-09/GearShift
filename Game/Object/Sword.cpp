@@ -71,7 +71,6 @@ void Sword::Hit()
 	{
 		SetState(USED);
 		Audio::GetInstance()->PlaySoundSE_Slash();
-		m_owner->GetComponent<Camera>()->shake();
 		HitStop::SetStopTime(0.055f);
 		GetComponent<Collider>()->SetActive(false);
 	}

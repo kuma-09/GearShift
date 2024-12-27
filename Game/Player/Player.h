@@ -6,9 +6,12 @@
 #include "Framework/DebugString.h"
 #include "Game/Player/BoostGage.h"
 #include "Game/UI/ReloadUI.h"
+#include "Game/UI/BulletMagazine.h"
+#include "Game/UI/ExBulletMagazine.h"
 #include "Game/Object/Bullet/Bullet.h"
 #include "Game/Player/Gun.h"
 #include "Game/Object/Burner/Burner.h"
+#include "Game/Object/Camera/Camera.h"
 
 #include <map>
 
@@ -46,15 +49,12 @@ public:
 	GameObject* GetTarget() { return m_target; }
 	void SetOnFloor(bool n) { m_onFloor = n; }
 	bool GetOnFloor() { return m_onFloor; }
+	float GetBoostPoint();
+	GameObject* GetCamera() { return m_camera.get(); }
+	EnergyGage* GetEnergyGage() { return m_energyGage.get(); }
+
 	void ChangeState(State* state);
 	void Shot();
-
-	float GetBoostPoint();
-	int GetBulletSize();
-	int GetMaxBulletSize();
-	int GetExBulletSize();
-
-	EnergyGage* GetEnergyGage() { return m_energyGage.get(); }
 
 	// パーツをセット
 	void SetPart(const Part::TypeID& partType, std::unique_ptr<Part> part)
@@ -132,12 +132,15 @@ private:
 	std::unique_ptr<Boost> m_boost;
 	std::unique_ptr<Attack> m_attack;
 
+	std::unique_ptr<Camera> m_camera;
 	std::unique_ptr<Gun>    m_gun;
 	std::unique_ptr<Burner> m_burner;
 
 	std::unique_ptr<EnergyGage> m_energyGage;
 	std::unique_ptr<ReloadUI> m_reload;
 
+	std::unique_ptr<BulletMagazine>   m_bulletMagazine;
+	std::unique_ptr<ExBulletMagazine> m_exBulletMagazine;
 
 	// 弾配列
 	std::vector<std::unique_ptr<Bullet>> m_defaultBullet;

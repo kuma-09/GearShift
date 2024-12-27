@@ -131,6 +131,7 @@ void DeferredRendering::Initialize()
 void DeferredRendering::BeginGBuffer()
 {
 	auto context = Graphics::GetInstance()->GetDeviceResources()->GetD3DDeviceContext();
+	auto states  = Graphics::GetInstance()->GetCommonStates();
 	auto depthStencil = Graphics::GetInstance()->GetDeviceResources()->GetDepthStencilView();
 	auto albedoRTV = s_albedoRT->GetRenderTargetView();
 	auto normalRTV = s_normalRT->GetRenderTargetView();
