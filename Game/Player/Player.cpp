@@ -75,6 +75,9 @@ void Player::Initialize()
 	// 弾の作成
 	CreateBullets();
 
+	//m_sword = std::make_unique<Sword>();
+	//m_sword->Initalize(this);
+
 	m_camera = std::make_unique<Camera>();
 	m_camera->Initialize();
 
@@ -99,6 +102,7 @@ void Player::Update(float elapsedTime)
 	auto& kb = m_inputManager->GetKeyboardTracker();
 
 	m_bulletMagazine->Update(elapsedTime);
+	m_exBulletMagazine->Update(elapsedTime);
 	m_energyGage->Update(elapsedTime);
 	m_reload->Update(elapsedTime);
 	m_camera->Update(elapsedTime);
@@ -165,7 +169,8 @@ void Player::RenderState()
 void Player::RenderPlayerUI()
 {
 	if (m_gun->GetMagazineSize() == 0) m_reload->Render();
-	m_bulletMagazine->Render();
+	m_bulletMagazine->Render(m_bulletType % 2 == 0 ? true : false);
+	m_exBulletMagazine->Render(m_bulletType % 2 == 1 ? true : false);
 	m_energyGage->Render();
 	GetComponent<HPBar>()->Render({-0.8f,0.9f});
 }
@@ -198,7 +203,7 @@ void Player::Shot()
 		break;
 	case 1:
 		m_missileLauncher->Shot(m_target);
-		m_bulletMagazine->Initialize(m_missileLauncher->GetMagazineSize());
+		m_exBulletMagazine->Initialize(m_missileLauncher->GetMagazineSize());
 		break;
 	default:
 		break;
@@ -291,4 +296,7 @@ void Player::CreateBullets()
 	// ミサイルランチャーの初期化
 	m_missileLauncher = std::make_unique<MissileLauncher>(this);
 	m_missileLauncher->Initialize();
+	// 残弾数表示用UIの初期化
+	m_exBulletMagazine = std::make_unique<ExBulletMagazine>();
+	m_exBulletMagazine->Initialize(m_missileLauncher->GetMagazineSize());
 }

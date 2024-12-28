@@ -11,6 +11,7 @@
 #include "Game/Object/Bullet/Bullet.h"
 #include "Game/Player/Gun.h"
 #include "Game/Player/MissileLauncher.h"
+#include "Game/Object/Sword.h"
 #include "Game/Object/Burner/Burner.h"
 #include "Game/Object/Camera/Camera.h"
 
@@ -134,8 +135,12 @@ private:
 	std::unique_ptr<Attack> m_attack;
 
 	std::unique_ptr<Camera> m_camera;
-	std::unique_ptr<Gun>    m_gun;
+
+	// ïêäÌ
+	std::unique_ptr<Gun>			 m_gun;
 	std::unique_ptr<MissileLauncher> m_missileLauncher;
+	//std::unique_ptr<Sword>			 m_sword;
+
 	std::unique_ptr<Burner> m_burner;
 
 	std::unique_ptr<EnergyGage> m_energyGage;

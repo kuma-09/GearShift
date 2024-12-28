@@ -8,7 +8,8 @@ ExBulletMagazine::ExBulletMagazine() :
 	m_size{},
 	m_pos{ 100,100 },
 	m_number{0},
-	digit{}
+	m_alpha{0},
+	m_digit{}
 {
 	auto device = Graphics::GetInstance()->GetDeviceResources()->GetD3DDevice();
 	auto context = Graphics::GetInstance()->GetDeviceResources()->GetD3DDeviceContext();
@@ -37,27 +38,23 @@ void ExBulletMagazine::SetSpriteBatch(DirectX::SpriteBatch* spriteBatch)
 
 void ExBulletMagazine::Initialize(int number)
 {
-
-
 	m_pos = Vector2{1200,550};
-
-	digit = int(std::to_string(number).length());
-
+	m_digit = int(std::to_string(number).length());
 	m_number = number;
-
 }
 
-void ExBulletMagazine::Update()
+void ExBulletMagazine::Update(float elapsedTime)
 {
-	m_pos.y -= 1;
-	if (m_pos.y < 90)
-	{
-		m_pos.y = 90;
-	}
+	//m_pos.y -= 1;
+	//if (m_pos.y < 540)
+	//{
+	//	m_pos.y = 540;
+	//}
+	m_alpha += elapsedTime * 5;
 }
 
 
-void ExBulletMagazine::Render()
+void ExBulletMagazine::Render(bool isActive)
 {
 	auto states = Graphics::GetInstance()->GetCommonStates();
 
@@ -65,11 +62,14 @@ void ExBulletMagazine::Render()
 	int x, y;
 	Graphics::GetInstance()->GetScreenSize(x, y);
 	float value = float(windowsize.right) / x;
+	DirectX::XMVECTORF32 color = { 1,1,1,0.5f };
+	if (isActive) color = { 1,1,1,sinf(m_alpha) * 0.5f + 0.5f };
+
 
 	m_size = { 0,0,500,500 };
 	m_spriteBatch->Begin(SpriteSortMode_Deferred, states->NonPremultiplied());
-	m_spriteBatch->Draw(m_bulletTexture.Get(), Vector2(1000, 500) * value, &m_size, Colors::White, 0.0f, Vector2::Zero, 0.3f * value);
-	for (int i = 0; i < digit; i++)
+	m_spriteBatch->Draw(m_bulletTexture.Get(), Vector2(1000, 500) * value, &m_size, color, 0.0f, Vector2::Zero, 0.3f * value);
+	for (int i = 0; i < m_digit; i++)
 	{
 		int tmp = m_number % int(std::pow(10, i + 1)) / int(std::pow(10, i));
 		//”Žš‚Ì‘å‚«‚³

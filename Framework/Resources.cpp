@@ -46,7 +46,7 @@ void Resources::LoadResource(Graphics* graphics)
 	m_boom       = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\boom.sdkmesh", *graphics->GetFX());
 	m_tankBody   = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\TankBody.sdkmesh", *graphics->GetFX());
 	m_entyu      = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\entyu.sdkmesh", *graphics->GetFX());
-	m_sword      = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\Sword.sdkmesh", *graphics->GetFX());
+	m_sword      = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\blade.sdkmesh", *graphics->GetFX());
 	m_cutoRobot  = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\BulldogLeg.sdkmesh", *graphics->GetFX());
 	m_cutoRobotHead  = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\BulldogHead.sdkmesh", *graphics->GetFX());
 	m_gun = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\gun.sdkmesh", *graphics->GetFX());

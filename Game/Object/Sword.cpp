@@ -15,14 +15,13 @@ Sword::Sword(IScene* scene, Collider::TypeID id)
 {
 	SetScene(scene);
 	AddComponent<Collider>();
-	//AddComponent<ModelDraw>();
+	AddComponent<ModelDraw>();
 	AddComponent<Trail>();
 	AddComponent<PointLight>();
 	GetComponent<Collider>()->Initialize(id, { 0.5f,0.5f,0.5f});
 	GetComponent<Trail>()->Initialize(L"Resources/Textures/white.png", 10,DirectX::Colors::LightBlue);
-	SetScale({7.5f, 7.5f, 7.5f});
+	SetScale({1.2f, 1.2f, 1.2f});
 	SetState(SwordState::UNUSED);
-
 }
 
 Sword::~Sword()
@@ -38,6 +37,8 @@ void Sword::Initalize(GameObject* object)
 	Vector3 velocity = Vector3::Zero;
 	SetPosition(m_owner->GetPosition());
 	SetQuaternion(m_owner->GetQuaternion());
+	//GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetSwordModel(),true);
+	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetrArmModel());
 	GetComponent<Trail>()->ClearBuffer();
 	SetVelocity(Vector3::Zero);
 	SetState(SwordState::USING);
@@ -106,7 +107,8 @@ void Sword::Update(float elapsedTime)
 		world *= Matrix::CreateTranslation(Vector3{ 0,0,i * -1.f });
 		if (GetState() == USED)
 		{
-			world *= Matrix::CreateFromAxisAngle(Vector3(2, 2, 0), XMConvertToRadians(100 - rotate * 200));
+			world *= Matrix::CreateRotationY(XMConvertToRadians(100 - rotate * 200));
+			world *= Matrix::CreateRotationZ(XMConvertToRadians(-45));
 		}
 		world *= Matrix::CreateFromQuaternion(GetQuaternion());
 		world *= Matrix::CreateTranslation(GetPosition());
@@ -121,7 +123,9 @@ void Sword::Update(float elapsedTime)
 	world = Matrix::CreateScale(GetScale());
 	if (GetState() == USED)
 	{
-		world *= Matrix::CreateFromAxisAngle(Vector3(2, 2, 0), XMConvertToRadians(100 - rotate * 200));
+		world *= Matrix::CreateFromQuaternion(Quaternion::CreateFromYawPitchRoll(0, XMConvertToRadians(-90), 0));
+		world *= Matrix::CreateRotationY(XMConvertToRadians(100 - rotate * 200));
+		world *= Matrix::CreateRotationZ(XMConvertToRadians(-45));
 	}
 	world *= Matrix::CreateFromQuaternion(GetQuaternion());
 	world *= Matrix::CreateTranslation(GetPosition());
@@ -131,13 +135,6 @@ void Sword::Update(float elapsedTime)
 
 void Sword::Render()
 {	
-	//GetComponent<Collider>()->Render();
-	if (GetState() == USED)
-	{
-		//GetComponent<ModelDraw>()->Render(GetWorld(),false);
-		GetComponent<Trail>()->Render();
-	}
-
 }
 
 void Sword::Collision(Collider* collider)

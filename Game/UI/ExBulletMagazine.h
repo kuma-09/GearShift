@@ -9,8 +9,8 @@ public:
 	~ExBulletMagazine();
 	void SetSpriteBatch(DirectX::SpriteBatch* spriteBatch);
 	void Initialize(int tagertNumber);
-	void Update();
-	void Render();
+	void Update(float elapsedTime);
+	void Render(bool isActive);
 private:
 	int m_number;
 
@@ -23,5 +23,6 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_bulletTexture;
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_comboTexture;
 
-	int digit;
+	float m_alpha;
+	int m_digit;
 };

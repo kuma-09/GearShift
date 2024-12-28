@@ -27,7 +27,7 @@ void Attack::Initialize()
 	using namespace DirectX::SimpleMath;
 
 	m_totalTime = 0;
-	m_sword->Initalize(m_player);
+	m_sword->Initalize(m_player->GetPart(Part::LeftArm));
 	m_player->GetEnergyGage()->UseEnergyPoint(1);
 	static_cast<Camera*>(m_player->GetCamera())->shake();
 	static_cast<PlayScene*>(m_player->GetScene())->SetNoise();
@@ -72,27 +72,12 @@ void Attack::Update(float elapsedTime)
 	{
 		m_player->ChangeState(m_player->GetIdol());
 	}
-	m_world = Matrix::CreateScale(0.25f);
-	m_world *= Matrix::CreateFromQuaternion(Quaternion::CreateFromYawPitchRoll(Vector3(DirectX::XMConvertToRadians(90), 0, 0)) * m_player->GetQuaternion());
-	m_world *= Matrix::CreateTranslation(m_player->GetPosition() + Vector3(0, 0.5f, 0) + Vector3::Transform(Vector3{ 0,0,1.2f }, m_player->GetQuaternion()));
 }
 
 void Attack::Render()
 {
-	m_sword->Render();
-	//auto context = Graphics::GetInstance()->GetDeviceResources()->GetD3DDeviceContext();
-	//auto state = Graphics::GetInstance()->GetCommonStates();
-	auto view = Graphics::GetInstance()->GetViewMatrix();
-	auto proj = Graphics::GetInstance()->GetProjectionMatrix();
-
-	//Resources::GetInstance()->GetEntyuModel()->Draw(context, *state, DirectX::SimpleMath::Matrix::Identity, view, proj, false, [&]
-	//	{
-	//		m_shader->RenderStart(m_world, view, proj);
-	//	}
-	//);
 }
 
 void Attack::Finalize()
 {
-
 }

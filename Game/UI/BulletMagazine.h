@@ -10,7 +10,7 @@ public:
 	void SetSpriteBatch(DirectX::SpriteBatch* spriteBatch);
 	void Initialize(int tagertNumber);
 	void Update(float elapsedTime);
-	void Render();
+	void Render(bool isActive);
 private:
 	int m_number;
 

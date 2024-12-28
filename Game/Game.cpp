@@ -194,28 +194,23 @@ void Game::Render()
     // Particleを表示
     m_scene->TranslucentRender();
 
+    // Bloomで光らせるオブジェクトを描画
     Bloom::BeginBloom();
-    //m_spriteBatch->Begin();
-    //m_spriteBatch->Draw(DeferredRendering::GetFinalRenderTexture()->GetShaderResourceView(), Vector2::Zero);
-    //m_spriteBatch->End();
-    //RenderManager::RenderObjects();
-    //RenderManager::RenderParticle();
     m_scene->TranslucentRender();
+    // Bloomを適用
     Bloom::EndBloom(DeferredRendering::GetFinalRenderTexture()->GetShaderResourceView());
 
+    // ノイズを画面に適用
     Noise::ApplyNoise(Bloom::GetFinalRenderTexture()->GetShaderResourceView());
 
     // ForwardRenderingでUIを表示
     m_scene->RenderUI();
 
     // シーン切り替え時のマスク
-    if (m_sceneMask->IsClose() || m_sceneMask->IsOpen())
-    {
-        m_sceneMask->Render();
-    }
+    if (m_sceneMask->IsClose() || m_sceneMask->IsOpen()) m_sceneMask->Render();
 
     // デバッグ用
-    DeferredRendering::GBufferShow();
+    //DeferredRendering::GBufferShow();
     //ShadowMap::ShadowMapShow();
     //Bloom::BloomTextureShow();
     //m_debugString->Render(state);

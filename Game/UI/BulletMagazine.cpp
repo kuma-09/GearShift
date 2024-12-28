@@ -50,7 +50,7 @@ void BulletMagazine::Update(float elapsedTime)
 }
 
 
-void BulletMagazine::Render()
+void BulletMagazine::Render(bool isActive)
 {
 	auto states = Graphics::GetInstance()->GetCommonStates();
 
@@ -58,10 +58,12 @@ void BulletMagazine::Render()
 	int x, y;
 	Graphics::GetInstance()->GetScreenSize(x, y);
 	float value = float(windowsize.right) / x;
+	DirectX::XMVECTORF32 color = { 1,1,1,0.5f };
+	if (isActive) color = { 1,1,1,sinf(m_alpha) * 0.5f + 0.5f };
 
 	m_size = { 0,0,500,500 };
 	m_spriteBatch->Begin(SpriteSortMode_Deferred, states->NonPremultiplied());
-	m_spriteBatch->Draw(m_bulletTexture.Get(), Vector2(1000, 600) * value,&m_size,{1,1,1,sinf(m_alpha) * 0.5f + 0.5f}, 0.0f, Vector2::Zero, 0.3f * value);
+	m_spriteBatch->Draw(m_bulletTexture.Get(), Vector2(1000, 600) * value,&m_size,color, 0.0f, Vector2::Zero, 0.3f * value);
 	for (int i = 0; i < m_digit; i++)
 	{
 		int tmp = m_number % int(std::pow(10, i + 1)) / int(std::pow(10, i));
