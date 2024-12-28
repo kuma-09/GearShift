@@ -98,6 +98,7 @@ void Player::Update(float elapsedTime)
 	auto& mouseTracker = m_inputManager->GetMouseTracker();
 	auto& kb = m_inputManager->GetKeyboardTracker();
 
+	m_bulletMagazine->Update(elapsedTime);
 	m_energyGage->Update(elapsedTime);
 	m_reload->Update(elapsedTime);
 	m_camera->Update(elapsedTime);
@@ -227,6 +228,11 @@ void Player::Collision(Collider* collider)
 				game->ChangeScene(game->GetGameOverScene());
 			}
 		}
+	}
+
+	if (collider->GetTypeID() == Collider::DropItem)
+	{
+		GetComponent<HP>()->SetHP(GetComponent<HP>()->GetHP() + 5);
 	}
 
 	if (collider->GetTypeID() == Collider::DropItemB)

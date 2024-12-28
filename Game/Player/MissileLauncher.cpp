@@ -9,7 +9,8 @@
 MissileLauncher::MissileLauncher(GameObject* owner)
 {
 	m_owner = owner;
-	//AddComponent<ModelDraw>();
+	SetScale(DirectX::SimpleMath::Vector3(0.75f,0.75f,0.75f));
+	AddComponent<ModelDraw>();
 }
 
 MissileLauncher::~MissileLauncher()
@@ -18,7 +19,7 @@ MissileLauncher::~MissileLauncher()
 
 void MissileLauncher::Initialize()
 {
-	//GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetGunModel());
+	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetMissileLuncherModel());
 
 	for (int i = 0; i < MAX_BULLET_COUNT; i++)
 	{
@@ -42,8 +43,9 @@ void MissileLauncher::Update(float elapsedTime)
 		bullet->Update(elapsedTime);
 	}
 
-	SetQuaternion(Quaternion::CreateFromYawPitchRoll(0, DirectX::XMConvertToRadians(-90), 0) * m_owner->GetQuaternion());
-	SetPosition(m_owner->GetPosition() + Vector3::Transform(Vector3(0.75f, 1.0f, 0.25f), GetQuaternion()));
+	SetQuaternion(Quaternion::CreateFromYawPitchRoll(DirectX::XMConvertToRadians(90),0, 0) * m_owner->GetQuaternion());
+	SetPosition(m_owner->GetPosition() + Vector3::Transform(Vector3(-0.5f, 1.25f, 0.5f), GetQuaternion()));
+	//SetPosition(m_owner->GetPosition());
 	//SetPosition(m_owner->GetPosition());
 
 	Matrix world = Matrix::Identity;

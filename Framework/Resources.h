@@ -33,6 +33,8 @@ public:
 	DirectX::Model* GetCutoRobotModel() { return m_cutoRobot.get(); }
 	DirectX::Model* GetCutoRobotHeadModel() { return m_cutoRobotHead.get(); }
 	DirectX::Model* GetGunModel() { return m_gun.get(); }
+	DirectX::Model* GetMissileLuncherModel() { return m_missileLuncher.get(); }
+	DirectX::Model* GetLightModel() { return m_light.get(); }
 
 	// テクスチャを取得
 	ID3D11ShaderResourceView* GetGreenTexture() { return m_greenTexture.Get(); }
@@ -85,6 +87,8 @@ private:
 	std::unique_ptr<DirectX::Model> m_tankBody;
 	std::unique_ptr<DirectX::Model> m_tankTurret;
 	std::unique_ptr<DirectX::Model> m_tankGun;
+	std::unique_ptr<DirectX::Model> m_missileLuncher;
+	std::unique_ptr<DirectX::Model> m_light;
 
 	// テクスチャ
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_greenTexture;

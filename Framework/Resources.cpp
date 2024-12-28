@@ -50,6 +50,8 @@ void Resources::LoadResource(Graphics* graphics)
 	m_cutoRobot  = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\BulldogLeg.sdkmesh", *graphics->GetFX());
 	m_cutoRobotHead  = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\BulldogHead.sdkmesh", *graphics->GetFX());
 	m_gun = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\gun.sdkmesh", *graphics->GetFX());
+	m_missileLuncher = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\MissileLuncher.sdkmesh", *graphics->GetFX());
+	m_light = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\light.sdkmesh", *graphics->GetFX());
 
 	// テクスチャをロードする
 	DirectX::CreateWICTextureFromFile(

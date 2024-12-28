@@ -14,6 +14,9 @@
 #include "Game/Object/Wall/BillA.h"
 #include "Game/Object/Wall/BillB.h"
 #include "Game/Object/Bullet/HomingBullet.h"
+#include "Game/Object/Light/Light.h"
+
+#include "Game/Components/HPBar.h"
 
 #include "Game/Particle/HitParticle.h"
 
@@ -162,9 +165,9 @@ void PlayScene::TranslucentRender()
     {
         particle->Render(m_graphics->GetViewMatrix(), m_graphics->GetProjectionMatrix());
     }
-    //if (m_player->GetTarget())
+    //if (m_targetArea->GetTarget())
     //{
-    //    m_player->GetTarget()->GetComponent<HPBar>()->Render(m_player->GetTarget()->GetPosition());
+    //    m_targetArea->GetTarget()->GetComponent<HPBar>()->Render(m_targetArea->GetTarget()->GetPosition());
     //}
     m_hitEffect->Render();
 }
@@ -274,4 +277,8 @@ void PlayScene::CreateObject(std::string className, DirectX::SimpleMath::Vector3
     {
         ObjectManager::Add(std::make_shared<DropItemB>(this),pos);
     }   
+    if (className == "Light")
+    {
+        ObjectManager::Add(std::make_shared<Light>(this), pos);
+    }
 }

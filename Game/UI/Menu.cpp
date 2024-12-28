@@ -35,13 +35,13 @@ void Menu::Update()
 	auto& keyState = m_inputManager->GetKeyboardTracker();
 
 	m_activeSize+=0.1f;
-	if (keyState->IsKeyPressed(DirectX::Keyboard::Down))
+	if (keyState->IsKeyPressed(DirectX::Keyboard::S))
 	{
 		m_activeSize = 0;
 		m_activeUI++;
 		m_activeUI = std::min(m_menuValue - 1, m_activeUI);
 	}
-	if (keyState->IsKeyPressed(DirectX::Keyboard::Up))
+	if (keyState->IsKeyPressed(DirectX::Keyboard::W))
 	{
 		m_activeSize = 0;
 		m_activeUI--;

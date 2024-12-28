@@ -248,6 +248,7 @@
     <ClInclude Include="Game\Object\DropItemB.h" />
     <ClInclude Include="Game\Object\Floor.h" />
     <ClInclude Include="Game\Object\Floor\CollisionMesh.h" />
+    <ClInclude Include="Game\Object\Light\Light.h" />
     <ClInclude Include="Game\Object\SkyDome.h" />
     <ClInclude Include="Game\Object\Sword.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
@@ -366,6 +367,7 @@
     <ClCompile Include="Game\Object\DropItemB.cpp" />
     <ClCompile Include="Game\Object\Floor.cpp" />
     <ClCompile Include="Game\Object\Floor\CollisionMesh.cpp" />
+    <ClCompile Include="Game\Object\Light\Light.cpp" />
     <ClCompile Include="Game\Object\SkyDome.cpp" />
     <ClCompile Include="Game\Object\Sword.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>

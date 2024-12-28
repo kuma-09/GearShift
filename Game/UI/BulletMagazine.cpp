@@ -8,7 +8,8 @@ BulletMagazine::BulletMagazine() :
 	m_size{},
 	m_pos{ 100,100 },
 	m_number{0},
-	digit{}
+	m_alpha{0},
+	m_digit{}
 {
 	auto device = Graphics::GetInstance()->GetDeviceResources()->GetD3DDevice();
 	auto context = Graphics::GetInstance()->GetDeviceResources()->GetD3DDeviceContext();
@@ -23,6 +24,7 @@ BulletMagazine::BulletMagazine() :
 		DirectX::CreateWICTextureFromFile(device, L"Resources/Textures/comboNumber.png", nullptr,
 			m_comboTexture.ReleaseAndGetAddressOf())
 	);
+
 }
 
 BulletMagazine::~BulletMagazine()
@@ -38,12 +40,13 @@ void BulletMagazine::SetSpriteBatch(DirectX::SpriteBatch* spriteBatch)
 void BulletMagazine::Initialize(int number)
 {
 	m_pos = Vector2{1200,650};
-	digit = int(std::to_string(number).length());
+	m_digit = int(std::to_string(number).length());
 	m_number = number;
 }
 
-void BulletMagazine::Update()
+void BulletMagazine::Update(float elapsedTime)
 {
+	m_alpha += elapsedTime * 5;
 }
 
 
@@ -58,8 +61,8 @@ void BulletMagazine::Render()
 
 	m_size = { 0,0,500,500 };
 	m_spriteBatch->Begin(SpriteSortMode_Deferred, states->NonPremultiplied());
-	m_spriteBatch->Draw(m_bulletTexture.Get(), Vector2(1000, 600) * value,&m_size,Colors::White,0.0f,Vector2::Zero,0.3f * value);
-	for (int i = 0; i < digit; i++)
+	m_spriteBatch->Draw(m_bulletTexture.Get(), Vector2(1000, 600) * value,&m_size,{1,1,1,sinf(m_alpha) * 0.5f + 0.5f}, 0.0f, Vector2::Zero, 0.3f * value);
+	for (int i = 0; i < m_digit; i++)
 	{
 		int tmp = m_number % int(std::pow(10, i + 1)) / int(std::pow(10, i));
 		//”Žš‚Ì‘å‚«‚³

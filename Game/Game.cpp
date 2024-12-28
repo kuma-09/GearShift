@@ -215,7 +215,7 @@ void Game::Render()
     }
 
     // デバッグ用
-    //DeferredRendering::GBufferShow();
+    DeferredRendering::GBufferShow();
     //ShadowMap::ShadowMapShow();
     //Bloom::BloomTextureShow();
     //m_debugString->Render(state);
