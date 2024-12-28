@@ -4,6 +4,8 @@
 #include "Game/Components/Collider.h"
 #include "Game/Components/Physics.h"
 
+#include "Game/Manager/ObjectManager.h"
+
 DropItemB::DropItemB(IScene* scene)
 {
 	SetScene(scene);
@@ -88,6 +90,6 @@ void DropItemB::Collision(Collider* collider)
 	}
 	if (collider->GetTypeID() == Collider::Player)
 	{
-
+		ObjectManager::Remove(this);
 	}
 }

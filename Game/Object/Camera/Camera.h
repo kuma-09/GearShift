@@ -15,6 +15,8 @@ public:
 	void Update(float elapsedTime);
 	void SetTarget(GameObject* player, GameObject* target);
 
+	void shake();
+
 	enum CameraState
 	{
 		Follow,
@@ -44,4 +46,16 @@ private:
 
 	// ƒ^[ƒQƒbƒg‚É‘Î‚µ‚Ä‚ÌŒW”
 	const float CAMERA_TARGET_RATE = 0.1f;
+
+	// ˆê‰ñ“–‚½‚è‚Ì‰æ–Ê—h‚ê‚ÌŠÔ
+	const float SHAKE_TIME = 0.1f;
+
+	// ‰æ–Ê—h‚êŒW”
+	const float SHAKE_RATE = 0.3f;
+
+	// ‰æ–Ê—h‚êŒW”
+	float m_shakeRate;
+
+	// ‰æ–Ê—h‚êŒo‰ßŠÔ
+	float m_shakeTime;
 };

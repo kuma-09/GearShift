@@ -28,7 +28,6 @@ void Particle::Update(float elapseTime)
     {
         //delete this;
     }
-
 }
 
 void Particle::Render(

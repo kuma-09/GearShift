@@ -87,6 +87,7 @@ void Player::Initialize()
 	m_reload = std::make_unique<ReloadUI>();
 	m_reload->Initialize();
 
+	m_bulletType = 0;
 }
 
 void Player::Update(float elapsedTime)
@@ -94,6 +95,7 @@ void Player::Update(float elapsedTime)
 	using namespace DirectX::SimpleMath;
 	auto& gp = m_inputManager->GetGamePadTracker();
 	auto& mouseState = m_inputManager->GetMouseState();
+	auto& mouseTracker = m_inputManager->GetMouseTracker();
 	auto& kb = m_inputManager->GetKeyboardTracker();
 
 	m_energyGage->Update(elapsedTime);
@@ -106,6 +108,9 @@ void Player::Update(float elapsedTime)
 	if (kb->IsKeyPressed(DirectX::Keyboard::Z)) ChangeState(GetAttack());
 	// リロード
 	if (kb->IsKeyPressed(DirectX::Keyboard::R)) Reload();
+
+	// マウスホイールで弾の種類を変更
+	m_bulletType = abs(mouseState.scrollWheelValue) / 120;
 
 	SetVelocity(Vector3::Zero);
 	ComponentsUpdate(elapsedTime);
@@ -123,7 +128,6 @@ void Player::Update(float elapsedTime)
 		SetQuaternion(Quaternion::Lerp(GetQuaternion(), quaternion, 0.1f));
 	}
 
-
 	m_state->Update(elapsedTime);
 
 	// Gunの更新
@@ -135,7 +139,6 @@ void Player::Update(float elapsedTime)
 	SetPosition(GetPosition() + GetVelocity());
 	ShadowMap::SetLightPosition(GetPosition());
 	m_burner->Update(elapsedTime,GetPosition(),GetQuaternion());
-
 
 	Matrix world = Matrix::Identity;
 	world = Matrix::CreateScale(GetScale());
@@ -186,9 +189,19 @@ void Player::ChangeState(State* state)
 
 void Player::Shot()
 {
-	m_gun->Shot(m_target);
-	m_missileLauncher->Shot(m_target);
-	m_bulletMagazine->Initialize(m_gun->GetMagazineSize());
+	switch (m_bulletType % 2)
+	{
+	case 0:
+		m_gun->Shot(m_target);
+		m_bulletMagazine->Initialize(m_gun->GetMagazineSize());
+		break;
+	case 1:
+		m_missileLauncher->Shot(m_target);
+		m_bulletMagazine->Initialize(m_missileLauncher->GetMagazineSize());
+		break;
+	default:
+		break;
+	}
 }
 
 float Player::GetBoostPoint()

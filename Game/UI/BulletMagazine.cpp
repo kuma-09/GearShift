@@ -37,14 +37,9 @@ void BulletMagazine::SetSpriteBatch(DirectX::SpriteBatch* spriteBatch)
 
 void BulletMagazine::Initialize(int number)
 {
-
-
 	m_pos = Vector2{1200,650};
-
 	digit = int(std::to_string(number).length());
-
 	m_number = number;
-
 }
 
 void BulletMagazine::Update()

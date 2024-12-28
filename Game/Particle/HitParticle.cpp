@@ -5,6 +5,7 @@
 #include "pch.h"
 #include "HitParticle.h"
 #include <cassert>
+#include "Framework/Resources.h"
 
 using namespace DirectX;
 using namespace DirectX::SimpleMath;
@@ -116,7 +117,7 @@ void HitParticle::Render(Matrix view, Matrix projection)
 	ID3D11SamplerState* sampler = states->PointWrap();	// or PointWrap()
 	context->PSSetSamplers(0, 1, &sampler);
 	context->OMSetDepthStencilState(states->DepthRead(), 0);		// 深度バッファ/ステンシルバッファ
-	context->RSSetState(states->CullNone());						// カリング
+	context->RSSetState(states->CullClockwise());						// カリング
 	context->IASetInputLayout(m_inputLayout.Get());					// 入力レイアウト
 
 

@@ -4,7 +4,7 @@
 #include "Idol.h"
 #include "Jump.h"
 #include "Game/Components/Collider.h"
-#include "Game/Components/Camera.h"	
+#include "Game/Object/Camera/Camera.h"
 #include "Game/PlayScene.h"
 #include "Framework/Audio.h"
 
@@ -29,7 +29,7 @@ void Attack::Initialize()
 	m_totalTime = 0;
 	m_sword->Initalize(m_player);
 	m_player->GetEnergyGage()->UseEnergyPoint(1);
-	//m_player->GetComponent<Camera>()->shake();
+	static_cast<Camera*>(m_player->GetCamera())->shake();
 	static_cast<PlayScene*>(m_player->GetScene())->SetNoise();
 	Audio::GetInstance()->PlaySoundSE_Boost();
 }

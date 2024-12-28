@@ -1,6 +1,6 @@
 {
 	"Object_list": [
-		{"Object_Name": "Player"     ,"position":{"x": 5.0,"y": 20.0,"z": 100.0}},
+		{"Object_Name": "Player"     ,"position":{"x":  5.0, "y":  20.0,"z": 100.0}},
 		{"Object_Name": "BillA"      ,"position":{"x":  5.0, "y":  9.0, "z": 40.0}},
 		{"Object_Name": "BillA"      ,"position":{"x": 10.0, "y":  9.0, "z": 25.0}},
 		{"Object_Name": "BillB"      ,"position":{"x": 30.0, "y":  9.0, "z": 40.0}},

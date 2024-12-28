@@ -52,9 +52,9 @@ void Camera::Update(float elapsedTime)
         m_rotateX = rotate.y;
         m_rotateY = rotate.x;
         // カメラのデフォルトの座標ベクトル
-        DirectX::SimpleMath::Vector3 eye{ 0.0f,-CAMERA_HEIGHT,CAMERA_DISTANCE };
+        Vector3 eye{ 0.0f,-CAMERA_HEIGHT,CAMERA_DISTANCE };
         // ターゲットの向いている方向に追従する
-        eye = DirectX::SimpleMath::Vector3::Transform(eye, GetQuaternion());
+        eye = Vector3::Transform(eye, GetQuaternion());
         m_targetPosition += (m_target->GetPosition() - m_targetPosition) * CAMERA_TARGET_RATE;
         SetPosition(GetPosition() + (m_player->GetPosition() + eye - GetPosition()) * (CAMERA_EYE_RATE * 0.25f));
     }
@@ -62,10 +62,10 @@ void Camera::Update(float elapsedTime)
     {
         SetQuaternion(Quaternion::CreateFromYawPitchRoll({ m_rotateY ,m_rotateX ,0 }));
         // カメラのデフォルトの座標ベクトル
-        DirectX::SimpleMath::Vector3 eye{ 0.0f,CAMERA_HEIGHT,CAMERA_DISTANCE };
+        Vector3 eye{ 0.0f,CAMERA_HEIGHT,CAMERA_DISTANCE };
         // ターゲットの向いている方向に追従する
-        eye = DirectX::SimpleMath::Vector3::Transform(eye, GetQuaternion());
-        m_targetPosition += (m_player->GetPosition() - m_targetPosition) * CAMERA_TARGET_RATE;
+        eye = Vector3::Transform(eye, GetQuaternion());
+        m_targetPosition += (m_player->GetPosition() + Vector3::Transform(Vector3::Forward,GetQuaternion()) - m_targetPosition) * CAMERA_TARGET_RATE;
         // カメラ座標を計算する
         SetPosition(GetPosition() + ((m_targetPosition + eye - GetPosition()) * CAMERA_EYE_RATE));
     }
@@ -79,5 +79,14 @@ void Camera::Update(float elapsedTime)
 void Camera::SetTarget(GameObject* player, GameObject* target)
 {
     m_player = player;
-    m_target = target;
+    //m_target = target;
+}
+
+void Camera::shake()
+{
+    using namespace DirectX::SimpleMath;
+    m_shakeRate = SHAKE_RATE;
+    m_shakeTime = SHAKE_TIME;
+    Vector3 velocity = Vector3::Transform({ 0,m_shakeRate,m_shakeRate }, m_player->GetQuaternion());
+    m_targetPosition += velocity;
 }

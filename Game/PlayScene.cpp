@@ -213,8 +213,6 @@ void PlayScene::CreateHitParticle(DirectX::SimpleMath::Matrix world)
         m_hitParticle.emplace_back(std::make_unique<HitParticle>());
         m_hitParticle.back()->Initialize(pos, Vector3(velocityX, velocityY, velocityZ));
     }
-
-   
 }
 
 void PlayScene::CreateHitParticle(DirectX::SimpleMath::Matrix world, DirectX::SimpleMath::Quaternion rotate)

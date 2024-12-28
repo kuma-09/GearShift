@@ -33,6 +33,7 @@ void InputManager::Initialize(const HWND& window)
 	// マウスを使用できる状態にする
 	m_mouse = std::make_unique<DirectX::Mouse>();
 	m_mouse->SetWindow(window);
+	m_mouse->ResetScrollWheelValue();
 	m_mouse->SetMode(DirectX::Mouse::MODE_RELATIVE);
 	m_mouseTracker = std::make_unique<DirectX::Mouse::ButtonStateTracker>();
 

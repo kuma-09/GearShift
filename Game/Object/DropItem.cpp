@@ -3,6 +3,7 @@
 #include "Game/Components/Physics.h"
 #include "Game/Components/ModelDraw.h"
 #include "Game/Components/Collider.h"
+#include "Game/Manager/ObjectManager.h"
 
 DropItem::DropItem(IScene* scene)
 {
@@ -87,5 +88,9 @@ void DropItem::Collision(Collider* collider)
 		collider->GetTypeID() == Collider::Wall)
 	{
 		Collider::CheckHit(this, collider->GetOwner());
+	}
+	if (collider->GetTypeID() == Collider::Player)
+	{
+		ObjectManager::Remove(this);
 	}
 }

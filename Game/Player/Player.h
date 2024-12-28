@@ -146,4 +146,6 @@ private:
 
 	bool m_onFloor;
 
+	int m_bulletType;
+
 };
