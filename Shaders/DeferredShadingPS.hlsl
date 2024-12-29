@@ -24,6 +24,11 @@ cbuffer Parameters : register(b1)
     float3 lightColor[128];
 }
 
+cbuffer Parmaeters : register(b2)
+{
+    float4 fog;
+}
+
 struct PS_INPUT
 {
 	float4 Position : SV_POSITION;
@@ -96,6 +101,8 @@ float4 main(PS_INPUT input) : SV_TARGET
         finalColor += albedo.rgb * diffuse;
     }
 
+    finalColor = lerp(float3(0, 0, 0), finalColor, 1 - LinearizeDepth(depth, 0.1, 200));
+    
     return float4(finalColor, 1);
 }
 

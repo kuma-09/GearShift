@@ -32,6 +32,7 @@ Microsoft::WRL::ComPtr<ID3D11PixelShader> DeferredRendering::s_pixelShader_light
 Microsoft::WRL::ComPtr<ID3D11VertexShader> DeferredRendering::s_vertexShader_combient;
 Microsoft::WRL::ComPtr<ID3D11PixelShader> DeferredRendering::s_pixelShader_combient;
 Microsoft::WRL::ComPtr<ID3D11Buffer> DeferredRendering::s_constantBuffer;
+Microsoft::WRL::ComPtr<ID3D11Buffer> DeferredRendering::s_constantBuffer_fog;
 Microsoft::WRL::ComPtr<ID3D11SamplerState> DeferredRendering::m_shadowMapSampler;
 DirectX::SimpleMath::Matrix  DeferredRendering::s_lightViewProj;
 DirectX::SimpleMath::Vector3 DeferredRendering::s_lightPosition;
@@ -106,6 +107,15 @@ void DeferredRendering::Initialize()
 	bufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 	DX::ThrowIfFailed(
 		device->CreateBuffer(&bufferDesc, nullptr, s_constantBuffer.ReleaseAndGetAddressOf())
+	);
+
+	// 定数バッファ用のバッファオブジェクトを作成する
+	bufferDesc.ByteWidth = static_cast<UINT>(sizeof(ConstBuffer_Fog));	// 16の倍数を指定する
+	bufferDesc.Usage = D3D11_USAGE_DYNAMIC;
+	bufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+	bufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+	DX::ThrowIfFailed(
+		device->CreateBuffer(&bufferDesc, nullptr, s_constantBuffer_fog.ReleaseAndGetAddressOf())
 	);
 
 	// スプライトバッチの生成
@@ -230,10 +240,17 @@ void DeferredRendering::DeferredLighting()
 	}
 	// マップを解除する
 	context->Unmap(s_constantBuffer.Get(), 0);
+
+	context->Map(s_constantBuffer_fog.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+	ConstBuffer_Fog* cbFog = static_cast<ConstBuffer_Fog*>(mappedResource.pData);
+	cbFog->fog = {500.f / (500.f - 0.1f), -1 / (500.f - 0.1f),0,0};
+	// マップを解除する
+	context->Unmap(s_constantBuffer_fog.Get(), 0);
+
 	// 定数バッファの設定
-	ID3D11Buffer* cbuf[] = { s_constantBuffer.Get() };
+	ID3D11Buffer* cbuf[] = { s_constantBuffer.Get(),s_constantBuffer_fog.Get()};
 	context->VSSetConstantBuffers(1, 1, cbuf);
-	context->PSSetConstantBuffers(1, 1, cbuf);
+	context->PSSetConstantBuffers(1, 2, cbuf);
 	context->PSSetSamplers(1, 1, m_shadowMapSampler.GetAddressOf());
 
 	// シェーダを設定する

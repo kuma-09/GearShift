@@ -47,7 +47,13 @@ private:
 		DirectX::XMVECTOR lightColor[128];
 	};
 
+	struct ConstBuffer_Fog
+	{
+		DirectX::XMVECTOR fog;
+	};
+
 	static Microsoft::WRL::ComPtr<ID3D11Buffer> s_constantBuffer;
+	static Microsoft::WRL::ComPtr<ID3D11Buffer> s_constantBuffer_fog;
 	// ÉTÉìÉvÉâÅ[
 	static Microsoft::WRL::ComPtr<ID3D11SamplerState> m_shadowMapSampler;
 	static DirectX::SimpleMath::Matrix  s_lightViewProj;
