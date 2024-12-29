@@ -9,6 +9,7 @@ public:
 	static void Update(float elapsedTime);
 
 	static void SetNoise(bool isNoise) { m_isNoise = isNoise; }
+	static void SetHitNoise(bool isNoise) { s_isHitNoise = isNoise; }
 
 	// 最終結果にノイズを適用
 	static void ApplyNoise(ID3D11ShaderResourceView* srv);
@@ -36,11 +37,15 @@ private:
 	// プリミティブバッチ
 	static std::unique_ptr<DirectX::PrimitiveBatch<DirectX::VertexPositionTexture>> m_batch;
 
-	// 被弾時のノイズシェーダー
+	// ノイズシェーダー
 	static Microsoft::WRL::ComPtr<ID3D11VertexShader> m_noiseVS;
 	static Microsoft::WRL::ComPtr<ID3D11PixelShader> m_noisePS;
 
+	// 被弾時のノイズシェーダー
+	static Microsoft::WRL::ComPtr<ID3D11PixelShader>  m_hitNoisePS;
+
 	static bool  m_isNoise;
+	static bool  s_isHitNoise;
 	static float m_nowTime;
 	static const float PIXELSIZE;
 	static const float m_maxNoiseTime;

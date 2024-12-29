@@ -57,15 +57,15 @@ float4 main(PS_INPUT input) : SV_TARGET
 	// diffuse------------------------------
     float3 toLight = normalize(-LightDirection[0]);
     float intensity1 = max(dot(normal, toLight), 0.0f);
-    float3 diffuse = albedo.rgb * toLight * intensity1;
+    float3 diffuse = albedo.rgb * toLight * intensity1 + 0.25f;
 	// -------------------------------------
     
-	// specular-----------------------------
-    float toEye = normalize(EyePosition - Position.xyz);
-    float3 halfVector = normalize(toLight + toEye);
-    float intensity2 = max(dot(normal, halfVector), 0.0f);
-    float3 specular = pow(intensity2, SpecularPower) * SpecularColor;
-	// -------------------------------------
+	//// specular-----------------------------
+    //   float toEye = normalize(EyePosition - Position.xyz);
+    //   float3 halfVector = normalize(toLight + toEye);
+    //   float intensity2 = max(dot(normal, halfVector), 0.0f);
+    //   float3 specular = pow(intensity2, specularPower) * specularColor;
+	//// -------------------------------------
 
     // shadow-------------------------------
     float shadow = readShadowMap(Position);
@@ -82,18 +82,18 @@ float4 main(PS_INPUT input) : SV_TARGET
         float lightDistance = length(lightDirection);
         float intensity1 = max(dot(normal, toLight), 0.0f);
         float3 diffuse = albedo.rgb * lightColor[i] * intensity1;
-        // ‹¾–Ê”½ŽË
-        float toEye = normalize(EyePosition - Position.xyz);
-        float3 halfVector = normalize(toLight + toEye);
-        float intensity2 = max(dot(normal, halfVector), 0.0f);
-        float3 specular = pow(intensity2, SpecularPower) * SpecularColor;
+        //// ‹¾–Ê”½ŽË
+        //float toEye = normalize(EyePosition - Position.xyz);
+        //float3 halfVector = normalize(toLight + toEye);
+        //float intensity2 = max(dot(normal, halfVector), 0.0f);
+        //float3 specular = pow(intensity2, SpecularPower) * SpecularColor;
     
         // Œõ‚ÌŒ¸Š
         float attenuation = 1.0f / (att0 + att1 * lightDistance + att2 * lightDistance * lightDistance);
         diffuse *= attenuation;
-        specular *= attenuation;
+        //specular *= attenuation;
     
-        finalColor += diffuse + specular;
+        finalColor += albedo.rgb * diffuse;
     }
 
     return float4(finalColor, 1);
@@ -126,7 +126,7 @@ float readShadowMap(float3 worldPos)
     // UVÀ•W‚ª—LŒø”ÍˆÍŠO‚Ìê‡‚Ìˆ—
     if (uv.x > 1.0f || uv.x < 0.0f || uv.y > 1.0f || uv.y < 0.0f)
     {
-        return 0.25f;
+        return 1.0f;
     }
     
     float bias = 0.000005f;

@@ -147,7 +147,6 @@ void PlayScene::Update(float elapsedTime)
     }
 
     CollisionManager::Update();
-
     ObjectManager::Delete();
 }
 
@@ -165,10 +164,6 @@ void PlayScene::TranslucentRender()
     {
         particle->Render(m_graphics->GetViewMatrix(), m_graphics->GetProjectionMatrix());
     }
-    //if (m_targetArea->GetTarget())
-    //{
-    //    m_targetArea->GetTarget()->GetComponent<HPBar>()->Render(m_targetArea->GetTarget()->GetPosition());
-    //}
     m_hitEffect->Render();
 }
 
@@ -177,8 +172,10 @@ void PlayScene::RenderUI()
     // UI
     m_targetArea->Render(m_targetArea->GetTarget());
     static_cast<Player*>(m_player.lock().get())->RenderPlayerUI();
-    //m_bulletMagazine->Render();
-    //m_exBulletMagazine->Render();
+    if (m_targetArea->GetTarget())
+    {
+        //m_targetArea->GetTarget()->GetComponent<HPBar>()->Render(m_targetArea->GetTarget()->GetPosition());
+    }
     m_startAnimation->Render();
 }
 

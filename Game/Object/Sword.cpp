@@ -15,7 +15,7 @@ Sword::Sword(IScene* scene, Collider::TypeID id)
 {
 	SetScene(scene);
 	AddComponent<Collider>();
-	AddComponent<ModelDraw>();
+	//AddComponent<ModelDraw>();
 	AddComponent<Trail>();
 	AddComponent<PointLight>();
 	GetComponent<Collider>()->Initialize(id, { 0.5f,0.5f,0.5f});
@@ -38,7 +38,7 @@ void Sword::Initalize(GameObject* object)
 	SetPosition(m_owner->GetPosition());
 	SetQuaternion(m_owner->GetQuaternion());
 	//GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetSwordModel(),true);
-	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetrArmModel());
+	//GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetrArmModel());
 	GetComponent<Trail>()->ClearBuffer();
 	SetVelocity(Vector3::Zero);
 	SetState(SwordState::USING);

@@ -39,14 +39,14 @@ void ShadowMap::Initialize()
     s_spriteBatch = std::make_unique<DirectX::SpriteBatch>(context);
 
     // ライトの位置
-    m_lightPosition = Vector3{ 20, 20, 20 };
+    m_lightPosition = Vector3{ 5, 50, 5 };
     m_targetPosition = Vector3::Zero;
 
     // ライトの回転
     m_lightRotate = Quaternion::CreateFromYawPitchRoll(
         XMConvertToRadians(0.0f), XMConvertToRadians(90.0f), 0.0f);
 
-    m_lightTheta = 30.f;
+    m_lightTheta = 15.f;
 
     RECT rect = { 0, 0, SHADOWMAP_SIZE, SHADOWMAP_SIZE };
 
@@ -139,7 +139,7 @@ void ShadowMap::BeginDepth()
 
     // 射影行列を作成
     auto proj = SimpleMath::Matrix::CreatePerspectiveFieldOfView(
-        XMConvertToRadians(m_lightTheta), 1.0f, 0.1f, 100.0f);
+        XMConvertToRadians(m_lightTheta), 1.0f, 0.1f, 300.0f);
 
     D3D11_MAPPED_SUBRESOURCE mappedResource;
 
@@ -199,7 +199,6 @@ void ShadowMap::EndDepth()
 
 void ShadowMap::SetLightPosition(DirectX::SimpleMath::Vector3 targetPos)
 {
-    m_lightPosition = targetPos + DirectX::SimpleMath::Vector3{ 10, 20, 5 };
     m_targetPosition = targetPos;
 }
 
@@ -207,9 +206,6 @@ DirectX::SimpleMath::Matrix ShadowMap::GetLightView()
 {
     using namespace DirectX;
 
-    // ライトの方向
-    SimpleMath::Vector3 lightDir = SimpleMath::Vector3::Transform(SimpleMath::Vector3(0.0f, 0.0f, 1.0f), m_lightRotate);
-    lightDir.Normalize();
     // ビュー行列を作成
     auto view = SimpleMath::Matrix::CreateLookAt(
         m_lightPosition,
@@ -226,7 +222,7 @@ DirectX::SimpleMath::Matrix ShadowMap::GetLightProj()
 
     // 射影行列を作成
     auto proj = SimpleMath::Matrix::CreatePerspectiveFieldOfView(
-        DirectX::XMConvertToRadians(m_lightTheta), 1.0f, 0.1f, 100.0f);
+        DirectX::XMConvertToRadians(m_lightTheta), 1.0f, 0.1f, 300.0f);
 
     return proj;
 }

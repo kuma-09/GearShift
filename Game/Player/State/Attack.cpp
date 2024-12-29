@@ -27,7 +27,7 @@ void Attack::Initialize()
 	using namespace DirectX::SimpleMath;
 
 	m_totalTime = 0;
-	m_sword->Initalize(m_player->GetPart(Part::LeftArm));
+	m_sword->Initalize(m_player);
 	m_player->GetEnergyGage()->UseEnergyPoint(1);
 	static_cast<Camera*>(m_player->GetCamera())->shake();
 	static_cast<PlayScene*>(m_player->GetScene())->SetNoise();

@@ -58,11 +58,6 @@ void LeftLeg::Update(float elapsedTime)
 
 	ComponentsUpdate(elapsedTime);
 
-	if (static_cast<Player*>(GetOwner())->GetOnFloor())
-	{
-		GetComponent<Emitter>()->SetParticle(GetPosition() - DirectX::SimpleMath::Vector3{ 0,1.f,0 });
-	}
-
 	m_isHit = false;
 }
 
