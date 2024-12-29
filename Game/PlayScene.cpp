@@ -88,6 +88,11 @@ void PlayScene::Initialize(Game* game)
     m_hitEffect = std::make_unique<ExplosionEffect>();
     m_hitEffect->Initialize();
 
+    for (int i = 0; i < 128; i++)
+    {
+        m_hitParticle.emplace_back(std::make_unique<HitParticle>());
+    }
+
     m_startAnimation = std::make_unique<StartAnimation>();
     m_startAnimation->Initialize();
     m_bulletMagazine = std::make_unique<BulletMagazine>();
@@ -115,14 +120,8 @@ void PlayScene::Update(float elapsedTime)
     // ヒットエフェクトの更新
     for (auto it = m_hitParticle.begin(); it != m_hitParticle.end();)
     {
-        if (it->get()->Update())
-        {
-            it = m_hitParticle.erase(it);
-        }
-        else
-        {
-            it++;
-        }
+        it->get()->Update();
+        it++;
     }
     m_hitEffect->Update(elapsedTime);
 
@@ -199,9 +198,8 @@ void PlayScene::CreateHitParticle(DirectX::SimpleMath::Matrix world)
 {
     using namespace DirectX::SimpleMath;
 
-    int particleValue = HitParticle::get_rand(5, 10);
+    int particleValue = HitParticle::get_rand(2, 5);
     Vector3 pos = { world._41,world._42,world._43 };
-
 
     for (int i = 0; i < particleValue; i++)
     {
@@ -209,9 +207,12 @@ void PlayScene::CreateHitParticle(DirectX::SimpleMath::Matrix world)
         float velocityX = (float)HitParticle::get_rand(-30, 30) / 500.0f;
         float velocityY = (float)HitParticle::get_rand(-30, 30) / 500.0f;
         float velocityZ = (float)HitParticle::get_rand(-30, 30) / 500.0f;
-
-        m_hitParticle.emplace_back(std::make_unique<HitParticle>());
-        m_hitParticle.back()->Initialize(pos, Vector3(velocityX, velocityY, velocityZ));
+        for (auto& particle : m_hitParticle)
+        {
+            if (particle->GetAlpha() > 0.0f) continue;
+            particle->Initialize(pos, Vector3(velocityX, velocityY, velocityZ));
+            break;
+        }
     }
 }
 
@@ -227,9 +228,12 @@ void PlayScene::CreateHitParticle(DirectX::SimpleMath::Matrix world, DirectX::Si
 
         float velocityX = (float)HitParticle::get_rand(-20, 20) / 500.0f;
         float velocityY = (float)HitParticle::get_rand(-20, 20) / 500.0f;
-
-        m_hitParticle.emplace_back(std::make_unique<HitParticle>());
-        m_hitParticle.back()->Initialize(pos, Vector3::Transform({ velocityX,velocityY,0 }, rotate));
+        for (auto& particle : m_hitParticle)
+        {
+            if (particle->GetAlpha() > 0.0f) continue;
+            particle->Initialize(pos, Vector3::Transform({ velocityX,velocityY,0 }, rotate));
+            break;
+        }
     }
 }
 

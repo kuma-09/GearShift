@@ -20,33 +20,13 @@ HitParticle::HitParticle()
 	m_primitiveBatch{},
 	m_inputLayout{},
 	m_projection{},
-	ALPHA{},
+	ALPHA{0},
 	RG{},
 	m_vertices{}
 {
-	
-}
 
-//---------------------------------------------------------
-// デストラクタ
-//---------------------------------------------------------
-HitParticle::~HitParticle()
-{
-	Finalize();
-}
-
-//---------------------------------------------------------
-// 初期化する
-//---------------------------------------------------------
-void HitParticle::Initialize(Vector3 pos, Vector3 vel)
-{
-
-	
-
-	auto device =  Graphics::GetInstance()->GetDeviceResources()->GetD3DDevice();
+	auto device = Graphics::GetInstance()->GetDeviceResources()->GetD3DDevice();
 	auto context = Graphics::GetInstance()->GetDeviceResources()->GetD3DDeviceContext();
-
-
 
 	// ベーシックエフェクトを作成する
 	m_basicEffect = std::make_unique<BasicEffect>(device);
@@ -66,7 +46,31 @@ void HitParticle::Initialize(Vector3 pos, Vector3 vel)
 	// プリミティブバッチを作成する
 	m_primitiveBatch = std::make_unique<PrimitiveBatch<VertexPositionTexture>>(context);
 
-	
+	// 画像をロードする
+	DX::ThrowIfFailed(
+		CreateWICTextureFromFile(
+			device,									// デバイスコンテキスト
+			L"Resources/Textures/particle.png",	// 画像ファイルのパス
+			nullptr,								// 内部的なテクスチャ
+			m_texture.ReleaseAndGetAddressOf()		// シェーダリソースビュー(表示用)
+		)
+	);
+}
+
+//---------------------------------------------------------
+// デストラクタ
+//---------------------------------------------------------
+HitParticle::~HitParticle()
+{
+	Finalize();
+}
+
+//---------------------------------------------------------
+// 初期化する
+//---------------------------------------------------------
+void HitParticle::Initialize(Vector3 pos, Vector3 vel)
+{
+
 
 	m_vertices[0] = {Vector3( 0.0f, 0.0f, 0.0f) ,  Vector2(0.0f,0.0f)};
 	m_vertices[1] = {Vector3( 0.25f, 0.0f, 0.0f) , Vector2(1.0f,0.0f)};
@@ -77,16 +81,6 @@ void HitParticle::Initialize(Vector3 pos, Vector3 vel)
 	// 色とアルファ値を初期化
 	ALPHA = 1.0f;
 	RG = 0.0f;
-
-	// 画像をロードする
-	DX::ThrowIfFailed(
-		CreateWICTextureFromFile(
-			device,									// デバイスコンテキスト
-			L"Resources/Textures/particle.png",	// 画像ファイルのパス
-			nullptr,								// 内部的なテクスチャ
-			m_texture.ReleaseAndGetAddressOf()		// シェーダリソースビュー(表示用)
-		)
-	);
 
 }
 

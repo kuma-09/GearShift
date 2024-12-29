@@ -51,6 +51,8 @@ public:
 	void Render(DirectX::SimpleMath::Matrix view, DirectX::SimpleMath::Matrix projection);
 	void Finalize();
 
+	float GetAlpha() { return ALPHA; }
+
 	static int get_rand(int min_val, int max_val) {
 		return (int)((rand() % (max_val + 1 - min_val)) + min_val);
 	}
