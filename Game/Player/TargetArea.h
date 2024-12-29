@@ -31,6 +31,9 @@ private:
 	float m_range;
 	float m_aspect;
 
+	// 中心に最も近い敵の判定用変数
+	float m_tmpInRange;
+
 	const DirectX::SimpleMath::Vector2 m_textureSize = { 500 , 500 };
 
 	// スプライトバッチ

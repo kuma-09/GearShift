@@ -112,9 +112,8 @@ void Sword::Update(float elapsedTime)
 		}
 		world *= Matrix::CreateFromQuaternion(GetQuaternion());
 		world *= Matrix::CreateTranslation(GetPosition());
-		if (GetState() == USED) static_cast<PlayScene*>(m_owner->GetScene())->CreateHitParticle(world);
 	}
-	if (!m_isHit)
+	//if (!m_isHit)
 	{
 		GetComponent<Collider>()->GetBoundingBox()->Center = { world._41, world._42, world._43 };
 		GetComponent<Trail>()->SetPos(GetPosition(), { world._41, world._42, world._43 });

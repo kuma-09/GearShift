@@ -68,14 +68,12 @@ HitParticle::~HitParticle()
 //---------------------------------------------------------
 // 初期化する
 //---------------------------------------------------------
-void HitParticle::Initialize(Vector3 pos, Vector3 vel)
+void HitParticle::Initialize(Vector3 pos, Vector3 vel, Vector2 size)
 {
-
-
 	m_vertices[0] = {Vector3( 0.0f, 0.0f, 0.0f) ,  Vector2(0.0f,0.0f)};
-	m_vertices[1] = {Vector3( 0.25f, 0.0f, 0.0f) , Vector2(1.0f,0.0f)};
-	m_vertices[2] = {Vector3( 0.0f, 0.25f, 0.0f) , Vector2(0.0f,1.0f)};
-	m_vertices[3] = {Vector3( 0.25f, 0.25f, 0.0f) ,Vector2(1.0f,1.0f)};
+	m_vertices[1] = {Vector3( size.x, 0.0f, 0.0f) , Vector2(1.0f,0.0f)};
+	m_vertices[2] = {Vector3( 0.0f, size.y, 0.0f) , Vector2(0.0f,1.0f)};
+	m_vertices[3] = {Vector3( size.x, size.y, 0.0f) ,Vector2(1.0f,1.0f)};
 	m_pos = pos;
 	m_vel = vel;
 	// 色とアルファ値を初期化

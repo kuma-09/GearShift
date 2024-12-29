@@ -210,7 +210,7 @@ void PlayScene::CreateHitParticle(DirectX::SimpleMath::Matrix world)
         for (auto& particle : m_hitParticle)
         {
             if (particle->GetAlpha() > 0.0f) continue;
-            particle->Initialize(pos, Vector3(velocityX, velocityY, velocityZ));
+            particle->Initialize(pos, Vector3(velocityX, velocityY, velocityZ),{1,1});
             break;
         }
     }
@@ -220,7 +220,7 @@ void PlayScene::CreateHitParticle(DirectX::SimpleMath::Matrix world, DirectX::Si
 {
     using namespace DirectX::SimpleMath;
 
-    int particleValue = HitParticle::get_rand(1, 5);
+    int particleValue = HitParticle::get_rand(0, 5);
     Vector3 pos = { world._41,world._42,world._43 };
 
     for (int i = 0; i < particleValue; i++)

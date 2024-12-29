@@ -15,8 +15,8 @@ EnemyBullet::EnemyBullet(IScene* scene, Collider::TypeID id)
 	AddComponent<Trail>();
 	GetComponent<Collider>()->Initialize(id, { 0.1f,0.1f,0.1f });
 	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetCubeModel());
-	GetComponent<Trail>()->Initialize(L"Resources/Textures/particle.png", 10);
-	SetScale({ 0.25f,0.25f,0.25f });
+	GetComponent<Trail>()->Initialize(L"Resources/Textures/white.png", 10,DirectX::Colors::Red);
+	SetScale({ 0.125f,0.125f,0.125f });
 	SetState(BulletState::UNUSED);
 }
 
@@ -91,7 +91,7 @@ void EnemyBullet::Update(float elapsedTime)
 
 	SetPosition(GetPosition() + GetVelocity());
 
-	GetComponent<Trail>()->SetPos(GetPosition() - Vector3(0, 0.5f, 0), GetPosition() + Vector3(0, 0.5f, 0));
+	GetComponent<Trail>()->SetPos(GetPosition() - Vector3(0, 0.125f, 0), GetPosition() + Vector3(0, 0.125f, 0));
 
 	Matrix world = Matrix::CreateScale(GetScale());
 	world *= Matrix::CreateFromQuaternion(GetQuaternion());

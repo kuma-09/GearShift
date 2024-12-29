@@ -136,10 +136,10 @@ float readShadowMap(float3 worldPos)
         return 1.0f;
     }
     
-    float bias = 0.000005f;
+    float bias = 0.0000005f;
     // シャドウマップの深度値とライト空間のピクセルのZ値を比較して影になるか調べる
     float percentLit = 1.0f;
-    if (ShadowMap.Sample(ShadowMapSampler, uv).r < LightPosPS.z - CalculateShadowBias(LightPosPS.z,bias,bias))
+    if (ShadowMap.Sample(ShadowMapSampler, uv).r < LightPosPS.z - CalculateShadowBias(LightPosPS.z,bias / 100,bias))
     {
         percentLit = 0.25f;
     }

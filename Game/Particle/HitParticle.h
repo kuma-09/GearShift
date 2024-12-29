@@ -46,7 +46,7 @@ public:
 	HitParticle();
 	~HitParticle();
 
-	void Initialize(DirectX::SimpleMath::Vector3 pos, DirectX::SimpleMath::Vector3 vel);
+	void Initialize(DirectX::SimpleMath::Vector3 pos, DirectX::SimpleMath::Vector3 vel, DirectX::SimpleMath::Vector2 size = {0.25f,0.25f});
 	bool Update();
 	void Render(DirectX::SimpleMath::Matrix view, DirectX::SimpleMath::Matrix projection);
 	void Finalize();

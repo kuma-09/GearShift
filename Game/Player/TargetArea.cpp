@@ -47,6 +47,7 @@ void TargetArea::Initialize()
 void TargetArea::ClearTarget()
 {
     m_target = nullptr;
+    m_tmpInRange = 0;
 }
 
 bool TargetArea::Update(GameObject* player, GameObject* target,GameObject* camera)
@@ -65,12 +66,20 @@ bool TargetArea::Update(GameObject* player, GameObject* target,GameObject* camer
     Vector3 pPos = Vector3::Transform(Vector3::Forward, camera->GetQuaternion());
     Vector3 tPos = player->GetPosition() - target->GetPosition();
 
+    // プレイヤーの前後判定
     float dot = pPos.Dot(tPos);
 
+    float inRange = ((x * x) + (y * y)) - (m_range * m_range);
+
     // ターゲット範囲にいるか
-    if ((x * x) + (y * y) <= m_range * m_range && dot < 0.5f)
+    if (inRange <= 0 && dot < 0.5f)
     {
-        m_target = target;
+        // 最も中心に近かったら更新
+        if (inRange < m_tmpInRange)
+        {
+            m_tmpInRange = inRange;
+            m_target = target;
+        }
         return true;
     }
 
