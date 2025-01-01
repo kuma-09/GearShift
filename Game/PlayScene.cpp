@@ -118,10 +118,9 @@ void PlayScene::Update(float elapsedTime)
     m_targetArea->ClearTarget();
 
     // ヒットエフェクトの更新
-    for (auto it = m_hitParticle.begin(); it != m_hitParticle.end();)
+    for (auto& particle : m_hitParticle)
     {
-        it->get()->Update();
-        it++;
+        particle->Update();
     }
     m_hitEffect->Update(elapsedTime);
 
@@ -171,11 +170,11 @@ void PlayScene::RenderUI()
     // UI
     m_targetArea->Render(m_targetArea->GetTarget());
     static_cast<Player*>(m_player.lock().get())->RenderPlayerUI();
+    m_startAnimation->Render();
     if (m_targetArea->GetTarget())
     {
-        //m_targetArea->GetTarget()->GetComponent<HPBar>()->Render(m_targetArea->GetTarget()->GetPosition());
+        m_targetArea->GetTarget()->GetComponent<HPBar>()->Render(m_targetArea->GetTarget()->GetPosition());
     }
-    m_startAnimation->Render();
 }
 
 /// <summary> 終了処理 </summary>

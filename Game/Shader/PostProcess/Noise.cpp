@@ -17,14 +17,16 @@ DirectX::VertexPositionTexture Noise::m_vertex[4];
 std::unique_ptr<DirectX::PrimitiveBatch<DirectX::VertexPositionTexture>> Noise::m_batch;
 Microsoft::WRL::ComPtr<ID3D11VertexShader> Noise::m_noiseVS;
 Microsoft::WRL::ComPtr<ID3D11PixelShader>  Noise::m_noisePS;
+Microsoft::WRL::ComPtr<ID3D11PixelShader>  Noise::m_hitNoisePS;
 bool        Noise::m_isNoise;
+bool        Noise::s_isHitNoise;
 float       Noise::m_nowTime;
 const float Noise::PIXELSIZE = 4.0f;
 const float Noise::m_maxNoiseTime = 0.25f;
 
 void Noise::Initialize()
 {
-    using namespace DirectX;
+    using namespace DirectX; 
     using namespace DirectX::SimpleMath;
 
     m_graphics = Graphics::GetInstance();
@@ -41,8 +43,9 @@ void Noise::Initialize()
     m_vertex[2] = { Vector3(-1.0f ,-1.0f,0), Vector2(0, 1) };	//左下
     m_vertex[3] = { Vector3(1.0f ,-1.0f,0), Vector2(1, 1) };	//右下
 
-    BinaryFile noisevs = BinaryFile::LoadFile(L"Resources/Shaders/NoiseVS.cso");
-    BinaryFile noiseps = BinaryFile::LoadFile(L"Resources/Shaders/NoisePS.cso");
+    BinaryFile noisevs    = BinaryFile::LoadFile(L"Resources/Shaders/NoiseVS.cso");
+    BinaryFile noiseps    = BinaryFile::LoadFile(L"Resources/Shaders/NoisePS.cso");
+    BinaryFile hitNoiseps = BinaryFile::LoadFile(L"Resources/Shaders/HitNoisePS.cso");
 
     //	インプットレイアウトの作成
     device->CreateInputLayout(&INPUT_LAYOUT[0],
@@ -53,6 +56,7 @@ void Noise::Initialize()
 
     device->CreateVertexShader(noisevs.GetData(), noisevs.GetSize(), nullptr, m_noiseVS.ReleaseAndGetAddressOf());
     device->CreatePixelShader(noiseps.GetData(), noiseps.GetSize(), nullptr, m_noisePS.ReleaseAndGetAddressOf());
+    device->CreatePixelShader(hitNoiseps.GetData(), hitNoiseps.GetSize(), nullptr, m_hitNoisePS.ReleaseAndGetAddressOf());
 
     m_isNoise = false;
 
@@ -67,15 +71,28 @@ void Noise::Initialize()
 
 void Noise::Update(float elapsedTime)
 {
-    if (m_isNoise)
+    if (m_isNoise || s_isHitNoise)
     {
         m_nowTime += elapsedTime;
         if (m_nowTime >= m_maxNoiseTime)
         {
             m_isNoise = false;
+            s_isHitNoise = false;
             m_nowTime = 0;
         }
     }
+}
+
+void Noise::SetNoise(bool isNoise)
+{
+    m_isNoise = isNoise;
+    m_nowTime = 0;
+}
+
+void Noise::SetHitNoise(bool isNoise)
+{
+    s_isHitNoise = isNoise;
+    m_nowTime = 0;
 }
 
 
@@ -111,7 +128,15 @@ void Noise::ApplyNoise(ID3D11ShaderResourceView* srv)
     context->IASetInputLayout(m_inputLayout.Get());
     context->PSSetShaderResources(0, 1, &srv);
     context->VSSetShader(m_noiseVS.Get(), nullptr, 0);
-    context->PSSetShader(m_noisePS.Get(), nullptr, 0);
+
+    if (s_isHitNoise)
+    {
+        context->PSSetShader(m_hitNoisePS.Get(), nullptr, 0);
+    }
+    else
+    {
+        context->PSSetShader(m_noisePS.Get(), nullptr, 0);
+    }
 
     m_batch->Begin();
     m_batch->DrawQuad(m_vertex[0], m_vertex[1], m_vertex[3], m_vertex[2]);

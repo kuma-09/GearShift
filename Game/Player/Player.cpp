@@ -29,6 +29,7 @@
 #include "Game/Object/Bullet/HomingBullet.h"
 
 #include "Framework/Audio.h"
+#include "Game/Shader/PostProcess/Noise.h"
 #include "Game/PlayScene.h"
 
 #include "BoostGage.h"
@@ -225,7 +226,7 @@ void Player::Collision(Collider* collider)
 		{
 			GetComponent<HP>()->SetHP(GetComponent<HP>()->GetHP() - 1);
 			bullet->Hit();
-			static_cast<PlayScene*>(GetScene())->SetNoise();
+			Noise::SetHitNoise(true);
 			if (GetComponent<HP>()->GetHP() <= 0)
 			{
 				auto game = static_cast<PlayScene*>(GetScene())->GetGame();

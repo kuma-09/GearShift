@@ -8,8 +8,8 @@ public:
 	static void Initialize();
 	static void Update(float elapsedTime);
 
-	static void SetNoise(bool isNoise) { m_isNoise = isNoise; }
-	static void SetHitNoise(bool isNoise) { s_isHitNoise = isNoise; }
+	static void SetNoise(bool isNoise);
+	static void SetHitNoise(bool isNoise);
 
 	// 最終結果にノイズを適用
 	static void ApplyNoise(ID3D11ShaderResourceView* srv);
