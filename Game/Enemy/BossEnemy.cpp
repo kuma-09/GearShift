@@ -221,7 +221,7 @@ void BossEnemy::Collision(Collider* collider)
 		if (bulletObject->GetState() == Bullet::FLYING)
 		{
 			GetComponent<HP>()->SetHP(GetComponent<HP>()->GetHP() - 1);
-			static_cast<PlayScene*>(GetScene())->CreateHitParticle(bulletObject->GetWorld());
+			static_cast<PlayScene*>(GetScene())->CreateHitParticle(bulletObject->GetPosition());
 			bulletObject->Hit();
 		}
 	}
@@ -231,7 +231,7 @@ void BossEnemy::Collision(Collider* collider)
 		if (bulletObject->GetState() == Sword::USING)
 		{
 			GetComponent<HP>()->SetHP(GetComponent<HP>()->GetHP() - 5);
-			static_cast<PlayScene*>(GetScene())->CreateHitParticle(bulletObject->GetWorld());
+			static_cast<PlayScene*>(GetScene())->CreateHitParticle(bulletObject->GetPosition());
 			bulletObject->Hit();
 		}
 		else if(bulletObject->GetState() == Sword::USED)

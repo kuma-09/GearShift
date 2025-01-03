@@ -14,6 +14,7 @@
 
 #include "Game/Enemy/State/EnemyAttackState.h"
 #include "Game/Enemy/State/EnemyMoveState.h"
+#include "Game/Enemy/State/FixedAttackState.h"
 
 #include "Game/Manager/ObjectManager.h"
 
@@ -30,11 +31,10 @@ FixedEnemy::FixedEnemy(IScene* scene,GameObject* target)
 
 	m_bullet = std::make_unique<FixedEnemyBullet>(GetScene(), Collider::TypeID::EnemyBullet);
 	
-	SetEnemyAttack(std::make_unique<EnemyAttackState>(this));
-	SetEnemyMove(std::make_unique<EnemyMoveState>(this));
+	SetEnemyAttack(std::make_unique<FixedAttackState>(this));
 	SetScale({ 3.0f,3.0f,3.0f });
 
-	m_state = GetMoveState();
+	m_state = GetAttackState();
 }
 
 FixedEnemy::~FixedEnemy()
@@ -48,7 +48,7 @@ void FixedEnemy::Initialize()
 
 
 	GetComponent<HP>()->SetHP(10);
-	GetComponent<Look>()->Initialize(false,true);
+	GetComponent<Look>()->Initialize(false,false);
 	GetComponent<Look>()->SetTarget(this, GetTarget());
 	GetComponent<Physics>()->Initialize();
 	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetTankBodyModel());
@@ -129,7 +129,7 @@ void FixedEnemy::Collision(Collider* collider)
 		if (bulletObject->GetState() == Bullet::FLYING)
 		{
 			GetComponent<HP>()->SetHP(GetComponent<HP>()->GetHP() - 1);
-			static_cast<PlayScene*>(GetScene())->CreateHitParticle(GetWorld());
+			static_cast<PlayScene*>(GetScene())->CreateHitParticle(GetPosition());
 			bulletObject->Hit();
 		}
 	}
@@ -139,7 +139,7 @@ void FixedEnemy::Collision(Collider* collider)
 		if (bulletObject->GetState() == Sword::USING)
 		{
 			GetComponent<HP>()->SetHP(GetComponent<HP>()->GetHP() - 5);
-			static_cast<PlayScene*>(GetScene())->CreateHitParticle(GetWorld());
+			static_cast<PlayScene*>(GetScene())->CreateHitParticle(GetPosition());
 			bulletObject->Hit();
 		}
 		else if (bulletObject->GetState() == Sword::USED)

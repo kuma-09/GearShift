@@ -227,6 +227,7 @@ void Player::Collision(Collider* collider)
 			GetComponent<HP>()->SetHP(GetComponent<HP>()->GetHP() - 1);
 			bullet->Hit();
 			Noise::SetHitNoise(true);
+			static_cast<Camera*>(GetCamera())->shake();
 			if (GetComponent<HP>()->GetHP() <= 0)
 			{
 				auto game = static_cast<PlayScene*>(GetScene())->GetGame();

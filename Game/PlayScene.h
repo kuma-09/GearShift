@@ -29,23 +29,19 @@ public:
 	~PlayScene();
 
 	void Initialize(Game* game) override;
-	
 	void Update(float elapsedTime) override;
-	
 	void Render() override;
 	void TranslucentRender() override;
 	void RenderUI() override;
 	void Finalize() override;
 
-	// ヒットエフェクトを生成する関数
 	void SetNoise();
-	void CreateHitParticle(DirectX::SimpleMath::Matrix world);
-	void CreateHitParticle(DirectX::SimpleMath::Matrix world,DirectX::SimpleMath::Quaternion rotate);
+	void CreateHitParticle(DirectX::SimpleMath::Vector3 pos,float size = 1.0f);
 	void CreateHitEffect(DirectX::SimpleMath::Vector3 pos);
 private:
-
 	void CreateObject(std::string className, DirectX::SimpleMath::Vector3 pos);
-
+	void UpdateTargetArea();
+	void UpdateParticle(float elapsedTime);
 private:
 
 	
@@ -64,11 +60,9 @@ private:
 	// スカイドーム
 	std::unique_ptr<SkyDome> m_skyDome;
 	// 床
-	std::vector<std::unique_ptr<Floor>>   m_floor;
+	std::unique_ptr<Floor>   m_floor;
 	// ターゲット範囲
 	std::unique_ptr<TargetArea> m_targetArea;
-
-	std::vector<std::unique_ptr<Bullet>> m_bullets;
 
 	// ヒットパーティクル
 	std::vector<std::unique_ptr<HitParticle>> m_hitParticle;
@@ -77,14 +71,10 @@ private:
 
 
 	std::unique_ptr<StartAnimation> m_startAnimation;
-	std::unique_ptr<BulletMagazine> m_bulletMagazine;
-	std::unique_ptr<ExBulletMagazine> m_exBulletMagazine;
 
 	// 経過時間
 	float m_totalTime;
 	// 残り時間
 	float m_timeLimit;
-	
-	std::unique_ptr<PostProcess> m_postProcess;
 
 };

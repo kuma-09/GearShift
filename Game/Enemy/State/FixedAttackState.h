@@ -16,8 +16,6 @@ private:
 	Enemy* m_enemy;
 
 	const float SPEED = 0.1f;
-	const float SHOT_INTERVAL = 0.1f;
-	const float SHOT_TIME = 1.0f;
-	const float SHOT_COOLTIME = 1.0f;
+	const float SHOT_INTERVAL = 2.0f;
 	float m_totalTime;
 };

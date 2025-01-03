@@ -7,6 +7,7 @@
 #include "Framework/Easing.h"
 
 #include "Manager/RenderManager.h"
+#include "Manager/StageDataManager.h"
 
 void TitleScene::Initialize(Game* game)
 {
@@ -86,6 +87,7 @@ void TitleScene::Update(float elapsedTime)
     {
         if (m_isStageSelect)
         {
+            StageDataManager::SetStageNum(m_stageMenu->GetActiveUI() + 1);
             GetGame()->ChangeScene(GetGame()->GetPlayScene());
         }
         switch (m_menu->GetActiveUI())

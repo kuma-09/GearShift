@@ -140,10 +140,10 @@ void HomingBullet::Update(float elapsedTime)
 		
 		acceleration += (diff - m_velocity * m_period) * 2.f / (m_period * m_period);
 
-		if (acceleration.Length() >= 100.0f)
+		if (acceleration.Length() >= 400.0f)
 		{
 			acceleration.Normalize();
-			acceleration *= 100.0f;
+			acceleration *= 400.0f;
 		}
 
 		m_period -= elapsedTime;
@@ -158,10 +158,6 @@ void HomingBullet::Update(float elapsedTime)
 		world *= Matrix::CreateTranslation(GetPosition());
 		SetWorld(world);
 	}
-	
-
-
-
 }
 
 void HomingBullet::Render()

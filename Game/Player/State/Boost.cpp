@@ -49,7 +49,7 @@ void Boost::Update(float elapsedTime)
 	velocity.Normalize();
 	m_velocity = Vector2::Lerp(m_velocity, Vector2(velocity.x,velocity.z), 0.1f);
 	m_player->SetVelocity(Vector3(m_velocity.x * m_boostPower * m_totalTime,0, m_velocity.y * m_boostPower * m_totalTime));
-	static_cast<PlayScene*>(m_player->GetScene())->CreateHitParticle(m_player->GetWorld(), m_player->GetQuaternion());
+	static_cast<PlayScene*>(m_player->GetScene())->CreateHitParticle(m_player->GetPosition(),0.25f);
 	m_player->GetEnergyGage()->UseEnergyPoint(1);
 	if (m_totalTime <= m_boostTime / 2)
 	{

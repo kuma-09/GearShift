@@ -22,7 +22,6 @@ void FixedAttackState::Update(float elapsedTime)
 	{
 		m_enemy->Shot();
 		m_totalTime = 0;
-		m_enemy->ChangeState(m_enemy->GetMoveState());
 	}
 
 }

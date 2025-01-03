@@ -29,6 +29,7 @@
 #include "Manager/RenderManager.h"
 #include "Manager/ObjectManager.h"
 #include "Manager/CollisionManager.h"
+#include "Manager/StageDataManager.h"
 
 PlayScene::PlayScene()
     :
@@ -64,9 +65,10 @@ void PlayScene::Initialize(Game* game)
     m_totalTime = 0;
 
     // JsonファイルのDataを読み込み
+    std::wstring fileName = StageDataManager::GetStageFileName();
     std::vector<std::string> str;
     std::vector<Vector3> pos;
-    Json::LoadJsonFile(L"Stage1.json", str, pos);
+    Json::LoadJsonFile(fileName, str, pos);
 
     // オブジェクトの生成
     for (int i = 0; i < str.size(); i++)
@@ -74,16 +76,13 @@ void PlayScene::Initialize(Game* game)
         CreateObject(str[i], pos[i]);
     }
 
-    m_floor.emplace_back(std::make_unique<Floor>(this));
+    m_floor = std::make_unique<Floor>(this);
 
     m_skyDome = std::make_unique<SkyDome>();
     m_skyDome->Initialize(Vector3::Zero);
 
     m_targetArea = std::make_unique<TargetArea>();
     m_targetArea->Initialize();
-
-    m_postProcess = std::make_unique<PostProcess>();
-    m_postProcess->Initialize();
 
     m_hitEffect = std::make_unique<ExplosionEffect>();
     m_hitEffect->Initialize();
@@ -95,10 +94,6 @@ void PlayScene::Initialize(Game* game)
 
     m_startAnimation = std::make_unique<StartAnimation>();
     m_startAnimation->Initialize();
-    m_bulletMagazine = std::make_unique<BulletMagazine>();
-    m_bulletMagazine->Initialize(10);
-    m_exBulletMagazine = std::make_unique<ExBulletMagazine>();
-    m_exBulletMagazine->Initialize(0);
     
 }
 
@@ -113,36 +108,15 @@ void PlayScene::Update(float elapsedTime)
 
     // 経過時間を計算
     m_totalTime += elapsedTime;
-    m_postProcess->Update(elapsedTime);
     m_startAnimation->Update(elapsedTime);
-    m_targetArea->ClearTarget();
 
     // ヒットエフェクトの更新
-    for (auto& particle : m_hitParticle)
-    {
-        particle->Update();
-    }
-    m_hitEffect->Update(elapsedTime);
-
+    UpdateParticle(elapsedTime);
+    // ターゲットエリアの更新
+    UpdateTargetArea();
     // オブジェクトの更新
-    auto enemys = ObjectManager::GetTypeObjects(Type::Enemy);
-    if (enemys.empty())
-    {
-        GetGame()->ChangeScene(GetGame()->GetResultScene());
-    }
-
-    for (auto& enemy : enemys)
-    {
-        m_targetArea->Update(m_player.lock().get(), enemy.lock().get(),static_cast<Player*>(m_player.lock().get())->GetCamera());
-    }
-
-    static_cast<Player*>(m_player.lock().get())->SetTarget(m_targetArea->GetTarget());
-
     ObjectManager::Update(elapsedTime);
-    for (auto& floor : m_floor)
-    {
-        floor->Update(elapsedTime);
-    }
+    m_floor->Update(elapsedTime);
 
     CollisionManager::Update();
     ObjectManager::Delete();
@@ -173,7 +147,7 @@ void PlayScene::RenderUI()
     m_startAnimation->Render();
     if (m_targetArea->GetTarget())
     {
-        m_targetArea->GetTarget()->GetComponent<HPBar>()->Render(m_targetArea->GetTarget()->GetPosition());
+        //m_targetArea->GetTarget()->GetComponent<HPBar>()->Render(m_targetArea->GetTarget()->GetPosition());
     }
 }
 
@@ -184,53 +158,27 @@ void PlayScene::Finalize()
     RenderManager::Clear();
 }
 
-
-
 void PlayScene::SetNoise()
 {
-    m_postProcess->SetNoise(true);
 }
 
 /// <summary> ヒットエフェクトを生成する関数 </summary>
 /// <param name="world"> ワールド行列 </param>
-void PlayScene::CreateHitParticle(DirectX::SimpleMath::Matrix world)
+void PlayScene::CreateHitParticle(DirectX::SimpleMath::Vector3 pos , float size)
 {
     using namespace DirectX::SimpleMath;
 
-    int particleValue = HitParticle::get_rand(2, 5);
-    Vector3 pos = { world._41,world._42,world._43 };
+    int particleValue = HitParticle::get_rand(1, 5);
 
     for (int i = 0; i < particleValue; i++)
     {
-
         float velocityX = (float)HitParticle::get_rand(-30, 30) / 500.0f;
         float velocityY = (float)HitParticle::get_rand(-30, 30) / 500.0f;
         float velocityZ = (float)HitParticle::get_rand(-30, 30) / 500.0f;
         for (auto& particle : m_hitParticle)
         {
             if (particle->GetAlpha() > 0.0f) continue;
-            particle->Initialize(pos, Vector3(velocityX, velocityY, velocityZ),{1,1});
-            break;
-        }
-    }
-}
-
-void PlayScene::CreateHitParticle(DirectX::SimpleMath::Matrix world, DirectX::SimpleMath::Quaternion rotate)
-{
-    using namespace DirectX::SimpleMath;
-
-    int particleValue = HitParticle::get_rand(0, 5);
-    Vector3 pos = { world._41,world._42,world._43 };
-
-    for (int i = 0; i < particleValue; i++)
-    {
-
-        float velocityX = (float)HitParticle::get_rand(-20, 20) / 500.0f;
-        float velocityY = (float)HitParticle::get_rand(-20, 20) / 500.0f;
-        for (auto& particle : m_hitParticle)
-        {
-            if (particle->GetAlpha() > 0.0f) continue;
-            particle->Initialize(pos, Vector3::Transform({ velocityX,velocityY,0 }, rotate));
+            particle->Initialize(pos, Vector3(velocityX, velocityY, velocityZ),{size,size});
             break;
         }
     }
@@ -281,4 +229,30 @@ void PlayScene::CreateObject(std::string className, DirectX::SimpleMath::Vector3
     {
         ObjectManager::Add(std::make_shared<Light>(this), pos);
     }
+}
+
+void PlayScene::UpdateTargetArea()
+{
+    m_targetArea->ClearTarget();
+    auto enemys = ObjectManager::GetTypeObjects(Type::Enemy);
+    if (enemys.empty())
+    {
+        GetGame()->ChangeScene(GetGame()->GetResultScene());
+    }
+
+    for (auto& enemy : enemys)
+    {
+        m_targetArea->Update(m_player.lock().get(), enemy.lock().get(), static_cast<Player*>(m_player.lock().get())->GetCamera());
+    }
+
+    static_cast<Player*>(m_player.lock().get())->SetTarget(m_targetArea->GetTarget());
+}
+
+void PlayScene::UpdateParticle(float elapsedTime)
+{
+    for (auto& particle : m_hitParticle)
+    {
+        particle->Update();
+    }
+    m_hitEffect->Update(elapsedTime);
 }
