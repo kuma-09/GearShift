@@ -1,6 +1,7 @@
 {
 	"Object_list": [
 		{"Object_Name": "Player"     ,"position":{"x":  5.0, "y": 20.0,"z": 100.0}},
+		{"Object_Name": "Floor"      ,"position":{"x":  0.0, "y":  1.0,"z":   0.0}},
 		{"Object_Name": "BillA"      ,"position":{"x":  5.0, "y":  9.0, "z": 40.0}},
 		{"Object_Name": "BillA"      ,"position":{"x": 10.0, "y":  9.0, "z": 25.0}},
 		{"Object_Name": "BillB"      ,"position":{"x": 30.0, "y":  9.0, "z": 40.0}},
@@ -39,10 +40,10 @@
 		{"Object_Name": "FixedEnemy" ,"position":{"x": 30.0, "y":  5.0, "z": -40.0}},
 		{"Object_Name": "BossEnemy"  ,"position":{"x": 32.0, "y":  5.0, "z": -50.0}},
 		{"Object_Name": "DropItem"   ,"position":{"x":  0.0, "y":  5.0, "z": -10.0}},
-		{"Object_Name": "DropItemB"  ,"position":{"x":  0.0, "y": 10.0, "z":  0.0}},
-		{"Object_Name": "Light"      ,"position":{"x": 15.0, "y":  3.5, "z": 15.0}},
-		{"Object_Name": "Light"      ,"position":{"x": 15.0, "y":  3.5, "z":-15.0}},
-		{"Object_Name": "Light"      ,"position":{"x":-15.0, "y":  3.5, "z": 15.0}},
-		{"Object_Name": "Light"      ,"position":{"x":-15.0, "y":  3.5, "z":-15.0}}
+		{"Object_Name": "DropItemB"  ,"position":{"x":  0.0, "y": 10.0, "z":   0.0}},
+		//{"Object_Name": "Light"      ,"position":{"x": 15.0, "y":  3.5, "z": 15.0}},
+		//{"Object_Name": "Light"      ,"position":{"x": 15.0, "y":  3.5, "z":-15.0}},
+		//{"Object_Name": "Light"      ,"position":{"x":-15.0, "y":  3.5, "z": 15.0}},
+		//{"Object_Name": "Light"      ,"position":{"x":-15.0, "y":  3.5, "z":-15.0}}
 	]
 }

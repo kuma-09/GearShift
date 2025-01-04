@@ -76,8 +76,6 @@ void PlayScene::Initialize(Game* game)
         CreateObject(str[i], pos[i]);
     }
 
-    m_floor = std::make_unique<Floor>(this);
-
     m_skyDome = std::make_unique<SkyDome>();
     m_skyDome->Initialize(Vector3::Zero);
 
@@ -116,7 +114,6 @@ void PlayScene::Update(float elapsedTime)
     UpdateTargetArea();
     // オブジェクトの更新
     ObjectManager::Update(elapsedTime);
-    m_floor->Update(elapsedTime);
 
     CollisionManager::Update();
     ObjectManager::Delete();
@@ -196,6 +193,10 @@ void PlayScene::CreateObject(std::string className, DirectX::SimpleMath::Vector3
     if (className == "Player")
     {
         m_player = ObjectManager::Add(std::make_shared<Player>(this),pos);
+    }
+    if (className == "Floor")
+    {
+        ObjectManager::Add(std::make_shared<Floor>(this), pos);
     }
     if (className == "BillA")
     {

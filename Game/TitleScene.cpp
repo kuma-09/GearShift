@@ -93,7 +93,6 @@ void TitleScene::Update(float elapsedTime)
         switch (m_menu->GetActiveUI())
         {
         case 0:
-            //GetGame()->ChangeScene(GetGame()->GetPlayScene());
             m_isStageSelect = true;
             break;
         case 1:
