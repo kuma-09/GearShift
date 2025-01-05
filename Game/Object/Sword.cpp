@@ -104,7 +104,7 @@ void Sword::Update(float elapsedTime)
 	for (int i = 3; i < 5; i++)
 	{
 		world = Matrix::CreateScale(GetScale());
-		world *= Matrix::CreateTranslation(Vector3{ 0,0,i * -1.f });
+		world *= Matrix::CreateTranslation(Vector3{ 0,0,i * -1.5f });
 		if (GetState() == USED)
 		{
 			world *= Matrix::CreateRotationY(XMConvertToRadians(100 - rotate * 200));

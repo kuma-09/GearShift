@@ -22,5 +22,8 @@ private:
 	//// ’e”z—ñ
 	std::vector<std::unique_ptr<Bullet>> m_defaultBullet;
 	float m_bulletInterval;
+	float m_nowReloadTime;
+	bool m_isReload;
+	const float RELOAD_TIME = 1.0f;
 	const float INTERVAL = 0.25f;
 };

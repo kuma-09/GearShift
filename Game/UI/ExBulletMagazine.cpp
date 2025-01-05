@@ -43,7 +43,7 @@ void ExBulletMagazine::Initialize(int number)
 	m_number = number;
 }
 
-void ExBulletMagazine::Update(float elapsedTime)
+void ExBulletMagazine::Update(float elapsedTime, int number)
 {
 	//m_pos.y -= 1;
 	//if (m_pos.y < 540)
@@ -51,6 +51,8 @@ void ExBulletMagazine::Update(float elapsedTime)
 	//	m_pos.y = 540;
 	//}
 	m_alpha += elapsedTime * 5;
+	m_digit = int(std::to_string(number).length());
+	m_number = number;
 }
 
 

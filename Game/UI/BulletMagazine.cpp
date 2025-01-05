@@ -44,9 +44,11 @@ void BulletMagazine::Initialize(int number)
 	m_number = number;
 }
 
-void BulletMagazine::Update(float elapsedTime)
+void BulletMagazine::Update(float elapsedTime, int number)
 {
 	m_alpha += elapsedTime * 5;
+	m_digit = int(std::to_string(number).length());
+	m_number = number;
 }
 
 

@@ -76,9 +76,6 @@ void Player::Initialize()
 	// 弾の作成
 	CreateBullets();
 
-	//m_sword = std::make_unique<Sword>();
-	//m_sword->Initalize(this);
-
 	m_camera = std::make_unique<Camera>();
 	m_camera->Initialize();
 
@@ -102,8 +99,8 @@ void Player::Update(float elapsedTime)
 	auto& mouseTracker = m_inputManager->GetMouseTracker();
 	auto& kb = m_inputManager->GetKeyboardTracker();
 
-	m_bulletMagazine->Update(elapsedTime);
-	m_exBulletMagazine->Update(elapsedTime);
+	m_bulletMagazine->Update(elapsedTime,m_gun->GetMagazineSize());
+	m_exBulletMagazine->Update(elapsedTime, m_missileLauncher->GetMagazineSize());
 	m_energyGage->Update(elapsedTime);
 	m_reload->Update(elapsedTime);
 	m_camera->Update(elapsedTime);
@@ -113,7 +110,7 @@ void Player::Update(float elapsedTime)
 	// 近接攻撃
 	if (kb->IsKeyPressed(DirectX::Keyboard::Z)) ChangeState(GetAttack());
 	// リロード
-	if (kb->IsKeyPressed(DirectX::Keyboard::R)) Reload();
+	if (kb->IsKeyPressed(DirectX::Keyboard::R)) m_gun->Reload();
 
 	// マウスホイールで弾の種類を変更
 	m_bulletType = abs(mouseState.scrollWheelValue) / 120;
@@ -179,6 +176,7 @@ void Player::Finalize()
 {	
 }
 
+// ターゲットを変更
 void Player::SetTarget(GameObject* target)
 {
 	m_target = target;
@@ -186,16 +184,19 @@ void Player::SetTarget(GameObject* target)
 	GetComponent<Look>()->SetTarget(this, target);
 }
 
+// トレイルの座標を変更
 void Player::SetTrailPosition(DirectX::SimpleMath::Vector3 pos)
 {
 	m_trailPosition = pos;
 }
 
+// トレイルをクリア
 void Player::ClearTrail()
 {
 	m_burner->ClearTrail();
 }
 
+// ステートを変更
 void Player::ChangeState(State* state)
 {
 	m_state->Finalize();
@@ -203,6 +204,7 @@ void Player::ChangeState(State* state)
 	m_state->Initialize();
 }
 
+// 弾を発射
 void Player::Shot()
 {
 	switch (m_bulletType % 2)
@@ -220,12 +222,13 @@ void Player::Shot()
 	}
 }
 
+// 残りエネルギー量を取得
 float Player::GetBoostPoint()
 {
 	return m_energyGage->GetEnergyPoint();
 }
 
-
+// 当たり判定
 void Player::Collision(Collider* collider)
 {
 	if (collider->GetTypeID() == Collider::EnemyBullet)
@@ -249,11 +252,13 @@ void Player::Collision(Collider* collider)
 	if (collider->GetTypeID() == Collider::DropItem)
 	{
 		GetComponent<HP>()->SetHP(GetComponent<HP>()->GetHP() + 5);
+		Audio::GetInstance()->PlaySoundSE_PowerUp();
 	}
 
 	if (collider->GetTypeID() == Collider::DropItemB)
 	{
 		m_missileLauncher->Reload();
+		Audio::GetInstance()->PlaySoundSE_PowerUp();
 	}
 	
 	if (collider->GetTypeID() == Collider::Floor)
@@ -267,11 +272,6 @@ void Player::Collision(Collider* collider)
 		Collider::CheckHit(this, collider->GetOwner());
 	}
 
-}
-
-void Player::Reload()
-{
-	m_gun->Reload();
 }
 
 // プレイヤーのステートを作成

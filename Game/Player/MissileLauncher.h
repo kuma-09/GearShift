@@ -22,6 +22,6 @@ private:
 	//// ’e”z—ñ
 	std::vector<std::unique_ptr<Bullet>> m_bullet;
 	float m_missileInterval;
-	const float INTERVAL = 0.25f;
+	const float INTERVAL = 0.1f;
 };
 

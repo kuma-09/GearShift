@@ -9,7 +9,7 @@ public:
 	~BulletMagazine();
 	void SetSpriteBatch(DirectX::SpriteBatch* spriteBatch);
 	void Initialize(int tagertNumber);
-	void Update(float elapsedTime);
+	void Update(float elapsedTime, int targetNumber);
 	void Render(bool isActive);
 private:
 	int m_number;

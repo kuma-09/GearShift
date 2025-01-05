@@ -25,8 +25,9 @@ void Gun::Initialize()
 		m_defaultBullet.emplace_back(std::make_unique<NormalBullet>(m_owner->GetScene(), Collider::PlayerBullet));
 		m_defaultBullet.back()->Initialize(this);
 	}
-
 	m_bulletInterval = 0;
+	m_nowReloadTime = 0;
+	m_isReload = false;
 }
 
 void Gun::Update(float elapsedTime)
@@ -34,6 +35,20 @@ void Gun::Update(float elapsedTime)
 	using namespace DirectX::SimpleMath;
 
 	m_bulletInterval += elapsedTime;
+
+	if (m_isReload)
+	{
+		m_nowReloadTime += elapsedTime;
+		if (m_nowReloadTime > RELOAD_TIME)
+		{
+			m_isReload = false;
+			m_nowReloadTime = 0;
+			for (int i = 0; i < MAX_BULLET_COUNT; i++)
+			{
+				m_defaultBullet[i]->Initialize(this);
+			}
+		}
+	}
 
 	ComponentsUpdate(elapsedTime);
 
@@ -55,10 +70,10 @@ void Gun::Update(float elapsedTime)
 
 void Gun::Shot(GameObject* target)
 {
-	if (m_bulletInterval < INTERVAL || !target)
-	{
-		return;
-	}
+	if (m_bulletInterval < INTERVAL) return;
+	if (!target)					 return;
+	if (m_isReload)					 return;
+
 	int usedCount = 0;
 	m_bulletInterval = 0;
 	for (auto& bullet : m_defaultBullet)
@@ -74,10 +89,7 @@ void Gun::Shot(GameObject* target)
 
 void Gun::Reload()
 {
-	for (int i = 0; i < MAX_BULLET_COUNT; i++)
-	{
-		m_defaultBullet[i]->Initialize(this);
-	}
+	m_isReload = true;
 }
 
 size_t Gun::GetMagazineSize()

@@ -8,8 +8,8 @@ public:
 	ExBulletMagazine();
 	~ExBulletMagazine();
 	void SetSpriteBatch(DirectX::SpriteBatch* spriteBatch);
-	void Initialize(int tagertNumber);
-	void Update(float elapsedTime);
+	void Initialize(int number);
+	void Update(float elapsedTime, int number);
 	void Render(bool isActive);
 private:
 	int m_number;
