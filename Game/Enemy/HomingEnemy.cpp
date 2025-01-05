@@ -90,7 +90,7 @@ void HomingEnemy::Update(float elapsedTime)
 
 	if (GetComponent<HP>()->GetHP() <= 0)
 	{
-		ObjectManager::Remove(this);
+ 		ObjectManager::Remove(this);
 		static_cast<PlayScene*>(GetScene())->CreateHitEffect(GetPosition());
 	}
 }

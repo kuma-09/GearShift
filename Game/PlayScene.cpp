@@ -39,7 +39,6 @@ PlayScene::PlayScene()
     m_timeLimit{},
     m_totalTime{}
 {
-    
 }
 
 PlayScene::~PlayScene()
@@ -100,6 +99,7 @@ void PlayScene::Initialize(Game* game)
 void PlayScene::Update(float elapsedTime)
 {
     using namespace DirectX::SimpleMath;
+    ObjectManager::Delete();
 
     HitStop::Update(elapsedTime);
     if (HitStop::GetIsStop()) return;
@@ -114,18 +114,17 @@ void PlayScene::Update(float elapsedTime)
     UpdateTargetArea();
     // オブジェクトの更新
     ObjectManager::Update(elapsedTime);
-
     CollisionManager::Update();
-    ObjectManager::Delete();
+
 }
 
-/// <summary> 描画処理 </summary>
+// 3Dオブジェクトの描画
 void PlayScene::Render()
 {
-    m_skyDome->Render();
     RenderManager::RenderObjects();
 }
 
+// 半透明オブジェクトの描画
 void PlayScene::TranslucentRender()
 {
     RenderManager::RenderParticle();
@@ -136,15 +135,15 @@ void PlayScene::TranslucentRender()
     m_hitEffect->Render();
 }
 
+// UIの描画
 void PlayScene::RenderUI()
 {
-    // UI
     m_targetArea->Render(m_targetArea->GetTarget());
     static_cast<Player*>(m_player.lock().get())->RenderPlayerUI();
     m_startAnimation->Render();
     if (m_targetArea->GetTarget())
     {
-        //m_targetArea->GetTarget()->GetComponent<HPBar>()->Render(m_targetArea->GetTarget()->GetPosition());
+        m_targetArea->GetTarget()->GetComponent<HPBar>()->Render(m_targetArea->GetTarget()->GetPosition());
     }
 }
 
@@ -155,12 +154,7 @@ void PlayScene::Finalize()
     RenderManager::Clear();
 }
 
-void PlayScene::SetNoise()
-{
-}
-
-/// <summary> ヒットエフェクトを生成する関数 </summary>
-/// <param name="world"> ワールド行列 </param>
+/// ヒットエフェクトを生成する関数
 void PlayScene::CreateHitParticle(DirectX::SimpleMath::Vector3 pos , float size)
 {
     using namespace DirectX::SimpleMath;
@@ -181,6 +175,7 @@ void PlayScene::CreateHitParticle(DirectX::SimpleMath::Vector3 pos , float size)
     }
 }
 
+// 爆発エフェクトの生成
 void PlayScene::CreateHitEffect(DirectX::SimpleMath::Vector3 pos)
 {
     m_hitEffect->Set(pos);
@@ -232,6 +227,7 @@ void PlayScene::CreateObject(std::string className, DirectX::SimpleMath::Vector3
     }
 }
 
+// ターゲットエリアの更新
 void PlayScene::UpdateTargetArea()
 {
     m_targetArea->ClearTarget();
@@ -249,6 +245,7 @@ void PlayScene::UpdateTargetArea()
     static_cast<Player*>(m_player.lock().get())->SetTarget(m_targetArea->GetTarget());
 }
 
+// パーティクルの更新
 void PlayScene::UpdateParticle(float elapsedTime)
 {
     for (auto& particle : m_hitParticle)

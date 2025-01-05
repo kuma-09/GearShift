@@ -43,7 +43,6 @@ void ObjectManager::Delete()
 		// íœ‘ÎÛ‚ğƒŠƒXƒg‚©‚çíœ
 		s_gameObjects.erase(it, s_gameObjects.end());
 	}
-
 	s_deleteObjects.clear();
 }
 

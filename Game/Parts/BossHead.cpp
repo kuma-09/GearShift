@@ -80,7 +80,6 @@ void BossHead::Collision(Collider* collider)
 		{
 				GetComponent<HP>()->SetHP(GetComponent<HP>()->GetHP() - 1);
 				bulletObject->Hit();
-				static_cast<PlayScene*>(GetOwner()->GetScene())->SetNoise();
 				m_isHit = true;
 		}
 	}

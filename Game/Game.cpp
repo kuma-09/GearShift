@@ -169,8 +169,6 @@ void Game::Update(DX::StepTimer const& timer)
 void Game::Render()
 {
     using namespace DirectX::SimpleMath;
-    auto state = Graphics::GetInstance()->GetCommonStates();
-
 
     // Don't try to render anything before the first Update.
     if (m_timer.GetFrameCount() == 0)
@@ -183,6 +181,26 @@ void Game::Render()
 
     // TODO: Add your rendering code here.
 
+    // 現在のシーンを描画
+    SceneRender();
+
+    // シーン切り替え時のマスク
+    if (m_sceneMask->IsClose() || m_sceneMask->IsOpen()) m_sceneMask->Render();
+
+    // デバッグ用
+    //DeferredRendering::GBufferShow();
+    //ShadowMap::ShadowMapShow();
+    //Bloom::BloomTextureShow();
+    //m_debugString->Render(state);
+
+    m_deviceResources->PIXEndEvent();
+
+    // Show the new frame.
+    m_deviceResources->Present();
+}
+
+void Game::SceneRender()
+{
     // シャドウマップを作成
     RenderManager::CreateShadowMap();
 
@@ -205,20 +223,6 @@ void Game::Render()
 
     // ForwardRenderingでUIを表示
     m_scene->RenderUI();
-
-    // シーン切り替え時のマスク
-    if (m_sceneMask->IsClose() || m_sceneMask->IsOpen()) m_sceneMask->Render();
-
-    // デバッグ用
-    //DeferredRendering::GBufferShow();
-    //ShadowMap::ShadowMapShow();
-    //Bloom::BloomTextureShow();
-    //m_debugString->Render(state);
-
-    m_deviceResources->PIXEndEvent();
-
-    // Show the new frame.
-    m_deviceResources->Present();
 }
 
 // Helper method to clear the back buffers.
@@ -226,18 +230,19 @@ void Game::Clear()
 {
     m_deviceResources->PIXBeginEvent(L"Clear");
 
-    // Clear the views.
-    auto context = m_deviceResources->GetD3DDeviceContext();
-    auto renderTarget = m_deviceResources->GetRenderTargetView();
-    auto depthStencil = m_deviceResources->GetDepthStencilView();
+    // SceneRenderの方でClearしているのでコメントアウト--
+    //// Clear the views.
+    //auto context = m_deviceResources->GetD3DDeviceContext();
+    //auto renderTarget = m_deviceResources->GetRenderTargetView();
+    //auto depthStencil = m_deviceResources->GetDepthStencilView();
 
-    context->ClearRenderTargetView(renderTarget, Colors::Black);
-    context->ClearDepthStencilView(depthStencil, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
-    context->OMSetRenderTargets(1, &renderTarget, depthStencil);
+    //context->ClearRenderTargetView(renderTarget, Colors::Black);
+    //context->ClearDepthStencilView(depthStencil, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
+    //context->OMSetRenderTargets(1, &renderTarget, depthStencil);
 
-    // Set the viewport.
-    auto const viewport = m_deviceResources->GetScreenViewport();
-    context->RSSetViewports(1, &viewport);
+    //// Set the viewport.
+    //auto const viewport = m_deviceResources->GetScreenViewport();
+    //context->RSSetViewports(1, &viewport);
 
     m_deviceResources->PIXEndEvent();
 }

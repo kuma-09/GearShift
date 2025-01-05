@@ -8,6 +8,8 @@
 #include "Game/PlayScene.h"
 #include "Framework/Audio.h"
 
+#include "Game/Shader/PostProcess/Noise.h"
+
 Attack::Attack(Player* player)
 {
 	m_player = player;
@@ -30,8 +32,8 @@ void Attack::Initialize()
 	m_sword->Initalize(m_player);
 	m_player->GetEnergyGage()->UseEnergyPoint(1);
 	static_cast<Camera*>(m_player->GetCamera())->shake();
-	static_cast<PlayScene*>(m_player->GetScene())->SetNoise();
 	Audio::GetInstance()->PlaySoundSE_Boost();
+	Noise::SetNoise(true);
 }
 
 void Attack::Update(float elapsedTime)

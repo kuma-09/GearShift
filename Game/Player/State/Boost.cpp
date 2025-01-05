@@ -31,7 +31,6 @@ void Boost::Initialize()
 	m_velocity.Normalize();
 	m_player->GetEnergyGage()->UseEnergyPoint(1);
 	static_cast<Camera*>(m_player->GetCamera())->shake();
-	static_cast<PlayScene*>(m_player->GetScene())->SetNoise();
 	Audio::GetInstance()->PlaySoundSE_Boost();
 	Noise::SetNoise(true);
 }

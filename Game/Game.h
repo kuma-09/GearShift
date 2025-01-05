@@ -128,7 +128,7 @@ private:
 
     void Update(DX::StepTimer const& timer);
     void Render();
-
+    void SceneRender();
     void Clear();
 
     void CreateDeviceDependentResources();
