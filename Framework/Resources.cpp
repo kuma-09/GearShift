@@ -56,9 +56,9 @@ void Resources::LoadResource(Graphics* graphics)
 	// テクスチャをロードする
 	DirectX::CreateWICTextureFromFile(
 		device,
-		L"Resources/Textures/green.png",
+		L"Resources/Textures/white.png",
 		nullptr,
-		m_greenTexture.GetAddressOf()
+		m_Texture.GetAddressOf()
 	);
 
 	delete FX;

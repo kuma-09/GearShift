@@ -2,6 +2,7 @@
 #include "HPBar.h"
 #include "HP.h"
 #include "Game/GameObject.h"
+#include "Framework/Easing.h"
 
 
 HPBar::HPBar()
@@ -13,7 +14,7 @@ HPBar::HPBar()
     auto deviceResources = m_graphics->GetDeviceResources();
     m_primitiveBatch = std::make_unique<PrimitiveBatch<VertexPositionColorTexture>>(deviceResources->GetD3DDeviceContext());
     m_basicEffect = std::make_unique<BasicEffect>(deviceResources->GetD3DDevice());
-    m_texture = Resources::GetInstance()->GetGreenTexture();
+    m_texture = Resources::GetInstance()->GetWhiteTexture();
 }
 
 HPBar::~HPBar()
@@ -26,12 +27,20 @@ void HPBar::Initialize()
     using namespace DirectX;
     using namespace DirectX::SimpleMath;
     m_maxHp = GetOwner()->GetComponent<HP>()->GetHP();
+    m_redHp = (float)GetOwner()->GetComponent<HP>()->GetHP() / (float)m_maxHp * 4;
+    m_nowTime = 0;
 
     // 緑
     m_vertex[0] = VertexPositionColorTexture(Vector3(0.0f, -0.03f, 0), Vector4(1, 1, 1, 1), Vector2(0, 0));
     m_vertex[1] = VertexPositionColorTexture(Vector3(0.0f, -0.03f, 0), Vector4(1, 1, 1, 1), Vector2(1, 0));
     m_vertex[2] = VertexPositionColorTexture(Vector3(0.0f, 0.03f, 0), Vector4(1, 1, 1, 1), Vector2(0, 1));
     m_vertex[3] = VertexPositionColorTexture(Vector3(0.0f, 0.03f, 0), Vector4(1, 1, 1, 1), Vector2(1, 1));
+
+    // 赤
+    m_redVertex[0] = VertexPositionColorTexture(Vector3(0.0f, -0.03f, 0), Vector4(1, 1, 1, 1), Vector2(0, 0));
+    m_redVertex[1] = VertexPositionColorTexture(Vector3(0.0f, -0.03f, 0), Vector4(1, 1, 1, 1), Vector2(1, 0));
+    m_redVertex[2] = VertexPositionColorTexture(Vector3(0.0f, 0.03f, 0), Vector4(1, 1, 1, 1), Vector2(0, 1));
+    m_redVertex[3] = VertexPositionColorTexture(Vector3(0.0f, 0.03f, 0), Vector4(1, 1, 1, 1), Vector2(1, 1));
 
     // 黒
     m_backVertex[0] = VertexPositionColorTexture(Vector3(0.0f, -0.05f, 0), Vector4(1, 1, 1, 1), Vector2(0, 0));
@@ -46,7 +55,19 @@ void HPBar::Update(float elapsedTime)
     using namespace DirectX::SimpleMath;
 
     UNREFERENCED_PARAMETER(elapsedTime);
+    float barSize = 0;
 
+    if (GetOwner()->GetComponent<HP>()->GetHP())
+    {
+        barSize = (float)GetOwner()->GetComponent<HP>()->GetHP() / (float)m_maxHp;
+        barSize *= 4;
+    }
+
+    m_greenHp = barSize;
+    if (m_greenHp <= m_redHp)
+    {
+        m_redHp -= elapsedTime;
+    }
 }
 
 void HPBar::Render(DirectX::SimpleMath::Vector2 position)
@@ -61,21 +82,23 @@ void HPBar::Render(DirectX::SimpleMath::Vector2 position)
     context->OMSetDepthStencilState(state->DepthDefault(), 0);
     context->RSSetState(state->CullNone());
 
-    float barSize = 0;
+    float BarSize2D = 0.14f * 2 / 4;
 
-    if (GetOwner()->GetComponent<HP>()->GetHP())
-    {
-        barSize = (float)GetOwner()->GetComponent<HP>()->GetHP() / (float)m_maxHp;
-        barSize *= 0.14f * 2;
-        barSize = std::max(barSize, 0.0f);
-    }
+    float GreenHPBar = std::max(m_greenHp * BarSize2D,0.0f);
+    float RedHPBar   = std::max(m_redHp * BarSize2D, 0.0f);
 
 
     // 緑
     m_vertex[0].position = Vector3(-0.14f         , -0.03f, 0);
-    m_vertex[1].position = Vector3(barSize - 0.14f, -0.03f, 0);
+    m_vertex[1].position = Vector3(GreenHPBar - 0.14f, -0.03f, 0);
     m_vertex[2].position = Vector3(-0.14f         ,  0.03f, 0);
-    m_vertex[3].position = Vector3(barSize - 0.14f,  0.03f, 0);
+    m_vertex[3].position = Vector3(GreenHPBar - 0.14f,  0.03f, 0);
+
+    // 赤
+    m_redVertex[0].position = Vector3(-0.14f, -0.03f, 0);
+    m_redVertex[1].position = Vector3(RedHPBar - 0.14f, -0.03f, 0);
+    m_redVertex[2].position = Vector3(-0.14f, 0.03f, 0);
+    m_redVertex[3].position = Vector3(RedHPBar - 0.14f, 0.03f, 0);
 
     // 黒
     m_backVertex[0].position = Vector3(-0.15f, -0.05f, 0);
@@ -107,7 +130,18 @@ void HPBar::Render(DirectX::SimpleMath::Vector2 position)
     m_primitiveBatch->End();
 
     // 頂点カラーを変更
-    m_basicEffect->SetColorAndAlpha({ 1,1,1,1 });
+    m_basicEffect->SetColorAndAlpha({ 1,0,0,1 });
+    // テクスチャを有効にする
+    m_basicEffect->SetTexture(m_texture);
+    // 入力レイアウトを設定する
+    m_basicEffect->Apply(context);
+
+    m_primitiveBatch->Begin();
+    m_primitiveBatch->DrawQuad(m_redVertex[0], m_redVertex[1], m_redVertex[3], m_redVertex[2]);
+    m_primitiveBatch->End();
+
+    // 頂点カラーを変更
+    m_basicEffect->SetColorAndAlpha({ 0,1,0,1 });
     // テクスチャを有効にする
     m_basicEffect->SetTexture(m_texture);
     // 入力レイアウトを設定する
@@ -133,21 +167,21 @@ void HPBar::Render(DirectX::SimpleMath::Vector3 position)
     context->OMSetDepthStencilState(state->DepthDefault(), 0);
     context->RSSetState(state->CullNone());
 
-    float barSize = 0;
-
-    if (GetOwner()->GetComponent<HP>()->GetHP())
-    {
-        barSize = (float)GetOwner()->GetComponent<HP>()->GetHP() / (float)m_maxHp;
-        barSize *= 4;
-    }
 
     // 緑
     m_vertex[0].position = Vector3(-2, 0, 0);
-    m_vertex[1].position = Vector3(barSize - 2, 0, 0);
+    m_vertex[1].position = Vector3(m_greenHp - 2, 0, 0);
     m_vertex[2].position = Vector3(-2, 0.5f, 0);
-    m_vertex[3].position = Vector3(barSize - 2, 0.5f, 0);
+    m_vertex[3].position = Vector3(m_greenHp - 2, 0.5f, 0);
 
-    // 黒
+    // 赤
+    m_redVertex[0].position = Vector3(-2, 0, 0);
+    m_redVertex[1].position = Vector3(m_redHp - 2, 0, 0);
+    m_redVertex[2].position = Vector3(-2, 0.5f, 0);
+    m_redVertex[3].position = Vector3(m_redHp - 2, 0.5f, 0);
+
+
+    // 黒（外枠
     m_backVertex[0].position = Vector3(-2.1f, -0.1f, 0);
     m_backVertex[1].position = Vector3(2.1f, -0.1f, 0);
     m_backVertex[2].position = Vector3(-2.1f, 0.6f, 0);
@@ -184,7 +218,18 @@ void HPBar::Render(DirectX::SimpleMath::Vector3 position)
     m_primitiveBatch->End();
 
     // 頂点カラーを変更
-    m_basicEffect->SetColorAndAlpha({ 1,1,1,1 });
+    m_basicEffect->SetColorAndAlpha({ 1,0,0,1 });
+    // テクスチャを有効にする
+    m_basicEffect->SetTexture(m_texture);
+    // 入力レイアウトを設定する
+    m_basicEffect->Apply(context);
+
+    m_primitiveBatch->Begin();
+    m_primitiveBatch->DrawQuad(m_redVertex[0], m_redVertex[1], m_redVertex[3], m_redVertex[2]);
+    m_primitiveBatch->End();
+
+    // 頂点カラーを変更
+    m_basicEffect->SetColorAndAlpha({ 0,1,0,1 });
     // テクスチャを有効にする
     m_basicEffect->SetTexture(m_texture);
     // 入力レイアウトを設定する
@@ -198,5 +243,4 @@ void HPBar::Render(DirectX::SimpleMath::Vector3 position)
 
 void HPBar::Finalize()
 {
-
 }

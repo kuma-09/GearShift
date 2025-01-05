@@ -21,7 +21,11 @@ private:
 	std::unique_ptr<DirectX::BasicEffect> m_basicEffect;
 
 	int  m_maxHp;
+	float m_greenHp;
+	float m_redHp;
+	float m_nowTime;
 	DirectX::VertexPositionColorTexture m_vertex[4];
+	DirectX::VertexPositionColorTexture m_redVertex[4];
 	DirectX::VertexPositionColorTexture m_backVertex[4];
 
 	ID3D11ShaderResourceView* m_texture;

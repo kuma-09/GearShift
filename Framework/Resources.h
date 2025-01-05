@@ -37,7 +37,7 @@ public:
 	DirectX::Model* GetLightModel() { return m_light.get(); }
 
 	// テクスチャを取得
-	ID3D11ShaderResourceView* GetGreenTexture() { return m_greenTexture.Get(); }
+	ID3D11ShaderResourceView* GetWhiteTexture() { return m_Texture.Get(); }
 
 public:
 	Resources(Resources&&) = default;
@@ -91,7 +91,7 @@ private:
 	std::unique_ptr<DirectX::Model> m_light;
 
 	// テクスチャ
-	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_greenTexture;
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_Texture;
 
 };
 
