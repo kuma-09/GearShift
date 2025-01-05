@@ -30,6 +30,8 @@ void Attack::Initialize()
 
 	m_totalTime = 0;
 	m_sword->Initalize(m_player);
+	m_player->ClearTrail();
+	m_player->SetTrailPosition(m_player->GetPosition());
 	m_player->GetEnergyGage()->UseEnergyPoint(1);
 	static_cast<Camera*>(m_player->GetCamera())->shake();
 	Audio::GetInstance()->PlaySoundSE_Boost();
@@ -47,6 +49,7 @@ void Attack::Update(float elapsedTime)
 	m_quaternion = m_player->GetQuaternion();
 	m_velocity = Vector3::Transform(Vector3::Forward, m_quaternion);
 	float boostSpeed = std::min(m_boostPower * m_totalTime, 1.0f);
+	m_player->SetTrailPosition(m_player->GetPosition());
 	if (m_sword->GetState() == Sword::USED)
 	{
 		m_player->SetVelocity(Vector3::Lerp(m_player->GetVelocity(), {0,0 ,0}, 0.75f));

@@ -45,7 +45,7 @@ void Sword::Initalize(GameObject* object)
 	m_rotate = 0;
 	m_isHit = false;
 	GetComponent<Collider>()->SetActive(true);	
-	GetComponent<PointLight>()->Initialize(GetPosition(), { 0.4f, 0.58f, 0.92f});
+	GetComponent<PointLight>()->Initialize(GetPosition(), { 0.2f, 0.29f, 0.46f });
 }
 
 void Sword::Shot(GameObject* object)

@@ -53,9 +53,6 @@ public:
 	void SetWorld(DirectX::SimpleMath::Matrix world) { m_world = world; }
 	DirectX::SimpleMath::Matrix GetWorld() { return m_world; }
 
-	// ワールド行列を更新
-	void UpdateWorld();
-
 	// コンポーネントを追加
 	template<typename CompType>
 	void AddComponent()

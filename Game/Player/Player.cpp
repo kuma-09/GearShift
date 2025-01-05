@@ -138,13 +138,12 @@ void Player::Update(float elapsedTime)
 
 	// Gun‚ÌXV
 	m_gun->Update(elapsedTime);
-
 	m_missileLauncher->Update(elapsedTime);
 
 	SetPrePosition(GetPosition());
 	SetPosition(GetPosition() + GetVelocity());
 	ShadowMap::SetLightPosition(GetPosition());
-	m_burner->Update(elapsedTime,GetPosition(),GetQuaternion());
+	m_burner->Update(elapsedTime, m_trailPosition, GetQuaternion());
 
 	Matrix world = Matrix::Identity;
 	world = Matrix::CreateScale(GetScale());
@@ -185,6 +184,16 @@ void Player::SetTarget(GameObject* target)
 	m_target = target;
 	m_camera->SetTarget(this, target);
 	GetComponent<Look>()->SetTarget(this, target);
+}
+
+void Player::SetTrailPosition(DirectX::SimpleMath::Vector3 pos)
+{
+	m_trailPosition = pos;
+}
+
+void Player::ClearTrail()
+{
+	m_burner->ClearTrail();
 }
 
 void Player::ChangeState(State* state)

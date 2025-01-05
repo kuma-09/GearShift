@@ -55,6 +55,8 @@ public:
 	GameObject* GetCamera() { return m_camera.get(); }
 	EnergyGage* GetEnergyGage() { return m_energyGage.get(); }
 
+	void SetTrailPosition(DirectX::SimpleMath::Vector3 pos);
+	void ClearTrail();
 	void ChangeState(State* state);
 	void Shot();
 
@@ -149,6 +151,7 @@ private:
 	std::unique_ptr<BulletMagazine>   m_bulletMagazine;
 	std::unique_ptr<ExBulletMagazine> m_exBulletMagazine;
 
+	DirectX::SimpleMath::Vector3 m_trailPosition;
 	bool m_onFloor;
 
 	int m_bulletType;

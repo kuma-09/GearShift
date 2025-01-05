@@ -10,6 +10,7 @@ public:
 	~Burner();
 	void Initialize();
 	void Update(float elapsedTime ,DirectX::SimpleMath::Vector3 pos,DirectX::SimpleMath::Quaternion rotate);
+	void ClearTrail();
 
 	GameObject* GetOwner() { return m_owner; }
 private:

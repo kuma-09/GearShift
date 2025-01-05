@@ -1,5 +1,6 @@
 #include "pch.h"	
 #include "Burner.h"
+#include "Game/Components/Trail.h"
 
 Burner::Burner()
 {
@@ -27,4 +28,10 @@ void Burner::Update(float elapsedTime, DirectX::SimpleMath::Vector3 pos, DirectX
 
 	m_vertical->Update(elapsedTime);
 	m_horizon->Update(elapsedTime);
+}
+
+void Burner::ClearTrail()
+{
+	m_vertical->GetComponent<Trail>()->ClearBuffer();
+	m_horizon->GetComponent<Trail>()->ClearBuffer();
 }
