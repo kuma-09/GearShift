@@ -129,6 +129,13 @@ private:
     void Update(DX::StepTimer const& timer);
     void Render();
     void SceneRender();
+
+    void DeferredRendering();
+    void TranslucentRender();
+    void RenderUI();
+    void ApplyBloom();
+    void ApplyNoise();
+
     void Clear();
 
     void CreateDeviceDependentResources();

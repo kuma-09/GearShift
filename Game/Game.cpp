@@ -170,6 +170,8 @@ void Game::Render()
 {
     using namespace DirectX::SimpleMath;
 
+    auto state = m_graphics->GetCommonStates();
+
     // Don't try to render anything before the first Update.
     if (m_timer.GetFrameCount() == 0)
     {
@@ -203,26 +205,52 @@ void Game::SceneRender()
 {
     // シャドウマップを作成
     RenderManager::CreateShadowMap();
+    // ディファードレンダリング
+    DeferredRendering();
+    // 半透明オブジェクトの描画
+    TranslucentRender();
+    // ブルームを適用
+    ApplyBloom();
+    // ノイズを適用
+    ApplyNoise();
+    // UIの描画
+    RenderUI();
+}
 
-    // DeferredRendering開始
+void Game::DeferredRendering()
+{
+    // DeferredRendering
     DeferredRendering::BeginGBuffer();
     m_scene->Render();
+    // GBufferを元に計算して描画
     DeferredRendering::DeferredLighting();
+}
 
-    // Particleを表示
+void Game::TranslucentRender()
+{
+    // 半透明オブジェクトを描画
     m_scene->TranslucentRender();
+}
 
+void Game::RenderUI()
+{
+    // ForwardRenderingでUIを表示
+    m_scene->RenderUI();
+}
+
+void Game::ApplyBloom()
+{
     // Bloomで光らせるオブジェクトを描画
     Bloom::BeginBloom();
     m_scene->TranslucentRender();
     // Bloomを適用
     Bloom::EndBloom(DeferredRendering::GetFinalRenderTexture()->GetShaderResourceView());
+}
 
+void Game::ApplyNoise()
+{
     // ノイズを画面に適用
     Noise::ApplyNoise(Bloom::GetFinalRenderTexture()->GetShaderResourceView());
-
-    // ForwardRenderingでUIを表示
-    m_scene->RenderUI();
 }
 
 // Helper method to clear the back buffers.

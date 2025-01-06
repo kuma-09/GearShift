@@ -22,6 +22,7 @@ struct PS_OUTPUT
     float4 rt2 : SV_Target2;
 };
 
+
 float LinearizeDepth(float depth, float near, float far)
 {
     return (2.0 * near) / (far + near - depth * (far - near));
