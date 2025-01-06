@@ -13,6 +13,7 @@ struct PS_INPUT
     float3 Normal   : NORMAL;
     float2 TexCoord : TEXCOORD;
     float4 Color    : COLOR;
+    float4 PositionWS : POSITIONT1;
 };
 
 struct PS_OUTPUT
@@ -22,6 +23,13 @@ struct PS_OUTPUT
     float4 rt2 : SV_Target2;
 };
 
+static const int pattern[4][4] =
+{
+    { 0, 32, 8, 40 },
+    { 48, 16, 56, 24 },
+    { 12, 44, 4, 36 },
+    { 60, 28, 52, 20 },
+};
 
 float LinearizeDepth(float depth, float near, float far)
 {
@@ -32,6 +40,23 @@ float LinearizeDepth(float depth, float near, float far)
 PS_OUTPUT main(PS_INPUT input)
 {
     PS_OUTPUT output;
+    
+    float4 objectPos = input.PositionWS;
+    float4 objectPosInCamera = mul(objectPos, matView);
+    
+    float distToEye = length(objectPosInCamera);
+    
+    int x = (int) fmod(input.Position.x, 4.0f);
+    int y = (int) fmod(input.Position.y, 4.0f);
+ 
+    int dither = pattern[y][x];
+    
+    float clipRange = 2.0f;
+    
+    float eyeToClipRange = max(0.0f, distToEye - clipRange);
+    float clipRate = 1.0f - min(1.0f, eyeToClipRange / 5.0f);
+    
+    clip(dither - 64 * clipRate);
     
     // テクスチャカラー
     output.rt0 = DiffuseColor;

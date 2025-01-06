@@ -62,7 +62,7 @@ float4 main(PS_INPUT input) : SV_TARGET
 	// diffuse------------------------------
     float3 toLight = normalize(-LightDirection[0]);
     float intensity1 = max(dot(normal, toLight), 0.0f);
-    float3 diffuse = albedo.rgb * toLight * intensity1 + 0.25f;
+    float3 diffuse = albedo.rgb * toLight * intensity1 + 0.5f;
 	// -------------------------------------
     
 	//// specular-----------------------------
