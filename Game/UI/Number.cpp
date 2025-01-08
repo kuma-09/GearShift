@@ -16,12 +16,6 @@ Number::Number():
 		DirectX::CreateWICTextureFromFile(device, L"Resources/Textures/0~c.png", nullptr,
 			m_numberTexture.ReleaseAndGetAddressOf())
 	);
-
-	DX::ThrowIfFailed(
-		DirectX::CreateWICTextureFromFile(device, L"Resources/Textures/colon.png", nullptr,
-			m_colon.ReleaseAndGetAddressOf())
-	);
-
 }
 
 Number::~Number()

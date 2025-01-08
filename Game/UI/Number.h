@@ -22,7 +22,6 @@ private:
 	const int m_space = 40;
 
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_numberTexture;
-	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_colon;
 
 	float m_alpha;
 	int m_digit;

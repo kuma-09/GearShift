@@ -155,6 +155,7 @@ void PlayScene::RenderUI()
 /// <summary> I—¹ˆ— </summary>
 void PlayScene::Finalize()
 {
+    StageDataManager::SetClearTime(m_totalTime);
     ObjectManager::Clear();
     RenderManager::Clear();
 }

@@ -19,7 +19,7 @@ Light::~Light()
 void Light::Initialize()
 {
 	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetLightModel());
-	GetComponent<PointLight>()->Initialize(GetPosition());
+	GetComponent<PointLight>()->Initialize(GetPosition(),{1,0,0});
 }
 
 void Light::Update(float elapsedtime)

@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "ResultScene.h"
 #include "Game.h"
-
+#include "Manager/StageDataManager.h"
 
 ResultScene::ResultScene()
 {
@@ -28,6 +28,7 @@ void ResultScene::Initialize(Game* game)
 
     SetGame(game);
     
+    int clearTime = StageDataManager::GetClearTime();
 }
 
 
