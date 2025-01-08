@@ -111,8 +111,6 @@ void EnergyGage::Render()
 	auto context = m_graphics->GetDeviceResources()->GetD3DDeviceContext();
 	auto state = m_graphics->GetCommonStates();
 
-	DirectX::CreateWICTextureFromFile(m_graphics->GetDeviceResources()->GetD3DDevice(), L"Resources/Textures/BulletCircle.png", nullptr, m_texture.ReleaseAndGetAddressOf());
-
 	//	シェーダーに渡す追加のバッファを作成する。(ConstBuffer）
 	ConstBuffer cbuff;
 	if (m_tmpPoint > 0)

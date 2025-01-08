@@ -1,6 +1,7 @@
 #pragma once
 #include "Framework/Graphics.h"
 #include "Framework/DeviceResources.h"
+#include "Number.h"
 
 class BulletMagazine
 {
@@ -12,17 +13,15 @@ public:
 	void Update(float elapsedTime, int targetNumber);
 	void Render(bool isActive);
 private:
-	int m_number;
 
 	std::unique_ptr<DirectX::SpriteBatch> m_spriteBatch;
 	DirectX::SimpleMath::Vector2 m_pos;
 
-	//êîéöÇÃÉTÉCÉY
 	RECT m_size;
 
+	std::unique_ptr<Number> m_number;
+
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_bulletTexture;
-	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_comboTexture;
 
 	float m_alpha;
-	int m_digit;
 };

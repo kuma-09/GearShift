@@ -13,6 +13,7 @@ public:
 	void Reload();
 
 	size_t GetMagazineSize();
+	float GetNowReloadTime();
 private:
 	GameObject* m_owner;
 

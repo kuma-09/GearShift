@@ -207,6 +207,7 @@ void DeferredRendering::DeferredLighting()
 	auto projection = Graphics::GetInstance()->GetProjectionMatrix();
 	auto states = Graphics::GetInstance()->GetCommonStates();
 
+	//renderTarget = Graphics::GetInstance()->GetDeviceResources()->GetRenderTargetView();
 	//context->ClearRenderTargetView(renderTarget, DirectX::Colors::Black);
 	context->OMSetRenderTargets(1, &renderTarget, nullptr);
 	context->RSSetState(states->CullNone());						// カリング
@@ -214,7 +215,7 @@ void DeferredRendering::DeferredLighting()
 	// テクスチャサンプラーの設定
 	ID3D11SamplerState* samplers[] = { m_shadowMapSampler.Get() };
 	context->PSSetSamplers(1, 1, samplers);
-
+	
 	auto const viewport = Graphics::GetInstance()->GetDeviceResources()->GetScreenViewport();
 	context->RSSetViewports(1, &viewport);
 

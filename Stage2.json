@@ -1,6 +1,7 @@
 {
 	"Object_list": [
 		{"Object_Name": "Player"     ,"position":{"x":  5.0, "y": 20.0,"z": 100.0}},
+		{"Object_Name": "Floor"      ,"position":{"x":  0.0, "y":  1.0,"z":   0.0}},
 		{"Object_Name": "FixedEnemy" ,"position":{"x": 30.0, "y":  5.0, "z": -40.0}}
 	]
 }

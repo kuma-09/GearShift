@@ -32,7 +32,8 @@ void Jump::Update(float elapsedTime)
 	const auto& mouse = InputManager::GetInstance()->GetMouseTracker();
 	const auto& gpState = InputManager::GetInstance()->GetGamePadState();
 	const auto& gpTracker = InputManager::GetInstance()->GetGamePadTracker();
-	static_cast<PlayScene*>(m_player->GetScene())->CreateHitParticle(m_player->GetPosition(), 0.25f);	if (m_player->GetVelocity().y < 0)
+	static_cast<PlayScene*>(m_player->GetScene())->CreateHitParticle(m_player->GetPosition(), 0.25f);
+	if (m_player->GetVelocity().y < 0)
 	{
 		m_player->GetComponent<Physics>()->Reset();
 		m_player->ChangeState(m_player->GetIdol());

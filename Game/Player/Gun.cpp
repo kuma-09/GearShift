@@ -104,3 +104,12 @@ size_t Gun::GetMagazineSize()
 	}
 	return value;
 }
+
+float Gun::GetNowReloadTime()
+{
+	if (m_isReload)
+	{
+		return m_nowReloadTime;
+	}		
+	return 0.0f;
+}

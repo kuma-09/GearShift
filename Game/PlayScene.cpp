@@ -63,6 +63,9 @@ void PlayScene::Initialize(Game* game)
     m_timeLimit = 180.0f;
     m_totalTime = 0;
 
+    m_time = std::make_unique<Number>();
+    m_time->Initialize({ 640,30 });
+
     // JsonファイルのDataを読み込み
     std::wstring fileName = StageDataManager::GetStageFileName();
     std::vector<std::string> str;
@@ -106,6 +109,7 @@ void PlayScene::Update(float elapsedTime)
 
     // 経過時間を計算
     m_totalTime += elapsedTime;
+    m_time->SetNum(int(m_totalTime));
     m_startAnimation->Update(elapsedTime);
 
     // ヒットエフェクトの更新
@@ -138,6 +142,7 @@ void PlayScene::TranslucentRender()
 // UIの描画
 void PlayScene::RenderUI()
 {
+    m_time->RenderTime();
     m_targetArea->Render(m_targetArea->GetTarget());
     static_cast<Player*>(m_player.lock().get())->RenderPlayerUI();
     m_startAnimation->Render();

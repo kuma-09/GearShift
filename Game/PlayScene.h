@@ -12,6 +12,7 @@
 #include "Game/Player/TargetArea.h" 
 #include "Shader/PostProcess.h"
 #include "Framework/DebugString.h"
+#include "UI/Number.h"
 
 class Camera;
 class Reload;
@@ -68,9 +69,11 @@ private:
 	std::vector<std::unique_ptr<HitParticle>> m_hitParticle;
 	// 撃破エフェクト
 	std::unique_ptr<ExplosionEffect> m_hitEffect;
-
-
+	
 	std::unique_ptr<StartAnimation> m_startAnimation;
+
+	// 経過時間描画クラス
+	std::unique_ptr<Number> m_time;
 
 	// 経過時間
 	float m_totalTime;

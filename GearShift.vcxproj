@@ -303,6 +303,7 @@
     <ClInclude Include="Game\UI\CircleGage.h" />
     <ClInclude Include="Game\UI\HPUI.h" />
     <ClInclude Include="Game\UI\Menu.h" />
+    <ClInclude Include="Game\UI\Number.h" />
     <ClInclude Include="Game\UI\ReloadUI.h" />
     <ClInclude Include="Game\UI\UI.h" />
     <ClInclude Include="Game\Player\MissileLauncher.h" />
@@ -418,6 +419,7 @@
     <ClCompile Include="Game\UI\CircleGage.cpp" />
     <ClCompile Include="Game\UI\HPUI.cpp" />
     <ClCompile Include="Game\UI\Menu.cpp" />
+    <ClCompile Include="Game\UI\Number.cpp" />
     <ClCompile Include="Game\UI\ReloadUI.cpp" />
     <ClCompile Include="Game\UI\UI.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -511,6 +513,14 @@
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)/Resources/Shaders/%(Filename).cso</ObjectFileOutput>
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)/Resources/Shaders/%(Filename).cso</ObjectFileOutput>
+    </FxCompile>
+    <FxCompile Include="Shaders\FullCirclePS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Shaders\FullCircleVS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
     </FxCompile>
     <FxCompile Include="Shaders\GBufferPS.hlsl">
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)/Resources/Shaders/%(Filename).cso</ObjectFileOutput>

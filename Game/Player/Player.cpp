@@ -165,11 +165,12 @@ void Player::RenderState()
 
 void Player::RenderPlayerUI()
 {
-	if (m_gun->GetMagazineSize() == 0) m_reload->Render();
+	if (m_gun->GetMagazineSize() == 0) m_reload->CautionRender();
+	m_reload->Render(m_gun->GetNowReloadTime());
 	m_bulletMagazine->Render(m_bulletType % 2 == 0 ? true : false);
 	m_exBulletMagazine->Render(m_bulletType % 2 == 1 ? true : false);
 	m_energyGage->Render();
-	GetComponent<HPBar>()->Render({-0.8f,0.9f});
+	GetComponent<HPBar>()->Render({-0.8f,-0.9f});
 }
 
 void Player::Finalize()
