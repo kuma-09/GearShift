@@ -77,15 +77,15 @@ void Collider::CheckHit(GameObject* object1, GameObject* object2)
     // Õ“ËA‚a‚ª‚`‚ğ‰Ÿ‚µ–ß‚·ˆ—========================
 
     // AABB—p‚Ìmin/max‚ğŒvZ‚·‚é
-    Vector3 aMin = object1->GetPosition() - a->Extents;
-    Vector3 aMax = object1->GetPosition() + a->Extents;
-    Vector3 bMin = object2->GetPosition() - b->Extents;
-    Vector3 bMax = object2->GetPosition() + b->Extents;
+    //Vector3 aMin = object1->GetPosition() - a->Extents;
+    //Vector3 aMax = object1->GetPosition() + a->Extents;
+    //Vector3 bMin = object2->GetPosition() - b->Extents;
+    //Vector3 bMax = object2->GetPosition() + b->Extents;
 
-    //Vector3 aMin = a->Center - a->Extents;
-    //Vector3 aMax = a->Center + a->Extents;
-    //Vector3 bMin = b->Center - b->Extents;
-    //Vector3 bMax = b->Center + b->Extents;
+    Vector3 aMin = a->Center - a->Extents;
+    Vector3 aMax = a->Center + a->Extents;
+    Vector3 bMin = b->Center - b->Extents;
+    Vector3 bMax = b->Center + b->Extents;
 
     // Še²‚Ì·•ª‚ğŒvZ‚·‚é
     float dx1 = bMax.x - aMin.x;

@@ -40,8 +40,10 @@ void Resources::LoadResource(Graphics* graphics)
 	m_cube		 = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\cube.sdkmesh",        *graphics->GetFX());
 	m_skydome    = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\skydome.sdkmesh",     *graphics->GetFX());
 	m_floor      = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\testFloor.sdkmesh", *graphics->GetFX());
+	m_floor2     = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\testFloor2.sdkmesh", *graphics->GetFX());
 	m_billA      = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\large_buildingA.sdkmesh", *graphics->GetFX());
 	m_billB		 = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\large_buildingB.sdkmesh", *graphics->GetFX());
+	m_billC		 = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\large_buildingC.sdkmesh", *graphics->GetFX());
 	m_dropItem   = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\mese.sdkmesh", *graphics->GetFX());
 	m_boom       = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\boom.sdkmesh", *graphics->GetFX());
 	m_tankBody   = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\TankBody.sdkmesh", *graphics->GetFX());

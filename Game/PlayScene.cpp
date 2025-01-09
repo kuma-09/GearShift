@@ -13,6 +13,7 @@
 #include "Enemy/BossEnemy.h"
 #include "Game/Object/Wall/BillA.h"
 #include "Game/Object/Wall/BillB.h"
+#include "Game/Object/Wall/BillC.h"
 #include "Game/Object/Bullet/HomingBullet.h"
 #include "Game/Object/Light/Light.h"
 
@@ -199,6 +200,10 @@ void PlayScene::CreateObject(std::string className, DirectX::SimpleMath::Vector3
     {
         ObjectManager::Add(std::make_shared<Floor>(this), pos);
     }
+    if (className == "Floor2")
+    {
+        ObjectManager::Add(std::make_shared<Floor2>(this), pos);
+    }
     if (className == "BillA")
     {
         ObjectManager::Add(std::make_shared<BillA>(this),pos);
@@ -206,6 +211,10 @@ void PlayScene::CreateObject(std::string className, DirectX::SimpleMath::Vector3
     if (className == "BillB")
     {
         ObjectManager::Add(std::make_shared<BillB>(this),pos);
+    }
+    if (className == "BillC")
+    {
+        ObjectManager::Add(std::make_shared<BillC>(this), pos);
     }
     if (className == "HomingEnemy")
     {

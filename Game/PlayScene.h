@@ -8,6 +8,7 @@
 #include "Game/Object/DropItemB.h"
 #include "Game/Object/SkyDome.h"
 #include "Game/Object/Floor.h"
+#include "Game/Object/Floor/Floor2.h"
 #include "Game/Player/Player.h"
 #include "Game/Player/TargetArea.h" 
 #include "Shader/PostProcess.h"

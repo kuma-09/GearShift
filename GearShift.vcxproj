@@ -187,6 +187,7 @@
     </FxCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Game\Object\Floor\Floor2.h" />
     <ClInclude Include="Framework\Audio.h" />
     <ClInclude Include="Framework\BinaryFile.h" />
     <ClInclude Include="Framework\DebugString.h" />
@@ -256,7 +257,9 @@
     </ClInclude>
     <ClInclude Include="Game\Object\Wall\BillA.h" />
     <ClInclude Include="Game\Object\Wall\BillB.h" />
+    <ClInclude Include="Game\Object\Wall\BillC.h" />
     <ClInclude Include="Game\Object\Wall\Wall.h" />
+    <ClInclude Include="Game\Object\Wall\WallA.h" />
     <ClInclude Include="Game\Particle\Emitter.h" />
     <ClInclude Include="Game\Particle\ExplosionEffect.h" />
     <ClInclude Include="Game\Particle\HitParticle.h" />
@@ -311,6 +314,7 @@
     <ClInclude Include="Game\Manager\StageDataManager.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Game\Object\Floor\Floor2.cpp" />
     <ClCompile Include="Framework\Audio.cpp" />
     <ClCompile Include="Framework\BinaryFile.cpp" />
     <ClCompile Include="Framework\DebugString.cpp" />
@@ -377,7 +381,9 @@
     </ClCompile>
     <ClCompile Include="Game\Object\Wall\BillA.cpp" />
     <ClCompile Include="Game\Object\Wall\BillB.cpp" />
+    <ClCompile Include="Game\Object\Wall\BillC.cpp" />
     <ClCompile Include="Game\Object\Wall\Wall.cpp" />
+    <ClCompile Include="Game\Object\Wall\WallA.cpp" />
     <ClCompile Include="Game\Particle\Emitter.cpp" />
     <ClCompile Include="Game\Particle\ExplosionEffect.cpp" />
     <ClCompile Include="Game\Particle\HitParticle.cpp" />

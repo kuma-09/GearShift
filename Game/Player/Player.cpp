@@ -149,20 +149,6 @@ void Player::Update(float elapsedTime)
 	SetWorld(world);
 }
 
-void Player::CreateShadow()
-{
-	CreateShadows();
-}
-
-void Player::Render()
-{
-}
-
-void Player::RenderState()
-{
-	m_state->Render();
-}
-
 void Player::RenderPlayerUI()
 {
 	if (m_gun->GetMagazineSize() == 0) m_reload->CautionRender();
@@ -272,14 +258,6 @@ void Player::Collision(Collider* collider)
 	{
 		Collider::CheckHit(this, collider->GetOwner());
 	}
-
-	DirectX::SimpleMath::Vector3 diffVec = GetPosition() + GetVelocity() - DirectX::SimpleMath::Vector3{0,1,0};
-	if (diffVec.Length() >= 225)
-	{
-		diffVec.Normalize();
-		SetPosition(GetPosition() - diffVec);
-	}
-
 }
 
 // プレイヤーのステートを作成

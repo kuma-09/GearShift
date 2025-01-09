@@ -22,8 +22,10 @@ public:
 	DirectX::Model* GetCubeModel() { return m_cube.get(); }
 	DirectX::Model* GetSkyDome() { return m_skydome.get(); }
 	DirectX::Model* GetFloorModel() { return m_floor.get(); }
+	DirectX::Model* GetFloor2Model() { return m_floor2.get(); }
 	DirectX::Model* GetBillAModel() { return m_billA.get(); }
 	DirectX::Model* GetBillBModel() { return m_billB.get(); }
+	DirectX::Model* GetBillCModel() { return m_billC.get(); }
 	DirectX::Model* GetDropItemModel() { return m_dropItem.get(); }
 	DirectX::Model* GetBulletModel() { return m_bullet.get(); }
 	DirectX::Model* GetBoomModel() { return m_boom.get(); }
@@ -74,8 +76,10 @@ private:
 	std::unique_ptr<DirectX::Model> m_cube;
 	std::unique_ptr<DirectX::Model> m_skydome;
 	std::unique_ptr<DirectX::Model> m_floor;
+	std::unique_ptr<DirectX::Model> m_floor2;
 	std::unique_ptr<DirectX::Model> m_billA;
 	std::unique_ptr<DirectX::Model> m_billB;
+	std::unique_ptr<DirectX::Model> m_billC;
 	std::unique_ptr<DirectX::Model> m_dropItem;
 	std::unique_ptr<DirectX::Model> m_bullet;
 	std::unique_ptr<DirectX::Model> m_boom;

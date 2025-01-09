@@ -34,9 +34,6 @@ public:
 
 	void Initialize();
 	void Update(float elapsedTime);
-	void CreateShadow();
-	void Render();
-	void RenderState();
 	void RenderPlayerUI();
 	void Finalize();
 
@@ -82,8 +79,6 @@ public:
 	void Collision(Collider* collider);
 
 private:
-	void Reload();
-
 	void CreateState();
 	void CreateDefaultParts();
 	void CreateBullets();
@@ -141,7 +136,6 @@ private:
 	// ïêäÌ
 	std::unique_ptr<Gun>			 m_gun;
 	std::unique_ptr<MissileLauncher> m_missileLauncher;
-	//std::unique_ptr<Sword>			 m_sword;
 
 	std::unique_ptr<Burner> m_burner;
 
