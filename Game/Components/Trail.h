@@ -24,13 +24,6 @@ private:
 		DirectX::XMFLOAT3 tail; //剣の末端の位置
 	};
 
-	//頂点バッファ
-	struct TrailVertex
-	{
-		DirectX::XMFLOAT3 pos;
-		DirectX::XMFLOAT2 uv;
-	};
-
 	struct ConstantBuffer
 	{
 		DirectX::XMMATRIX world;

@@ -104,6 +104,12 @@ void Noise::ApplyNoise(ID3D11ShaderResourceView* srv)
     auto depthStencil = m_graphics->GetDeviceResources()->GetDepthStencilView();
 
 
+
+    //	半透明描画指定
+    ID3D11BlendState* blendstate = states->NonPremultiplied();
+    //	透明判定処理
+    context->OMSetBlendState(blendstate, nullptr, 0xFFFFFFFF);
+
     // 定数バッファを更新
     D3D11_MAPPED_SUBRESOURCE mappedResource;
     // GPUが定数バッファに対してアクセスを行わないようにする
