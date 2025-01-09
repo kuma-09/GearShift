@@ -273,6 +273,13 @@ void Player::Collision(Collider* collider)
 		Collider::CheckHit(this, collider->GetOwner());
 	}
 
+	DirectX::SimpleMath::Vector3 diffVec = GetPosition() + GetVelocity() - DirectX::SimpleMath::Vector3{0,1,0};
+	if (diffVec.Length() >= 225)
+	{
+		diffVec.Normalize();
+		SetPosition(GetPosition() - diffVec);
+	}
+
 }
 
 // プレイヤーのステートを作成
