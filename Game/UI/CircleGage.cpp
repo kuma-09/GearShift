@@ -104,16 +104,12 @@ void CircleGage::Render()
 
 	//	カリングは左周り
 	context->RSSetState(state->CullNone());
-
-
 	//	画像用サンプラーの登録
 	ID3D11SamplerState* sampler[1] = { state->LinearWrap() };
 	context->PSSetSamplers(0, 1, sampler);
-
 	//	シェーダをセットする
 	context->VSSetShader(m_vertexShader.Get(), nullptr, 0);
 	context->PSSetShader(m_pixelShader.Get(), nullptr, 0);
-
 	context->PSSetShaderResources(0, 1, m_texture.GetAddressOf());
 
 	//	インプットレイアウトの登録

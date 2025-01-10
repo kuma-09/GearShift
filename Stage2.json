@@ -5,6 +5,10 @@
 		{"Object_Name": "BillC"      ,"position":{"x": 20.0,"y":  0.0,"z": -20.0}},
 		{"Object_Name": "BillC"      ,"position":{"x": 80.0,"y":  0.0,"z": -20.0}},
 		{"Object_Name": "BillC"      ,"position":{"x":140.0,"y":  0.0,"z": -20.0}},
+		{"Object_Name": "BillC"      ,"position":{"x":200.0,"y":  0.0,"z": -20.0}},
+		{"Object_Name": "BillC"      ,"position":{"x": 70.0,"y":  0.0,"z":  45.0}},
+		{"Object_Name": "BillC"      ,"position":{"x":130.0,"y":  0.0,"z":  45.0}},
+		{"Object_Name": "BillC"      ,"position":{"x":190.0,"y":  0.0,"z":  45.0}},
 		{"Object_Name": "FixedEnemy" ,"position":{"x": 30.0, "y":  5.0, "z": -40.0}}
 	]
 }

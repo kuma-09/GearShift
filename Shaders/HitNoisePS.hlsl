@@ -36,7 +36,7 @@ float4 main(PS_INPUT input) : SV_TARGET
     input.tex.x += (random(floor(input.tex.y * 100) + time * 4) - 0.5f) * 0.01f;
     float4 output2 = tex.Sample(samLinear, input.tex);
     float n = noise(input.tex * float2(10, 10));
-    output2.a = n - sin(time * 4);
+    output2.a = n - cos(time * 4);
     
     return output2;
 }

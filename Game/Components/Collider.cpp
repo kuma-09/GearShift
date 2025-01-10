@@ -70,6 +70,11 @@ void Collider::CheckHit(GameObject* object1, GameObject* object2)
     DirectX::BoundingBox* b = object2->GetComponent<Collider>()->GetBoundingBox();
 
 
+    if ((a->Center - b->Center).Length() >= 50)
+    {
+        return;
+    }
+
     // ƒqƒbƒg‚µ‚Ä‚¢‚È‚¯‚ê‚ÎI‚í‚è
     if (!a->Intersects(*b)) { return; }
 
