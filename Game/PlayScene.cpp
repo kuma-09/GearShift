@@ -14,6 +14,7 @@
 #include "Game/Object/Wall/BillA.h"
 #include "Game/Object/Wall/BillB.h"
 #include "Game/Object/Wall/BillC.h"
+#include "Game/Object/Wall/BillD.h"
 #include "Game/Object/Bullet/HomingBullet.h"
 #include "Game/Object/Light/Light.h"
 
@@ -215,6 +216,10 @@ void PlayScene::CreateObject(std::string className, DirectX::SimpleMath::Vector3
     if (className == "BillC")
     {
         ObjectManager::Add(std::make_shared<BillC>(this), pos);
+    }
+    if (className == "BillD")
+    {
+        ObjectManager::Add(std::make_shared<BillD>(this), pos);
     }
     if (className == "HomingEnemy")
     {

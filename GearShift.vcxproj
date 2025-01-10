@@ -258,6 +258,7 @@
     <ClInclude Include="Game\Object\Wall\BillA.h" />
     <ClInclude Include="Game\Object\Wall\BillB.h" />
     <ClInclude Include="Game\Object\Wall\BillC.h" />
+    <ClInclude Include="Game\Object\Wall\BillD.h" />
     <ClInclude Include="Game\Object\Wall\Wall.h" />
     <ClInclude Include="Game\Object\Wall\WallA.h" />
     <ClInclude Include="Game\Particle\Emitter.h" />
@@ -382,6 +383,7 @@
     <ClCompile Include="Game\Object\Wall\BillA.cpp" />
     <ClCompile Include="Game\Object\Wall\BillB.cpp" />
     <ClCompile Include="Game\Object\Wall\BillC.cpp" />
+    <ClCompile Include="Game\Object\Wall\BillD.cpp" />
     <ClCompile Include="Game\Object\Wall\Wall.cpp" />
     <ClCompile Include="Game\Object\Wall\WallA.cpp" />
     <ClCompile Include="Game\Particle\Emitter.cpp" />
