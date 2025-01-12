@@ -11,6 +11,7 @@
 #include "Game/Components/Look.h"
 #include "Game/Components/Trail.h"
 #include "Game/Components/PointLight.h"
+#include "Game/Components/InputComponent.h"
 
 #include "Game/Parts/Part.h"
 #include "Game/Parts/Head.h"
@@ -45,6 +46,7 @@ Player::Player(IScene* scene)
 	m_inputManager = InputManager::GetInstance();
 
 	AddComponent<HP>();
+	AddComponent<InputComponent>();
 	AddComponent<Move>();
 	AddComponent<Look>();
 	AddComponent<Physics>();

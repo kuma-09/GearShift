@@ -2,7 +2,7 @@
 #include "Move.h"
 #include "Game/Player/Player.h"
 #include "Game/GameObject.h"
-#include "Game/Components/Camera.h"
+#include "Game/Components/InputComponent.h"
 
 Move::Move()
 {
@@ -26,38 +26,18 @@ void Move::Update(float elapsedTime)
     const auto& kb = m_inputManager->GetKeyboardState();
     const auto& gpState = m_inputManager->GetGamePadState();
 
+
+
     // ƒpƒbƒh‚Ì“ü—Íî•ñ
-    Vector3 input = Vector3{ gpState.thumbSticks.leftX,0, -gpState.thumbSticks.leftY };
-    input.Normalize();
-    input *= 0.05f;
+    Vector3 input = GetOwner()->GetComponent<InputComponent>()->GetVelocity();
     
     bool isMove = false;
     if (input != Vector3::Zero)
     {
-        m_velocity += input;
         isMove = true;
+        m_velocity += input;
     }
 
-    if (kb.W)
-    {
-        m_velocity += Vector3::Forward * 0.05f;
-        isMove = true;
-    }
-    if (kb.S)
-    {
-        m_velocity += Vector3::Backward * 0.05f;
-        isMove = true;
-    }
-    if (kb.A)
-    {
-        m_velocity += Vector3::Left * 0.05f;
-        isMove = true;
-    }
-    if (kb.D)
-    {
-        m_velocity += Vector3::Right * 0.05f;
-        isMove = true;
-    };
     m_isMove = isMove;
     m_velocity = Vector3::Lerp(m_velocity, Vector3::Zero, 0.1f) * MAX_SPEED;
 

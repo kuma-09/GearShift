@@ -12,6 +12,8 @@ public:
 	void Initialize();
 	void Update(float elapsedTime);
 
+	DirectX::SimpleMath::Vector3 GetVelocity() { return m_velocity; }
+
 private:
 	InputManager* m_inputManager;
 	DirectX::SimpleMath::Vector3 m_velocity;
