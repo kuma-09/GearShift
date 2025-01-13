@@ -76,7 +76,11 @@ float4 main(PS_INPUT input) : SV_TARGET
     float shadow = readShadowMap(Position);
     // -------------------------------------
 
+    float3 toEye = normalize(EyePosition - Position.xyz);
+    half rim = 1.0 - saturate(dot(normalize(normal), normalize(toEye)));
+    rim = step(0.5f, rim);
     float3 finalColor = albedo.rgb * diffuse * shadow;
+    //finalColor += rim * float3(1, 1, 1);
     
     for (int i = 0; i < lightNum; i++)
     {

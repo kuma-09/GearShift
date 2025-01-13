@@ -140,13 +140,19 @@ void DeferredRendering::Initialize()
 
 void DeferredRendering::BeginGBuffer()
 {
+	auto rect = Graphics::GetInstance()->GetDeviceResources()->GetOutputSize();
+
+	s_albedoRT->SetWindow(rect);
+	s_normalRT->SetWindow(rect);
+	s_depthRT->SetWindow(rect);
+	s_finalRT->SetWindow(rect);
+
 	auto context = Graphics::GetInstance()->GetDeviceResources()->GetD3DDeviceContext();
 	auto states  = Graphics::GetInstance()->GetCommonStates();
 	auto depthStencil = Graphics::GetInstance()->GetDeviceResources()->GetDepthStencilView();
 	auto albedoRTV = s_albedoRT->GetRenderTargetView();
 	auto normalRTV = s_normalRT->GetRenderTargetView();
 	auto depthRTV = s_depthRT->GetRenderTargetView();
-
 	auto view = Graphics::GetInstance()->GetViewMatrix();
 	auto projection = Graphics::GetInstance()->GetProjectionMatrix();
 
@@ -170,7 +176,6 @@ void DeferredRendering::BeginGBuffer()
 	cb->inverseViewProj = (view * projection).Invert();
 	// マップを解除する
 	context->Unmap(s_constantBuffer.Get(), 0);
-
 	// 定数バッファの設定
 	ID3D11Buffer* cbuf[] = { s_constantBuffer.Get() };
 	context->VSSetConstantBuffers(1, 1, cbuf);
