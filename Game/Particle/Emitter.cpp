@@ -39,6 +39,11 @@ void Emitter::Initialize(const wchar_t* path, float size,float interval, float l
         m_texture.ReleaseAndGetAddressOf()		// シェーダリソースビュー(表示用)
     );
 
+    for (int i = 0; i < (lifeTime / interval) * 2; i++)
+    {
+        m_particles.push_back(std::make_unique<Particle>());
+    }
+
     m_totalTime = 0;
     m_interval = interval;
     m_lifeTime = lifeTime;
@@ -50,13 +55,11 @@ void Emitter::Update(float elapseTime)
 
     m_totalTime += elapseTime;
 
-    for (auto it = m_particles.begin(); it != m_particles.end(); it++)
+    for (auto& particle : m_particles)
     {
-        it->get()->Update(elapseTime);
-        if (it->get()->GetLifeTime() <= 0)
+        if (particle->GetLifeTime() > 0)
         {
-            m_particles.erase(it);
-            break;
+            particle->Update(elapseTime);
         }
     }
 }
@@ -71,7 +74,10 @@ void Emitter::Render()
     m_graphics->GetBasicEffect()->SetTexture(m_texture.Get());
     for (auto& particle : m_particles)
     {
-        particle->Render(&m_vertices[0], &m_vertices[1], &m_vertices[2], &m_vertices[3]);
+        if (particle->GetLifeTime() > 0)
+        {
+            particle->Render(&m_vertices[0], &m_vertices[1], &m_vertices[2], &m_vertices[3]);
+        }
     }
 }
 
@@ -82,11 +88,23 @@ void Emitter::Finalize()
 
 void Emitter::SetParticle(DirectX::SimpleMath::Vector3 pos)
 {
-
     if (m_totalTime >= m_interval && GetOwner()->GetVelocity() != DirectX::SimpleMath::Vector3::Zero)
     {
-        m_totalTime = 0;
-        m_particles.emplace_back(std::make_unique<Particle>());
-        m_particles.back()->Initialize(pos, m_lifeTime,DirectX::XMConvertToRadians(rand() % 360));
+        for (int i = 0; i < m_particles.size(); i++)
+        {
+            if (m_particles[i]->GetLifeTime() <= 0)
+            {
+                m_totalTime = 0;
+                m_particles[i]->Initialize(pos, m_lifeTime, DirectX::XMConvertToRadians(rand() % 360));
+                return;
+            }
+        }
     }
+
+    //if (m_totalTime >= m_interval && GetOwner()->GetVelocity() != DirectX::SimpleMath::Vector3::Zero)
+    //{
+    //    m_totalTime = 0;
+    //    m_particles.emplace_back(std::make_unique<Particle>());
+    //    m_particles.back()->Initialize(pos, m_lifeTime,DirectX::XMConvertToRadians(rand() % 360));
+    //}
 }

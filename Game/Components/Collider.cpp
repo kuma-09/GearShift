@@ -70,7 +70,7 @@ void Collider::CheckHit(GameObject* object1, GameObject* object2)
     DirectX::BoundingBox* b = object2->GetComponent<Collider>()->GetBoundingBox();
 
 
-    if ((a->Center - b->Center).Length() >= 100 &&
+    if ((a->Center - b->Center).Length() >= 50 &&
         object2->GetComponent<Collider>()->GetTypeID() != Collider::Floor)
     {
         return;

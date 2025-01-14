@@ -48,6 +48,7 @@ void Particle::Render(
     billboard._43 = 0;
 
     Matrix world = Matrix::CreateScale(1);
+    //Matrix world = Matrix::CreateScale(5 - (m_lifeTime / m_maxTime) * 5);
     world *= Matrix::CreateRotationZ(m_rotate);
     world *= Matrix::CreateTranslation(m_pos);
 

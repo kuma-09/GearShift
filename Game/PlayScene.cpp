@@ -189,11 +189,12 @@ void PlayScene::CreateHitParticle(DirectX::SimpleMath::Vector3 pos , float size)
 
     int particleValue = HitParticle::get_rand(1, 5);
 
+    float velocityX = (float)HitParticle::get_rand(-30, 30) / 500.0f;
+    float velocityY = (float)HitParticle::get_rand(-30, 30) / 500.0f;
+    float velocityZ = (float)HitParticle::get_rand(-30, 30) / 500.0f;
     for (int i = 0; i < particleValue; i++)
     {
-        float velocityX = (float)HitParticle::get_rand(-30, 30) / 500.0f;
-        float velocityY = (float)HitParticle::get_rand(-30, 30) / 500.0f;
-        float velocityZ = (float)HitParticle::get_rand(-30, 30) / 500.0f;
+
         for (auto& particle : m_hitParticle)
         {
             if (particle->GetAlpha() > 0.0f) continue;
@@ -290,12 +291,13 @@ void PlayScene::UpdateTargetArea()
         GetGame()->ChangeScene(GetGame()->GetResultScene());
     }
 
+    auto player = static_cast<Player*>(m_player.lock().get());
+
     for (auto& enemy : enemys)
     {
-        m_targetArea->Update(m_player.lock().get(), enemy.lock().get(), static_cast<Player*>(m_player.lock().get())->GetCamera());
+        m_targetArea->Update(player, enemy.lock().get(), player->GetCamera());
     }
-
-    static_cast<Player*>(m_player.lock().get())->SetTarget(m_targetArea->GetTarget());
+    player->SetTarget(m_targetArea->GetTarget());;
 }
 
 // パーティクルの更新

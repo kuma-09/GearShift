@@ -12,7 +12,7 @@ std::unique_ptr<DX::RenderTexture>                                       Bloom::
 std::unique_ptr<DirectX::PrimitiveBatch<DirectX::VertexPositionTexture>> Bloom::m_batch;
 std::unique_ptr<DirectX::BasicPostProcess>                               Bloom::m_basicPostProcess;
 std::unique_ptr<DirectX::DualPostProcess>                                Bloom::m_dualPostProcess;
-const float Bloom::PIXELSIZE = 8.0f;
+const float Bloom::PIXELSIZE = 16.0f;
 
 void Bloom::Initialize()
 {
