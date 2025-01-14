@@ -39,13 +39,15 @@ private:
 	std::unique_ptr<UI> m_menuBack;
 	std::unique_ptr<Menu> m_menu;
 	std::unique_ptr<Menu> m_stageMenu;
+	std::unique_ptr<Menu> m_optionMenu;
 
 	float m_nowTime;
-	float m_stageNowTime;
+	float m_menuNowTime;
 	float m_menuPosition;
 	float m_stageMenuPosition;
 
 	bool m_isStageSelect;
+	bool m_isOption;
 	
 };
 

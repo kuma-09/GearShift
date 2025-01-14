@@ -51,11 +51,18 @@ void TitleScene::Initialize(Game* game)
     m_stageMenu->AddUI(L"Resources/Textures/Stage3.png", { 0,550 }, { 1.f,1.f });
     m_stageMenu->Initialize();
 
+    m_optionMenu = std::make_unique<Menu>();
+    m_optionMenu->AddUI(L"Resources/Textures/Stage1.png", { 0,150 }, { 1.f,1.f });
+    m_optionMenu->AddUI(L"Resources/Textures/Stage2.png", { 0,350 }, { 1.f,1.f });
+    m_optionMenu->AddUI(L"Resources/Textures/Stage3.png", { 0,550 }, { 1.f,1.f });
+    m_optionMenu->Initialize();
+
     m_menuBack = std::make_unique<UI>(L"Resources/Textures/SceneChangeBlack.png");
     m_menuBack->Initialize();
     m_nowTime = 0;
-    m_stageNowTime = 0;
+    m_menuNowTime = 0;
     m_isStageSelect = false;
+    m_isOption = false;
 }
 
 
@@ -74,9 +81,27 @@ void TitleScene::Update(float elapsedTime)
     m_nowTime += elapsedTime;
     if (m_isStageSelect)
     {
-        m_stageNowTime += elapsedTime;
-        m_stageMenuPosition = Easing::InOutQuart(m_stageNowTime, 1.0f);
+        m_menuNowTime += elapsedTime;
+        m_stageMenuPosition = Easing::InOutQuart(m_menuNowTime, 1.0f);
         m_stageMenu->Update();
+        if (kb->IsKeyPressed(DirectX::Keyboard::Escape))
+        {
+            m_menuNowTime = 0;
+            m_stageMenuPosition = Easing::InOutQuart(m_menuNowTime, 1.0f);
+            m_isStageSelect = false;
+        }
+    }
+    else if (m_isOption)
+    {
+        m_menuNowTime += elapsedTime;
+        m_stageMenuPosition = Easing::InOutQuart(m_menuNowTime, 1.0f);
+        m_optionMenu->Update();
+        if (kb->IsKeyPressed(DirectX::Keyboard::Escape))
+        {
+            m_menuNowTime = 0;
+            m_stageMenuPosition = Easing::InOutQuart(m_menuNowTime, 1.0f);
+            m_isOption = false;
+        }
     }
     else
     {
@@ -96,8 +121,10 @@ void TitleScene::Update(float elapsedTime)
             m_isStageSelect = true;
             break;
         case 1:
+            m_isOption = true;
             break;
         case 2:
+            GetGame()->Exit();
             break;
         default:
             break;
@@ -125,8 +152,13 @@ void TitleScene::RenderUI()
 
     if (m_isStageSelect)
     {
-        m_menuBack->Render(Vector2{ 1920 - m_stageMenuPosition * 1280,360 }, DirectX::XMVECTORF32({ 1,1,1,0.5f }), Vector2(640, 360), Vector2(0.9f, 0.9f));
+        m_menuBack->Render(Vector2{ 1920 - m_stageMenuPosition * 1280,360 }, DirectX::XMVECTORF32({ 1,1,1,0.75f }), Vector2(640, 360), Vector2(0.9f, 0.9f));
         m_stageMenu->Render(Vector2{ 1920 - m_stageMenuPosition * 1280,0   });
+    }
+    if (m_isOption)
+    {
+        m_menuBack->Render(Vector2{ 1920 - m_stageMenuPosition * 1280,360 }, DirectX::XMVECTORF32({ 1,1,1,0.75f }), Vector2(640, 360), Vector2(0.9f, 0.9f));
+        m_optionMenu->Render(Vector2{ 1920 - m_stageMenuPosition * 1280,0 });
     }
 }
 

@@ -14,6 +14,7 @@
 #include "Shader/PostProcess.h"
 #include "Framework/DebugString.h"
 #include "UI/Number.h"
+#include "UI/Menu.h"
 
 class Camera;
 class Reload;
@@ -37,13 +38,14 @@ public:
 	void RenderUI() override;
 	void Finalize() override;
 
-	void SetNoise();
 	void CreateHitParticle(DirectX::SimpleMath::Vector3 pos,float size = 1.0f);
 	void CreateHitEffect(DirectX::SimpleMath::Vector3 pos);
 private:
 	void CreateObject(std::string className, DirectX::SimpleMath::Vector3 pos);
+	void CreateMenu();
 	void UpdateTargetArea();
 	void UpdateParticle(float elapsedTime);
+	void UpdateMenu();
 private:
 
 	
@@ -73,6 +75,12 @@ private:
 	
 	std::unique_ptr<StartAnimation> m_startAnimation;
 
+	// ポーズ中のメニュー
+	std::unique_ptr<Menu> m_menu;
+	// メニューの背景
+	std::unique_ptr<UI>   m_menuBack;
+
+
 	// 経過時間描画クラス
 	std::unique_ptr<Number> m_time;
 
@@ -80,5 +88,6 @@ private:
 	float m_totalTime;
 	// 残り時間
 	float m_timeLimit;
-
+	// メニューを開いてるか
+	bool  m_isMenu;
 };

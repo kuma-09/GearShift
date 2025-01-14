@@ -35,6 +35,8 @@ public:
     Game(Game const&) = delete;
     Game& operator= (Game const&) = delete;
 
+    void Exit();
+
     // Initialization and management
     void Initialize(HWND window, int width, int height);
 

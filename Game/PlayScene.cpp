@@ -80,6 +80,8 @@ void PlayScene::Initialize(Game* game)
         CreateObject(str[i], pos[i]);
     }
 
+    CreateMenu();
+
     m_skyDome = std::make_unique<SkyDome>();
     m_skyDome->Initialize(Vector3::Zero);
 
@@ -96,7 +98,6 @@ void PlayScene::Initialize(Game* game)
 
     m_startAnimation = std::make_unique<StartAnimation>();
     m_startAnimation->Initialize();
-    
 }
 
 /// <summary> 更新処理 </summary>
@@ -105,23 +106,35 @@ void PlayScene::Update(float elapsedTime)
 {
     using namespace DirectX::SimpleMath;
     ObjectManager::Delete();
-
     HitStop::Update(elapsedTime);
     if (HitStop::GetIsStop()) return;
 
-    // 経過時間を計算
-    m_totalTime += elapsedTime;
-    m_time->SetNum(int(m_totalTime));
-    m_startAnimation->Update(elapsedTime);
+    auto& kb = m_inputManager->GetKeyboardTracker();
 
-    // ヒットエフェクトの更新
-    UpdateParticle(elapsedTime);
-    // ターゲットエリアの更新
-    UpdateTargetArea();
-    // オブジェクトの更新
-    ObjectManager::Update(elapsedTime);
-    CollisionManager::Update();
+    if (kb->IsKeyPressed(DirectX::Keyboard::Escape))
+    {
+        m_isMenu = true;
+    }
 
+    if (m_isMenu)
+    {
+        UpdateMenu();
+    }
+    else
+    {
+        // 経過時間を計算
+        m_totalTime += elapsedTime;
+        m_time->SetNum(int(m_totalTime));
+        m_startAnimation->Update(elapsedTime);
+
+        // ヒットエフェクトの更新
+        UpdateParticle(elapsedTime);
+        // ターゲットエリアの更新
+        UpdateTargetArea();
+        // オブジェクトの更新
+        ObjectManager::Update(elapsedTime);
+        CollisionManager::Update();
+    }
 }
 
 // 3Dオブジェクトの描画
@@ -144,6 +157,8 @@ void PlayScene::TranslucentRender()
 // UIの描画
 void PlayScene::RenderUI()
 {
+    using namespace DirectX::SimpleMath;
+
     m_time->RenderTime();
     m_targetArea->Render(m_targetArea->GetTarget());
     static_cast<Player*>(m_player.lock().get())->RenderPlayerUI();
@@ -151,6 +166,11 @@ void PlayScene::RenderUI()
     if (m_targetArea->GetTarget())
     {
         m_targetArea->GetTarget()->GetComponent<HPBar>()->Render(m_targetArea->GetTarget()->GetPosition());
+    }
+    if (m_isMenu)
+    {
+        m_menuBack->Render(Vector2{640,360 }, DirectX::XMVECTORF32({ 1,1,1,0.75f }), Vector2(640, 360), Vector2(0.9f, 0.9f));
+        m_menu->Render({ 640,0 });
     }
 }
 
@@ -247,6 +267,19 @@ void PlayScene::CreateObject(std::string className, DirectX::SimpleMath::Vector3
     }
 }
 
+void PlayScene::CreateMenu()
+{
+    m_menu = std::make_unique<Menu>();
+    m_menu->AddUI(L"Resources/Textures/Stage1.png", { 0,150 }, { 1.f,1.f });
+    m_menu->AddUI(L"Resources/Textures/Option.png", { 0,350 }, { 1.f,1.f });
+    m_menu->AddUI(L"Resources/Textures/Exit.png", { 0,550 }, { 1.f,1.f });
+    m_menu->Initialize();
+    m_isMenu = false;
+
+    m_menuBack = std::make_unique<UI>(L"Resources/Textures/SceneChangeBlack.png");
+    m_menuBack->Initialize();
+}
+
 // ターゲットエリアの更新
 void PlayScene::UpdateTargetArea()
 {
@@ -273,4 +306,28 @@ void PlayScene::UpdateParticle(float elapsedTime)
         particle->Update();
     }
     m_hitEffect->Update(elapsedTime);
+}
+
+void PlayScene::UpdateMenu()
+{
+
+    auto& kb = m_inputManager->GetKeyboardTracker();
+
+    m_menu->Update();
+    if (kb->pressed.Space)
+    {
+        switch (m_menu->GetActiveUI())
+        {
+        case 0:
+            m_isMenu = false;
+            break;
+        case 1:
+            break;
+        case 2:
+            GetGame()->ChangeScene(GetGame()->GetTitleScene());
+            break;
+        default:
+            break;
+        }
+    }
 }

@@ -32,8 +32,6 @@ void Emitter::Initialize(const wchar_t* path, float size,float interval, float l
     m_vertices[2] = { Vector3(-size ,-size,0),Vector4(1.f,1.f,1.f,1.f), Vector2(0.0f, 1.0f) };	//左下
     m_vertices[3] = { Vector3(size ,-size,0) ,Vector4(1.f,1.f,1.f,1.f), Vector2(1.0f, 1.0f) };	//右下
 
-
-
     DirectX::CreateWICTextureFromFile(
         m_deviceResources->GetD3DDevice(),		// デバイスコンテキスト
         path,	    // 画像ファイルのパス
@@ -71,8 +69,6 @@ void Emitter::Render()
     auto projection = m_graphics->GetProjectionMatrix();
 
     m_graphics->GetBasicEffect()->SetTexture(m_texture.Get());
-
-
     for (auto& particle : m_particles)
     {
         particle->Render(&m_vertices[0], &m_vertices[1], &m_vertices[2], &m_vertices[3]);

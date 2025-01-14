@@ -42,6 +42,12 @@ Game::~Game()
     
 }
 
+
+void Game::Exit()
+{
+    ExitGame();
+}
+
 // Initialize the Direct3D resources required to run.
 void Game::Initialize(HWND window, int width, int height)
 {
@@ -121,10 +127,10 @@ void Game::Update(DX::StepTimer const& timer)
     m_inputManager->Update();
     m_audio->Update();
     Noise::Update(elapsedTime);
-    if (m_inputManager->GetKeyboardTracker()->pressed.Escape)
-    {
-        ExitGame();
-    }
+    //if (m_inputManager->GetKeyboardTracker()->pressed.Escape)
+    //{
+    //    ExitGame();
+    //}
 
     if (!m_sceneMask->IsClose() || !m_sceneMask->IsOpen())
     {
