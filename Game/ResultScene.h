@@ -29,6 +29,7 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_texture;		// テクスチャ
 	std::unique_ptr<UI> m_result;
 	std::unique_ptr<UI> m_backGround;
+	std::unique_ptr<UI>     m_clearTime;
 	std::unique_ptr<Number> m_time;
 };
 

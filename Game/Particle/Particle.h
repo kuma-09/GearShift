@@ -8,7 +8,7 @@ class Particle
 {
 public:
 
-	void Initialize(DirectX::SimpleMath::Vector3 pos,float lifeTime = 1.0f);
+	void Initialize(DirectX::SimpleMath::Vector3 pos,float lifeTime = 1.0f,float rotate = 0.0f);
 
 	void Update(float elapsedTime);
 
@@ -33,5 +33,6 @@ private:
 	DirectX::SimpleMath::Vector3 m_pos;
 	float m_lifeTime;
 	float m_maxTime;
+	float m_rotate;
 
 };

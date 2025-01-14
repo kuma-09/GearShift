@@ -2,14 +2,14 @@
 #include "Particle.h"
 #include "cmath"
 
-void Particle::Initialize(DirectX::SimpleMath::Vector3 pos, float lifeTime)
+void Particle::Initialize(DirectX::SimpleMath::Vector3 pos, float lifeTime, float rotate)
 {
-	using namespace DirectX::SimpleMath;
-	using namespace DirectX;
+    using namespace DirectX::SimpleMath;
+    using namespace DirectX;
 
-	m_graphics = Graphics::GetInstance();
-	m_deviceResources = m_graphics->GetDeviceResources();
-	m_inputManager = InputManager::GetInstance();
+    m_graphics = Graphics::GetInstance();
+    m_deviceResources = m_graphics->GetDeviceResources();
+    m_inputManager = InputManager::GetInstance();
 
     m_resources = Resources::GetInstance();
 
@@ -17,6 +17,7 @@ void Particle::Initialize(DirectX::SimpleMath::Vector3 pos, float lifeTime)
 
     m_lifeTime = lifeTime;
     m_maxTime = lifeTime;
+    m_rotate = rotate;
 }
 
 void Particle::Update(float elapseTime)
@@ -46,13 +47,15 @@ void Particle::Render(
     billboard._42 = 0;
     billboard._43 = 0;
 
-    Matrix world = Matrix::CreateScale(5 - (m_lifeTime / m_maxTime) * 5);
+    Matrix world = Matrix::CreateScale(1);
+    world *= Matrix::CreateRotationZ(m_rotate);
     world *= Matrix::CreateTranslation(m_pos);
 
     billboard *= world;
 
+    Vector4 color = { 1,1,1,m_lifeTime / m_maxTime };
 
-    m_graphics->DrawPrimitiveBegin(m_graphics->GetViewMatrix(), m_graphics->GetProjectionMatrix(),billboard, {1,1,1,m_lifeTime / m_maxTime});
+    m_graphics->DrawPrimitiveBegin(m_graphics->GetViewMatrix(), m_graphics->GetProjectionMatrix(),billboard, color);
     m_graphics->GetPrimitiveBatch()->DrawQuad(*v1, *v2, *v4,*v3);
     m_graphics->DrawPrimitiveEnd();
 }

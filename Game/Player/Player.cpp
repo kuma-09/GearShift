@@ -53,6 +53,7 @@ Player::Player(IScene* scene)
 	AddComponent<Collider>();
 	AddComponent<HPBar>();
 	AddComponent<Trail>();
+	AddComponent<Emitter>();
 	AddComponent<PointLight>();
 }
 
@@ -70,6 +71,7 @@ void Player::Initialize()
 	GetComponent<Collider>()->Initialize(Collider::Player, { 1,1.45f,1 });
 	GetComponent<Collider>()->SetActive(true);
 	GetComponent<HPBar>()->Initialize();
+	GetComponent<Emitter>()->Initialize(L"Resources/Textures/bolt.png",0.5f,0.05f,0.5f);
 
 	// ステートの作成
 	CreateState();
@@ -143,6 +145,7 @@ void Player::Update(float elapsedTime)
 	SetPosition(GetPosition() + GetVelocity());
 	ShadowMap::SetLightPosition(GetPosition());
 	m_burner->Update(elapsedTime, m_trailPosition, GetQuaternion());
+	GetComponent<Emitter>()->SetParticle(GetPosition() + Vector3(rand() % 3 - 1.5f, rand() % 3 - 1.5f, rand() % 3 - 1.5f));
 
 	Matrix world = Matrix::Identity;
 	world = Matrix::CreateScale(GetScale());

@@ -15,8 +15,10 @@ ResultScene::ResultScene()
     m_result = std::make_unique<UI>(L"Resources/Textures/StageClear.png");
     m_backGround = std::make_unique<UI>(L"Resources/Textures/haguruma.png");
 
+    m_clearTime = std::make_unique<UI>(L"Resources/Textures/ClearTime.png");
+
     m_time = std::make_unique<Number>();
-    m_time->Initialize({ 640,30 });
+    m_time->Initialize({ 640,200 });
 }
 
 ResultScene::~ResultScene()
@@ -60,7 +62,9 @@ void ResultScene::RenderUI()
     Graphics::GetInstance()->GetScreenSize(x, y);
 
     m_backGround->Render(Vector2::Zero);
-    m_result->Render(Vector2(x / 13.0f, y / 2.5f));
+    m_result->Render(Vector2(100,340));
+    m_clearTime->Render(Vector2(100, 150),DirectX::Colors::White,
+        Vector2::Zero,Vector2{0.5f,0.5f});
     m_time->RenderTime();
 }
 
