@@ -50,7 +50,7 @@ void HomingEnemy::Initialize()
 	GetComponent<HP>()->SetHP(10);
 	GetComponent<Look>()->SetTarget(this, GetTarget());
 	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetDiceModel(),true);
-	GetComponent<Collider>()->Initialize(Collider::Enemy);
+	GetComponent<Collider>()->Initialize(Collider::Enemy,Collider::Collision);
 	GetComponent<HPBar>()->Initialize();
 
 	for (auto& bullet : m_bullet)

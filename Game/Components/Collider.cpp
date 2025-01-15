@@ -23,9 +23,10 @@ Collider::~Collider()
     CollisionManager::Remove(this);
 }
 
-void Collider::Initialize(TypeID id, DirectX::SimpleMath::Vector3 size, DirectX::SimpleMath::Vector3 initialPos)
+void Collider::Initialize(TypeID id,ColliderType colliderType, DirectX::SimpleMath::Vector3 size, DirectX::SimpleMath::Vector3 initialPos)
 {
     m_typeID = id;
+    m_colliderType = colliderType;
     m_boudingBox->Extents = size;
     m_initalePosition = initialPos;
     SetActive(true);
@@ -69,16 +70,8 @@ void Collider::CheckHit(GameObject* object1, GameObject* object2)
     DirectX::BoundingBox* a = object1->GetComponent<Collider>()->GetBoundingBox();
     DirectX::BoundingBox* b = object2->GetComponent<Collider>()->GetBoundingBox();
 
-
-    if ((a->Center - b->Center).Length() >= 50 &&
-        object2->GetComponent<Collider>()->GetTypeID() != Collider::Floor)
-    {
-        return;
-    }
-
-    // ƒqƒbƒg‚µ‚Ä‚¢‚È‚¯‚ê‚ÎI‚í‚è
-    if (!a->Intersects(*b)) { return; }
-
+    if (object1->GetComponent<Collider>()->GetColliderType() != ColliderType::Collision) return;
+    if (object2->GetComponent<Collider>()->GetColliderType() == ColliderType::Trigger)   return;
 
     // Õ“ËA‚a‚ª‚`‚ğ‰Ÿ‚µ–ß‚·ˆ—========================
 

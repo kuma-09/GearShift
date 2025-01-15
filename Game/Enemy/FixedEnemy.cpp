@@ -52,7 +52,7 @@ void FixedEnemy::Initialize()
 	GetComponent<Look>()->SetTarget(this, GetTarget());
 	GetComponent<Physics>()->Initialize();
 	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetTankBodyModel());
-	GetComponent<Collider>()->Initialize(Collider::Enemy, { 2,0.5f,3 });
+	GetComponent<Collider>()->Initialize(Collider::Enemy,Collider::Collision, { 2,0.5f,3 });
 	GetComponent<HPBar>()->Initialize();
 	m_bullet->Initialize(this);
 	m_state->Initialize();

@@ -17,7 +17,7 @@ public:
 	void Update(float elapsedTime);
 	void Render();
 	void Finalize();
-
+	void SetState(bool isSizeChage, bool isRotate);
 	void SetParticle(DirectX::SimpleMath::Vector3 pos);
 private:
 	Graphics* m_graphics;
@@ -33,6 +33,6 @@ private:
 	float m_totalTime;
 	float m_interval;
 	float m_lifeTime;
-
-
+	bool  m_isSizeChage;
+	bool  m_isRotate;
 };

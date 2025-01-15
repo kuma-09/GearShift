@@ -25,10 +25,6 @@ void Particle::Update(float elapseTime)
     using namespace DirectX::SimpleMath;
     
     m_lifeTime -= elapseTime;
-    if (m_lifeTime <= 0)
-    {
-        //delete this;
-    }
 }
 
 void Particle::Render(
@@ -47,11 +43,16 @@ void Particle::Render(
     billboard._42 = 0;
     billboard._43 = 0;
 
-    Matrix world = Matrix::CreateScale(1);
-    //Matrix world = Matrix::CreateScale(5 - (m_lifeTime / m_maxTime) * 5);
-    world *= Matrix::CreateRotationZ(m_rotate);
+    Matrix world = Matrix::Identity;
+    if (!m_rotate)
+    {
+        world = Matrix::CreateScale(5 - (m_lifeTime / m_maxTime) * 5);
+    }
+    else
+    {
+        world *= Matrix::CreateRotationZ(m_rotate);
+    }
     world *= Matrix::CreateTranslation(m_pos);
-
     billboard *= world;
 
     Vector4 color = { 1,1,1,m_lifeTime / m_maxTime };

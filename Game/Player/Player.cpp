@@ -68,10 +68,11 @@ void Player::Initialize()
 	GetComponent<Move>()->Initialize();
 	GetComponent<Look>()->SetTarget(this, nullptr);
 	GetComponent<Physics>()->Initialize();
-	GetComponent<Collider>()->Initialize(Collider::Player, { 1,1.45f,1 });
+	GetComponent<Collider>()->Initialize(Collider::Player,Collider::Collision, { 1,1.45f,1 });
 	GetComponent<Collider>()->SetActive(true);
 	GetComponent<HPBar>()->Initialize();
 	GetComponent<Emitter>()->Initialize(L"Resources/Textures/bolt.png",0.5f,0.05f,0.5f);
+	GetComponent<Emitter>()->SetState(false, true);
 
 	// ステートの作成
 	CreateState();
@@ -240,18 +241,21 @@ void Player::Collision(Collider* collider)
 				game->ChangeScene(game->GetGameOverScene());
 			}
 		}
+		return;
 	}
 
 	if (collider->GetTypeID() == Collider::DropItem)
 	{
 		GetComponent<HP>()->SetHP(GetComponent<HP>()->GetHP() + 5);
 		Audio::GetInstance()->PlaySoundSE_PowerUp();
+		return;
 	}
 
 	if (collider->GetTypeID() == Collider::DropItemB)
 	{
 		m_missileLauncher->Reload();
 		Audio::GetInstance()->PlaySoundSE_PowerUp();
+		return;
 	}
 	
 	if (collider->GetTypeID() == Collider::Floor)
@@ -259,10 +263,12 @@ void Player::Collision(Collider* collider)
 		Collider::CheckHit(this, collider->GetOwner());
 		GetPart(Part::LeftLeg)->GetComponent<Emitter>()->SetParticle(GetPart(Part::LeftLeg)->GetPosition() - DirectX::SimpleMath::Vector3{ 0,1.f,0 });
 		GetPart(Part::RightLeg)->GetComponent<Emitter>()->SetParticle(GetPart(Part::RightLeg)->GetPosition() - DirectX::SimpleMath::Vector3{ 0,1.f,0 });
+		return;
 	}
 	if (collider->GetTypeID() == Collider::Wall || collider->GetTypeID() == Collider::Enemy)
 	{
 		Collider::CheckHit(this, collider->GetOwner());
+		return;
 	}
 }
 

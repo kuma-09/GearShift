@@ -72,10 +72,10 @@ void Bloom::BeginBloom()
     auto depthStencil = m_graphics->GetDeviceResources()->GetDepthStencilView();
     auto offscreenRTV_Bloom = m_offscreenRT_Bloom->GetRenderTargetView();
 
-    RECT rect = m_graphics->GetDeviceResources()->GetOutputSize();
+    //RECT rect = m_graphics->GetDeviceResources()->GetOutputSize();
 
-    m_offscreenRT_Bloom->SetWindow(rect);
-    m_finalRenderTexture->SetWindow(rect);
+    //m_offscreenRT_Bloom->SetWindow(rect);
+    //m_finalRenderTexture->SetWindow(rect);
 
     // -------------------------------------------------------------------------- //
     // レンダーターゲットを変更（offscreenRTV_Bloom）

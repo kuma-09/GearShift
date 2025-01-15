@@ -20,7 +20,7 @@ void BillD::Initialize()
 	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetBillCModel());
 	SetScale({ 6, 50, 30 });
 	SetQuaternion(DirectX::SimpleMath::Quaternion::CreateFromYawPitchRoll(DirectX::XMConvertToRadians(90), 0, 0));
-	GetComponent<Collider>()->Initialize(Collider::Wall, GetScale(), { 0,50,0 });
+	GetComponent<Collider>()->Initialize(Collider::Wall,Collider::Fixed, GetScale(), { 0,50,0 });
 }
 
 void BillD::Update(float elapsedtime)

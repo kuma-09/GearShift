@@ -40,7 +40,7 @@ void DropItem::Initialize()
 {
 	using namespace DirectX::SimpleMath;
 	GetComponent<Physics>()->Initialize();
-	GetComponent<Collider>()->Initialize(Collider::DropItemB, { 2,2,2 });
+	GetComponent<Collider>()->Initialize(Collider::DropItemB,Collider::Collision, { 2,2,2 });
 	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetDropItemModel(), true);
 
 

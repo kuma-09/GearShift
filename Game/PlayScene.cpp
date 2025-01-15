@@ -189,12 +189,11 @@ void PlayScene::CreateHitParticle(DirectX::SimpleMath::Vector3 pos , float size)
 
     int particleValue = HitParticle::get_rand(1, 5);
 
-    float velocityX = (float)HitParticle::get_rand(-30, 30) / 500.0f;
-    float velocityY = (float)HitParticle::get_rand(-30, 30) / 500.0f;
-    float velocityZ = (float)HitParticle::get_rand(-30, 30) / 500.0f;
     for (int i = 0; i < particleValue; i++)
     {
-
+        float velocityX = (float)HitParticle::get_rand(-30, 30) / 500.0f;
+        float velocityY = (float)HitParticle::get_rand(-30, 30) / 500.0f;
+        float velocityZ = (float)HitParticle::get_rand(-30, 30) / 500.0f;
         for (auto& particle : m_hitParticle)
         {
             if (particle->GetAlpha() > 0.0f) continue;

@@ -103,8 +103,6 @@ void Noise::ApplyNoise(ID3D11ShaderResourceView* srv)
     auto renderTarget = m_graphics->GetDeviceResources()->GetRenderTargetView();
     auto depthStencil = m_graphics->GetDeviceResources()->GetDepthStencilView();
 
-
-
     //	”¼“§–¾•`‰æw’è
     ID3D11BlendState* blendstate = states->NonPremultiplied();
     //	“§–¾”»’èˆ—

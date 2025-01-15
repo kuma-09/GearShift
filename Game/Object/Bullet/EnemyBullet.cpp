@@ -13,7 +13,7 @@ EnemyBullet::EnemyBullet(IScene* scene, Collider::TypeID id)
 	AddComponent<Collider>();
 	AddComponent<ModelDraw>();
 	AddComponent<Trail>();
-	GetComponent<Collider>()->Initialize(id, { 0.1f,0.1f,0.1f });
+	GetComponent<Collider>()->Initialize(id,Collider::Trigger, { 0.1f,0.1f,0.1f });
 	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetCubeModel());
 	GetComponent<Trail>()->Initialize(L"Resources/Textures/white.png", 10,DirectX::Colors::Red);
 	SetScale({ 0.125f,0.125f,0.125f });

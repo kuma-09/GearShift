@@ -73,7 +73,7 @@ void BossEnemy::Initialize()
 	SetTarget(GetTarget());
 	SetPart(Part::Head, std::make_unique<BossHead>(GetTarget()));
 	SetPart(Part::BodyTop, std::make_unique<BossLeg>());
-	GetComponent<Collider>()->Initialize(Collider::Enemy, { 6,5,6 });
+	GetComponent<Collider>()->Initialize(Collider::Enemy,Collider::Collision, { 6,5,6 });
 	GetComponent<HPBar>()->Initialize();
 	for (auto& bullet : m_fixedBullets)
 	{

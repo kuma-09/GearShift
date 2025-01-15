@@ -47,6 +47,8 @@ void Emitter::Initialize(const wchar_t* path, float size,float interval, float l
     m_totalTime = 0;
     m_interval = interval;
     m_lifeTime = lifeTime;
+    m_isSizeChage = true;
+    m_isRotate = false;
 }
 
 void Emitter::Update(float elapseTime)
@@ -86,6 +88,12 @@ void Emitter::Finalize()
     RenderManager::Remove(this);
 }
 
+void Emitter::SetState(bool isSizeChage, bool isRotate)
+{
+    m_isSizeChage = isSizeChage;
+    m_isRotate = isRotate;
+}
+
 void Emitter::SetParticle(DirectX::SimpleMath::Vector3 pos)
 {
     if (m_totalTime >= m_interval && GetOwner()->GetVelocity() != DirectX::SimpleMath::Vector3::Zero)
@@ -95,7 +103,12 @@ void Emitter::SetParticle(DirectX::SimpleMath::Vector3 pos)
             if (m_particles[i]->GetLifeTime() <= 0)
             {
                 m_totalTime = 0;
-                m_particles[i]->Initialize(pos, m_lifeTime, DirectX::XMConvertToRadians(rand() % 360));
+                float rotate = 0;
+                if (m_isRotate)
+                {
+                    rotate = DirectX::XMConvertToRadians(rand() % 360);
+                }
+                m_particles[i]->Initialize(pos, m_lifeTime, rotate);
                 return;
             }
         }

@@ -19,7 +19,7 @@ void WallA::Initialize()
 {
 	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetBillBModel());
 	SetScale({ 4, 8, 4 });
-	GetComponent<Collider>()->Initialize(Collider::Wall, GetScale());
+	GetComponent<Collider>()->Initialize(Collider::Wall,Collider::Fixed, GetScale());
 	GetComponent<Collider>()->GetBoundingBox()->Center = GetPosition();
 }
 

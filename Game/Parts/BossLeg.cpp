@@ -32,7 +32,7 @@ void BossLeg::Initialize(int hp, IScene* scene)
 	GetComponent<HP>()->SetHP(hp);
 	SetMaxHP(float(hp));
 	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetCutoRobotModel());
-	GetComponent<Collider>()->Initialize(Collider::Enemy, { 1,1,1 });
+	GetComponent<Collider>()->Initialize(Collider::Enemy,Collider::Trigger, { 1,1,1 });
 	GetComponent<Emitter>()->Initialize(L"Resources/Textures/smoke_white.png", 0.1f, 0.1f, 0.3f);
 }
 

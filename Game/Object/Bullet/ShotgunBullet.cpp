@@ -14,7 +14,7 @@ ShotgunBullet::ShotgunBullet(IScene* scene, Collider::TypeID id)
 	SetScene(scene);
 	AddComponent<Collider>();
 	AddComponent<ModelDraw>();
-	GetComponent<Collider>()->Initialize(id, { 0.5f,0.5f,0.5f });
+	GetComponent<Collider>()->Initialize(id,Collider::Trigger, { 0.5f,0.5f,0.5f });
 	SetScale({ 0.25f,0.25f,0.25f });
 }
 

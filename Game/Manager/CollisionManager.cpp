@@ -29,6 +29,19 @@ void CollisionManager::Update()
 		{
 			if (!collider2->GetActive()) continue;
 			if (collider1 == collider2) continue;
+			auto collider1BoudingBox = collider1->GetBoundingBox();
+			auto collider2BoudingBox = collider2->GetBoundingBox();
+
+			// 遠くのオブジェクトはスルー
+			if (collider2->GetColliderType() == Collider::Fixed)
+			{
+				if ((collider1BoudingBox->Center - collider2BoudingBox->Center).Length() >= 100 && collider2->GetTypeID() != Collider::Floor) continue;
+			}
+			else
+			{
+				if ((collider1BoudingBox->Center - collider2BoudingBox->Center).Length() >=  50 && collider2->GetTypeID() != Collider::Floor) continue;
+			}
+
 			if (collider1->GetBoundingBox()->Intersects(*collider2->GetBoundingBox()))
 			{
 				collider1->GetOwner()->Collision(collider2);

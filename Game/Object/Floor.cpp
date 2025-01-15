@@ -11,7 +11,7 @@ Floor::Floor(IScene* scene)
 	AddComponent<Collider>();
 	AddComponent<ModelDraw>();
 	SetScale({ 1,1,1 });
-	GetComponent<Collider>()->Initialize(Collider::Floor, { 300,1.25f,300 },{0,-1,0});
+	GetComponent<Collider>()->Initialize(Collider::Floor,Collider::Fixed, { 300,1.25f,300 },{0,-1,0});
 	GetComponent<Collider>()->SetActive(true);
 	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetFloorModel(),false);
 	SetPosition({ 0,1,0 });
