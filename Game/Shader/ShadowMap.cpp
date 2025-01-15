@@ -51,7 +51,7 @@ void ShadowMap::Initialize()
     RECT rect = { 0, 0, SHADOWMAP_SIZE, SHADOWMAP_SIZE };
 
     // レンダーテクスチャの作成（シャドウマップ用）
-    m_shadowMapRT = std::make_unique<DX::RenderTexture>(DXGI_FORMAT_R32G32_FLOAT);
+    m_shadowMapRT = std::make_unique<DX::RenderTexture>(DXGI_FORMAT_R32_FLOAT);
     m_shadowMapRT->SetDevice(device);
     m_shadowMapRT->SetWindow(rect);
 

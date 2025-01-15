@@ -147,12 +147,12 @@ float readShadowMap(float3 worldPos,float fragDepth)
     }
     
     float bias = 0.0000005f;
-    //float percentLit = 1.0f;
+    float percentLit = 1.0f;
     // シャドウマップの深度値とライト空間のピクセルのZ値を比較して影になるか調べる
-    float percentLit = VSM_Filter(uv, LightPosPS.z);
-    //if (VSM_Filter(uv,fragDepth) < LightPosPS.z - CalculateShadowBias(LightPosPS.z, bias / 100, bias))
+    //float percentLit = VSM_Filter(uv, LightPosPS.z);
+    if (ShadowMap.Sample(ShadowMapSampler, uv).r < LightPosPS.z - CalculateShadowBias(LightPosPS.z, bias / 100, bias))
     {
-        //percentLit = 0.5f;
+        percentLit = 0.5f;
     }
     
     return max(percentLit, 0);
