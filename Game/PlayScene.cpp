@@ -98,6 +98,8 @@ void PlayScene::Initialize(Game* game)
 
     m_startAnimation = std::make_unique<StartAnimation>();
     m_startAnimation->Initialize();
+
+    m_tutorial = std::make_unique<Tutorial>();
 }
 
 /// <summary> 更新処理 </summary>
@@ -124,6 +126,7 @@ void PlayScene::Update(float elapsedTime)
     {
         // 経過時間を計算
         m_totalTime += elapsedTime;
+        m_tutorial->Update(elapsedTime);
         m_time->SetNum(int(m_totalTime));
         m_startAnimation->Update(elapsedTime);
 
@@ -162,6 +165,7 @@ void PlayScene::RenderUI()
     m_time->RenderTime();
     m_targetArea->Render(m_targetArea->GetTarget());
     static_cast<Player*>(m_player.lock().get())->RenderPlayerUI();
+    m_tutorial->Render();
     m_startAnimation->Render();
     if (m_targetArea->GetTarget())
     {

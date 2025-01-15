@@ -16,6 +16,8 @@
 #include "UI/Number.h"
 #include "UI/Menu.h"
 
+#include "Game/System/Tutorial.h"
+
 class Camera;
 class Reload;
 class HitParticle;
@@ -79,7 +81,8 @@ private:
 	std::unique_ptr<Menu> m_menu;
 	// メニューの背景
 	std::unique_ptr<UI>   m_menuBack;
-
+	// チュートリアル
+	std::unique_ptr<Tutorial> m_tutorial;
 
 	// 経過時間描画クラス
 	std::unique_ptr<Number> m_time;
