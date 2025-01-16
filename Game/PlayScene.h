@@ -16,6 +16,9 @@
 #include "UI/Number.h"
 #include "UI/Menu.h"
 
+#include "Game/Animation/StartAnimation.h"
+#include "Game/Animation/FinishAnimation.h"
+
 #include "Game/System/Tutorial.h"
 
 class Camera;
@@ -76,6 +79,7 @@ private:
 	std::unique_ptr<ExplosionEffect> m_hitEffect;
 	
 	std::unique_ptr<StartAnimation> m_startAnimation;
+	std::unique_ptr<FinishAnimation> m_finishAnimation;
 
 	// ポーズ中のメニュー
 	std::unique_ptr<Menu> m_menu;
@@ -93,4 +97,6 @@ private:
 	float m_timeLimit;
 	// メニューを開いてるか
 	bool  m_isMenu;
+	// チュートリアル
+	bool  m_isTutorial;
 };

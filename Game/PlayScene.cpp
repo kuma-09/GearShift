@@ -21,8 +21,6 @@
 #include "Game/Components/HPBar.h"
 
 #include "Game/Particle/HitParticle.h"
-
-#include "Game/Animation/StartAnimation.h"
 #include "UI/BulletMagazine.h"
 #include "UI/ExBulletMagazine.h"
 
@@ -99,6 +97,8 @@ void PlayScene::Initialize(Game* game)
     m_startAnimation = std::make_unique<StartAnimation>();
     m_startAnimation->Initialize();
 
+    m_finishAnimation = std::make_unique<FinishAnimation>();
+
     m_tutorial = std::make_unique<Tutorial>();
 }
 
@@ -129,6 +129,7 @@ void PlayScene::Update(float elapsedTime)
         m_tutorial->Update(elapsedTime);
         m_time->SetNum(int(m_totalTime));
         m_startAnimation->Update(elapsedTime);
+        if (m_finishAnimation->Update(elapsedTime)) GetGame()->ChangeScene(GetGame()->GetResultScene());
 
         // ヒットエフェクトの更新
         UpdateParticle(elapsedTime);
@@ -167,6 +168,7 @@ void PlayScene::RenderUI()
     static_cast<Player*>(m_player.lock().get())->RenderPlayerUI();
     m_tutorial->Render();
     m_startAnimation->Render();
+    m_finishAnimation->Render();
     if (m_targetArea->GetTarget())
     {
         m_targetArea->GetTarget()->GetComponent<HPBar>()->Render(m_targetArea->GetTarget()->GetPosition());
@@ -291,7 +293,8 @@ void PlayScene::UpdateTargetArea()
     auto enemys = ObjectManager::GetTypeObjects(Type::Enemy);
     if (enemys.empty())
     {
-        GetGame()->ChangeScene(GetGame()->GetResultScene());
+        m_finishAnimation->Initialize();
+        //GetGame()->ChangeScene(GetGame()->GetResultScene());
     }
 
     auto player = static_cast<Player*>(m_player.lock().get());
