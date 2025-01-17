@@ -19,12 +19,24 @@ struct PS_INPUT
 Texture2D tex : register(t0);
 SamplerState samLinear : register(s0);
 
+// UVÀ•W‚ğ‰ñ“]‚³‚¹‚éŠÖ”
+float2 rotateUV(float angle,float2 inputUV)
+{
+    half angleCos = cos(angle);
+    half angleSin = sin(angle);
+    half2x2 rotateMatrix = half2x2(angleCos, -angleSin, angleSin, angleCos);
+    half2 uv = inputUV - 0.5f;
+    return mul(uv, rotateMatrix) + 0.5f;
+}
+
 float4 main(PS_INPUT input) : SV_TARGET
 {
-	//	İ’è‚³‚ê‚½‰æ‘œ‚ğ•\¦
     float4 output = float4(0,0,0,1);
-    output.a = floor(input.Tex.y * 10) * 0.1f - time;
+    
+    input.Tex = rotateUV(45 * 3.14f / 180, input.Tex);
+    
+    float horizon = floor(input.Tex.y * 5) * 0.5f;
+    output.a = max(input.Tex.x - 1 + time * 5 - horizon, 0);
     
     return output;
-
 }
