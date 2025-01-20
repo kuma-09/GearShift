@@ -144,6 +144,7 @@ void Player::Update(float elapsedTime)
 
 	SetPrePosition(GetPosition());
 	SetPosition(GetPosition() + GetVelocity());
+	GetComponent<Collider>()->GetBoundingBox()->Center = GetPosition();
 	ShadowMap::SetLightPosition(GetPosition());
 	m_burner->Update(elapsedTime, m_trailPosition, GetQuaternion());
 	Vector3 diff = Vector3(rand() % 4 - 1.5f, rand() % 4 - 1.5f, rand() % 4 - 1.5f);
