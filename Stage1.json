@@ -19,6 +19,17 @@
 		{"Object_Name": "BillA"      ,"position":{"x": 25.0,"y":  8.0,"z":  70.0}},
 		{"Object_Name": "BillA"      ,"position":{"x":  0.0,"y":  8.0,"z":  70.0}},
 
-		{"Object_Name": "FixedEnemy" ,"position":{"x": 30.0,"y":  5.0,"z":   0.0}}
+		{"Object_Name": "FixedEnemy" ,"position":{"x": 30.0,"y":  5.0,"z":   0.0}},
+		{"Object_Name": "FixedEnemy" ,"position":{"x": 30.0,"y":  5.0,"z":   0.0}},
+		{"Object_Name": "FixedEnemy" ,"position":{"x": 30.0,"y":  5.0,"z":   0.0}},
+		{"Object_Name": "FixedEnemy" ,"position":{"x": 30.0,"y":  5.0,"z":   0.0}},
+		{"Object_Name": "FixedEnemy" ,"position":{"x": 30.0,"y":  5.0,"z":   0.0}},
+		{"Object_Name": "FixedEnemy" ,"position":{"x": 30.0,"y":  5.0,"z":   0.0}},
+		{"Object_Name": "FixedEnemy" ,"position":{"x": 30.0,"y":  5.0,"z":   0.0}},
+		{"Object_Name": "FixedEnemy" ,"position":{"x": 30.0,"y":  5.0,"z":   0.0}},
+		{"Object_Name": "FixedEnemy" ,"position":{"x": 30.0,"y":  5.0,"z":   0.0}},
+		{"Object_Name": "FixedEnemy" ,"position":{"x": 30.0,"y":  5.0,"z":   0.0}},
+		{"Object_Name": "FixedEnemy" ,"position":{"x": 30.0,"y":  5.0,"z":   0.0}},
+		{"Object_Name": "FixedEnemy" ,"position":{"x": 30.0,"y":  5.0,"z":   0.0}},
 	]
 }

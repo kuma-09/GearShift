@@ -311,6 +311,7 @@
     <ClInclude Include="Game\UI\Menu.h" />
     <ClInclude Include="Game\UI\Number.h" />
     <ClInclude Include="Game\UI\ReloadUI.h" />
+    <ClInclude Include="Game\UI\RemainingEnemyUI.h" />
     <ClInclude Include="Game\UI\UI.h" />
     <ClInclude Include="Game\Player\MissileLauncher.h" />
     <ClInclude Include="pch.h" />
@@ -433,6 +434,7 @@
     <ClCompile Include="Game\UI\Menu.cpp" />
     <ClCompile Include="Game\UI\Number.cpp" />
     <ClCompile Include="Game\UI\ReloadUI.cpp" />
+    <ClCompile Include="Game\UI\RemainingEnemyUI.cpp" />
     <ClCompile Include="Game\UI\UI.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Game\Player\MissileLauncher.cpp" />

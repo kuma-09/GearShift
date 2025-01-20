@@ -96,10 +96,12 @@ void PlayScene::Initialize(Game* game)
 
     m_startAnimation = std::make_unique<StartAnimation>();
     m_startAnimation->Initialize();
-
     m_finishAnimation = std::make_unique<FinishAnimation>();
-
     m_tutorial = std::make_unique<Tutorial>();
+
+    auto enemys = ObjectManager::GetTypeObjects(Type::Enemy);
+    m_remainingEnemyUI = std::make_unique<RemainingEnemyUI>();
+    m_remainingEnemyUI->Initialize({ 500,500 }, enemys.size());
 }
 
 /// <summary> çXêVèàóù </summary>
@@ -169,6 +171,7 @@ void PlayScene::RenderUI()
     m_tutorial->Render();
     m_startAnimation->Render();
     m_finishAnimation->Render();
+    m_remainingEnemyUI->Render();
     if (m_targetArea->GetTarget())
     {
         m_targetArea->GetTarget()->GetComponent<HPBar>()->Render(m_targetArea->GetTarget()->GetPosition());
@@ -296,7 +299,7 @@ void PlayScene::UpdateTargetArea()
         m_finishAnimation->Initialize();
         //GetGame()->ChangeScene(GetGame()->GetResultScene());
     }
-
+    m_remainingEnemyUI->Update(enemys.size());
     auto player = static_cast<Player*>(m_player.lock().get());
 
     for (auto& enemy : enemys)

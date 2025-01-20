@@ -15,6 +15,7 @@
 #include "Framework/DebugString.h"
 #include "UI/Number.h"
 #include "UI/Menu.h"
+#include "UI/RemainingEnemyUI.h"
 
 #include "Game/Animation/StartAnimation.h"
 #include "Game/Animation/FinishAnimation.h"
@@ -88,6 +89,8 @@ private:
 	// チュートリアル
 	std::unique_ptr<Tutorial> m_tutorial;
 
+	// 敵の残り数描画クラス
+	std::unique_ptr<RemainingEnemyUI> m_remainingEnemyUI;
 	// 経過時間描画クラス
 	std::unique_ptr<Number> m_time;
 

@@ -87,6 +87,7 @@ float4 main(PS_INPUT input) : SV_TARGET
     rim = step(0.5f, rim);
     float3 finalColor = albedo.rgb * diffuse * shadow;
     //finalColor += rim * float3(1, 1, 1);
+    //finalColor = lerp(finalColor, float3(1, 0, 0), rim);
     
     for (int i = 0; i < lightNum; i++)
     {

@@ -8,6 +8,7 @@ public:
 	void Initialize(DirectX::SimpleMath::Vector2 pos);
 	void Render();
 	void RenderTime();
+	void RenderSlash();
 	void SetNum(int num);
 
 private:

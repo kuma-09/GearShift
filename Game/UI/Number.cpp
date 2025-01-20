@@ -13,7 +13,7 @@ Number::Number():
 	auto context = Graphics::GetInstance()->GetDeviceResources()->GetD3DDeviceContext();
 	m_spriteBatch = std::make_unique<DirectX::SpriteBatch>(context);
 	DX::ThrowIfFailed(
-		DirectX::CreateWICTextureFromFile(device, L"Resources/Textures/0~c.png", nullptr,
+		DirectX::CreateWICTextureFromFile(device, L"Resources/Textures/s~c.png", nullptr,
 			m_numberTexture.ReleaseAndGetAddressOf())
 	);
 }
@@ -45,7 +45,7 @@ void Number::Render()
 	for (int i = 0; i < m_digit; i++)
 	{
 		//”Žš‚Ì‘å‚«‚³
-		m_size = { 0,0,10,10 };
+		m_size = { 10, 0,20,10 };
 		int tmp = m_number % int(std::pow(10, i + 1)) / int(std::pow(10, i));
 		m_size.left += tmp * 10;
 		m_size.right += tmp * 10;
@@ -70,14 +70,14 @@ void Number::RenderTime()
 	int seconds = m_number - minutes * 60;
 
 	//”Žš‚Ì‘å‚«‚³
-	m_size = { 0,0,10,10 };
+	m_size = { 10, 0,20,10 };
 	Vector2 center = { 5,5 };
 
 	m_spriteBatch->Begin(SpriteSortMode_Deferred, states->NonPremultiplied(), states->PointWrap());
 	for (int i = 0; i < 2; i++)
 	{
 		//”Žš‚Ì‘å‚«‚³
-		m_size = { 0,0,10,10 };
+		m_size = { 10, 0,20,10 };
 		int tmp = minutes % int(std::pow(10, i + 1)) / int(std::pow(10, i));
 		m_size.left += tmp * 10;
 		m_size.right += tmp * 10;
@@ -89,7 +89,7 @@ void Number::RenderTime()
 	for (int i = 0; i < 2; i++)
 	{
 		//”Žš‚Ì‘å‚«‚³
-		m_size = { 0,0,10,10 };
+		m_size = { 10, 0,20,10 };
 		int tmp = seconds % int(std::pow(10, i + 1)) / int(std::pow(10, i));
 		m_size.left += tmp * 10;
 		m_size.right += tmp * 10;
@@ -99,13 +99,31 @@ void Number::RenderTime()
 			0.f, center, 5.f * value);
 	}
 	//”Žš‚Ì‘å‚«‚³
-	m_size = { 0,0,10,10 };
-	m_size.left = 100;
-	m_size.right = 110;
+	m_size = { 110, 0,120,10 };
 	m_spriteBatch->Draw(m_numberTexture.Get(),
 		Vector2(m_pos.x, m_pos.y) * value,
 		&m_size, Colors::CornflowerBlue,
 		0.f, center, 5.f * value);
+	m_spriteBatch->End();
+}
+
+void Number::RenderSlash()
+{
+	using namespace DirectX;
+	using namespace DirectX::SimpleMath;
+
+	auto states = Graphics::GetInstance()->GetCommonStates();
+
+	RECT windowsize = Graphics::GetInstance()->GetDeviceResources()->GetOutputSize();
+	int x, y;
+	Graphics::GetInstance()->GetScreenSize(x, y);
+	float value = float(windowsize.right) / x;
+	DirectX::XMVECTORF32 color = { 1,1,1,0.5f };
+
+	m_spriteBatch->Begin(SpriteSortMode_Deferred, states->NonPremultiplied(), states->PointWrap());
+	//”Žš‚Ì‘å‚«‚³
+	m_size = { 0, 0,10,10 };
+	m_spriteBatch->Draw(m_numberTexture.Get(), Vector2(m_pos.x - m_space / 2, m_pos.y) * value, &m_size, Colors::CornflowerBlue, 0.f, Vector2::Zero, 5.f * value);
 	m_spriteBatch->End();
 }
 
