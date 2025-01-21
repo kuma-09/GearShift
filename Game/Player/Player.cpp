@@ -148,7 +148,10 @@ void Player::Update(float elapsedTime)
 	ShadowMap::SetLightPosition(GetPosition());
 	m_burner->Update(elapsedTime, m_trailPosition, GetQuaternion());
 	Vector3 diff = Vector3(rand() % 4 - 1.5f, rand() % 4 - 1.5f, rand() % 4 - 1.5f);
-	GetComponent<Emitter>()->SetParticle(GetPosition() + diff);
+	if (GetComponent<HP>()->GetHP() < 3)
+	{
+		GetComponent<Emitter>()->SetParticle(GetPosition() + diff);
+	}
 
 	Matrix world = Matrix::Identity;
 	world = Matrix::CreateScale(GetScale());

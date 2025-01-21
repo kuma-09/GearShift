@@ -132,6 +132,7 @@ private:
     void Render();
     void SceneRender();
 
+    void CreateShadow();
     void DeferredRendering();
     void TranslucentRender();
     void RenderUI();

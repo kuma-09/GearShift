@@ -1,6 +1,7 @@
 #pragma once
 #include "Framework/RenderTexture.h"
 
+class Graphics;
 class BaseScene;
 
 class DeferredRendering
@@ -18,6 +19,7 @@ public:
 	static DX::RenderTexture* GetDepthRenderTexture() { return s_depthRT.get(); }
 	static DX::RenderTexture* GetFinalRenderTexture() { return s_finalRT.get(); }
 private:
+	static Graphics* s_graphics;
 	// レンダーテクスチャ
 	static std::unique_ptr<DX::RenderTexture> s_albedoRT;
 	static std::unique_ptr<DX::RenderTexture> s_normalRT;

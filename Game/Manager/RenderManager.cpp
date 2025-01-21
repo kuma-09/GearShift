@@ -1,10 +1,12 @@
 #include "pch.h"
 #include "RenderManager.h"
+#include "Game/GameObject.h"
 #include "Game/Components/ModelDraw.h"
 #include "Game/Particle/Emitter.h"
 #include "Game/Components/Trail.h"
 #include "Game/Shader/ShadowMap.h"
 
+Graphics* RenderManager::s_graphics = Graphics::GetInstance();
 std::vector<ModelDraw*> RenderManager::s_modelDraws;
 std::vector<Emitter*> RenderManager::s_emitters;
 std::vector<Trail*>  RenderManager::s_trail;

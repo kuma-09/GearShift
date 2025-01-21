@@ -20,16 +20,19 @@ void RemainingEnemyUI::Initialize(DirectX::SimpleMath::Vector2 pos, int num)
 
 	m_nowNumber->SetNum(num);
 	m_maxNumber->SetNum(num);
+	m_slash->SetNum(num);
+	m_slash->SetMaxNum(num);
 }
 
 void RemainingEnemyUI::Update(int num)
 {
 	m_nowNumber->SetNum(num);
+	m_slash->SetNum(num);
 }
 
 void RemainingEnemyUI::Render()
 {
-	m_nowNumber->Render();
-	m_maxNumber->Render();
+	//m_nowNumber->Render();
+	//m_maxNumber->Render();
 	m_slash->RenderSlash();
 }

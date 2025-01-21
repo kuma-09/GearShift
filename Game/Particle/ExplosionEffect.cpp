@@ -45,7 +45,7 @@ void ExplosionEffect::Set(DirectX::SimpleMath::Vector3 pos)
 
 	for (int i = 0; i < MAX_EFFECT_NUM; i++)
 	{
-		//m_posLife.insert({ pos + Vector3(rand() % 3,rand() % 3,rand() % 3),0.0f - i * 0.1f});
+		m_posLife.insert({ pos + Vector3(rand() % 3,rand() % 3,rand() % 3),0.0f - i * 0.1f});
 	}
 
 

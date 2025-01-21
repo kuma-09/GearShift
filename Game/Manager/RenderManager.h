@@ -1,5 +1,6 @@
 #pragma once
 
+class Graphics;
 class ModelDraw;
 class Emitter;
 class Trail;
@@ -18,6 +19,7 @@ public:
 	static void Remove(Trail* component);
 	static void Clear();
 private:
+	static Graphics* s_graphics;
 	static std::vector<ModelDraw*> s_modelDraws;
 	static std::vector<Emitter*>   s_emitters;
 	static std::vector<Trail*>     s_trail;

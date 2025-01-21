@@ -35,6 +35,22 @@
 		{"Object_Name": "BillA"      ,"position":{"x": 55.0, "y": 25.0, "z":-80.0}},
 		{"Object_Name": "BillB"      ,"position":{"x": 80.0, "y": 25.0, "z":-80.0}},
 		{"Object_Name": "BillB"      ,"position":{"x": 70.0, "y": 25.0, "z":-80.0}},
+
+		{"Object_Name": "BillC"      ,"position":{"x": 15.0,"y":  0.0,"z": 150.0}},
+		{"Object_Name": "BillC"      ,"position":{"x": 15.0,"y":  0.0,"z": -20.0}},
+		{"Object_Name": "BillC"      ,"position":{"x": 75.0,"y":  0.0,"z": -20.0}},
+		{"Object_Name": "BillC"      ,"position":{"x":135.0,"y":  0.0,"z": -20.0}},
+		{"Object_Name": "BillC"      ,"position":{"x":195.0,"y":  0.0,"z": -20.0}},
+		{"Object_Name": "BillC"      ,"position":{"x": 70.0,"y":  0.0,"z":  45.0}},
+		{"Object_Name": "BillC"      ,"position":{"x":130.0,"y":  0.0,"z":  45.0}},
+		{"Object_Name": "BillC"      ,"position":{"x":190.0,"y":  0.0,"z":  45.0}},
+		{"Object_Name": "BillD"      ,"position":{"x":-20.0,"y":  0.0,"z":  16.5}},
+		{"Object_Name": "BillD"      ,"position":{"x":-20.0,"y":  0.0,"z":  76.5}},
+		{"Object_Name": "BillD"      ,"position":{"x":-20.0,"y":  0.0,"z": 136.5}},
+		{"Object_Name": "BillD"      ,"position":{"x": 45.0,"y":  0.0,"z":  76.5}},
+		{"Object_Name": "BillD"      ,"position":{"x": 45.0,"y":  0.0,"z": 136.5}},
+
+
 		{"Object_Name": "HomingEnemy","position":{"x":  0.0, "y":  5.0, "z": -20.0}},
 		{"Object_Name": "HomingEnemy","position":{"x": 32.0, "y":  5.0, "z": -30.0}},
 		{"Object_Name": "FixedEnemy" ,"position":{"x": 30.0, "y":  5.0, "z": -40.0}},

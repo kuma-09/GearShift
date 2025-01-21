@@ -210,7 +210,7 @@ void Game::Render()
 void Game::SceneRender()
 {
     // シャドウマップを作成
-    RenderManager::CreateShadowMap();
+    CreateShadow();
     // ディファードレンダリング
     DeferredRendering();
     // 半透明オブジェクトの描画
@@ -223,40 +223,61 @@ void Game::SceneRender()
     RenderUI();
 }
 
+void Game::CreateShadow()
+{
+    m_deviceResources->PIXBeginEvent(L"CreateShadow");
+    RenderManager::CreateShadowMap();
+    m_deviceResources->PIXEndEvent();
+}
+
 void Game::DeferredRendering()
 {
+    m_deviceResources->PIXBeginEvent(L"DeferredRendering");
     // DeferredRendering
     DeferredRendering::BeginGBuffer();
     m_scene->Render();
     // GBufferを元に計算して描画
+    m_deviceResources->PIXEndEvent();
+    m_deviceResources->PIXBeginEvent(L"DeferredLighting");
     DeferredRendering::DeferredLighting();
+    m_deviceResources->PIXEndEvent();
 }
 
 void Game::TranslucentRender()
 {
+    m_deviceResources->PIXBeginEvent(L"TranslucentObject");
     // 半透明オブジェクトを描画
     m_scene->TranslucentRender();
+    m_deviceResources->PIXEndEvent();
 }
 
 void Game::RenderUI()
 {
+    m_deviceResources->PIXBeginEvent(L"UIRender");
     // ForwardRenderingでUIを表示
     m_scene->RenderUI();
+    m_deviceResources->PIXEndEvent();
 }
 
 void Game::ApplyBloom()
 {
+    m_deviceResources->PIXBeginEvent(L"Bloom");
     // Bloomで光らせるオブジェクトを描画
     Bloom::BeginBloom();
     m_scene->TranslucentRender();
+    m_deviceResources->PIXEndEvent();
+    m_deviceResources->PIXBeginEvent(L"ApplyBloom");
     // Bloomを適用
     Bloom::EndBloom(DeferredRendering::GetFinalRenderTexture()->GetShaderResourceView());
+    m_deviceResources->PIXEndEvent();
 }
 
 void Game::ApplyNoise()
 {
+    m_deviceResources->PIXBeginEvent(L"ApplyNoise");
     // ノイズを画面に適用
     Noise::ApplyNoise(Bloom::GetFinalRenderTexture()->GetShaderResourceView());
+    m_deviceResources->PIXEndEvent();
 }
 
 // Helper method to clear the back buffers.

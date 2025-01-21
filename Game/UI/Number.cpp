@@ -6,6 +6,7 @@ Number::Number():
 	m_size{},
 	m_pos{ 100,100 },
 	m_number{ 0 },
+	m_maxNumber{0},
 	m_alpha{ 0 },
 	m_digit{}
 {
@@ -113,17 +114,47 @@ void Number::RenderSlash()
 	using namespace DirectX::SimpleMath;
 
 	auto states = Graphics::GetInstance()->GetCommonStates();
-
 	RECT windowsize = Graphics::GetInstance()->GetDeviceResources()->GetOutputSize();
 	int x, y;
 	Graphics::GetInstance()->GetScreenSize(x, y);
 	float value = float(windowsize.right) / x;
 	DirectX::XMVECTORF32 color = { 1,1,1,0.5f };
 
+	//”Žš‚Ì‘å‚«‚³
+	m_size = { 10, 0,20,10 };
+	Vector2 center = { 5,5 };
+
 	m_spriteBatch->Begin(SpriteSortMode_Deferred, states->NonPremultiplied(), states->PointWrap());
+	for (int i = 0; i < 2; i++)
+	{
+		//”Žš‚Ì‘å‚«‚³
+		m_size = { 10, 0,20,10 };
+		int tmp = m_number % int(std::pow(10, i + 1)) / int(std::pow(10, i));
+		m_size.left += tmp * 10;
+		m_size.right += tmp * 10;
+		m_spriteBatch->Draw(m_numberTexture.Get(),
+			Vector2(m_pos.x - i * m_space - m_space, m_pos.y) * value,
+			&m_size, Colors::CornflowerBlue,
+			0.f, center, 5.f * value);
+	}
+	for (int i = 0; i < 2; i++)
+	{
+		//”Žš‚Ì‘å‚«‚³
+		m_size = { 10, 0,20,10 };
+		int tmp = m_maxNumber % int(std::pow(10, i + 1)) / int(std::pow(10, i));
+		m_size.left += tmp * 10;
+		m_size.right += tmp * 10;
+		m_spriteBatch->Draw(m_numberTexture.Get(),
+			Vector2(m_pos.x - i * m_space + m_space * 2, m_pos.y) * value,
+			&m_size, Colors::CornflowerBlue,
+			0.f, center, 5.f * value);
+	}
 	//”Žš‚Ì‘å‚«‚³
 	m_size = { 0, 0,10,10 };
-	m_spriteBatch->Draw(m_numberTexture.Get(), Vector2(m_pos.x - m_space / 2, m_pos.y) * value, &m_size, Colors::CornflowerBlue, 0.f, Vector2::Zero, 5.f * value);
+	m_spriteBatch->Draw(m_numberTexture.Get(),
+		Vector2(m_pos.x, m_pos.y) * value,
+		&m_size, Colors::CornflowerBlue,
+		0.f, center, 5.f * value);
 	m_spriteBatch->End();
 }
 
@@ -131,4 +162,10 @@ void Number::SetNum(int num)
 {
 	m_digit = int(std::to_string(num).length());
 	m_number = num;
+}
+
+void Number::SetMaxNum(int num)
+{
+	m_maxDigit = int(std::to_string(num).length());
+	m_maxNumber = num;
 }

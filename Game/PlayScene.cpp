@@ -101,7 +101,7 @@ void PlayScene::Initialize(Game* game)
 
     auto enemys = ObjectManager::GetTypeObjects(Type::Enemy);
     m_remainingEnemyUI = std::make_unique<RemainingEnemyUI>();
-    m_remainingEnemyUI->Initialize({ 500,500 }, enemys.size());
+    m_remainingEnemyUI->Initialize({ 1150,30 }, enemys.size());
 }
 
 /// <summary> XVˆ— </summary>
@@ -297,7 +297,6 @@ void PlayScene::UpdateTargetArea()
     if (enemys.empty())
     {
         m_finishAnimation->Initialize();
-        //GetGame()->ChangeScene(GetGame()->GetResultScene());
     }
     m_remainingEnemyUI->Update(enemys.size());
     auto player = static_cast<Player*>(m_player.lock().get());

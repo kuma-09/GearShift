@@ -6,7 +6,6 @@
 
 PointLight::PointLight()
 {
-	PointLightManager::Add(this);
 	m_nowColor = { 0,0,0 };
 	m_targetColor = { 0,0,0 };
 	m_nowTime = -1.0f;
@@ -20,6 +19,8 @@ PointLight::~PointLight()
 
 void PointLight::Initialize(DirectX::SimpleMath::Vector3 position, DirectX::SimpleMath::Vector3 color)
 {
+	PointLightManager::Add(this);
+	m_nowColor = { 0,0,0 };
 	m_position = position;
 	m_targetColor = color;
 	m_nowTime = 0.0f;

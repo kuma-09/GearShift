@@ -20,6 +20,7 @@ const std::vector<D3D11_INPUT_ELEMENT_DESC> DeferredRendering::INPUT_LAYOUT_L =
 };
 
 // 静的メンバ変数の初期化
+Graphics* DeferredRendering::s_graphics;
 std::unique_ptr<DX::RenderTexture> DeferredRendering::s_albedoRT;
 std::unique_ptr<DX::RenderTexture> DeferredRendering::s_normalRT;
 std::unique_ptr<DX::RenderTexture> DeferredRendering::s_depthRT;
@@ -51,14 +52,16 @@ void DeferredRendering::Initialize()
 {
 	using namespace DirectX::SimpleMath;
 
+	s_graphics = Graphics::GetInstance();
+
 	s_albedoRT = std::make_unique<DX::RenderTexture>(DXGI_FORMAT_R8G8B8A8_UNORM);
 	s_normalRT = std::make_unique<DX::RenderTexture>(DXGI_FORMAT_R10G10B10A2_UNORM);
 	s_depthRT  = std::make_unique<DX::RenderTexture>(DXGI_FORMAT_R32_FLOAT);
 	s_finalRT = std::make_unique<DX::RenderTexture>(DXGI_FORMAT_R8G8B8A8_UNORM);
 
-	auto device = Graphics::GetInstance()->GetDeviceResources()->GetD3DDevice();
-	auto context = Graphics::GetInstance()->GetDeviceResources()->GetD3DDeviceContext();
-	auto rect = Graphics::GetInstance()->GetDeviceResources()->GetOutputSize();
+	auto device = s_graphics->GetDeviceResources()->GetD3DDevice();
+	auto context = s_graphics->GetDeviceResources()->GetD3DDeviceContext();
+	auto rect = s_graphics->GetDeviceResources()->GetOutputSize();
 
 	s_albedoRT->SetDevice(device);
 	s_normalRT->SetDevice(device);
@@ -140,21 +143,21 @@ void DeferredRendering::Initialize()
 
 void DeferredRendering::BeginGBuffer()
 {
-	auto rect = Graphics::GetInstance()->GetDeviceResources()->GetOutputSize();
+	auto rect = s_graphics->GetDeviceResources()->GetOutputSize();
 
 	s_albedoRT->SetWindow(rect);
 	s_normalRT->SetWindow(rect);
 	s_depthRT->SetWindow(rect);
 	s_finalRT->SetWindow(rect);
 
-	auto context = Graphics::GetInstance()->GetDeviceResources()->GetD3DDeviceContext();
-	auto states  = Graphics::GetInstance()->GetCommonStates();
-	auto depthStencil = Graphics::GetInstance()->GetDeviceResources()->GetDepthStencilView();
+	auto context = s_graphics->GetDeviceResources()->GetD3DDeviceContext();
+	auto states  = s_graphics->GetCommonStates();
+	auto depthStencil = s_graphics->GetDeviceResources()->GetDepthStencilView();
 	auto albedoRTV = s_albedoRT->GetRenderTargetView();
 	auto normalRTV = s_normalRT->GetRenderTargetView();
 	auto depthRTV = s_depthRT->GetRenderTargetView();
-	auto view = Graphics::GetInstance()->GetViewMatrix();
-	auto projection = Graphics::GetInstance()->GetProjectionMatrix();
+	auto view = s_graphics->GetViewMatrix();
+	auto projection = s_graphics->GetProjectionMatrix();
 
 	ID3D11RenderTargetView* renderTargets[3] = { albedoRTV, normalRTV, depthRTV};
 	// -------------------------------------------------------------------------- //
@@ -184,10 +187,10 @@ void DeferredRendering::BeginGBuffer()
 
 void DeferredRendering::DrawGBuffer(bool texture)
 {
-	auto context = Graphics::GetInstance()->GetDeviceResources()->GetD3DDeviceContext();
-	auto state = Graphics::GetInstance()->GetCommonStates();
-	auto view = Graphics::GetInstance()->GetViewMatrix();
-	auto projection = Graphics::GetInstance()->GetProjectionMatrix();
+	auto context = s_graphics->GetDeviceResources()->GetD3DDeviceContext();
+	auto state = s_graphics->GetCommonStates();
+	auto view = s_graphics->GetViewMatrix();
+	auto projection = s_graphics->GetProjectionMatrix();
 
 	// シェーダを設定する
 	context->VSSetShader(s_vertexShader.Get(), nullptr, 0);
@@ -204,13 +207,13 @@ void DeferredRendering::DrawGBuffer(bool texture)
 
 void DeferredRendering::DeferredLighting()
 {
-	auto context = Graphics::GetInstance()->GetDeviceResources()->GetD3DDeviceContext();
-	auto device = Graphics::GetInstance()->GetDeviceResources()->GetD3DDevice();
+	auto context = s_graphics->GetDeviceResources()->GetD3DDeviceContext();
+	auto device = s_graphics->GetDeviceResources()->GetD3DDevice();
 	auto renderTarget = s_finalRT->GetRenderTargetView();
-	auto depthStencil = Graphics::GetInstance()->GetDeviceResources()->GetDepthStencilView();
-	auto view = Graphics::GetInstance()->GetViewMatrix();
-	auto projection = Graphics::GetInstance()->GetProjectionMatrix();
-	auto states = Graphics::GetInstance()->GetCommonStates();
+	auto depthStencil = s_graphics->GetDeviceResources()->GetDepthStencilView();
+	auto view = s_graphics->GetViewMatrix();
+	auto projection = s_graphics->GetProjectionMatrix();
+	auto states = s_graphics->GetCommonStates();
 
 	//renderTarget = Graphics::GetInstance()->GetDeviceResources()->GetRenderTargetView();
 	//context->ClearRenderTargetView(renderTarget, DirectX::Colors::Black);
@@ -221,7 +224,7 @@ void DeferredRendering::DeferredLighting()
 	ID3D11SamplerState* samplers[] = { m_shadowMapSampler.Get() };
 	context->PSSetSamplers(1, 1, samplers);
 	
-	auto const viewport = Graphics::GetInstance()->GetDeviceResources()->GetScreenViewport();
+	auto const viewport = s_graphics->GetDeviceResources()->GetScreenViewport();
 	context->RSSetViewports(1, &viewport);
 
 	ID3D11ShaderResourceView* albedo = s_albedoRT->GetShaderResourceView();
@@ -282,7 +285,7 @@ void DeferredRendering::GBufferShow()
 {
 	using namespace DirectX::SimpleMath;
 
-	RECT rect = Graphics::GetInstance()->GetDeviceResources()->GetOutputSize();
+	RECT rect = s_graphics->GetDeviceResources()->GetOutputSize();
 
 	s_spriteBatch->Begin();
 	s_spriteBatch->Draw(s_albedoRT->GetShaderResourceView(), Vector2{0,0}, &rect, DirectX::Colors::White, 0.0f, Vector2::Zero, 0.2f);

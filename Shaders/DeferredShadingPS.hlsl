@@ -91,7 +91,6 @@ float4 main(PS_INPUT input) : SV_TARGET
     
     for (int i = 0; i < lightNum; i++)
     {
-        
         // ŠgŽU”½ŽËŒõ
         float3 lightDirection = Position.xyz - lightPos[i].xyz;
         float3 toLight = normalize(-lightDirection);
@@ -104,6 +103,8 @@ float4 main(PS_INPUT input) : SV_TARGET
         //float intensity2 = max(dot(normal, halfVector), 0.0f);
         //float3 specular = pow(intensity2, SpecularPower) * SpecularColor;
     
+
+        
         // Œõ‚ÌŒ¸Š
         float attenuation = 1.0f / (att0 + att1 * lightDistance + att2 * lightDistance * lightDistance);
         diffuse *= attenuation;
