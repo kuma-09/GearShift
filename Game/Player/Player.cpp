@@ -113,7 +113,7 @@ void Player::Update(float elapsedTime)
 	// ’e‚ð”­ŽË
 	if (mouseState.leftButton) Shot();
 	// ‹ßÚUŒ‚
-	if (kb->IsKeyPressed(DirectX::Keyboard::Z)) ChangeState(GetAttack());
+	if (kb->IsKeyPressed(DirectX::Keyboard::Z)) 
 	// ƒŠƒ[ƒh
 	if (kb->IsKeyPressed(DirectX::Keyboard::R)) m_gun->Reload();
 
@@ -205,7 +205,7 @@ void Player::ChangeState(State* state)
 // ’e‚ð”­ŽË
 void Player::Shot()
 {
-	switch (m_bulletType % 2)
+	switch (m_bulletType % 3)
 	{
 	case 0:
 		m_gun->Shot(m_target);
@@ -214,6 +214,9 @@ void Player::Shot()
 	case 1:
 		m_missileLauncher->Shot(m_target);
 		m_exBulletMagazine->Initialize(m_missileLauncher->GetMagazineSize());
+		break;
+	case 2:
+		ChangeState(GetAttack());
 		break;
 	default:
 		break;
