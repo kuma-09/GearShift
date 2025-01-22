@@ -177,6 +177,8 @@ void DeferredRendering::BeginGBuffer()
 	cb->matView = view.Transpose();
 	cb->matProj = projection.Transpose();
 	cb->inverseViewProj = (view * projection).Invert();
+	cb->lightView = ShadowMap::GetLightView().Transpose();
+	cb->lightProj = ShadowMap::GetLightProj().Transpose();
 	// マップを解除する
 	context->Unmap(s_constantBuffer.Get(), 0);
 	// 定数バッファの設定
@@ -192,8 +194,11 @@ void DeferredRendering::DrawGBuffer(bool texture)
 	auto view = s_graphics->GetViewMatrix();
 	auto projection = s_graphics->GetProjectionMatrix();
 
+	auto shadowMapTexture = ShadowMap::GetShadowRenderTexture()->GetShaderResourceView();
+
 	// シェーダを設定する
 	context->VSSetShader(s_vertexShader.Get(), nullptr, 0);
+	context->PSSetShaderResources(1, 1, &shadowMapTexture);
 	if (texture)
 	{
 		context->PSSetShader(s_pixelShader_tex.Get(), nullptr, 0);

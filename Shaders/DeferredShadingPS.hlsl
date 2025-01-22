@@ -62,30 +62,31 @@ float4 main(PS_INPUT input) : SV_TARGET
 	float3 Position = ReconstructWorldPositionFromDepth(input.Texture, depth);
     // -------------------------------------
     
-	// diffuse------------------------------
+	// ŠgŽU”½ŽËŒõ------------------------------
     float3 toLight = normalize(-LightDirection[0]);
     float intensity1 = max(dot(normal, toLight), 0.0f);
     float3 diffuse = albedo.rgb * toLight * intensity1 + 0.5f;
 	// -------------------------------------
     
-	//// specular-----------------------------
+	//// ‹¾–Ê”½ŽË-----------------------------
     //   float toEye = normalize(EyePosition - Position.xyz);
     //   float3 halfVector = normalize(toLight + toEye);
     //   float intensity2 = max(dot(normal, halfVector), 0.0f);
     //   float3 specular = pow(intensity2, specularPower) * specularColor;
 	//// -------------------------------------
 
-    // shadow-------------------------------
+    //// shadow-------------------------------
     //float shadow = VSM_Filter(depth, input.Texture, depth.r);
     //shadow = readShadowMap(shadow,Position);
-    
-    float shadow = readShadowMap(Position,depth);
-    // -------------------------------------
+    //float shadow = readShadowMap(Position,depth);
+    //// -------------------------------------
 
-    float3 toEye = normalize(EyePosition - Position.xyz);
-    half rim = 1.0 - saturate(dot(normalize(normal), normalize(toEye)));
-    rim = step(0.5f, rim);
-    float3 finalColor = albedo.rgb * diffuse * shadow;
+    //// ƒŠƒ€ƒ‰ƒCƒg----------------------------
+    //float3 toEye = normalize(EyePosition - Position.xyz);
+    //half rim = 1.0 - saturate(dot(normalize(normal), normalize(toEye)));
+    //rim = step(0.5f, rim);
+    // ---------------------------------------
+    float3 finalColor = albedo.rgb * diffuse;
     //finalColor += rim * float3(1, 1, 1);
     //finalColor = lerp(finalColor, float3(1, 0, 0), rim);
     

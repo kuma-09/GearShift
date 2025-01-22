@@ -1,10 +1,17 @@
 #include "Common.hlsli"
 
+Texture2D<float4> ShadowMap : register(t1);
+
 cbuffer Parameters : register(b1)
 {
     matrix matView;
     matrix matProj;
     matrix inverseViewProj;
+    matrix lightView;
+    matrix lightProj;
+    int lightNum;
+    float3 lightPos[128];
+    float3 lightColor[128];
 }
 
 struct PS_INPUT
@@ -22,6 +29,35 @@ struct PS_OUTPUT
     float4 rt1 : SV_Target1;
     float4 rt2 : SV_Target2;
 };
+
+float readShadowMap(float3 worldPos, float fragDepth)
+{
+    // ライトからの投影空間にする
+    float4 LightPosPS = mul(float4(worldPos, 1), lightView);
+    LightPosPS = mul(LightPosPS, lightProj);
+    
+    LightPosPS.xyz /= LightPosPS.w;
+
+    // 参照するシャドウマップのUV値を求める
+    float2 uv = (LightPosPS.xy) * float2(0.5f, -0.5f) + 0.5f;
+    
+    // UV座標が有効範囲外の場合の処理
+    if (uv.x > 1.0f || uv.x < 0.0f || uv.y > 1.0f || uv.y < 0.0f)
+    {
+        return 1.0f;
+    }
+    
+    float bias = 0.0000005f;
+    float percentLit = 1.0f;
+    // シャドウマップの深度値とライト空間のピクセルのZ値を比較して影になるか調べる
+    //float percentLit = VSM_Filter(uv, LightPosPS.z);
+    if (ShadowMap.Sample(Sampler, uv).r < LightPosPS.z - bias)
+    {
+        percentLit = 0.5f;
+    }
+    
+    return max(percentLit, 0);
+}
 
 float LinearizeDepth(float depth, float near, float far)
 {
@@ -60,7 +96,7 @@ PS_OUTPUT main(PS_INPUT input)
     clip(dither - 64 * clipRate);
     
     // テクスチャカラー
-    output.rt0 = Texture.Sample(Sampler, input.TexCoord);
+    output.rt0 = Texture.Sample(Sampler, input.TexCoord) * readShadowMap(input.PositionWS.xyz,0);
     // ワールドNORMAL
     output.rt1 = float4(input.Normal, 1.0f);
     // 深度
