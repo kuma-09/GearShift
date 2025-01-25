@@ -28,12 +28,15 @@ void RenderManager::Add(Trail* component)
 
 void RenderManager::CreateShadowMap()
 {
-	ShadowMap::BeginDepth();
-	for (auto& modelDraw: s_modelDraws)
+	for (int i = 0; i < 4; i++)
 	{
-		modelDraw->CreateShadow();
+		ShadowMap::BeginDepth(i);
+		for (auto& modelDraw : s_modelDraws)
+		{
+			modelDraw->CreateShadow();
+		}
+		ShadowMap::EndDepth();
 	}
-	ShadowMap::EndDepth();
 }
 
 void RenderManager::RenderObjects()

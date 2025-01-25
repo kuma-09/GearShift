@@ -80,8 +80,8 @@ void PlayScene::Initialize(Game* game)
 
     CreateMenu();
 
-    m_skyDome = std::make_unique<SkyDome>();
-    m_skyDome->Initialize(Vector3::Zero);
+    //m_skyDome = std::make_unique<SkyDome>();
+    //m_skyDome->Initialize(Vector3::Zero);
 
     m_targetArea = std::make_unique<TargetArea>();
     m_targetArea->Initialize();

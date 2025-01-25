@@ -137,7 +137,7 @@ void DeferredRendering::Initialize()
 	sampler_desc.AddressU = D3D11_TEXTURE_ADDRESS_CLAMP;
 	sampler_desc.AddressV = D3D11_TEXTURE_ADDRESS_CLAMP;
 	sampler_desc.AddressW = D3D11_TEXTURE_ADDRESS_CLAMP;
-	//sampler_desc.ComparisonFunc = D3D11_COMPARISON_LESS;
+	sampler_desc.ComparisonFunc = D3D11_COMPARISON_LESS;
 	device->CreateSamplerState(&sampler_desc, m_shadowMapSampler.ReleaseAndGetAddressOf());
 }
 
@@ -177,8 +177,6 @@ void DeferredRendering::BeginGBuffer()
 	cb->matView = view.Transpose();
 	cb->matProj = projection.Transpose();
 	cb->inverseViewProj = (view * projection).Invert();
-	cb->lightView = ShadowMap::GetLightView().Transpose();
-	cb->lightProj = ShadowMap::GetLightProj().Transpose();
 	// マップを解除する
 	context->Unmap(s_constantBuffer.Get(), 0);
 	// 定数バッファの設定
@@ -194,11 +192,8 @@ void DeferredRendering::DrawGBuffer(bool texture)
 	auto view = s_graphics->GetViewMatrix();
 	auto projection = s_graphics->GetProjectionMatrix();
 
-	auto shadowMapTexture = ShadowMap::GetShadowRenderTexture()->GetShaderResourceView();
-
 	// シェーダを設定する
 	context->VSSetShader(s_vertexShader.Get(), nullptr, 0);
-	context->PSSetShaderResources(1, 1, &shadowMapTexture);
 	if (texture)
 	{
 		context->PSSetShader(s_pixelShader_tex.Get(), nullptr, 0);
@@ -235,7 +230,10 @@ void DeferredRendering::DeferredLighting()
 	ID3D11ShaderResourceView* albedo = s_albedoRT->GetShaderResourceView();
 	ID3D11ShaderResourceView* normal = s_normalRT->GetShaderResourceView();
 	ID3D11ShaderResourceView* depth = s_depthRT->GetShaderResourceView();
-	ID3D11ShaderResourceView* shadow = ShadowMap::GetShadowRenderTexture()->GetShaderResourceView();
+	ID3D11ShaderResourceView* shadow0 = ShadowMap::GetShadowRenderTexture(0)->GetShaderResourceView();
+	ID3D11ShaderResourceView* shadow1 = ShadowMap::GetShadowRenderTexture(1)->GetShaderResourceView();
+	ID3D11ShaderResourceView* shadow2 = ShadowMap::GetShadowRenderTexture(2)->GetShaderResourceView();
+	ID3D11ShaderResourceView* shadow3 = ShadowMap::GetShadowRenderTexture(3)->GetShaderResourceView();
 
 	// 定数バッファをマップする
 	D3D11_MAPPED_SUBRESOURCE mappedResource;
@@ -244,8 +242,14 @@ void DeferredRendering::DeferredLighting()
 	cb->matView = view.Transpose();
 	cb->matProj = projection.Transpose();
 	cb->inverseViewProj = (view * projection).Invert();
-	cb->lightView = ShadowMap::GetLightView().Transpose();
-	cb->lightProj = ShadowMap::GetLightProj().Transpose();
+	cb->lightView[0] = ShadowMap::GetLightView(0).Transpose();
+	cb->lightView[1] = ShadowMap::GetLightView(1).Transpose();
+	cb->lightView[2] = ShadowMap::GetLightView(2).Transpose();
+	cb->lightView[3] = ShadowMap::GetLightView(3).Transpose();
+	cb->lightProj[0] = ShadowMap::GetLightProj(0).Transpose();
+	cb->lightProj[1] = ShadowMap::GetLightProj(1).Transpose();
+	cb->lightProj[2] = ShadowMap::GetLightProj(2).Transpose();
+	cb->lightProj[3] = ShadowMap::GetLightProj(3).Transpose();
 	cb->lightNum = PointLightManager::GetPointLights().size();
 	for (int i = 0; i < PointLightManager::GetPointLights().size(); i++)
 	{
@@ -271,7 +275,10 @@ void DeferredRendering::DeferredLighting()
 	context->PSSetShaderResources(1, 1, &albedo);
 	context->PSSetShaderResources(2, 1, &normal);
 	context->PSSetShaderResources(3, 1, &depth);
-	context->PSSetShaderResources(4, 1, &shadow);
+	context->PSSetShaderResources(4, 1, &shadow0);
+	context->PSSetShaderResources(5, 1, &shadow1);
+	context->PSSetShaderResources(6, 1, &shadow2);
+	context->PSSetShaderResources(7, 1, &shadow3);
 	context->VSSetShader(s_vertexShader_light.Get(), nullptr, 0);
 	context->PSSetShader(s_pixelShader_light.Get(), nullptr, 0);
 	context->IASetInputLayout(m_inputLayoutLight.Get());

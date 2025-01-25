@@ -24,7 +24,7 @@ Microsoft::WRL::ComPtr<ID3D11PixelShader>  ShadowMap::m_PS_Depth;
 
 Microsoft::WRL::ComPtr<ID3D11Buffer> ShadowMap::m_CBuffer;
 
-std::unique_ptr<DX::RenderTexture> ShadowMap::m_shadowMapRT;
+std::unique_ptr<DX::RenderTexture> ShadowMap::m_shadowMapRT[4];
 std::unique_ptr<DepthStencil> ShadowMap::m_shadowMapDS;
 
 void ShadowMap::Initialize()
@@ -39,7 +39,7 @@ void ShadowMap::Initialize()
     s_spriteBatch = std::make_unique<DirectX::SpriteBatch>(context);
 
     // ライトの位置
-    m_lightPosition = Vector3{ 5, 50, 5 };
+    m_lightPosition = Vector3{ 0, 50, 0 };
     m_targetPosition = Vector3::Zero;
 
     // ライトの回転
@@ -48,12 +48,15 @@ void ShadowMap::Initialize()
 
     m_lightTheta = 15.f;
 
-    RECT rect = { 0, 0, SHADOWMAP_SIZE, SHADOWMAP_SIZE };
+    RECT rect = { 0, 0, SHADOWMAP_SIZE_X, SHADOWMAP_SIZE_Y };
 
-    // レンダーテクスチャの作成（シャドウマップ用）
-    m_shadowMapRT = std::make_unique<DX::RenderTexture>(DXGI_FORMAT_R32_FLOAT);
-    m_shadowMapRT->SetDevice(device);
-    m_shadowMapRT->SetWindow(rect);
+    for (int i = 0; i < 4; i++)
+    {
+        // レンダーテクスチャの作成（シャドウマップ用）
+        m_shadowMapRT[i] = std::make_unique<DX::RenderTexture>(DXGI_FORMAT_R32_FLOAT);
+        m_shadowMapRT[i]->SetDevice(device);
+        m_shadowMapRT[i]->SetWindow(rect);
+    }
 
     // デプスステンシルの作成（シャドウマップ用）
     m_shadowMapDS = std::make_unique<DepthStencil>(DXGI_FORMAT_D32_FLOAT);
@@ -90,7 +93,7 @@ void ShadowMap::Initialize()
 
     // サンプラーの作成（シャドウマップ用）
     D3D11_SAMPLER_DESC sampler_desc = CD3D11_SAMPLER_DESC(D3D11_DEFAULT);
-    sampler_desc.Filter = D3D11_FILTER_COMPARISON_MIN_MAG_MIP_LINEAR;
+    sampler_desc.Filter = D3D11_FILTER_COMPARISON_MIN_LINEAR_MAG_MIP_POINT;
     sampler_desc.AddressU = D3D11_TEXTURE_ADDRESS_BORDER;
     sampler_desc.AddressV = D3D11_TEXTURE_ADDRESS_BORDER;
     sampler_desc.AddressW = D3D11_TEXTURE_ADDRESS_BORDER;
@@ -98,7 +101,7 @@ void ShadowMap::Initialize()
     device->CreateSamplerState(&sampler_desc, m_shadowMapSampler.ReleaseAndGetAddressOf());
 }
 
-void ShadowMap::BeginDepth()
+void ShadowMap::BeginDepth(int num)
 {
     using namespace DirectX;
     using namespace DirectX::SimpleMath;
@@ -110,7 +113,7 @@ void ShadowMap::BeginDepth()
     ID3D11ShaderResourceView* nullsrv[] = { nullptr };
     context->PSSetShaderResources(1, 1, nullsrv);
 
-    auto rtv = m_shadowMapRT->GetRenderTargetView();
+    ID3D11RenderTargetView* rtv = m_shadowMapRT[num]->GetRenderTargetView();
     //auto srv = m_shadowMapRT->GetShaderResourceView();
     auto dsv = m_shadowMapDS->GetDepthStencilView();
 
@@ -124,11 +127,13 @@ void ShadowMap::BeginDepth()
     context->OMSetRenderTargets(1, &rtv, dsv);
 
     // ビューポートを設定
-    D3D11_VIEWPORT vp = { 0.0f, 0.0f, SHADOWMAP_SIZE, SHADOWMAP_SIZE, 0.0f, 1.0f };
+    D3D11_VIEWPORT vp = { 0.0f, 0.0f, SHADOWMAP_SIZE_X, SHADOWMAP_SIZE_Y, 0.0f, 1.0f };
     context->RSSetViewports(1, &vp);
 
     // ライトの方向
     SimpleMath::Vector3 lightDir = SimpleMath::Vector3::Transform(SimpleMath::Vector3(0.0f, 0.0f, 1.0f), m_lightRotate);
+
+    Vector3 targetPosition = m_targetPosition + Vector3{ 0,0,m_targetPosition.z / 2 * num };
 
     // ビュー行列を作成
     auto view = SimpleMath::Matrix::CreateLookAt(
@@ -137,9 +142,17 @@ void ShadowMap::BeginDepth()
         SimpleMath::Vector3::UnitY
     );
 
+
+    float lightTheta = m_lightTheta;
+
+    for (int i = 0; i < num; i++)
+    {
+        lightTheta *= 2;
+    }
+
     // 射影行列を作成
     auto proj = SimpleMath::Matrix::CreatePerspectiveFieldOfView(
-        XMConvertToRadians(m_lightTheta), 1.0f, 0.1f, 300.0f);
+        XMConvertToRadians(lightTheta), float(SHADOWMAP_SIZE_X) / float(SHADOWMAP_SIZE_Y), 0.1f, 300.0f);
 
     D3D11_MAPPED_SUBRESOURCE mappedResource;
 
@@ -200,49 +213,68 @@ void ShadowMap::EndDepth()
 void ShadowMap::SetLightPosition(DirectX::SimpleMath::Vector3 targetPos)
 {
     using namespace DirectX::SimpleMath;
-    //m_lightPosition = targetPos + Vector3{ 5, 50, 5 };
+    //m_lightPosition = targetPos + Vector3{ 10, 50, 10 };
     m_targetPosition = targetPos;
 }
 
-DirectX::SimpleMath::Matrix ShadowMap::GetLightView()
+DirectX::SimpleMath::Matrix ShadowMap::GetLightView(int num)
 {
-    using namespace DirectX;
+    using namespace DirectX::SimpleMath;
+
+
+
+
+    Vector3 targetPosition = m_targetPosition + Vector3{ 0,0,m_targetPosition.z / 2 * num };
 
     // ビュー行列を作成
-    auto view = SimpleMath::Matrix::CreateLookAt(
+    auto view = Matrix::CreateLookAt(
         m_lightPosition,
         m_targetPosition,
-        SimpleMath::Vector3::UnitY
+        Vector3::UnitY
     );
 
     return view;
 }
 
-DirectX::SimpleMath::Matrix ShadowMap::GetLightProj()
+DirectX::SimpleMath::Matrix ShadowMap::GetLightProj(int num)
 {
     using namespace DirectX;
 
+    float lightTheta = m_lightTheta;
+
+    for (int i = 0; i < num; i++)
+    {
+        lightTheta *= 2;
+    }
+
     // 射影行列を作成
     auto proj = SimpleMath::Matrix::CreatePerspectiveFieldOfView(
-        DirectX::XMConvertToRadians(m_lightTheta), 1.0f, 0.1f, 300.0f);
-
+        XMConvertToRadians(lightTheta), float(SHADOWMAP_SIZE_X) / float(SHADOWMAP_SIZE_Y), 0.1f, 300.0f);
     return proj;
 }
 
 
-DX::RenderTexture* ShadowMap::GetShadowRenderTexture()
+DX::RenderTexture* ShadowMap::GetShadowRenderTexture(int num)
 {
-    return m_shadowMapRT.get();
+    return m_shadowMapRT[num].get();
 }
 
 void ShadowMap::ShadowMapShow()
 {
     using namespace DirectX::SimpleMath;
 
-    ID3D11ShaderResourceView* srv = m_shadowMapRT->GetShaderResourceView();
-    RECT rect = { 0,0,SHADOWMAP_SIZE,SHADOWMAP_SIZE };
+    ID3D11ShaderResourceView* srv[4];
+        
+    for (int i = 0; i < 4; i++)
+    {
+        srv[i] = m_shadowMapRT[i]->GetShaderResourceView();
+    }
+    RECT rect = { 0,0,SHADOWMAP_SIZE_X,SHADOWMAP_SIZE_Y };
 
     s_spriteBatch->Begin();
-    s_spriteBatch->Draw(srv, Vector2{ 1280,0 }, &rect, DirectX::Colors::White, 0.0f, Vector2{ SHADOWMAP_SIZE,0 }, 0.5f);
+    for ( int i = 0; i < 4; i++)
+    {
+        s_spriteBatch->Draw(srv[i], Vector2{1280,float(i) * 256.f}, &rect, DirectX::Colors::White, 0.0f, Vector2{SHADOWMAP_SIZE_X,0}, 0.5f);
+    }
     s_spriteBatch->End();
 }

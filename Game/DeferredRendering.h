@@ -42,8 +42,8 @@ private:
 		DirectX::XMMATRIX matView;
 		DirectX::XMMATRIX matProj;
 		DirectX::XMMATRIX inverseViewProj;
-		DirectX::XMMATRIX lightView;
-		DirectX::XMMATRIX lightProj;
+		DirectX::XMMATRIX lightView[4];
+		DirectX::XMMATRIX lightProj[4];
 		int               lightNum;
 		DirectX::XMVECTOR lightPos[128];
 		DirectX::XMVECTOR lightColor[128];

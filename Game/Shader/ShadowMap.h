@@ -9,16 +9,16 @@ class ShadowMap
 {
 public:
 	static void Initialize();
-	static void BeginDepth();
+	static void BeginDepth(int num);
 	static void RenderDepth();
 	static void EndDepth();
 
 	static void SetLightPosition(DirectX::SimpleMath::Vector3 targetPos);
 
-	static DirectX::SimpleMath::Matrix GetLightView();
-	static DirectX::SimpleMath::Matrix GetLightProj();
+	static DirectX::SimpleMath::Matrix GetLightView(int num);
+	static DirectX::SimpleMath::Matrix GetLightProj(int num);
 
-	static DX::RenderTexture* GetShadowRenderTexture();
+	static DX::RenderTexture* GetShadowRenderTexture(int num);
 	static void ShadowMapShow();
 
 private:
@@ -66,10 +66,11 @@ private:
 
 	// シャドウマップテクスチャ---
 	// シャドウマップのサイズ
-	static const int SHADOWMAP_SIZE = 512;
+	static const int SHADOWMAP_SIZE_X = 1280;
+	static const int SHADOWMAP_SIZE_Y = 720;
 
 	// シャドウマップ用（レンダーテクスチャ）
-	static std::unique_ptr<DX::RenderTexture> m_shadowMapRT;
+	static std::unique_ptr<DX::RenderTexture> m_shadowMapRT[4];
 	// シャドウマップ用（デプスステンシル）
 	static std::unique_ptr<DepthStencil> m_shadowMapDS;
 };
