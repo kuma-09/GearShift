@@ -53,7 +53,7 @@ void ShadowMap::Initialize()
     for (int i = 0; i < 4; i++)
     {
         // レンダーテクスチャの作成（シャドウマップ用）
-        m_shadowMapRT[i] = std::make_unique<DX::RenderTexture>(DXGI_FORMAT_R32_FLOAT);
+        m_shadowMapRT[i] = std::make_unique<DX::RenderTexture>(DXGI_FORMAT_R32G32_FLOAT);
         m_shadowMapRT[i]->SetDevice(device);
         m_shadowMapRT[i]->SetWindow(rect);
     }
