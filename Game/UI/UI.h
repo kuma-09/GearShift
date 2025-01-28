@@ -13,6 +13,7 @@ public:
 
 	DirectX::SpriteBatch* GetSpriteBatch() { return m_spriteBatch.get(); }
 	ID3D11ShaderResourceView* GetTexture() { return m_texture.Get(); }
+	void SetTexture(const wchar_t* path);
 
 
 private:

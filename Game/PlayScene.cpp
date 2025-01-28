@@ -80,8 +80,8 @@ void PlayScene::Initialize(Game* game)
 
     CreateMenu();
 
-    //m_skyDome = std::make_unique<SkyDome>();
-    //m_skyDome->Initialize(Vector3::Zero);
+    m_skyDome = std::make_unique<SkyDome>();
+    m_skyDome->Initialize(Vector3::Zero);
 
     m_targetArea = std::make_unique<TargetArea>();
     m_targetArea->Initialize();
@@ -97,8 +97,19 @@ void PlayScene::Initialize(Game* game)
     m_startAnimation = std::make_unique<StartAnimation>();
     m_startAnimation->Initialize();
     m_finishAnimation = std::make_unique<FinishAnimation>();
-    m_tutorial = std::make_unique<Tutorial>();
 
+    // チュートリアルUI
+    m_tutorial = std::make_unique<Tutorial>();
+    if (StageDataManager::GetStageNum() == 1)
+    {
+        m_tutorial->Initialize(true);
+    }
+    else
+    {
+        m_tutorial->Initialize(false);
+    }
+
+    // 残りの敵の数UI
     auto enemys = ObjectManager::GetTypeObjects(Type::Enemy);
     m_remainingEnemyUI = std::make_unique<RemainingEnemyUI>();
     m_remainingEnemyUI->Initialize({ 1150,30 }, enemys.size());

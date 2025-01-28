@@ -17,7 +17,6 @@ HomingBullet::HomingBullet(IScene* scene, Collider::TypeID id)
 	AddComponent<Collider>();
 	AddComponent<ModelDraw>();
 	AddComponent<Emitter>();
-	AddComponent<PointLight>();
 	GetComponent<Collider>()->Initialize(id,Collider::Trigger, { 0.1f,0.1f,0.1f });
 	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetCubeModel());
 	GetComponent<Emitter>()->Initialize(L"Resources/Textures/whitePuff00.png",1.0f,0.025f,0.3f);
@@ -72,7 +71,6 @@ void HomingBullet::Shot(GameObject* object)
 	SetVelocity(velocity);
 	SetState(BulletState::FLYING);
 	GetComponent<Collider>()->SetActive(true);
-	GetComponent<PointLight>()->Initialize(GetPosition(),{0.25f,0.25f,0.25f});
 }
 
 void HomingBullet::Shot(GameObject* object, float period)
@@ -121,7 +119,6 @@ void HomingBullet::Hit()
 
 		Audio::GetInstance()->PlaySoundSE_Hit();
 		GetComponent<Collider>()->SetActive(false);
-		GetComponent<PointLight>()->ClearColor();
 	}
 }
 

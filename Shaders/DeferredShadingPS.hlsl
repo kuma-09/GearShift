@@ -50,6 +50,9 @@ float readShadowMap(float3 worldPos);
 // バイアス値を計算
 float CalculateShadowBias(float lightViewDepth, float slopeScale, float constantBias);
 
+// それぞれのシャドウマップを計算
+float conputeShadow(float4x4 view, float4x4 proj, float3 worldPos, Texture2D ShadowMap);
+
 // 分散シャドウマップ
 float VSM_Filter(float2 depth, float fragDepth);
 
@@ -170,31 +173,49 @@ float readShadowMap(float3 worldPos)
     
     if (uv.x > 0 && uv.x < 1 && uv.y > 0 && uv.y < 1)
     {
-        percentLit = VSM_Filter(ShadowMap0.Sample(ShadowMapSampler, uv).rg, LightPosPS.z);
-        percentLit *= 0.5f;
-        percentLit += 0.5f;
-        return percentLit;
+        
+        if (ShadowMap0.Sample(ShadowMapSampler, uv).r < LightPosPS.z - CalculateShadowBias(LightPosPS.z, bias / 100, bias))
+        {
+            percentLit = 0.5f;
+        }
+        
+        //percentLit = VSM_Filter(ShadowMap0.Sample(ShadowMapSampler, uv).rg, LightPosPS.z);
+        //percentLit *= 0.5f;
+        //percentLit += 0.5f;
+        //return percentLit;
     }
     else if (uv1.x > 0 && uv1.x < 1 && uv1.y > 0 && uv1.y < 1)
     {
-        percentLit = VSM_Filter(ShadowMap1.Sample(ShadowMapSampler, uv1).rg, LightPosPS1.z);
-        percentLit *= 0.5f;
-        percentLit += 0.5f;
-        return percentLit;
+        if (ShadowMap1.Sample(ShadowMapSampler, uv1).r < LightPosPS1.z - CalculateShadowBias(LightPosPS1.z, bias / 100, bias))
+        {
+            percentLit = 0.5f;
+        }
+        //percentLit = VSM_Filter(ShadowMap1.Sample(ShadowMapSampler, uv1).rg, LightPosPS1.z);
+        //percentLit *= 0.5f;
+        //percentLit += 0.5f;
+        //return percentLit;
     }
     else if (uv2.x > 0 && uv2.x < 1 && uv2.y > 0 && uv2.y < 1)
     {
-        percentLit = VSM_Filter(ShadowMap2.Sample(ShadowMapSampler, uv2).rg, LightPosPS2.z);
-        percentLit *= 0.5f;
-        percentLit += 0.5f;
-        return percentLit;
+        if (ShadowMap2.Sample(ShadowMapSampler, uv2).r < LightPosPS2.z - CalculateShadowBias(LightPosPS2.z, bias / 100, bias))
+        {
+            percentLit = 0.5f;
+        }
+        //percentLit = VSM_Filter(ShadowMap2.Sample(ShadowMapSampler, uv2).rg, LightPosPS2.z);
+        //percentLit *= 0.5f;
+        //percentLit += 0.5f;
+        //return percentLit;
     }
     else if (uv3.x > 0 && uv3.x < 1 && uv3.y > 0 && uv3.y < 1)
     {
-        percentLit = VSM_Filter(ShadowMap3.Sample(ShadowMapSampler, uv3).rg, LightPosPS3.z);
-        percentLit *= 0.5f;
-        percentLit += 0.5f;
-        return percentLit;
+        if (ShadowMap3.Sample(ShadowMapSampler, uv3).r < LightPosPS3.z - CalculateShadowBias(LightPosPS3.z, bias / 100, bias))
+        {
+            percentLit = 0.5f;
+        }
+        //percentLit = VSM_Filter(ShadowMap3.Sample(ShadowMapSampler, uv3).rg, LightPosPS3.z);
+        //percentLit *= 0.5f;
+        //percentLit += 0.5f;
+        //return percentLit;
     }
     
     return max(percentLit, 0);
@@ -204,6 +225,23 @@ float CalculateShadowBias(float lightViewDepth, float slopeScale, float constant
 {
     float depthSlope = abs(ddx(lightViewDepth)) + abs(ddy(lightViewDepth));
     return slopeScale * depthSlope + constantBias;
+}
+
+float conputeShadow(float4x4 view, float4x4 proj, float3 worldPos, Texture2D ShadowMap)
+{
+    float bias = 0.000005f;
+    
+    // ライトからの投影空間にする
+    float4 LightPosPS = mul(float4(worldPos, 1), view);
+    LightPosPS = mul(LightPosPS, proj);
+    LightPosPS.xyz /= LightPosPS.w;
+    // 参照するシャドウマップのUV値を求める
+    float2 uv = (LightPosPS.xy) * float2(0.5f, -0.5f) + 0.5f;
+    if (ShadowMap.Sample(ShadowMapSampler, uv).r < LightPosPS.z - CalculateShadowBias(LightPosPS.z, bias / 100, bias))
+    {
+        return 0.5f;
+    }
+    return 1.0f;
 }
 
 float VSM_Filter(float2 depth, float fragDepth)

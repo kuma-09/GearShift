@@ -14,10 +14,10 @@ namespace Easing
 	float OutCubic(float time, float targetTime);
 	float OutQuart(float time, float targetTime);
 
-	float InOutSine(float time, float targetTime);
-	float InOutQuad(float time, float targetTime);
-	float InOutCubic(float time, float targetTime);
-	float InOutQuart(float time, float targetTime);
+	float InOutSine(float time, float targetTime,bool isReturn=false);
+	float InOutQuad(float time, float targetTime,bool isReturn=false);
+	float InOutCubic(float time, float targetTime,bool isReturn=false);
+	float InOutQuart(float time, float targetTime,bool isReturn=false);
 
 	DirectX::SimpleMath::Vector3 InOutCubic(const DirectX::SimpleMath::Vector3& start, const DirectX::SimpleMath::Vector3& end, float t);
 	DirectX::SimpleMath::Vector3 InOutQuart(const DirectX::SimpleMath::Vector3& start, const DirectX::SimpleMath::Vector3& end, float t);

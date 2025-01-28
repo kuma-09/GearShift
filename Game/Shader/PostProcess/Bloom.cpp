@@ -157,26 +157,17 @@ void Bloom::EndBloom(ID3D11ShaderResourceView* srv)
     // -------------------------------------------------------------------------- //
     // レンダーターゲットとビューポートを元に戻す
     // -------------------------------------------------------------------------- //
-    context->ClearRenderTargetView(offscreenRTV_Bloom, Colors::Black);
+    context->ClearRenderTargetView(finalRTV, Colors::Black);
     context->ClearDepthStencilView(depthStencil, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
-    context->OMSetRenderTargets(1, &offscreenRTV_Bloom, depthStencil);
+    context->OMSetRenderTargets(1, &finalRTV, depthStencil);
     auto const viewport = m_graphics->GetDeviceResources()->GetScreenViewport();
     context->RSSetViewports(1, &viewport);
 
     ////// -------------------------------------------------------------------------- //
     m_dualPostProcess->SetEffect(DualPostProcess::BloomCombine);
     m_dualPostProcess->SetBloomCombineParameters(5.0f, 1.0f, 1.0f, 1.0f);
-    m_dualPostProcess->SetSourceTexture(offscreenSRV_Bloom);
-    m_dualPostProcess->SetSourceTexture2(blur1SRV);
-    m_dualPostProcess->Process(context);
-
-    context->ClearRenderTargetView(finalRTV, Colors::Black);
-    context->OMSetRenderTargets(1, &finalRTV, nullptr);
-
-    m_dualPostProcess->SetEffect(DualPostProcess::Merge);
-    m_dualPostProcess->SetMergeParameters(1, 1);
     m_dualPostProcess->SetSourceTexture(srv);
-    m_dualPostProcess->SetSourceTexture2(offscreenSRV_Bloom);
+    m_dualPostProcess->SetSourceTexture2(blur1SRV);
     m_dualPostProcess->Process(context);
 
 }

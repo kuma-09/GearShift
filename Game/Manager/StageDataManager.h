@@ -5,6 +5,7 @@ class StageDataManager
 {
 public :
 	static void SetStageNum(int num);
+	static const int& GetStageNum() { return s_nowStageNum; }
 	static void SetClearTime(int time);
 	static int GetClearTime();
 	static std::wstring GetStageFileName();

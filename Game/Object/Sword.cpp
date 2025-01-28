@@ -19,7 +19,7 @@ Sword::Sword(IScene* scene, Collider::TypeID id)
 	AddComponent<Trail>();
 	AddComponent<PointLight>();
 	GetComponent<Collider>()->Initialize(id,Collider::Fixed, { 0.5f,0.5f,0.5f});
-	GetComponent<Trail>()->Initialize(L"Resources/Textures/white.png", 10,DirectX::Colors::LightBlue);
+	GetComponent<Trail>()->Initialize(L"Resources/Textures/white.png", 10,DirectX::Colors::CadetBlue);
 	SetScale({1.2f, 1.2f, 1.2f});
 	SetState(SwordState::UNUSED);
 }

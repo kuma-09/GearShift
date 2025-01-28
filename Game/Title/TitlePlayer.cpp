@@ -16,7 +16,7 @@
 #include "Game/Parts/LeftLeg.h"
 #include "Game/Parts/RightLeg.h"
 
-
+#include "Game/Shader/ShadowMap.h"
 
 TitlePlayer::TitlePlayer(IScene* scene)
 {
@@ -49,12 +49,10 @@ void TitlePlayer::Update(float elapsedTime)
 	UpdateParts(elapsedTime);
 
 	m_gun->Update(elapsedTime);
-
 	Matrix world = Matrix::Identity;
 	world *= Matrix::CreateTranslation(GetPosition());
 
 	SetWorld(world);
-
 }
 
 void TitlePlayer::CreateShadow()

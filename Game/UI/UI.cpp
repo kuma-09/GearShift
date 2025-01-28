@@ -33,7 +33,6 @@ UI::~UI()
 
 void UI::Initialize()
 {
-
 }
 
 void UI::Render(DirectX::SimpleMath::Vector2 pos, DirectX::XMVECTORF32 color, DirectX::SimpleMath::Vector2 origin, DirectX::SimpleMath::Vector2 size)
@@ -47,8 +46,31 @@ void UI::Render(DirectX::SimpleMath::Vector2 pos, DirectX::XMVECTORF32 color, Di
 	float value = float(windowsize.right) / x;
 	
 
-    m_spriteBatch->Begin();
+	auto context = m_graphics->GetDeviceResources()->GetD3DDeviceContext();
+	auto state = m_graphics->GetCommonStates();
+
+
+	//	”¼“§–¾•`‰æw’è
+	ID3D11BlendState* blendstate = state->NonPremultiplied();
+
+
+	m_spriteBatch->Begin(SpriteSortMode_BackToFront, blendstate);
 	m_spriteBatch->Draw(GetTexture(), pos * value, 0, color, 0, origin, Vector2{size.x * value, size.y * value});
     m_spriteBatch->End();
 
+}
+
+void UI::SetTexture(const wchar_t* path)
+{
+    using namespace DirectX;
+    auto device = m_graphics->GetDeviceResources()->GetD3DDevice();
+    // ‰æ‘œ‚ğƒ[ƒh‚·‚é
+    DX::ThrowIfFailed(
+        CreateWICTextureFromFile(
+            device,
+            path,
+            nullptr,
+            m_texture.ReleaseAndGetAddressOf()
+        )
+    );
 }

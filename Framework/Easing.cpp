@@ -71,30 +71,31 @@ namespace Easing
 	}
 
 
-	float InOutSine(float time, float targetTime)
+	float InOutSine(float time, float targetTime,bool isReturn)
 	{
-		if (targetTime < time) return 1;
+		if (targetTime < time && !isReturn) return 1;
 		time /= targetTime;
 		return -(cos(PI * time) - 1) / 2;
 	}
 
-	float InOutQuad(float time, float targetTime)
+	float InOutQuad(float time, float targetTime, bool isReturn)
 	{
-		if (targetTime < time) return 1;
+		if (targetTime < time && !isReturn) return 1;
+
 		time /= targetTime;
 		return time < 0.5 ? 2 * time * time : 1 - pow(-2 * time + 2, 2) / 2;
 	}
 
-	float InOutCubic(float time, float targetTime)
+	float InOutCubic(float time, float targetTime, bool isReturn)
 	{
-		if (targetTime < time) return 1;
+		if (targetTime < time && !isReturn) return 1;
 		time /= targetTime;
 		return time < 0.5 ? 4 * time * time * time : 1 - pow(-2 * time + 2, 3) / 2;
 	}
 
-	float InOutQuart(float time, float targetTime)
+	float InOutQuart(float time, float targetTime, bool isReturn)
 	{
-		if (targetTime < time) return 1;
+		if (targetTime < time && !isReturn) return 1;
 		time /= targetTime;
 		return time < 0.5 ? 8 * time * time * time * time : 1 - pow(-2 * time + 2, 4) / 2;
 	}
