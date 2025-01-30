@@ -3,7 +3,6 @@
 #include "Game/Game.h"
 #include "Game/Player/Player.h"
 #include "Game/GameObject.h"
-#include "Game/Components/Camera.h"
 #include "Game/Object/Bullet/Bullet.h"
 #include "Game/Components/ModelDraw.h"
 #include "Game/Components/Collider.h"

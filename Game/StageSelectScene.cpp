@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "StageSelectScene.h"
 #include "Game.h"
-#include "Game/Components/Camera.h" 
 #include "Framework/Resources.h"
 #include "Framework/BinaryFile.h"
 #include "Framework/Easing.h"

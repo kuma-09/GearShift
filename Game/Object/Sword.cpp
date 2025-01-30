@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "Sword.h"
-#include "Game/Components/Camera.h"
 #include "Game/Components/Collider.h"
 #include "Game/Components/ModelDraw.h"
 #include "Game/Components/Trail.h"

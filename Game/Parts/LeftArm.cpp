@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "LeftArm.h"
 #include "Game/Game.h"
-#include "Game/Components/Camera.h"
 #include "Game/Object/Bullet/Bullet.h"
 #include "Game/Components/ModelDraw.h"
 #include "Game/Components/Collider.h"

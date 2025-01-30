@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "TargetArea.h"
-#include "Game/Components/Camera.h"
 
 TargetArea::TargetArea()
 {

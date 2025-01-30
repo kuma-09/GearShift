@@ -6,7 +6,6 @@
 #include "Game/Components/Collider.h"
 #include "Game/Components/Move.h"
 #include "Game/Components/Physics.h"
-#include "Game/Components/Camera.h"
 #include "Game/Components/Look.h"
 
 #include "Game/Parts/Head.h"

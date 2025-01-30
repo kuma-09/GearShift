@@ -15,7 +15,7 @@ public:
 	void SetMaxEnergyPoint(float point) { m_maxBoostPoint = point; }
 	float GetMaxEnergyPoint() { return m_maxBoostPoint; }
 
-	void SetEnergyPoint(float point) { m_boostPoint = std::min(m_boostPoint + point,m_maxBoostPoint); }
+	void SetEnergyPoint(float point) { m_boostPoint = std::min(point,m_maxBoostPoint); }
 	float GetEnergyPoint();
 	void UseEnergyPoint(float usePoint) { m_boostPoint = std::max(0.0f,m_boostPoint - usePoint); }
 
