@@ -50,8 +50,8 @@ float readShadowMap(float3 worldPos);
 // バイアス値を計算
 float CalculateShadowBias(float lightViewDepth, float slopeScale, float constantBias);
 
-// それぞれのシャドウマップを計算
-float conputeShadow(float4x4 view, float4x4 proj, float3 worldPos, Texture2D ShadowMap);
+// それぞれの行列からUVを計算
+float3 conputeLightPosition(float4x4 viewProj, float3 worldPos);
 
 // 分散シャドウマップ
 float VSM_Filter(float2 depth, float fragDepth);
@@ -62,11 +62,17 @@ float4 main(PS_INPUT input) : SV_TARGET
 	float3 albedo = AlbedoMap.Sample(Sampler, input.Texture).rgb;
     // ノーマル
     float3 normal = NormalMap.Sample(Sampler, input.Texture).rgb;
+    normal = normal * 2.0f - 1.0f;
     // 深度値
 	float depth = DepthMap.Sample(Sampler, input.Texture).r;
     // ワールド座標
 	float3 Position = ReconstructWorldPositionFromDepth(input.Texture, depth);
     // -------------------------------------
+    
+    //float3x3 rotation = float3x3(matView[0].xyz, matView[1].xyz, matView[2].xyz);
+    //float3 translation = matView[3];
+    //float3 eyePosition = mul(translation, transpose(rotation));
+    //float3 eyePosition = inverse(matView)[3].xyz;
     
 	// 拡散反射光------------------------------
     float3 toLight = normalize(-LightDirection[0]);
@@ -75,16 +81,16 @@ float4 main(PS_INPUT input) : SV_TARGET
 	// -------------------------------------
     
 	//// 鏡面反射-----------------------------
-    //   float toEye = normalize(EyePosition - Position.xyz);
-    //   float3 halfVector = normalize(toLight + toEye);
-    //   float intensity2 = max(dot(normal, halfVector), 0.0f);
-    //   float3 specular = pow(intensity2, specularPower) * specularColor;
+ //   float toEye = normalize(eyePosition - Position.xyz);
+ //   float3 halfVector = normalize(toLight + toEye);
+ //   float intensity2 = max(dot(normal, halfVector), 0.0f);
+ //   float3 specular = pow(intensity2, SpecularPower) * SpecularColor;
 	//// -------------------------------------
 
     //// shadow-------------------------------
     //float shadow = VSM_Filter(depth, input.Texture, depth.r);
     //shadow = readShadowMap(shadow,Position);
-    float3 shadow = readShadowMap(Position);
+    float shadow = readShadowMap(Position);
     //// -------------------------------------
 
     //// リムライト----------------------------
@@ -144,41 +150,29 @@ float readShadowMap(float3 worldPos)
     float percentLit = 1.0f;
     
     // ライトからの投影空間にする
-    float4 LightPosPS = mul(float4(worldPos, 1), lightView[0]);
-    LightPosPS = mul(LightPosPS, lightProj[0]);
-    LightPosPS.xyz /= LightPosPS.w;
-    // 参照するシャドウマップのUV値を求める
-    float2 uv = (LightPosPS.xy) * float2(0.5f, -0.5f) + 0.5f;
+    float4x4 lightViewProj = mul(lightView[0], lightProj[0]);
+    float3 LightPosPS0 = conputeLightPosition(lightViewProj, worldPos);
     
-    // ライトからの投影空間にする
-    float4 LightPosPS1 = mul(float4(worldPos, 1), lightView[1]);
-    LightPosPS1 = mul(LightPosPS1, lightProj[1]);
-    LightPosPS1.xyz /= LightPosPS1.w;
-    // 参照するシャドウマップのUV値を求める
+    lightViewProj = mul(lightView[1], lightProj[1]);
+    float3 LightPosPS1 = conputeLightPosition(lightViewProj, worldPos);
+    
+    lightViewProj = mul(lightView[2], lightProj[2]);
+    float3 LightPosPS2 = conputeLightPosition(lightViewProj, worldPos);
+    
+    lightViewProj = mul(lightView[3], lightView[3]);
+    float3 LightPosPS3 = conputeLightPosition(lightViewProj, worldPos);
+    
+    float2 uv0 = (LightPosPS0.xy) * float2(0.5f, -0.5f) + 0.5f;
     float2 uv1 = (LightPosPS1.xy) * float2(0.5f, -0.5f) + 0.5f;
-    
-    // ライトからの投影空間にする
-    float4 LightPosPS2 = mul(float4(worldPos, 1), lightView[2]);
-    LightPosPS2 = mul(LightPosPS2, lightProj[2]);
-    LightPosPS2.xyz /= LightPosPS2.w;
-    // 参照するシャドウマップのUV値を求める
     float2 uv2 = (LightPosPS2.xy) * float2(0.5f, -0.5f) + 0.5f;
-    
-    // ライトからの投影空間にする
-    float4 LightPosPS3 = mul(float4(worldPos, 1), lightView[3]);
-    LightPosPS3 = mul(LightPosPS3, lightProj[3]);
-    LightPosPS3.xyz /= LightPosPS3.w;
-    // 参照するシャドウマップのUV値を求める
     float2 uv3 = (LightPosPS3.xy) * float2(0.5f, -0.5f) + 0.5f;
-    
-    if (uv.x > 0 && uv.x < 1 && uv.y > 0 && uv.y < 1)
+
+    if (uv0.x > 0 && uv0.x < 1 && uv0.y > 0 && uv0.y < 1)
     {
-        
-        if (ShadowMap0.Sample(ShadowMapSampler, uv).r < LightPosPS.z - CalculateShadowBias(LightPosPS.z, bias / 100, bias))
+        if (ShadowMap0.Sample(ShadowMapSampler, uv0).r < LightPosPS0.z - CalculateShadowBias(LightPosPS0.z, bias / 100, bias))
         {
             percentLit = 0.5f;
-        }
-        
+        }   
         //percentLit = VSM_Filter(ShadowMap0.Sample(ShadowMapSampler, uv).rg, LightPosPS.z);
         //percentLit *= 0.5f;
         //percentLit += 0.5f;
@@ -227,21 +221,12 @@ float CalculateShadowBias(float lightViewDepth, float slopeScale, float constant
     return slopeScale * depthSlope + constantBias;
 }
 
-float conputeShadow(float4x4 view, float4x4 proj, float3 worldPos, Texture2D ShadowMap)
+float3 conputeLightPosition(float4x4 viewProj, float3 worldPos)
 {
-    float bias = 0.000005f;
-    
     // ライトからの投影空間にする
-    float4 LightPosPS = mul(float4(worldPos, 1), view);
-    LightPosPS = mul(LightPosPS, proj);
+    float4 LightPosPS = mul(float4(worldPos, 1), viewProj);
     LightPosPS.xyz /= LightPosPS.w;
-    // 参照するシャドウマップのUV値を求める
-    float2 uv = (LightPosPS.xy) * float2(0.5f, -0.5f) + 0.5f;
-    if (ShadowMap.Sample(ShadowMapSampler, uv).r < LightPosPS.z - CalculateShadowBias(LightPosPS.z, bias / 100, bias))
-    {
-        return 0.5f;
-    }
-    return 1.0f;
+    return LightPosPS;
 }
 
 float VSM_Filter(float2 depth, float fragDepth)

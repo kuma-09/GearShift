@@ -199,7 +199,7 @@ void Game::Render()
     //DeferredRendering::GBufferShow();
     //ShadowMap::ShadowMapShow();
     //Bloom::BloomTextureShow();
-    m_debugString->Render(state);
+    //m_debugString->Render(state);
 
     m_deviceResources->PIXEndEvent();
 

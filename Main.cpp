@@ -186,7 +186,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         //フルスクリーン時でも、見た目の1280x720サイズを保持する
         else if (!s_in_sizemove && game)
         {
-            game->OnWindowSizeChanged(LOWORD(lParam), HIWORD(lParam));
+            //game->OnWindowSizeChanged(LOWORD(lParam), HIWORD(lParam));
         }
         break;
 

@@ -24,6 +24,7 @@ void TitleCamera::Update(float elapsedTime)
 
 	Matrix world = Matrix::CreateTranslation(GetPosition());
 	world *= Matrix::CreateFromQuaternion(GetQuaternion());
+	world *= Matrix::CreateTranslation(m_target->GetPosition());
 	
 	Vector3 position = { world._41, world._42, world._43 };
 

@@ -68,14 +68,20 @@ void Bloom::BeginBloom()
 {
     using namespace DirectX;
     using namespace DirectX::SimpleMath;
+
+    RECT rect = m_graphics->GetDeviceResources()->GetOutputSize();
+
+    m_offscreenRT_Bloom->SetWindow(rect);
+    m_finalRenderTexture->SetWindow(rect);
+    // レンダーテクスチャの作成（ブルーム用）
+    rect.right /= int(PIXELSIZE);
+    rect.bottom /= int(PIXELSIZE);
+    m_blur1RT->SetWindow(rect);
+    m_blur2RT->SetWindow(rect);
+
     auto context = m_graphics->GetDeviceResources()->GetD3DDeviceContext();
     auto depthStencil = m_graphics->GetDeviceResources()->GetDepthStencilView();
     auto offscreenRTV_Bloom = m_offscreenRT_Bloom->GetRenderTargetView();
-
-    //RECT rect = m_graphics->GetDeviceResources()->GetOutputSize();
-
-    //m_offscreenRT_Bloom->SetWindow(rect);
-    //m_finalRenderTexture->SetWindow(rect);
 
     // -------------------------------------------------------------------------- //
     // レンダーターゲットを変更（offscreenRTV_Bloom）

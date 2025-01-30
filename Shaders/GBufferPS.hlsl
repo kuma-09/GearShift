@@ -5,8 +5,8 @@ cbuffer Parameters : register(b1)
     matrix matView;
     matrix matProj;
     matrix inverseViewProj;
-    matrix lightView;
-    matrix lightProj;
+    matrix lightView[4];
+    matrix lightProj[4];
     int lightNum;
     float3 lightPos[128];
     float3 lightColor[128];
@@ -23,9 +23,9 @@ struct PS_INPUT
 
 struct PS_OUTPUT
 {
-    float4 rt0 : SV_Target0;
-    float4 rt1 : SV_Target1;
-    float4 rt2 : SV_Target2;
+    float4 Albedo : SV_Target0;
+    float4 Normal : SV_Target1;
+    float  Depth  : SV_Target2;
 };
 
 static const int pattern[4][4] =
@@ -64,15 +64,15 @@ PS_OUTPUT main(PS_INPUT input)
     clip(dither - 64 * clipRate);
     
     // テクスチャカラー
-    output.rt0 = DiffuseColor;
+    output.Albedo = DiffuseColor;
     // ワールドNORMAL
-    output.rt1 = float4(input.Normal, 1.0f);
+    output.Normal = float4(input.Normal * 0.5f + 0.5f, 1.0f);
     // 深度
     float4 position = mul(float4(input.Position.xyz, 1), matView);
     position = mul(position, matProj);
     position = input.Position;
     float depth = position.z;
-    output.rt2 = float4(depth, 0, 0, 0);
+    output.Depth = depth;
     
     return output;
 }

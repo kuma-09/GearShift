@@ -13,7 +13,7 @@ BurnerHorizon::~BurnerHorizon()
 
 void BurnerHorizon::Initialize()
 {
-	GetComponent<Trail>()->Initialize(L"Resources/Textures/particle.png", 10, DirectX::Colors::LightBlue);
+	GetComponent<Trail>()->Initialize(L"Resources/Textures/particle.png", 10, DirectX::Colors::CadetBlue);
 }
 
 void BurnerHorizon::Update(float elapsedTime)

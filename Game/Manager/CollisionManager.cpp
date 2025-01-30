@@ -39,7 +39,7 @@ void CollisionManager::Update()
 			}
 			else
 			{
-				if ((collider1BoudingBox->Center - collider2BoudingBox->Center).Length() >=  50 && collider2->GetTypeID() != Collider::Floor) continue;
+				if ((collider1BoudingBox->Center - collider2BoudingBox->Center).Length() >=  25 && collider2->GetTypeID() != Collider::Floor) continue;
 			}
 
 			if (collider1->GetBoundingBox()->Intersects(*collider2->GetBoundingBox()))

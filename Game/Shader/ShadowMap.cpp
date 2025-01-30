@@ -39,7 +39,7 @@ void ShadowMap::Initialize()
     s_spriteBatch = std::make_unique<DirectX::SpriteBatch>(context);
 
     // ライトの位置
-    m_lightPosition = Vector3{ 0, 50, 0 };
+    m_lightPosition = Vector3{ 10, 50, 10 };
     m_targetPosition = Vector3::Zero;
 
     // ライトの回転
@@ -53,7 +53,7 @@ void ShadowMap::Initialize()
     for (int i = 0; i < 4; i++)
     {
         // レンダーテクスチャの作成（シャドウマップ用）
-        m_shadowMapRT[i] = std::make_unique<DX::RenderTexture>(DXGI_FORMAT_R32G32_FLOAT);
+        m_shadowMapRT[i] = std::make_unique<DX::RenderTexture>(DXGI_FORMAT_R32_FLOAT);
         m_shadowMapRT[i]->SetDevice(device);
         m_shadowMapRT[i]->SetWindow(rect);
     }

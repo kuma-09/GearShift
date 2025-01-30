@@ -6,6 +6,8 @@
 #include "Framework/BinaryFile.h"
 #include "Framework/Easing.h"
 
+#include "Game/Shader/ShadowMap.h"
+
 #include "Manager/RenderManager.h"
 #include "Manager/StageDataManager.h"
 
@@ -29,15 +31,16 @@ void TitleScene::Initialize(Game* game)
     m_skydome->Initialize({ 0,-20,0 });
     
     m_player = std::make_unique<TitlePlayer>(this);
-    m_player->SetPosition(Vector3{ 0,2.4,0 });
+    m_player->SetPosition(Vector3{ 5,2.4,5 });
     m_player->Initialize();
     
     m_camera = std::make_unique<TitleCamera>();
     m_camera->Initialize(m_player.get());
-    m_camera->SetPosition(Vector3{ 0,5.5f,-7.5f });
+    m_camera->SetPosition(Vector3{ 0,5,-7 });
 
     m_floor = std::make_unique<Floor>(this);
 
+    ShadowMap::SetLightPosition({5,0,5});
 
     m_menu = std::make_unique<Menu>();
     m_menu->AddUI(L"Resources/Textures/Start.png", {0,450}, {0.5f,0.5f});
