@@ -5,6 +5,7 @@
 void ExplosionEffect::Initialize()
 {
 	using namespace DirectX;
+	using namespace DirectX::SimpleMath;
 
 	m_graphics = Graphics::GetInstance();
 	auto device = m_graphics->GetDeviceResources()->GetD3DDevice();
@@ -14,6 +15,11 @@ void ExplosionEffect::Initialize()
 	m_basicEffect->SetLightingEnabled(false);	// ライティング(OFF)
 	m_basicEffect->SetVertexColorEnabled(false);// 頂点カラー(OFF)
 	m_basicEffect->SetTextureEnabled(true);		// テクスチャ(ON)
+
+	m_vertices[0] = { Vector3(-3.0f , 3.0f,0), Vector2(0, 0) };	//左上
+	m_vertices[1] = { Vector3(3.0f , 3.0f,0), Vector2(1, 0) };	//右上
+	m_vertices[2] = { Vector3(-3.0f ,-3.0f,0), Vector2(0, 1) };	//左下
+	m_vertices[3] = { Vector3(3.0f ,-3.0f,0), Vector2(1, 1) };	//右下
 
 	// 入力レイアウトを作成する
 	DX::ThrowIfFailed(
@@ -45,6 +51,7 @@ void ExplosionEffect::Set(DirectX::SimpleMath::Vector3 pos)
 
 	for (int i = 0; i < MAX_EFFECT_NUM; i++)
 	{
+		// ポジションと生存時間を設定
 		m_posLife.insert({ pos + Vector3(rand() % 3,rand() % 3,rand() % 3),0.0f - i * 0.1f});
 	}
 
@@ -110,11 +117,6 @@ void ExplosionEffect::Render()
 		m_basicEffect->SetTexture(m_texture.Get());	// テクスチャ
 		m_basicEffect->SetColorAndAlpha({1, 0.25f,0, 1 - posLife.second});
 		m_basicEffect->Apply(context);				// ベーシックエフェクトを更新する
-
-		m_vertices[0] = { Vector3(-3.0f , 3.0f,0), Vector2( 0, 0) };	//左上
-		m_vertices[1] = { Vector3( 3.0f , 3.0f,0), Vector2( 1, 0) };	//右上
-		m_vertices[2] = { Vector3(-3.0f ,-3.0f,0), Vector2( 0, 1) };	//左下
-		m_vertices[3] = { Vector3( 3.0f ,-3.0f,0), Vector2( 1, 1) };	//右下
 
 		m_batch->Begin();
 		m_batch->DrawQuad(m_vertices[0], m_vertices[1], m_vertices[3], m_vertices[2]);

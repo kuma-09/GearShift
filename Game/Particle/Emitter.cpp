@@ -96,28 +96,20 @@ void Emitter::SetState(bool isSizeChage, bool isRotate)
 
 void Emitter::SetParticle(DirectX::SimpleMath::Vector3 pos)
 {
-    if (m_totalTime >= m_interval && GetOwner()->GetVelocity() != DirectX::SimpleMath::Vector3::Zero)
+    //if (m_totalTime >= m_interval && GetOwner()->GetVelocity() != DirectX::SimpleMath::Vector3::Zero)
+    if (m_totalTime < m_interval && GetOwner()->GetVelocity() == DirectX::SimpleMath::Vector3::Zero) return;
+    for (int i = 0; i < m_particles.size(); i++)
     {
-        for (int i = 0; i < m_particles.size(); i++)
+        if (m_particles[i]->GetLifeTime() <= 0)
         {
-            if (m_particles[i]->GetLifeTime() <= 0)
+            m_totalTime = 0;
+            float rotate = 0;
+            if (m_isRotate)
             {
-                m_totalTime = 0;
-                float rotate = 0;
-                if (m_isRotate)
-                {
-                    rotate = DirectX::XMConvertToRadians(rand() % 360);
-                }
-                m_particles[i]->Initialize(pos, m_lifeTime, rotate);
-                return;
+                rotate = DirectX::XMConvertToRadians(rand() % 360);
             }
+            m_particles[i]->Initialize(pos, m_lifeTime, rotate);
+            return;
         }
     }
-
-    //if (m_totalTime >= m_interval && GetOwner()->GetVelocity() != DirectX::SimpleMath::Vector3::Zero)
-    //{
-    //    m_totalTime = 0;
-    //    m_particles.emplace_back(std::make_unique<Particle>());
-    //    m_particles.back()->Initialize(pos, m_lifeTime,DirectX::XMConvertToRadians(rand() % 360));
-    //}
 }

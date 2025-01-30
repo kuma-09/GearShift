@@ -81,10 +81,10 @@ float4 main(PS_INPUT input) : SV_TARGET
 	// -------------------------------------
     
 	//// ‹¾–Ê”½ŽË-----------------------------
- //   float toEye = normalize(eyePosition - Position.xyz);
- //   float3 halfVector = normalize(toLight + toEye);
- //   float intensity2 = max(dot(normal, halfVector), 0.0f);
- //   float3 specular = pow(intensity2, SpecularPower) * SpecularColor;
+    //   float toEye = normalize(eyePosition - Position.xyz);
+    //   float3 halfVector = normalize(toLight + toEye);
+    //   float intensity2 = max(dot(normal, halfVector), 0.0f);
+    //   float3 specular = pow(intensity2, SpecularPower) * SpecularColor;
 	//// -------------------------------------
 
     //// shadow-------------------------------

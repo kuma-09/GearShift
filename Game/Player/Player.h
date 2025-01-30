@@ -131,6 +131,9 @@ private:
 	std::unique_ptr<Boost> m_boost;
 	std::unique_ptr<Attack> m_attack;
 
+	// 案オーダー度マップを使ったステート
+	//std::unordered_map<type,std::unordered_map<stateType,State>> m_stateMap;
+
 	std::unique_ptr<Camera> m_camera;
 
 	// 武器
