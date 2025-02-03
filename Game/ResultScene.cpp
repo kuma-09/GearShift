@@ -64,7 +64,7 @@ void ResultScene::RenderUI()
     m_backGround->Render(Vector2::Zero);
     m_result->Render(Vector2(100,340));
     m_clearTime->Render(Vector2(100, 150),DirectX::Colors::White,
-        Vector2::Zero,Vector2{0.5f,0.5f});
+    Vector2::Zero,Vector2{0.5f,0.5f});
     m_time->RenderTime();
 }
 

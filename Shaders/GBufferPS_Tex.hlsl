@@ -49,22 +49,22 @@ PS_OUTPUT main(PS_INPUT input)
     PS_OUTPUT output;
     
     
-    float4 objectPos = input.PositionWS;
-    float4 objectPosInCamera = mul(objectPos, matView);
+    //float4 objectPos = input.PositionWS;
+    //float4 objectPosInCamera = mul(objectPos, matView);
     
-    float distToEye = length(objectPosInCamera);
+    //float distToEye = length(objectPosInCamera);
     
-    int x = (int) fmod(input.Position.x, 4.0f);
-    int y = (int) fmod(input.Position.y, 4.0f);
+    //int x = (int) fmod(input.Position.x, 4.0f);
+    //int y = (int) fmod(input.Position.y, 4.0f);
  
-    int dither = pattern[y][x];
+    //int dither = pattern[y][x];
     
-    float clipRange = 2.0f;
+    //float clipRange = 2.0f;
     
-    float eyeToClipRange = max(0.0f, distToEye - clipRange);
-    float clipRate = 1.0f - min(1.0f, eyeToClipRange / 5.0f);
+    //float eyeToClipRange = max(0.0f, distToEye - clipRange);
+    //float clipRate = 1.0f - min(1.0f, eyeToClipRange / 5.0f);
     
-    clip(dither - 64 * clipRate);
+    //clip(dither - 64 * clipRate);
     
     // テクスチャカラー
     output.Albedo = Texture.Sample(Sampler, input.TexCoord);

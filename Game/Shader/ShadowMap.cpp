@@ -46,7 +46,7 @@ void ShadowMap::Initialize()
     m_lightRotate = Quaternion::CreateFromYawPitchRoll(
         XMConvertToRadians(0.0f), XMConvertToRadians(90.0f), 0.0f);
 
-    m_lightTheta = 15.f;
+    m_lightTheta = 20.f;
 
     RECT rect = { 0, 0, SHADOWMAP_SIZE_X, SHADOWMAP_SIZE_Y };
 

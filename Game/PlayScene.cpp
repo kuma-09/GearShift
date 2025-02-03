@@ -290,9 +290,9 @@ void PlayScene::CreateObject(std::string className, DirectX::SimpleMath::Vector3
 void PlayScene::CreateMenu()
 {
     m_menu = std::make_unique<Menu>();
-    m_menu->AddUI(L"Resources/Textures/Stage1.png", { 0,150 }, { 1.f,1.f });
-    m_menu->AddUI(L"Resources/Textures/Option.png", { 0,350 }, { 1.f,1.f });
-    m_menu->AddUI(L"Resources/Textures/Exit.png", { 0,550 }, { 1.f,1.f });
+    m_menu->AddUI(L"Resources/Textures/Resume.png", { 0,150 }, { 1.f,1.f });
+    //m_menu->AddUI(L"Resources/Textures/Option.png", { 0,350 }, { 1.f,1.f });
+    m_menu->AddUI(L"Resources/Textures/Exit.png", { 0,350 }, { 1.f,1.f });
     m_menu->Initialize();
     m_isMenu = false;
 
@@ -343,6 +343,7 @@ void PlayScene::UpdateMenu()
             m_isMenu = false;
             break;
         case 1:
+            GetGame()->ChangeScene(GetGame()->GetTitleScene());
             break;
         case 2:
             GetGame()->ChangeScene(GetGame()->GetTitleScene());

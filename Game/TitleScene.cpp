@@ -42,8 +42,8 @@ void TitleScene::Initialize(Game* game)
     ShadowMap::SetLightPosition({5,0,5});
 
     m_menu = std::make_unique<Menu>();
-    m_menu->AddUI(L"Resources/Textures/Start.png", {0,450}, {0.5f,0.5f});
-    m_menu->AddUI(L"Resources/Textures/Option.png",{0,550}, {0.5f,0.5f});
+    m_menu->AddUI(L"Resources/Textures/Start.png", {0,550}, {0.5f,0.5f});
+    //m_menu->AddUI(L"Resources/Textures/Option.png",{0,550}, {0.5f,0.5f});
     m_menu->AddUI(L"Resources/Textures/Exit.png",  {0,650}, {0.5f,0.5f});
     m_menu->Initialize();
 
@@ -123,7 +123,8 @@ void TitleScene::Update(float elapsedTime)
             m_isStageSelect = true;
             break;
         case 1:
-            m_isOption = true;
+            //m_isOption = true;
+            GetGame()->Exit();
             break;
         case 2:
             GetGame()->Exit();
