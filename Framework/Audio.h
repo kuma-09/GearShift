@@ -8,6 +8,13 @@
 class Audio
 {
 public:
+
+	enum BGMType
+	{
+		Title,
+		Battle,
+	};
+
 	// デストラクタ
 	~Audio();
 	// Audioクラスのインスタンスを取得する
@@ -23,6 +30,9 @@ public:
 	void PlaySoundSE_PowerUp();
 	void PlaySoundSE_Boost();
 	void PlaySoundSE_Slash();
+	void PlaySoundSE_Explosion();
+
+	void ChageBGM(BGMType type);
 
 private:
 	// コンストラクタ
@@ -47,7 +57,9 @@ private:
 	std::unique_ptr<DirectX::SoundEffect> m_powerUpSE;
 	std::unique_ptr<DirectX::SoundEffect> m_boostSE;
 	std::unique_ptr<DirectX::SoundEffect> m_slashSE;
-	std::unique_ptr<DirectX::SoundEffect> m_soundEffectBGM;
+	std::unique_ptr<DirectX::SoundEffect> m_explosionSE;
+	std::unique_ptr<DirectX::SoundEffect> m_titleBGM;
+	std::unique_ptr<DirectX::SoundEffect> m_battleBGM;
 	std::unique_ptr<DirectX::SoundEffectInstance> m_soundEffectInstanceBGM;
 
 	float m_bgmVolume = 0.1f;

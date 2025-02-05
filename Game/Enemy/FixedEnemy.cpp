@@ -2,6 +2,7 @@
 #include "FixedEnemy.h"
 #include <iostream>
 #include <algorithm>
+#include <Framework/Audio.h>
 #include "Game/Components/HP.h"
 #include "Game/Components/Look.h"
 #include "Game/Components/ModelDraw.h"
@@ -86,6 +87,7 @@ void FixedEnemy::Update(float elapsedTime)
 	{
 		ObjectManager::Remove(this);
 		static_cast<PlayScene*>(GetScene())->CreateHitEffect(GetPosition());
+		Audio::GetInstance()->PlaySoundSE_Explosion();
 	}
 }
 

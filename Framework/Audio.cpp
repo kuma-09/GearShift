@@ -56,12 +56,18 @@ void Audio::LoadSoundFile()
 	m_slashSE = std::make_unique<SoundEffect>(
 		m_audioEngine.get(), L"Resources/Sounds/Slash2.wav");
 
+	m_explosionSE = std::make_unique<SoundEffect>(
+		m_audioEngine.get(), L"Resources/Sounds/Explosion.wav");
+
 	// サウンドエフェクトBGMをロードする
-	m_soundEffectBGM = std::make_unique<SoundEffect>(
-		m_audioEngine.get(), L"Resources/Sounds/Bright_Sky.wav");
+	m_titleBGM = std::make_unique<SoundEffect>(
+		m_audioEngine.get(), L"Resources/Sounds/Observer.wav");
+
+	m_battleBGM = std::make_unique<SoundEffect>(
+		m_audioEngine.get(), L"Resources/Sounds/Fractured_Bonds.wav");
 
 	// サウンドエフェクトBGMをインスタンス化する
-	m_soundEffectInstanceBGM = m_soundEffectBGM->CreateInstance();
+	m_soundEffectInstanceBGM = m_titleBGM->CreateInstance();
 
 	m_soundEffectInstanceBGM->SetVolume(m_bgmVolume);
 	m_soundEffectInstanceBGM->Play(true);
@@ -104,4 +110,28 @@ void Audio::PlaySoundSE_Boost()
 void Audio::PlaySoundSE_Slash()
 {
 	m_slashSE->Play(m_seVolume, 0.5f, 0.5f);
+}
+
+void Audio::PlaySoundSE_Explosion()
+{
+	m_explosionSE->Play(m_seVolume, 0.5f, 0.5f);
+}
+
+void Audio::ChageBGM(BGMType type)
+{
+	switch (type)
+	{
+	case Audio::Title:
+		m_soundEffectInstanceBGM = m_titleBGM->CreateInstance();
+		m_soundEffectInstanceBGM->SetVolume(m_bgmVolume);
+		m_soundEffectInstanceBGM->Play(true);
+		break;
+	case Audio::Battle:
+		m_soundEffectInstanceBGM = m_battleBGM->CreateInstance();
+		m_soundEffectInstanceBGM->SetVolume(m_bgmVolume);
+		m_soundEffectInstanceBGM->Play(true);
+		break;
+	default:
+		break;
+	}
 }

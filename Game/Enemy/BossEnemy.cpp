@@ -2,6 +2,7 @@
 #include "BossEnemy.h"
 #include <iostream>
 #include <algorithm>
+#include "Framework/Audio.h"
 #include "Game/Components/HP.h"
 #include "Game/Components/Look.h"
 #include "Game/Components/ModelDraw.h"
@@ -128,6 +129,7 @@ void BossEnemy::Update(float elapsedTime)
 	{
 		ObjectManager::Remove(this);
 		static_cast<PlayScene*>(GetScene())->CreateHitEffect(GetPosition());
+		Audio::GetInstance()->PlaySoundSE_Explosion();
 	}
 
 	Matrix world = Matrix::Identity;

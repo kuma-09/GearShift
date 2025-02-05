@@ -18,7 +18,7 @@ ResultScene::ResultScene()
     m_clearTime = std::make_unique<UI>(L"Resources/Textures/ClearTime.png");
 
     m_time = std::make_unique<Number>();
-    m_time->Initialize({ 640,200 });
+    m_time->Initialize({ 800,230 });
 }
 
 ResultScene::~ResultScene()
@@ -63,7 +63,7 @@ void ResultScene::RenderUI()
 
     m_backGround->Render(Vector2::Zero);
     m_result->Render(Vector2(100,340));
-    m_clearTime->Render(Vector2(100, 150),DirectX::Colors::White,
+    m_clearTime->Render(Vector2(250, 200),DirectX::Colors::White,
     Vector2::Zero,Vector2{0.5f,0.5f});
     m_time->RenderTime();
 }

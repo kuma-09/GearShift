@@ -117,7 +117,6 @@ void HomingBullet::Hit()
 		SetVelocity(Vector3::Zero);
 		SetState(BulletState::USED);
 
-		Audio::GetInstance()->PlaySoundSE_Hit();
 		GetComponent<Collider>()->SetActive(false);
 	}
 }

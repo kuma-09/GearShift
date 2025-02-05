@@ -113,7 +113,7 @@ void Player::Update(float elapsedTime)
 	// ’e‚ð”­ŽË
 	if (mouseState.leftButton) Shot();
 	// ‹ßÚUŒ‚
-	if (kb->IsKeyPressed(DirectX::Keyboard::F))  ChangeState(GetAttack());
+	if (kb->IsKeyPressed(DirectX::Keyboard::F))  SwordAttack();
 	// ƒŠƒ[ƒh
 	if (kb->IsKeyPressed(DirectX::Keyboard::R)) m_gun->Reload();
 
@@ -217,6 +217,14 @@ void Player::Shot()
 		break;
 	default:
 		break;
+	}
+}
+
+void Player::SwordAttack()
+{
+	if (GetBoostPoint() > 0)
+	{
+		ChangeState(GetAttack());
 	}
 }
 

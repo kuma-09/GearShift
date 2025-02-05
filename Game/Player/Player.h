@@ -56,6 +56,7 @@ public:
 	void ClearTrail();
 	void ChangeState(State* state);
 	void Shot();
+	void SwordAttack();
 
 	// パーツをセット
 	void SetPart(const Part::TypeID& partType, std::unique_ptr<Part> part)

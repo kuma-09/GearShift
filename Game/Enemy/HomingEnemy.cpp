@@ -92,6 +92,7 @@ void HomingEnemy::Update(float elapsedTime)
 	{
  		ObjectManager::Remove(this);
 		static_cast<PlayScene*>(GetScene())->CreateHitEffect(GetPosition());
+		Audio::GetInstance()->PlaySoundSE_Explosion();
 	}
 }
 

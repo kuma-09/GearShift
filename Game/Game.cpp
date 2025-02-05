@@ -132,38 +132,34 @@ void Game::Update(DX::StepTimer const& timer)
     //    ExitGame();
     //}
 
-    if (!m_sceneMask->IsClose() || !m_sceneMask->IsOpen())
-    {
-        if (m_sceneMask->Update(elapsedTime))
-        {
-            m_scene->Finalize();
-            if (dynamic_cast<PlayScene*>(m_scene))
-            {
-                m_playScene.reset();
-            }
-            else if (dynamic_cast<TitleScene*>(m_scene))
-            {
-                m_titleScene.reset();
-            }
-            else if (dynamic_cast<ResultScene*>(m_scene))
-            {
-                m_resultScene.reset();
-            }
-            else if(dynamic_cast<GameOverScene*>(m_scene))
-            {
-                m_gameOverScene.reset();
-            }
-            m_scene = nullptr;
-            m_scene = m_tmpScene;
-            m_scene->Initialize(this);
-        }
-    }
-
     // TODO: Add your game logic here.
     m_debugString->AddString(std::to_string(m_timer.GetFramesPerSecond()).c_str());
     m_scene->Update(elapsedTime);
 
-
+    if (m_sceneMask->IsClose() && m_sceneMask->IsOpen()) return;
+    if (m_sceneMask->Update(elapsedTime))
+    {
+        m_scene->Finalize();
+        if (dynamic_cast<PlayScene*>(m_scene))
+        {
+            m_playScene.reset();
+        }
+        else if (dynamic_cast<TitleScene*>(m_scene))
+        {
+            m_titleScene.reset();
+        }
+        else if (dynamic_cast<ResultScene*>(m_scene))
+        {
+            m_resultScene.reset();
+        }
+        else if (dynamic_cast<GameOverScene*>(m_scene))
+        {
+            m_gameOverScene.reset();
+        }
+        m_scene = nullptr;
+        m_scene = m_tmpScene;
+        m_scene->Initialize(this);
+    }
 
     elapsedTime;
 

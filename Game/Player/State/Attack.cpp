@@ -85,4 +85,5 @@ void Attack::Render()
 
 void Attack::Finalize()
 {
+	m_sword->Initalize(m_player);
 }
