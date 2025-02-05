@@ -4,9 +4,12 @@
 #include "Framework/Resources.h"
 #include "Framework/BinaryFile.h"
 #include "Framework/Easing.h"
+#include "Game/Object/Wall/BillA.h"
+#include "Game/Object/Wall/BillB.h"
 
 #include "Game/Shader/ShadowMap.h"
 
+#include "Manager/ObjectManager.h"
 #include "Manager/RenderManager.h"
 #include "Manager/StageDataManager.h"
 
@@ -35,8 +38,13 @@ void TitleScene::Initialize(Game* game)
     
     m_camera = std::make_unique<TitleCamera>();
     m_camera->Initialize(m_player.get());
-    m_camera->SetPosition(Vector3{ 0,5,-7 });
+    m_camera->SetPosition(Vector3{ 0,3,-7 });
 
+    ObjectManager::Add(std::make_shared<BillA>(this), Vector3{25,0,20});
+    ObjectManager::Add(std::make_shared<BillA>(this), Vector3{-20,0,-20});
+    ObjectManager::Add(std::make_shared<BillB>(this), Vector3{20,0,-20});
+    ObjectManager::Add(std::make_shared<BillB>(this), Vector3{-20,0,20});
+    
     m_floor = std::make_unique<Floor>(this);
 
     ShadowMap::SetLightPosition({5,0,5});
@@ -78,7 +86,7 @@ void TitleScene::Update(float elapsedTime)
     m_skydome->Update(elapsedTime);
     m_camera->Update(elapsedTime);
     m_player->Update(elapsedTime);
-
+    ObjectManager::Update(elapsedTime);
 
     m_nowTime += elapsedTime;
     if (m_isStageSelect)
