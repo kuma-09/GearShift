@@ -59,7 +59,7 @@
 		{"Object_Name": "HomingEnemy","position":{"x": 32.0, "y":  5.0, "z": -30.0}},
 		{"Object_Name": "FixedEnemy" ,"position":{"x": 30.0, "y":  5.0, "z": -40.0}},
 		{"Object_Name": "DropItem"   ,"position":{"x":  0.0, "y":  5.0, "z": -10.0}},
-		{"Object_Name": "DropItemB"  ,"position":{"x":  0.0, "y": 10.0, "z":   0.0}},
+		//{"Object_Name": "DropItemB"  ,"position":{"x":  0.0, "y": 10.0, "z":   0.0}},
 		{"Object_Name": "Light"      ,"position":{"x": 15.0, "y":  3.5, "z": 15.0}},
 		{"Object_Name": "Light"      ,"position":{"x": 15.0, "y":  3.5, "z":-15.0}},
 		{"Object_Name": "Light"      ,"position":{"x":-15.0, "y":  3.5, "z": 15.0}},

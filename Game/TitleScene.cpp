@@ -175,5 +175,6 @@ void TitleScene::RenderUI()
 
 void TitleScene::Finalize()
 {
+    ObjectManager::Clear();
     RenderManager::Clear();
 }
