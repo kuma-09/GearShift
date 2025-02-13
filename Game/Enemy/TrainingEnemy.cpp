@@ -18,12 +18,10 @@
 
 #include "Game/Manager/ObjectManager.h"
 
-TrainingEnemy::TrainingEnemy(IScene* scene,GameObject* target)
+TrainingEnemy::TrainingEnemy(IScene* scene)
 {
 	SetScene(scene);
-	SetTarget(target);
 	AddComponent<HP>();
-	AddComponent<Look>();
 	AddComponent<Physics>();
 	AddComponent<ModelDraw>();
 	AddComponent<Collider>();
@@ -45,10 +43,8 @@ void TrainingEnemy::Initialize()
 	using namespace DirectX::SimpleMath;
 
 	GetComponent<HP>()->SetHP(10);
-	GetComponent<Look>()->Initialize(false,false);
-	GetComponent<Look>()->SetTarget(this, GetTarget());
 	GetComponent<Physics>()->Initialize();
-	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetTankBodyModel());
+	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetModel(Resources::TankBody));
 	GetComponent<Collider>()->Initialize(Collider::Enemy,Collider::Collision, { 2,0.5f,3 });
 	GetComponent<HPBar>()->Initialize();
 	m_state->Initialize();

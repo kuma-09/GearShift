@@ -10,7 +10,7 @@ class TrainingEnemy : public Enemy
 {
 public:
 
-	TrainingEnemy(IScene* scene, GameObject* target);
+	TrainingEnemy(IScene* scene);
 	~TrainingEnemy();
 
 	void Initialize();

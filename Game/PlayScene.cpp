@@ -8,6 +8,7 @@
 #include "Framework/Json.h"
 
 #include "Player/Player.h"
+#include "Enemy/TrainingEnemy.h"
 #include "Enemy/FixedEnemy.h"
 #include "Enemy/HomingEnemy.h"
 #include "Enemy/BossEnemy.h"
@@ -263,6 +264,10 @@ void PlayScene::CreateObject(std::string className, DirectX::SimpleMath::Vector3
     if (className == "BillD")
     {
         ObjectManager::Add(std::make_shared<BillD>(this), pos);
+    }
+    if (className == "TrainingEnemy")
+    {
+        ObjectManager::Add(std::make_shared<TrainingEnemy>(this), pos,Type::Enemy);
     }
     if (className == "HomingEnemy")
     {

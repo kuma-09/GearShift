@@ -56,6 +56,7 @@ void TitleScene::Initialize(Game* game)
     m_menu->Initialize();
 
     m_stageMenu = std::make_unique<Menu>();
+    m_stageMenu->AddUI(L"Resources/Textures/Stage1.png", { 0, 50 }, { 1.f,1.f });
     m_stageMenu->AddUI(L"Resources/Textures/Stage1.png", { 0,150 }, { 1.f,1.f });
     m_stageMenu->AddUI(L"Resources/Textures/Stage2.png", { 0,350 }, { 1.f,1.f });
     m_stageMenu->AddUI(L"Resources/Textures/Stage3.png", { 0,550 }, { 1.f,1.f });
@@ -122,7 +123,7 @@ void TitleScene::Update(float elapsedTime)
     {
         if (m_isStageSelect)
         {
-            StageDataManager::SetStageNum(m_stageMenu->GetActiveUI() + 1);
+            StageDataManager::SetStageNum(m_stageMenu->GetActiveUI());
             GetGame()->ChangeScene(GetGame()->GetPlayScene());
         }
         switch (m_menu->GetActiveUI())
