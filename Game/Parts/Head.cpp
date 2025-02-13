@@ -23,7 +23,7 @@ void Head::Initialize(int hp,IScene* scene)
 {
 	UNREFERENCED_PARAMETER(hp);
 	SetScene(scene);
-	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetHeadModel());
+	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetModel(Resources::Head));
 }
 
 void Head::Update(float elapsedTime)

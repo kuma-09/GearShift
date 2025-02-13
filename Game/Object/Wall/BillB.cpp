@@ -17,7 +17,7 @@ BillB::~BillB()
 
 void BillB::Initialize()
 {
-	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetBillBModel());
+	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetModel(Resources::BillB));
 	SetScale({ 4, 8, 4 });
 	GetComponent<Collider>()->Initialize(Collider::Wall,Collider::Fixed, GetScale());
 	GetComponent<Collider>()->GetBoundingBox()->Center = GetPosition();

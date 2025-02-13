@@ -16,19 +16,6 @@ DropItem::DropItem(IScene* scene)
 	using namespace DirectX;
 
 	SetScale({ m_dropItemModelSize,m_dropItemModelSize,m_dropItemModelSize });
-
-	// モデルのエフェクト情報を更新する
-	Resources::GetInstance()->GetDropItemModel()->UpdateEffects([](IEffect* effect)
-		{
-			// ベーシックエフェクトを設定する
-			BasicEffect* basicEffect = dynamic_cast<BasicEffect*>(effect);
-			if (basicEffect)
-			{
-				// モデルを自発光させる
-				basicEffect->SetEmissiveColor(Colors::White);
-			}
-		}
-	);
 }
 
 DropItem::~DropItem()
@@ -41,7 +28,7 @@ void DropItem::Initialize()
 	using namespace DirectX::SimpleMath;
 	GetComponent<Physics>()->Initialize();
 	GetComponent<Collider>()->Initialize(Collider::DropItemB,Collider::Collision, { 2,2,2 });
-	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetDropItemModel(), true);
+	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetModel(Resources::DropItem), true);
 
 
 	Matrix world = Matrix::CreateScale(GetScale());

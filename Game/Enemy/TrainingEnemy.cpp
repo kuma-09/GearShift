@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "FixedEnemy.h"
+#include "TrainingEnemy.h"
 #include <iostream>
 #include <algorithm>
 #include <Framework/Audio.h>
@@ -9,7 +9,6 @@
 #include "Game/Components/Collider.h"
 #include "Game/Components/HPBar.h"
 #include "Game/Components/Physics.h"
-#include "Game/Object/Bullet/FixedEnemyBullet.h"
 #include "Game/Object/Sword.h"
 #include "Game/PlayScene.h"
 
@@ -19,7 +18,7 @@
 
 #include "Game/Manager/ObjectManager.h"
 
-FixedEnemy::FixedEnemy(IScene* scene,GameObject* target)
+TrainingEnemy::TrainingEnemy(IScene* scene,GameObject* target)
 {
 	SetScene(scene);
 	SetTarget(target);
@@ -29,8 +28,6 @@ FixedEnemy::FixedEnemy(IScene* scene,GameObject* target)
 	AddComponent<ModelDraw>();
 	AddComponent<Collider>();
 	AddComponent<HPBar>();
-
-	m_bullet = std::make_unique<FixedEnemyBullet>(GetScene(), Collider::TypeID::EnemyBullet);
 	
 	SetEnemyAttack(std::make_unique<FixedAttackState>(this));
 	SetScale({ 3.0f,3.0f,3.0f });
@@ -38,24 +35,22 @@ FixedEnemy::FixedEnemy(IScene* scene,GameObject* target)
 	m_state = GetAttackState();
 }
 
-FixedEnemy::~FixedEnemy()
+TrainingEnemy::~TrainingEnemy()
 {
 	//RemoveAllComponents();
 }
 
-void FixedEnemy::Initialize()
+void TrainingEnemy::Initialize()
 {
 	using namespace DirectX::SimpleMath;
-
 
 	GetComponent<HP>()->SetHP(10);
 	GetComponent<Look>()->Initialize(false,false);
 	GetComponent<Look>()->SetTarget(this, GetTarget());
 	GetComponent<Physics>()->Initialize();
-	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetModel(Resources::TankBody));
+	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetTankBodyModel());
 	GetComponent<Collider>()->Initialize(Collider::Enemy,Collider::Collision, { 2,0.5f,3 });
 	GetComponent<HPBar>()->Initialize();
-	m_bullet->Initialize(this);
 	m_state->Initialize();
 	Matrix world = Matrix::Identity;
 	world = Matrix::CreateScale(GetScale());
@@ -65,12 +60,11 @@ void FixedEnemy::Initialize()
 	SetWorld(world);
 }
 
-void FixedEnemy::Update(float elapsedTime)
+void TrainingEnemy::Update(float elapsedTime)
 {
 	using namespace DirectX::SimpleMath;
 
 	m_state->Update(elapsedTime);
-	m_bullet->Update(elapsedTime);
 	ComponentsUpdate(elapsedTime);
 
 	// ç¿ïWÇÃà⁄ìÆ
@@ -91,16 +85,15 @@ void FixedEnemy::Update(float elapsedTime)
 	}
 }
 
-void FixedEnemy::CreateShader()
+void TrainingEnemy::CreateShader()
 {
 	GetComponent<ModelDraw>()->CreateShadow();
 }
 
-void FixedEnemy::Render()
+void TrainingEnemy::Render()
 {	
 	using namespace DirectX::SimpleMath;
 
-	m_bullet->Render();
 	m_state->Render();
 
 	if (GetComponent<HP>()->GetHP() <= 0) return;
@@ -108,22 +101,21 @@ void FixedEnemy::Render()
 	GetComponent<HPBar>()->Render(GetPosition());
 }
 
-void FixedEnemy::Finalize()
+void TrainingEnemy::Finalize()
 {
 }
 
-void FixedEnemy::Shot()
+void TrainingEnemy::Shot()
 {
-	m_bullet->Shot(static_cast<Player*>(GetTarget()));
 }
 
-void FixedEnemy::ChangeState(State* state)
+void TrainingEnemy::ChangeState(State* state)
 {
 	m_state = state;
 	m_state->Initialize();
 }
 
-void FixedEnemy::Collision(Collider* collider)
+void TrainingEnemy::Collision(Collider* collider)
 {
 	if (collider->GetTypeID() == Collider::PlayerBullet)
 	{

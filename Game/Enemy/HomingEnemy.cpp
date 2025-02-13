@@ -49,7 +49,7 @@ void HomingEnemy::Initialize()
 
 	GetComponent<HP>()->SetHP(10);
 	GetComponent<Look>()->SetTarget(this, GetTarget());
-	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetDiceModel(),true);
+	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetModel(Resources::HomingEnemy), true);
 	GetComponent<Collider>()->Initialize(Collider::Enemy,Collider::Collision);
 	GetComponent<HPBar>()->Initialize();
 

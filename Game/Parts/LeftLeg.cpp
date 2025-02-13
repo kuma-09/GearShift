@@ -26,7 +26,7 @@ void LeftLeg::Initialize(int hp,IScene* scene)
 {
 	UNREFERENCED_PARAMETER(hp);
 	SetScene(scene);
-	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetlLegModel());
+	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetModel(Resources::LLeg));
 	GetComponent<Emitter>()->Initialize(L"Resources/Textures/smoke_white.png", 0.3f, 0.1f, 0.2f);
 }
 

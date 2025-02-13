@@ -19,7 +19,7 @@ MissileLauncher::~MissileLauncher()
 
 void MissileLauncher::Initialize()
 {
-	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetMissileLuncherModel());
+	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetModel(Resources::MissileLuncher));
 
 	for (int i = 0; i < MAX_BULLET_COUNT; i++)
 	{

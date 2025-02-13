@@ -23,7 +23,7 @@ void RightArm::Initialize(int hp,IScene* scene)
 {
 	UNREFERENCED_PARAMETER(hp);
 	SetScene(scene);
-	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetrArmModel());
+	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetModel(Resources::RArm));
 }
 
 void RightArm::Update(float elapsedTime)

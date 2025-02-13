@@ -17,7 +17,7 @@ NormalBullet::NormalBullet(IScene* scene, Collider::TypeID id)
 	AddComponent<ModelDraw>();
 	AddComponent<Trail>();
 	GetComponent<Collider>()->Initialize(id,Collider::Trigger, { 0.5f,0.5f,0.5f });
-	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetCubeModel());
+	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetModel(Resources::Cube));
 	GetComponent<Trail>()->Initialize(L"Resources/Textures/white.png", 10,DirectX::Colors::Yellow);
 	SetScale({ 0.1f,0.1f,0.1f });
 }

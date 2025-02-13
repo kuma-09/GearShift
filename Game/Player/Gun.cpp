@@ -18,7 +18,7 @@ Gun::~Gun()
 
 void Gun::Initialize()
 {
-	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetGunModel());
+	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetModel(Resources::Gun));
 
 	for (int i = 0; i < MAX_BULLET_COUNT; i++)
 	{

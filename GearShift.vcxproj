@@ -188,6 +188,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Game\Animation\FinishAnimation.h" />
+    <ClInclude Include="Game\Enemy\State\TrainingIdolState.h" />
     <ClInclude Include="Game\Object\Floor\Floor2.h" />
     <ClInclude Include="Framework\Audio.h" />
     <ClInclude Include="Framework\BinaryFile.h" />
@@ -319,6 +320,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game\Animation\FinishAnimation.cpp" />
+    <ClCompile Include="Game\Enemy\State\TrainingIdolState.cpp" />
     <ClCompile Include="Game\Object\Floor\Floor2.cpp" />
     <ClCompile Include="Framework\Audio.cpp" />
     <ClCompile Include="Framework\BinaryFile.cpp" />

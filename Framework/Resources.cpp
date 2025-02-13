@@ -4,6 +4,16 @@
 
 std::unique_ptr<Resources> Resources::m_resources = nullptr;
 
+DirectX::Model* Resources::GetModel(ModelType type)
+{
+	auto it = m_umModel.find(type);
+	if (it != m_umModel.end())
+	{
+		return it->second.get();
+	}
+	return nullptr;
+}
+
 Resources::~Resources()
 {
 
@@ -29,31 +39,29 @@ void Resources::LoadResource(Graphics* graphics)
 	// リソースディレクトリを設定する
 	FX->SetDirectory(L"Resources\\Models");
 	// モデルをロードする
-	m_player	 = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\old_robot\\Robot.sdkmesh",       *graphics->GetFX());
-	m_head		 = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\old_robot\\Head.sdkmesh",        *graphics->GetFX());
-	m_bodyTop	 = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\old_robot\\Body.sdkmesh",     *graphics->GetFX());
-	m_lArm		 = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\old_robot\\LeftArm.sdkmesh",        *graphics->GetFX());
-	m_rArm		 = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\old_robot\\RightArm.sdkmesh",        *graphics->GetFX());
-	m_lLeg		 = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\old_robot\\LeftLeg.sdkmesh",        *graphics->GetFX());
-	m_rLeg		 = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\old_robot\\RightLeg.sdkmesh",        *graphics->GetFX());
-	m_dice		 = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\brain-robot.sdkmesh",            *graphics->GetFX());
-	m_cube		 = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\cube.sdkmesh",        *graphics->GetFX());
-	m_skydome    = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\skydome.sdkmesh",     *graphics->GetFX());
-	m_floor      = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\testFloor.sdkmesh", *graphics->GetFX());
-	m_floor2     = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\testFloor2.sdkmesh", *graphics->GetFX());
-	m_billA      = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\large_buildingA.sdkmesh", *graphics->GetFX());
-	m_billB		 = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\large_buildingB.sdkmesh", *graphics->GetFX());
-	m_billC		 = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\large_buildingC.sdkmesh", *graphics->GetFX());
-	m_dropItem   = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\mese.sdkmesh", *graphics->GetFX());
-	m_boom       = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\boom.sdkmesh", *graphics->GetFX());
-	m_tankBody   = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\TankBody.sdkmesh", *graphics->GetFX());
-	m_entyu      = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\entyu.sdkmesh", *graphics->GetFX());
-	m_sword      = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\blade.sdkmesh", *graphics->GetFX());
-	m_cutoRobot  = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\BulldogLeg.sdkmesh", *graphics->GetFX());
-	m_cutoRobotHead  = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\BulldogHead.sdkmesh", *graphics->GetFX());
-	m_gun = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\gun.sdkmesh", *graphics->GetFX());
-	m_missileLuncher = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\MissileLuncher.sdkmesh", *graphics->GetFX());
-	m_light = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\light.sdkmesh", *graphics->GetFX());
+	m_umModel[ModelType::Player]	     = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\old_robot\\Robot.sdkmesh", *graphics->GetFX());
+	m_umModel[ModelType::Head]		     = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\old_robot\\Head.sdkmesh", *graphics->GetFX());
+	m_umModel[ModelType::Body]		     = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\old_robot\\Body.sdkmesh", *graphics->GetFX());
+	m_umModel[ModelType::LArm]		     = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\old_robot\\LeftArm.sdkmesh", *graphics->GetFX());
+	m_umModel[ModelType::RArm]		     = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\old_robot\\RightArm.sdkmesh", *graphics->GetFX());
+	m_umModel[ModelType::LLeg]		     = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\old_robot\\LeftLeg.sdkmesh", *graphics->GetFX());
+	m_umModel[ModelType::RLeg]		     = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\old_robot\\RightLeg.sdkmesh", *graphics->GetFX());
+	m_umModel[ModelType::HomingEnemy]    = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\brain-robot.sdkmesh", *graphics->GetFX());
+	m_umModel[ModelType::TankBody]		 = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\TankBody.sdkmesh", *graphics->GetFX());
+	m_umModel[ModelType::BossLeg]		 = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\BulldogLeg.sdkmesh", *graphics->GetFX());
+	m_umModel[ModelType::BossHead]		 = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\BulldogHead.sdkmesh", *graphics->GetFX());
+	m_umModel[ModelType::Cube]		     = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\cube.sdkmesh", *graphics->GetFX());
+	m_umModel[ModelType::SkyDome]	     = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\skydome.sdkmesh", *graphics->GetFX());
+	m_umModel[ModelType::Floor]		     = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\testFloor.sdkmesh", *graphics->GetFX());
+	m_umModel[ModelType::Floor2]	     = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\testFloor2.sdkmesh", *graphics->GetFX());
+	m_umModel[ModelType::BillA]		     = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\large_buildingA.sdkmesh", *graphics->GetFX());
+	m_umModel[ModelType::BillB]		     = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\large_buildingB.sdkmesh", *graphics->GetFX());
+	m_umModel[ModelType::BillC]		     = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\large_buildingC.sdkmesh", *graphics->GetFX());
+	m_umModel[ModelType::DropItem]	     = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\mese.sdkmesh", *graphics->GetFX());
+	m_umModel[ModelType::Boom]		     = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\boom.sdkmesh", *graphics->GetFX());
+	m_umModel[ModelType::Gun]			 = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\gun.sdkmesh", *graphics->GetFX());
+	m_umModel[ModelType::MissileLuncher] = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\MissileLuncher.sdkmesh", *graphics->GetFX());
+	m_umModel[ModelType::Light]			 = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\light.sdkmesh", *graphics->GetFX());
 
 	// テクスチャをロードする
 	DirectX::CreateWICTextureFromFile(

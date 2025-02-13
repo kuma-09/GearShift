@@ -18,7 +18,7 @@ HomingBullet::HomingBullet(IScene* scene, Collider::TypeID id)
 	AddComponent<ModelDraw>();
 	AddComponent<Emitter>();
 	GetComponent<Collider>()->Initialize(id,Collider::Trigger, { 0.1f,0.1f,0.1f });
-	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetCubeModel());
+	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetModel(Resources::Cube));
 	GetComponent<Emitter>()->Initialize(L"Resources/Textures/whitePuff00.png",1.0f,0.025f,0.3f);
 	SetScale({ 0.1f,0.1f,0.1f });
 	SetState(BulletState::UNUSED);

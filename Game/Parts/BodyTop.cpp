@@ -24,8 +24,7 @@ void BodyTop::Initialize(int hp,IScene* scene)
 {
 	UNREFERENCED_PARAMETER(hp);
 	SetScene(scene);
-	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetBodyTopModel());
-	
+	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetModel(Resources::Body));
 }
 
 void BodyTop::Update(float elapsedTime)

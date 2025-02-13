@@ -18,7 +18,7 @@ SkyDome::~SkyDome()
 
 void SkyDome::Initialize(DirectX::SimpleMath::Vector3 pos)
 {
-	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetSkyDome(), true);
+	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetModel(Resources::SkyDome), true);
 	auto world = DirectX::SimpleMath::Matrix::CreateScale(1.0f);
 	world *= DirectX::SimpleMath::Matrix::CreateTranslation(pos);
 	SetWorld(world);

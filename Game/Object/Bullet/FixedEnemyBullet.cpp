@@ -13,7 +13,7 @@ FixedEnemyBullet::FixedEnemyBullet(IScene* scene, Collider::TypeID id)
 	AddComponent<Collider>();
 	AddComponent<ModelDraw>();
 	GetComponent<Collider>()->Initialize(id,Collider::Trigger, { 0.5f,0.5f,0.5f });
-	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetCubeModel());
+	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetModel(Resources::Cube));
 }
 
 FixedEnemyBullet::~FixedEnemyBullet()

@@ -29,7 +29,7 @@ void ShotgunBullet::Initialize(GameObject* object)
 
 	SetOwner(object);
 
-	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetCubeModel());
+	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetModel(Resources::Cube));
 
 	Vector3 velocity = Vector3::Zero;
 	SetPosition(Vector3::Zero);

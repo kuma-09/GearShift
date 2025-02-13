@@ -17,7 +17,7 @@ BillD::~BillD()
 
 void BillD::Initialize()
 {
-	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetBillCModel());
+	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetModel(Resources::BillC));
 	SetScale({ 6, 50, 30 });
 	SetQuaternion(DirectX::SimpleMath::Quaternion::CreateFromYawPitchRoll(DirectX::XMConvertToRadians(90), 0, 0));
 	GetComponent<Collider>()->Initialize(Collider::Wall,Collider::Fixed, GetScale(), { 0,50,0 });
