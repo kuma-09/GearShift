@@ -27,11 +27,6 @@ cbuffer Parameters : register(b1)
     float3 lightColor[128];
 }
 
-cbuffer Parmaeters : register(b2)
-{
-    float4 fog;
-}
-
 struct PS_INPUT
 {
 	float4 Position : SV_POSITION;

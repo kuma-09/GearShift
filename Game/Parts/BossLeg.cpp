@@ -31,6 +31,7 @@ void BossLeg::Initialize(int hp, IScene* scene)
 	GetComponent<HP>()->SetHP(hp);
 	SetMaxHP(float(hp));
 	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetModel(Resources::BossLeg));
+	GetComponent<ModelDraw>()->SetRimLithgColor(DirectX::Colors::IndianRed);
 	GetComponent<Collider>()->Initialize(Collider::Enemy,Collider::Trigger, { 1,1,1 });
 	GetComponent<Emitter>()->Initialize(L"Resources/Textures/smoke_white.png", 0.1f, 0.1f, 0.3f);
 }

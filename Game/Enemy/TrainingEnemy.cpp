@@ -45,6 +45,7 @@ void TrainingEnemy::Initialize()
 	GetComponent<HP>()->SetHP(10);
 	GetComponent<Physics>()->Initialize();
 	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetModel(Resources::TankBody));
+	GetComponent<ModelDraw>()->SetRimLithgColor(DirectX::Colors::IndianRed);
 	GetComponent<Collider>()->Initialize(Collider::Enemy,Collider::Collision, { 2,0.5f,3 });
 	GetComponent<HPBar>()->Initialize();
 	m_state->Initialize();

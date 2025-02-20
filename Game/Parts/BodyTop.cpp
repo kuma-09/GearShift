@@ -25,6 +25,7 @@ void BodyTop::Initialize(int hp,IScene* scene)
 	UNREFERENCED_PARAMETER(hp);
 	SetScene(scene);
 	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetModel(Resources::Body));
+	GetComponent<ModelDraw>()->SetRimLithgColor({0.75f,0.75f,1,1});
 }
 
 void BodyTop::Update(float elapsedTime)

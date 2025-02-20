@@ -15,10 +15,14 @@ public:
 	void Render();
 	void CreateShadow();
 
+	void SetRimLithgColor(DirectX::XMVECTORF32 color);
+
 private:
 	Graphics* m_graphics;
 	DirectX::Model* m_model;
 	DirectX::SimpleMath::Matrix m_world;
 	bool m_isTexture;
+	bool m_isRimLight;
+	DirectX::XMVECTORF32 m_rimColor;
 };
 

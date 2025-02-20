@@ -35,6 +35,7 @@ void BossHead::Initialize(int hp, IScene* scene)
 	GetComponent<HP>()->SetHP(hp);
 	SetMaxHP(float(hp));
 	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetModel(Resources::BossHead));
+	GetComponent<ModelDraw>()->SetRimLithgColor(DirectX::Colors::IndianRed);
 	GetComponent<Collider>()->Initialize(Collider::Enemy,Collider::Trigger, { 1,1,1 }, { 0,-0.4f,0 });
 }
 

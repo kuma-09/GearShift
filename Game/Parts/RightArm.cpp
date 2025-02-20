@@ -24,6 +24,7 @@ void RightArm::Initialize(int hp,IScene* scene)
 	UNREFERENCED_PARAMETER(hp);
 	SetScene(scene);
 	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetModel(Resources::RArm));
+	GetComponent<ModelDraw>()->SetRimLithgColor({ 0.75f,0.75f,1,1 });
 }
 
 void RightArm::Update(float elapsedTime)

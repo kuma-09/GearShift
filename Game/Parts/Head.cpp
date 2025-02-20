@@ -24,6 +24,7 @@ void Head::Initialize(int hp,IScene* scene)
 	UNREFERENCED_PARAMETER(hp);
 	SetScene(scene);
 	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetModel(Resources::Head));
+	GetComponent<ModelDraw>()->SetRimLithgColor({ 0.75f,0.75f,1,1 });
 }
 
 void Head::Update(float elapsedTime)

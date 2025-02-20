@@ -12,6 +12,12 @@ cbuffer Parameters : register(b1)
     float3 lightColor[128];
 }
 
+cbuffer RimParameters : register(b2)
+{
+    bool isRim;
+    float4 rimColor;
+}
+
 struct PS_INPUT
 {
     float4 Position : SV_Position;
@@ -63,8 +69,27 @@ PS_OUTPUT main(PS_INPUT input)
     
     clip(dither - 64 * clipRate);
     
-    // テクスチャカラー
-    output.Albedo = DiffuseColor;
+    if(isRim)
+    {
+        // リムライト----------------------------
+        float3 toEye = normalize(EyePosition - objectPos.xyz);
+        half rim = 1.0 - saturate(dot(normalize(input.Normal), normalize(toEye)));
+        //rim = step(0.5f, rim);
+        // ---------------------------------------
+        output.Albedo = DiffuseColor + rim * rimColor;
+        //finalColor = lerp(finalColor, float3(1, 0, 0), rim);
+        output.Albedo = float4(lerp(DiffuseColor.rgb, rimColor.rgb, rim), 1);
+    }
+    else
+    {
+            // テクスチャカラー
+        output.Albedo = DiffuseColor;
+    }
+    
+
+    
+
+
     // ワールドNORMAL
     output.Normal = float4(input.Normal * 0.5f + 0.5f, 1.0f);
     // 深度

@@ -9,7 +9,9 @@
 ModelDraw::ModelDraw()
 	:
 	m_model{},
-	m_isTexture{}
+	m_isTexture{},
+	m_isRimLight{},
+	m_rimColor{}
 {
 	m_graphics = Graphics::GetInstance();
 }
@@ -41,7 +43,7 @@ void ModelDraw::Render()
 
 	m_model->Draw(context, *state, world, view, projection, false, [&]
 	{
-		DeferredRendering::DrawGBuffer(m_isTexture);
+		DeferredRendering::DrawGBuffer(m_isTexture,m_isRimLight,m_rimColor);
 	});
 }
 
@@ -57,4 +59,10 @@ void ModelDraw::CreateShadow()
 		{
 			ShadowMap::RenderDepth();
 		});
+}
+
+void ModelDraw::SetRimLithgColor(DirectX::XMVECTORF32 color)
+{
+	m_isRimLight = true;
+	m_rimColor = color;
 }
