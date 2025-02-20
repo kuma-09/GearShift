@@ -213,7 +213,7 @@ void ShadowMap::EndDepth()
 void ShadowMap::SetLightPosition(DirectX::SimpleMath::Vector3 targetPos)
 {
     using namespace DirectX::SimpleMath;
-    //m_lightPosition = targetPos + Vector3{ 10, 50, 10 };
+    m_lightPosition = targetPos + Vector3{ 10, 50, 10 };
     m_targetPosition = targetPos;
 }
 
