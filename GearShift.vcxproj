@@ -292,6 +292,7 @@
     <ClInclude Include="Game\Player\State\NoEnergy.h" />
     <ClInclude Include="Game\Player\TargetArea.h" />
     <ClInclude Include="Game\SceneMask.h" />
+    <ClInclude Include="Game\Shader\OutLine.h" />
     <ClInclude Include="Game\Shader\PostProcess.h" />
     <ClInclude Include="Game\Shader\PostProcess\Bloom.h" />
     <ClInclude Include="Game\Shader\PostProcess\Noise.h" />
@@ -421,6 +422,7 @@
     <ClCompile Include="Game\PlayScene.cpp" />
     <ClCompile Include="Game\ResultScene.cpp" />
     <ClCompile Include="Game\SceneMask.cpp" />
+    <ClCompile Include="Game\Shader\OutLine.cpp" />
     <ClCompile Include="Game\Shader\PostProcess.cpp" />
     <ClCompile Include="Game\Shader\PostProcess\Bloom.cpp" />
     <ClCompile Include="Game\Shader\PostProcess\Noise.cpp" />
@@ -617,6 +619,14 @@
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)/Resources/Shaders/%(Filename).cso</ObjectFileOutput>
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)/Resources/Shaders/%(Filename).cso</ObjectFileOutput>
+    </FxCompile>
+    <FxCompile Include="Shaders\PostOutLinePS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Shaders\PostOutLineVS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
     </FxCompile>
     <FxCompile Include="Shaders\PS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
