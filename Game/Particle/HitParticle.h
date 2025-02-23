@@ -10,9 +10,26 @@ class HitParticle
 {
 private:
 
-	Graphics* m_graphics;
+	// ベーシックエフェクト
+	// テクスチャマッピング、頂点カラー、ライティング等をサポートする
+	std::unique_ptr<DirectX::BasicEffect> m_basicEffect;
 
-	DirectX::VertexPositionColorTexture    m_vertices[4];
+	// プリミティブバッチ
+	// 線や三角形などのジオメトリを描画するために必要
+	std::unique_ptr<DirectX::PrimitiveBatch<DirectX::VertexPositionTexture>> m_primitiveBatch;
+
+	// 入力レイアウト
+	// 頂点情報の種類を指定する
+	Microsoft::WRL::ComPtr<ID3D11InputLayout> m_inputLayout;
+
+	// 射影行列
+	DirectX::SimpleMath::Matrix m_projection;
+
+
+	// ★以下、追記する変数など★
+
+	// 三角形で使用する変数
+	DirectX::VertexPositionTexture    m_vertices[4];
 
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_texture;
 

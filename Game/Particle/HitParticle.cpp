@@ -16,7 +16,10 @@ using namespace DirectX::SimpleMath;
 //---------------------------------------------------------
 HitParticle::HitParticle()
 	:
-	m_graphics{},
+	m_basicEffect{},
+	m_primitiveBatch{},
+	m_inputLayout{},
+	m_projection{},
 	ALPHA{0},
 	RG{},
 	m_vertices{}
@@ -24,6 +27,24 @@ HitParticle::HitParticle()
 
 	auto device = Graphics::GetInstance()->GetDeviceResources()->GetD3DDevice();
 	auto context = Graphics::GetInstance()->GetDeviceResources()->GetD3DDeviceContext();
+
+	// ベーシックエフェクトを作成する
+	m_basicEffect = std::make_unique<BasicEffect>(device);
+	m_basicEffect->SetLightingEnabled(false);	// ライティング(OFF)
+	m_basicEffect->SetVertexColorEnabled(false);// 頂点カラー(OFF)
+	m_basicEffect->SetTextureEnabled(true);		// テクスチャ(ON)
+
+	// 入力レイアウトを作成する
+	DX::ThrowIfFailed(
+		CreateInputLayoutFromEffect<VertexPositionTexture>(
+			device,
+			m_basicEffect.get(),
+			m_inputLayout.ReleaseAndGetAddressOf()
+		)
+	);
+
+	// プリミティブバッチを作成する
+	m_primitiveBatch = std::make_unique<PrimitiveBatch<VertexPositionTexture>>(context);
 
 	// 画像をロードする
 	DX::ThrowIfFailed(
@@ -49,10 +70,10 @@ HitParticle::~HitParticle()
 //---------------------------------------------------------
 void HitParticle::Initialize(Vector3 pos, Vector3 vel, Vector2 size)
 {
-	m_vertices[0] = {Vector3( 0.0f, 0.0f, 0.0f)     , Vector4(1,1,1,1), Vector2(0.0f,0.0f)};
-	m_vertices[1] = {Vector3( size.x, 0.0f, 0.0f)   , Vector4(1,1,1,1), Vector2(1.0f,0.0f)};
-	m_vertices[2] = {Vector3( 0.0f, size.y, 0.0f)   , Vector4(1,1,1,1), Vector2(0.0f,1.0f)};
-	m_vertices[3] = {Vector3( size.x, size.y, 0.0f) , Vector4(1,1,1,1), Vector2(1.0f,1.0f)};
+	m_vertices[0] = {Vector3( 0.0f, 0.0f, 0.0f) ,  Vector2(0.0f,0.0f)};
+	m_vertices[1] = {Vector3( size.x, 0.0f, 0.0f) , Vector2(1.0f,0.0f)};
+	m_vertices[2] = {Vector3( 0.0f, size.y, 0.0f) , Vector2(0.0f,1.0f)};
+	m_vertices[3] = {Vector3( size.x, size.y, 0.0f) ,Vector2(1.0f,1.0f)};
 	m_pos = pos;
 	m_vel = vel;
 	// 色とアルファ値を初期化
@@ -83,7 +104,14 @@ void HitParticle::Render(Matrix view, Matrix projection)
 	auto context = Graphics::GetInstance()->GetDeviceResources()->GetD3DDeviceContext();
 	auto states = Graphics::GetInstance()->GetCommonStates();
 
-	m_graphics->GetBasicEffect()->SetTexture(m_texture.Get());
+	// 各種パラメータを更新する
+	context->OMSetBlendState(states->NonPremultiplied(), nullptr, 0xFFFFFFFF);// ブレンドステート
+	ID3D11SamplerState* sampler = states->PointWrap();
+	context->PSSetSamplers(0, 1, &sampler);
+	context->OMSetDepthStencilState(states->DepthRead(), 0);		// 深度バッファ/ステンシルバッファ
+	context->RSSetState(states->CullClockwise());						// カリング
+	context->IASetInputLayout(m_inputLayout.Get());					// 入力レイアウト
+
 
 	// ワールド行列を更新する
 	Matrix billboardMat = view.Invert();
@@ -96,10 +124,20 @@ void HitParticle::Render(Matrix view, Matrix projection)
 	world *= Matrix::CreateTranslation(m_pos);
 	billboardMat *= world;
 
+
+	// エフェクトを変更する→座標系を設定する
+	m_basicEffect->SetWorld(billboardMat);				// ワールド行列
+	m_basicEffect->SetView(view);				// ビュー行列
+	m_basicEffect->SetProjection(projection);	// 射影行列
+	m_basicEffect->SetTexture(m_texture.Get());	// テクスチャ
+	m_basicEffect->SetColorAndAlpha(Vector4(0.5f, 0.7f, 1.f, ALPHA));
+
+	m_basicEffect->Apply(context);				// ベーシックエフェクトを更新する
+
 	// プリミティブバッチで描画する
-	m_graphics->DrawPrimitiveBegin(view, projection, billboardMat, Vector4(0.5f, 0.7f, 1.f, ALPHA));
-	m_graphics->GetPrimitiveBatch()->DrawQuad(m_vertices[0], m_vertices[1], m_vertices[3], m_vertices[2]);
-	m_graphics->DrawPrimitiveEnd();
+	m_primitiveBatch->Begin();
+	m_primitiveBatch->DrawQuad(m_vertices[0], m_vertices[1], m_vertices[3], m_vertices[2]);
+	m_primitiveBatch->End();
 
 }
 
