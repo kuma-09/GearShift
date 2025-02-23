@@ -103,32 +103,29 @@ void PlayScene::Update(float elapsedTime)
 
     auto& kb = m_inputManager->GetKeyboardTracker();
 
-    if (kb->IsKeyPressed(DirectX::Keyboard::Escape))
-    {
-        m_isMenu = true;
-    }
+    if (kb->IsKeyPressed(DirectX::Keyboard::Escape)) m_isMenu = true;
 
     if (m_isMenu)
     {
         UpdateMenu();
+        return;
     }
-    else
-    {
-        // 経過時間を計算
-        m_totalTime += elapsedTime;
-        m_tutorial->Update(elapsedTime);
-        m_time->SetNum(int(m_totalTime));
-        m_startAnimation->Update(elapsedTime);
-        if (m_finishAnimation->Update(elapsedTime)) GetGame()->ChangeScene(GetGame()->GetResultScene());
 
-        // ヒットエフェクトの更新
-        UpdateParticle(elapsedTime);
-        // ターゲットエリアの更新
-        UpdateTargetArea();
-        // オブジェクトの更新
-        ObjectManager::Update(elapsedTime);
-        CollisionManager::Update();
-    }
+    // 経過時間を計算
+    m_totalTime += elapsedTime;
+    m_tutorial->Update(elapsedTime);
+    m_time->SetNum(int(m_totalTime));
+    m_startAnimation->Update(elapsedTime);
+    if (m_finishAnimation->Update(elapsedTime)) GetGame()->ChangeScene(GetGame()->GetResultScene());
+
+    // ヒットエフェクトの更新
+    UpdateParticle(elapsedTime);
+    // ターゲットエリアの更新
+    UpdateTargetArea();
+    // オブジェクトの更新
+    ObjectManager::Update(elapsedTime);
+    CollisionManager::Update();
+
 }
 
 // 3Dオブジェクトの描画

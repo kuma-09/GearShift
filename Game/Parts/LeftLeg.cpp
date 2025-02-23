@@ -28,7 +28,7 @@ void LeftLeg::Initialize(int hp,IScene* scene)
 	SetScene(scene);
 	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetModel(Resources::LLeg));
 	GetComponent<ModelDraw>()->SetRimLithgColor({ 0.75f,0.75f,1,1 });
-	GetComponent<Emitter>()->Initialize(L"Resources/Textures/smoke_white.png", 0.3f, 0.1f, 0.2f);
+	GetComponent<Emitter>()->Initialize(L"Resources/Textures/smoke_white.png", 0.3f, 0.1f, 0.5f);
 }
 
 void LeftLeg::Update(float elapsedTime)

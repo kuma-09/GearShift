@@ -23,8 +23,8 @@ Tutorial::~Tutorial()
 
 void Tutorial::Initialize(int stageNum)
 {
-	stageNum = false;
-	if (stageNum == TUTORIAL_STAGENUM) stageNum = true;
+	m_isActive = false;
+	if (stageNum == TUTORIAL_STAGENUM) m_isActive = true;
 	m_totalTime = 0;
 	m_tutorialNum = 1;
 	m_posX = 0;

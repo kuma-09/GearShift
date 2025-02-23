@@ -39,7 +39,9 @@ void Emitter::Initialize(const wchar_t* path, float size,float interval, float l
         m_texture.ReleaseAndGetAddressOf()		// シェーダリソースビュー(表示用)
     );
 
-    for (int i = 0; i < (lifeTime / interval) * 2; i++)
+    int ParticleSize = (lifeTime / interval) * 2;
+
+    for (int i = 0; i < ParticleSize; i++)
     {
         m_particles.push_back(std::make_unique<Particle>());
     }
@@ -97,7 +99,7 @@ void Emitter::SetState(bool isSizeChage, bool isRotate)
 void Emitter::SetParticle(DirectX::SimpleMath::Vector3 pos)
 {
     //if (m_totalTime >= m_interval && GetOwner()->GetVelocity() != DirectX::SimpleMath::Vector3::Zero)
-    if (m_totalTime < m_interval && GetOwner()->GetVelocity() == DirectX::SimpleMath::Vector3::Zero) return;
+    if (m_totalTime < m_interval) return;
     for (int i = 0; i < m_particles.size(); i++)
     {
         if (m_particles[i]->GetLifeTime() <= 0)
