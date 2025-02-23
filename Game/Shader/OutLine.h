@@ -2,11 +2,11 @@
 #include "Framework/Graphics.h"
 #include "Framework/RenderTexture.h"
 
-class PostOutLine
+class OutLine
 {
 public:
-	PostOutLine();
-	~PostOutLine();
+	OutLine();
+	~OutLine();
 
 	void Initialize();
 	void Update(float elapsedTime);

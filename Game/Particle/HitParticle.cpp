@@ -106,7 +106,7 @@ void HitParticle::Render(Matrix view, Matrix projection)
 
 	// 各種パラメータを更新する
 	context->OMSetBlendState(states->NonPremultiplied(), nullptr, 0xFFFFFFFF);// ブレンドステート
-	ID3D11SamplerState* sampler = states->PointWrap();	// or PointWrap()
+	ID3D11SamplerState* sampler = states->PointWrap();
 	context->PSSetSamplers(0, 1, &sampler);
 	context->OMSetDepthStencilState(states->DepthRead(), 0);		// 深度バッファ/ステンシルバッファ
 	context->RSSetState(states->CullClockwise());						// カリング
@@ -132,10 +132,7 @@ void HitParticle::Render(Matrix view, Matrix projection)
 	m_basicEffect->SetTexture(m_texture.Get());	// テクスチャ
 	m_basicEffect->SetColorAndAlpha(Vector4(0.5f, 0.7f, 1.f, ALPHA));
 
-
-
 	m_basicEffect->Apply(context);				// ベーシックエフェクトを更新する
-
 
 	// プリミティブバッチで描画する
 	m_primitiveBatch->Begin();

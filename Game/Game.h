@@ -12,7 +12,6 @@
 #include "Game/GameOverScene.h"
 #include "Game/TestScene.h"
 #include "SceneMask.h"
-#include "Shader/OutLine.h"
 #include "Framework/DebugString.h"
 
 class Graphics;
@@ -168,6 +167,5 @@ private:
     std::unique_ptr<DebugString> m_debugString;
 
     std::unique_ptr<SceneMask> m_sceneMask;
-    std::unique_ptr<PostOutLine> m_outLine;
 
 };

@@ -56,7 +56,6 @@ private:
 
 	
 	Graphics* m_graphics;
-	DX::DeviceResources* m_deviceResources;
 	InputManager* m_inputManager;
 
 
@@ -64,13 +63,8 @@ private:
 	std::vector<GameObject*> m_gameObjects;
 	// プレイヤー
 	std::weak_ptr<GameObject> m_player;
-	// アイテム配列
-	std::vector<std::unique_ptr<DropItem>> m_dropItem;
-	std::vector<std::unique_ptr<DropItemB>> m_dropItemB;
 	// スカイドーム
 	std::unique_ptr<SkyDome> m_skyDome;
-	// 床
-	std::unique_ptr<Floor>   m_floor;
 	// ターゲット範囲
 	std::unique_ptr<TargetArea> m_targetArea;
 
@@ -79,16 +73,15 @@ private:
 	// 撃破エフェクト
 	std::unique_ptr<ExplosionEffect> m_hitEffect;
 	
+	// ミッション開始時と終了時のアニメーション
 	std::unique_ptr<StartAnimation> m_startAnimation;
 	std::unique_ptr<FinishAnimation> m_finishAnimation;
-
 	// ポーズ中のメニュー
 	std::unique_ptr<Menu> m_menu;
 	// メニューの背景
 	std::unique_ptr<UI>   m_menuBack;
 	// チュートリアル
 	std::unique_ptr<Tutorial> m_tutorial;
-
 	// 敵の残り数描画クラス
 	std::unique_ptr<RemainingEnemyUI> m_remainingEnemyUI;
 	// 経過時間描画クラス
@@ -96,8 +89,6 @@ private:
 
 	// 経過時間
 	float m_totalTime;
-	// 残り時間
-	float m_timeLimit;
 	// メニューを開いてるか
 	bool  m_isMenu;
 	// チュートリアル

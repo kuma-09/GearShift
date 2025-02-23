@@ -6,7 +6,7 @@ class Tutorial
 public:
 	Tutorial();
 	~Tutorial();
-	void Initialize(bool isActive);
+	void Initialize(int stageNum);
 	void Update(float elapsedTime);
 	void Render();
 
@@ -22,6 +22,9 @@ private:
 	const float RESIDUALTIME = 4.0f;
 	// 合計の時間
 	const float RETURNTIME = 5.0f;
+
+	// チュートリアルを表示するステージ
+	const int TUTORIAL_STAGENUM = 1;
 
 	float m_posX;
 	float m_reversePosX;

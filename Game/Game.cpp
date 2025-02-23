@@ -80,8 +80,6 @@ void Game::Initialize(HWND window, int width, int height)
     m_testScene = nullptr;
  
     m_sceneMask = std::make_unique<SceneMask>();
-    m_outLine = std::make_unique<PostOutLine>();
-    m_outLine->Initialize();
 
     m_debugString = std::make_unique<DebugString>(m_graphics->GetDeviceResources()->GetD3DDevice(),
         m_graphics->GetDeviceResources()->GetD3DDeviceContext(),
@@ -138,7 +136,6 @@ void Game::Update(DX::StepTimer const& timer)
     m_debugString->AddString(std::to_string(m_timer.GetFramesPerSecond()).c_str());
     m_scene->Update(elapsedTime);
 
-    m_outLine->Update(elapsedTime);
     if (m_sceneMask->IsClose() && m_sceneMask->IsOpen()) return;
     if (m_sceneMask->Update(elapsedTime))
     {
@@ -239,7 +236,6 @@ void Game::DeferredRendering()
     m_deviceResources->PIXEndEvent();
     m_deviceResources->PIXBeginEvent(L"DeferredLighting");
     DeferredRendering::DeferredLighting();
-    m_outLine->Render(DeferredRendering::GetDepthRenderTexture()->GetShaderResourceView(), DeferredRendering::GetNormalRenderTexture()->GetShaderResourceView());
     m_deviceResources->PIXEndEvent();
 }
 

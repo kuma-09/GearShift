@@ -21,9 +21,10 @@ Tutorial::~Tutorial()
 {
 }
 
-void Tutorial::Initialize(bool isActive)
+void Tutorial::Initialize(int stageNum)
 {
-	m_isActive = isActive;
+	stageNum = false;
+	if (stageNum == TUTORIAL_STAGENUM) stageNum = true;
 	m_totalTime = 0;
 	m_tutorialNum = 1;
 	m_posX = 0;

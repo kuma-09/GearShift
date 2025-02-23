@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "TargetArea.h"
+#include "Game/Components/HPBar.h"
 
 TargetArea::TargetArea()
 {
@@ -124,6 +125,9 @@ void TargetArea::Render(GameObject* target)
             Vector2(m_textureSize.x / 2, m_textureSize.y / 2),
             Vector2(GetScale() * 0.2f * n, GetScale() * 0.2f * n)
         );
+
+        m_target->GetComponent<HPBar>()->Render(m_target->GetPosition());
+
     }
     else
     {

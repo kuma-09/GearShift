@@ -1,33 +1,63 @@
-//	C++側から設定されるデータ①
-cbuffer ConstBuffer	: register(b0)
-{
-	matrix matWorld;
-	matrix matView;
-	matrix matProj;
-	float4 diffuse;
-};
+#include "Common.hlsli"
 
-//	C++側から設定されるデータ②
-Texture2D tex : register(t0);
-Texture2D tex2 : register(t1);
-SamplerState samLinear : register(s0);
+Texture2D<float4> DepthMap : register(t1);
+Texture2D<float4> NormalMap : register(t2);
 
-//	このシェーダが引数として受け取るデータ
+static const float DepthThreshold = 0.1f;
+static const float NormalThreshold = 0.5f;
+
+
 struct PS_INPUT
 {
-	float4 pos : SV_POSITION;
-	float2 Tex : TEXCOORD;
+    float4 Position : SV_Position;
+    float2 Texture : TEXCOORD;
 };
 
-float4 main(PS_INPUT input) : SV_TARGET
+float LinearizeDepth(float depth, float near, float far)
 {
-	//	設定された画像を表示
-	float4 output  =  tex.Sample(samLinear, input.Tex);
-	float4 output2 = tex2.Sample(samLinear, input.Tex);
+    return (2.0 * near) / (far + near - depth * (far - near));
+}
 
-	//	真っ白な板ポリゴン
-	float4 outputw = float4(0, 1, 0, 1.0f);
-	
-	return outputw;
+float4 main(PS_INPUT input) : SV_Target
+{
+    
+    // 深度バッファからエッジを抽出
+    float depthLB = DepthMap.Sample(Sampler, input.Texture + float2(-0.001f, 0.001f)).r;
+    float depthRT = DepthMap.Sample(Sampler, input.Texture + float2( 0.001f,-0.001f)).r;
+    float depthRB = DepthMap.Sample(Sampler, input.Texture + float2( 0.001f, 0.001f)).r;
+    float depthLT = DepthMap.Sample(Sampler, input.Texture + float2(-0.001f,-0.001f)).r;
+    
+    // 法線バッファからエッジを抽出
+    float3 normalLB = NormalMap.Sample(Sampler, input.Texture + float2(-0.001f, 0.001f)).rgb;
+    float3 normalRT = NormalMap.Sample(Sampler, input.Texture + float2( 0.001f,-0.001f)).rgb;
+    float3 normalRB = NormalMap.Sample(Sampler, input.Texture + float2( 0.001f, 0.001f)).rgb;
+    float3 normalLT = NormalMap.Sample(Sampler, input.Texture + float2(-0.001f,-0.001f)).rgb;
+    
+    depthLB = LinearizeDepth(depthLB, 0.1f, 100.0f);
+    depthRT = LinearizeDepth(depthRT, 0.1f, 100.0f);
+    depthRB = LinearizeDepth(depthRB, 0.1f, 100.0f);
+    depthLT = LinearizeDepth(depthLT, 0.1f, 100.0f);
+    
+    normalLB = normalLB * 2.0f + 1.0f;
+    normalRT = normalRT * 2.0f + 1.0f;
+    normalRB = normalRB * 2.0f + 1.0f;
+    normalLT = normalLT * 2.0f + 1.0f;
+    
+    float depthFiniteDifference0 = depthLT - depthRB;
+    float depthFiniteDifference1 = depthRT - depthLB;
+    float edgeDepth = sqrt(pow(depthFiniteDifference0, 2) + pow(depthFiniteDifference1, 2));
+    edgeDepth = 1 - step(edgeDepth, DepthThreshold);
+    
+    float3 normalFiniteDifference0 = normalLT - normalRB;
+    float3 normalFiniteDifference1 = normalRT - normalLB;
+    float edgeNormal = sqrt(dot(normalFiniteDifference0, normalFiniteDifference0) + dot(normalFiniteDifference1, normalFiniteDifference1));
+    edgeNormal = 1 - step(edgeNormal, NormalThreshold);
+    
+    
+    clip(edgeDepth - DepthThreshold);
+    //clip(edgeNormal - NormalThreshold);
+    
+    return float4(edgeDepth,edgeDepth,edgeDepth, 1);
+    //return float4(edgeNormal, edgeNormal, edgeNormal, 1);
 
 }

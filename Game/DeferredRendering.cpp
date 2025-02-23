@@ -229,7 +229,7 @@ void DeferredRendering::DeferredLighting()
 	//renderTarget = Graphics::GetInstance()->GetDeviceResources()->GetRenderTargetView();
 	//context->ClearRenderTargetView(renderTarget, DirectX::Colors::Black);
 	context->OMSetRenderTargets(1, &renderTarget, nullptr);
-	context->RSSetState(states->CullNone());						// カリング
+	context->RSSetState(states->CullCounterClockwise());						// カリング
 
 	// テクスチャサンプラーの設定
 	ID3D11SamplerState* samplers[] = { m_shadowMapSampler.Get() };

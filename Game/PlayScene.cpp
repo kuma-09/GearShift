@@ -3,7 +3,6 @@
 #include "cmath"
 #include "Game.h"
 
-#include "Framework/Microsoft/DebugDraw.h"
 #include "Framework/Audio.h"
 #include "Framework/Json.h"
 
@@ -19,11 +18,7 @@
 #include "Game/Object/Bullet/HomingBullet.h"
 #include "Game/Object/Light/Light.h"
 
-#include "Game/Components/HPBar.h"
-
 #include "Game/Particle/HitParticle.h"
-#include "UI/BulletMagazine.h"
-#include "UI/ExBulletMagazine.h"
 
 #include "System/HitStop.h"
 
@@ -34,11 +29,11 @@
 
 PlayScene::PlayScene()
     :
-    m_deviceResources{},
     m_graphics{},
     m_inputManager{},
-    m_timeLimit{},
-    m_totalTime{}
+    m_totalTime{},
+    m_isMenu{},
+    m_isTutorial{}
 {
 }
 
@@ -55,13 +50,11 @@ void PlayScene::Initialize(Game* game)
     using namespace DirectX::SimpleMath;
 
     m_graphics = Graphics::GetInstance();
-    m_deviceResources = m_graphics->GetDeviceResources();
     m_inputManager = InputManager::GetInstance();
 
     SetGame(game);
 
-    // 制限時間
-    m_timeLimit = 180.0f;
+    // 経過時間
     m_totalTime = 0;
 
     m_time = std::make_unique<Number>();
@@ -95,25 +88,6 @@ void PlayScene::Initialize(Game* game)
         m_hitParticle.emplace_back(std::make_unique<HitParticle>());
     }
 
-    m_startAnimation = std::make_unique<StartAnimation>();
-    m_startAnimation->Initialize();
-    m_finishAnimation = std::make_unique<FinishAnimation>();
-
-    // チュートリアルUI
-    m_tutorial = std::make_unique<Tutorial>();
-    if (StageDataManager::GetStageNum() == 1)
-    {
-        m_tutorial->Initialize(true);
-    }
-    else
-    {
-        m_tutorial->Initialize(false);
-    }
-
-    // 残りの敵の数UI
-    auto enemys = ObjectManager::GetTypeObjects(Type::Enemy);
-    m_remainingEnemyUI = std::make_unique<RemainingEnemyUI>();
-    m_remainingEnemyUI->Initialize({ 1150,30 }, enemys.size());
 
     Audio::GetInstance()->ChageBGM(Audio::Battle);
 }
@@ -166,10 +140,14 @@ void PlayScene::Render()
 // 半透明オブジェクトの描画
 void PlayScene::TranslucentRender()
 {
+
+    auto view = m_graphics->GetViewMatrix();
+    auto proj = m_graphics->GetProjectionMatrix();
+
     RenderManager::RenderParticle();
     for (auto& particle : m_hitParticle)
     {
-        particle->Render(m_graphics->GetViewMatrix(), m_graphics->GetProjectionMatrix());
+        particle->Render(view,proj);
     }
     m_hitEffect->Render();
 }
@@ -186,10 +164,6 @@ void PlayScene::RenderUI()
     m_startAnimation->Render();
     m_finishAnimation->Render();
     m_remainingEnemyUI->Render();
-    if (m_targetArea->GetTarget())
-    {
-        m_targetArea->GetTarget()->GetComponent<HPBar>()->Render(m_targetArea->GetTarget()->GetPosition());
-    }
     if (m_isMenu)
     {
         m_menuBack->Render(Vector2{640,360 }, DirectX::XMVECTORF32({ 1,1,1,0.75f }), Vector2(640, 360), Vector2(0.9f, 0.9f));
@@ -297,15 +271,29 @@ void PlayScene::CreateObject(std::string className, DirectX::SimpleMath::Vector3
 
 void PlayScene::CreateMenu()
 {
+    // ポーズした時のメニュー
     m_menu = std::make_unique<Menu>();
     m_menu->AddUI(L"Resources/Textures/Resume.png", { 0,150 }, { 1.f,1.f });
     //m_menu->AddUI(L"Resources/Textures/Option.png", { 0,350 }, { 1.f,1.f });
     m_menu->AddUI(L"Resources/Textures/Exit.png", { 0,350 }, { 1.f,1.f });
     m_menu->Initialize();
     m_isMenu = false;
-
     m_menuBack = std::make_unique<UI>(L"Resources/Textures/SceneChangeBlack.png");
     m_menuBack->Initialize();
+
+    // 開始終了のアニメーション
+    m_startAnimation = std::make_unique<StartAnimation>();
+    m_startAnimation->Initialize();
+    m_finishAnimation = std::make_unique<FinishAnimation>();
+
+    // チュートリアルUI
+    m_tutorial = std::make_unique<Tutorial>();
+    m_tutorial->Initialize(StageDataManager::GetStageNum());
+
+    // 残りの敵の数UI
+    auto enemys = ObjectManager::GetTypeObjects(Type::Enemy);
+    m_remainingEnemyUI = std::make_unique<RemainingEnemyUI>();
+    m_remainingEnemyUI->Initialize({ 1150,30 }, enemys.size());
 }
 
 // ターゲットエリアの更新
