@@ -15,10 +15,9 @@ Graphics* ShadowMap::m_graphics;
 std::unique_ptr<DirectX::SpriteBatch> ShadowMap::s_spriteBatch;
 Microsoft::WRL::ComPtr<ID3D11InputLayout>  ShadowMap::m_inputLayout;
 Microsoft::WRL::ComPtr<ID3D11SamplerState> ShadowMap::m_shadowMapSampler;
-DirectX::SimpleMath::Vector3    ShadowMap::m_lightPosition;
-DirectX::SimpleMath::Vector3    ShadowMap::m_targetPosition;
-DirectX::SimpleMath::Quaternion ShadowMap::m_lightRotate;
-float ShadowMap::m_lightTheta;
+DirectX::SimpleMath::Vector3    ShadowMap::m_lightPosition[4];
+DirectX::SimpleMath::Vector3    ShadowMap::m_targetPosition[4];
+float ShadowMap::m_lightTheta[4];
 Microsoft::WRL::ComPtr<ID3D11VertexShader> ShadowMap::m_VS_Depth;
 Microsoft::WRL::ComPtr<ID3D11PixelShader>  ShadowMap::m_PS_Depth;
 
@@ -39,14 +38,19 @@ void ShadowMap::Initialize()
     s_spriteBatch = std::make_unique<DirectX::SpriteBatch>(context);
 
     // ライトの位置
-    m_lightPosition = Vector3{ 10, 50, 10 };
-    m_targetPosition = Vector3::Zero;
+    m_lightPosition[0] = Vector3{10, 50, 10};
+    m_lightPosition[1] = Vector3{10, 50, 10};
+    m_lightPosition[2] = Vector3{10, 50, 10};
+    m_lightPosition[3] = Vector3{10, 50, 10};
+    m_targetPosition[0] = Vector3::Zero;
+    m_targetPosition[1] = Vector3::Zero;
+    m_targetPosition[2] = Vector3::Zero;
+    m_targetPosition[3] = Vector3::Zero;
 
-    // ライトの回転
-    m_lightRotate = Quaternion::CreateFromYawPitchRoll(
-        XMConvertToRadians(0.0f), XMConvertToRadians(90.0f), 0.0f);
-
-    m_lightTheta = 20.f;
+    m_lightTheta[0] = 15.f;
+    m_lightTheta[1] = 30.f;
+    m_lightTheta[2] = 60.f;
+    m_lightTheta[3] =120.f;
 
     RECT rect = { 0, 0, SHADOWMAP_SIZE_X, SHADOWMAP_SIZE_Y };
 
@@ -130,29 +134,16 @@ void ShadowMap::BeginDepth(int num)
     D3D11_VIEWPORT vp = { 0.0f, 0.0f, SHADOWMAP_SIZE_X, SHADOWMAP_SIZE_Y, 0.0f, 1.0f };
     context->RSSetViewports(1, &vp);
 
-    // ライトの方向
-    SimpleMath::Vector3 lightDir = SimpleMath::Vector3::Transform(SimpleMath::Vector3(0.0f, 0.0f, 1.0f), m_lightRotate);
-
-    Vector3 targetPosition = m_targetPosition + Vector3{ 0,0,m_targetPosition.z / 2 * num };
-
     // ビュー行列を作成
     auto view = SimpleMath::Matrix::CreateLookAt(
-        m_lightPosition,
-        m_targetPosition,
+        m_lightPosition[num],
+        m_targetPosition[num],
         SimpleMath::Vector3::UnitY
     );
 
-
-    float lightTheta = m_lightTheta;
-
-    for (int i = 0; i < num; i++)
-    {
-        lightTheta *= 2;
-    }
-
     // 射影行列を作成
     auto proj = SimpleMath::Matrix::CreatePerspectiveFieldOfView(
-        XMConvertToRadians(lightTheta), float(SHADOWMAP_SIZE_X) / float(SHADOWMAP_SIZE_Y), 0.1f, 300.0f);
+        XMConvertToRadians(m_lightTheta[num]), float(SHADOWMAP_SIZE_X) / float(SHADOWMAP_SIZE_Y), 0.1f, 500.0f);
 
     D3D11_MAPPED_SUBRESOURCE mappedResource;
 
@@ -162,7 +153,7 @@ void ShadowMap::BeginDepth(int num)
     ConstantBuffer cbuffer = {};
     SimpleMath::Matrix m = view * proj;
     cbuffer.lightViewProj = XMMatrixTranspose(m);
-    cbuffer.lightPosition = m_lightPosition;
+    cbuffer.lightPosition = m_lightPosition[num];
     cbuffer.color = { 1,1,1,1 };
 
     *static_cast<ConstantBuffer*>(mappedResource.pData) = cbuffer;
@@ -213,23 +204,24 @@ void ShadowMap::EndDepth()
 void ShadowMap::SetLightPosition(DirectX::SimpleMath::Vector3 targetPos)
 {
     using namespace DirectX::SimpleMath;
-    m_lightPosition = targetPos + Vector3{ 10, 50, 10 };
-    m_targetPosition = targetPos;
+    //m_lightPosition[0] = targetPos + Vector3{10, 50, 10};
+    //m_lightPosition[1] = targetPos + Vector3{10, 30, 10};
+    //m_lightPosition[2] = targetPos + Vector3{10, 40, 10};
+    //m_lightPosition[3] = targetPos + Vector3{10, 50, 10};
+    m_targetPosition[0] = targetPos;
+    m_targetPosition[1] = targetPos;
+    m_targetPosition[2] = targetPos;
+    //m_targetPosition[3] = targetPos;
 }
 
 DirectX::SimpleMath::Matrix ShadowMap::GetLightView(int num)
 {
     using namespace DirectX::SimpleMath;
 
-
-
-
-    Vector3 targetPosition = m_targetPosition + Vector3{ 0,0,m_targetPosition.z / 2 * num };
-
     // ビュー行列を作成
     auto view = Matrix::CreateLookAt(
-        m_lightPosition,
-        m_targetPosition,
+        m_lightPosition[num],
+        m_targetPosition[num],
         Vector3::UnitY
     );
 
@@ -240,16 +232,10 @@ DirectX::SimpleMath::Matrix ShadowMap::GetLightProj(int num)
 {
     using namespace DirectX;
 
-    float lightTheta = m_lightTheta;
-
-    for (int i = 0; i < num; i++)
-    {
-        lightTheta *= 2;
-    }
 
     // 射影行列を作成
     auto proj = SimpleMath::Matrix::CreatePerspectiveFieldOfView(
-        XMConvertToRadians(lightTheta), float(SHADOWMAP_SIZE_X) / float(SHADOWMAP_SIZE_Y), 0.1f, 300.0f);
+        XMConvertToRadians(m_lightTheta[num]), float(SHADOWMAP_SIZE_X) / float(SHADOWMAP_SIZE_Y), 0.1f, 500.0f);
     return proj;
 }
 
@@ -274,7 +260,7 @@ void ShadowMap::ShadowMapShow()
     s_spriteBatch->Begin();
     for ( int i = 0; i < 4; i++)
     {
-        s_spriteBatch->Draw(srv[i], Vector2{1280,float(i) * 256.f}, &rect, DirectX::Colors::White, 0.0f, Vector2{SHADOWMAP_SIZE_X,0}, 0.5f);
+        s_spriteBatch->Draw(srv[i], Vector2{1280,float(i) * 128.f}, &rect, DirectX::Colors::White, 0.0f, Vector2{SHADOWMAP_SIZE_X,0}, 0.125f);
     }
     s_spriteBatch->End();
 }

@@ -156,7 +156,7 @@ float readShadowMap(float3 worldPos)
     lightViewProj = mul(lightView[2], lightProj[2]);
     float3 LightPosPS2 = conputeLightPosition(lightViewProj, worldPos);
     
-    lightViewProj = mul(lightView[3], lightView[3]);
+    lightViewProj = mul(lightView[3], lightProj[3]);
     float3 LightPosPS3 = conputeLightPosition(lightViewProj, worldPos);
     
     float2 uv0 = (LightPosPS0.xy) * float2(0.5f, -0.5f) + 0.5f;
@@ -164,11 +164,12 @@ float readShadowMap(float3 worldPos)
     float2 uv2 = (LightPosPS2.xy) * float2(0.5f, -0.5f) + 0.5f;
     float2 uv3 = (LightPosPS3.xy) * float2(0.5f, -0.5f) + 0.5f;
 
+    
     if (uv0.x > 0 && uv0.x < 1 && uv0.y > 0 && uv0.y < 1)
     {
         if (ShadowMap0.Sample(ShadowMapSampler, uv0).r < LightPosPS0.z - CalculateShadowBias(LightPosPS0.z, bias / 100, bias))
         {
-            percentLit = 0.4f;
+            percentLit = 0.5f;
             //percentLit = VSM_Filter(ShadowMap0.Sample(ShadowMapSampler, uv0).rg, LightPosPS0.z);
         }   
     }
@@ -176,7 +177,7 @@ float readShadowMap(float3 worldPos)
     {
         if (ShadowMap1.Sample(ShadowMapSampler, uv1).r < LightPosPS1.z - CalculateShadowBias(LightPosPS1.z, bias / 100, bias))
         {
-            percentLit = 0.525f;
+            percentLit = 0.5f;
             //percentLit = VSM_Filter(ShadowMap1.Sample(ShadowMapSampler, uv1).rg, LightPosPS1.z);
         }
     }
@@ -184,15 +185,15 @@ float readShadowMap(float3 worldPos)
     {
         if (ShadowMap2.Sample(ShadowMapSampler, uv2).r < LightPosPS2.z - CalculateShadowBias(LightPosPS2.z, bias / 100, bias))
         {
-            percentLit = 0.7f;
+            percentLit = 0.5f;
             //percentLit = VSM_Filter(ShadowMap2.Sample(ShadowMapSampler, uv2).rg, LightPosPS2.z);
         }
     }
     else if (uv3.x > 0 && uv3.x < 1 && uv3.y > 0 && uv3.y < 1)
     {
-        if (ShadowMap3.Sample(ShadowMapSampler, uv3).r < LightPosPS3.z - CalculateShadowBias(LightPosPS3.z, bias / 100, bias))
+        if (ShadowMap3.Sample(ShadowMapSampler, uv3).r < LightPosPS3.z - CalculateShadowBias(LightPosPS2.z, bias / 100, bias))
         {
-            percentLit = 0.825f;
+            percentLit = 0.5f;
             //percentLit = VSM_Filter(ShadowMap3.Sample(ShadowMapSampler, uv3).rg, LightPosPS3.z);
         }
     }

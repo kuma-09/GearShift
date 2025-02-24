@@ -35,16 +35,13 @@ private:
 
 	// ライト------------------
 	// ライトの位置
-	static DirectX::SimpleMath::Vector3 m_lightPosition;
+	static DirectX::SimpleMath::Vector3 m_lightPosition[4];
 
 	// ライトの注視点
-	static DirectX::SimpleMath::Vector3 m_targetPosition;
-
-	// ライトの回転
-	static DirectX::SimpleMath::Quaternion m_lightRotate;
+	static DirectX::SimpleMath::Vector3 m_targetPosition[4];
 
 	// ライトの範囲の角度
-	static float m_lightTheta;
+	static float m_lightTheta[4];
 
 	// シェーダー--------------
 	// 頂点シェーダー(深度用)
