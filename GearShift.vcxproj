@@ -190,6 +190,9 @@
     <ClInclude Include="Game\Animation\FinishAnimation.h" />
     <ClInclude Include="Game\Enemy\State\TrainingIdolState.h" />
     <ClInclude Include="Game\Enemy\TrainingEnemy.h" />
+    <ClInclude Include="Game\Object\Cloud\Cloud1.h" />
+    <ClInclude Include="Game\Object\Cloud\Cloud2.h" />
+    <ClInclude Include="Game\Object\Cloud\Cloud3.h" />
     <ClInclude Include="Game\Object\Floor\Floor2.h" />
     <ClInclude Include="Framework\Audio.h" />
     <ClInclude Include="Framework\BinaryFile.h" />
@@ -325,6 +328,9 @@
     <ClCompile Include="Game\Animation\FinishAnimation.cpp" />
     <ClCompile Include="Game\Enemy\State\TrainingIdolState.cpp" />
     <ClCompile Include="Game\Enemy\TrainingEnemy.cpp" />
+    <ClCompile Include="Game\Object\Cloud\Cloud1.cpp" />
+    <ClCompile Include="Game\Object\Cloud\Cloud2.cpp" />
+    <ClCompile Include="Game\Object\Cloud\Cloud3.cpp" />
     <ClCompile Include="Game\Object\Floor\Floor2.cpp" />
     <ClCompile Include="Framework\Audio.cpp" />
     <ClCompile Include="Framework\BinaryFile.cpp" />

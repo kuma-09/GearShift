@@ -14,4 +14,5 @@ public:
 
 private:
 	Graphics* m_graphics;
+
 };

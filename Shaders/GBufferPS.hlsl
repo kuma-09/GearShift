@@ -12,10 +12,11 @@ cbuffer Parameters : register(b1)
     float3 lightColor[128];
 }
 
-cbuffer RimParameters : register(b2)
+cbuffer Parameters : register(b2)
 {
     bool isRim;
     float4 rimColor;
+    float4 emissiveColor;
 }
 
 struct PS_INPUT
@@ -82,14 +83,14 @@ PS_OUTPUT main(PS_INPUT input)
     }
     else
     {
-            // テクスチャカラー
+        // テクスチャカラー
         output.Albedo = DiffuseColor;
     }
     
 
     
-
-
+    // 自己発光
+    output.Albedo = output.Albedo + emissiveColor;
     // ワールドNORMAL
     output.Normal = float4(input.Normal * 0.5f + 0.5f, 1.0f);
     // 深度

@@ -11,7 +11,8 @@ ModelDraw::ModelDraw()
 	m_model{},
 	m_isTexture{},
 	m_isRimLight{},
-	m_rimColor{}
+	m_rimColor{},
+	m_emissiveColor{}
 {
 	m_graphics = Graphics::GetInstance();
 }
@@ -43,7 +44,7 @@ void ModelDraw::Render()
 
 	m_model->Draw(context, *state, world, view, projection, false, [&]
 	{
-		DeferredRendering::DrawGBuffer(m_isTexture,m_isRimLight,m_rimColor);
+		DeferredRendering::DrawGBuffer(m_isTexture,m_isRimLight,m_rimColor,m_emissiveColor);
 	});
 }
 
@@ -65,4 +66,9 @@ void ModelDraw::SetRimLithgColor(DirectX::XMVECTORF32 color)
 {
 	m_isRimLight = true;
 	m_rimColor = color;
+}
+
+void ModelDraw::SetEmissiveColor(DirectX::XMVECTORF32 color)
+{
+	m_emissiveColor = color;
 }

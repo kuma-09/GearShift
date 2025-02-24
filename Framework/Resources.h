@@ -35,6 +35,10 @@ public:
 		BillB,
 		BillC,
 
+		Cloud1,
+		Cloud2,
+		Cloud3,
+
 		DropItem,
 
 		Boom,

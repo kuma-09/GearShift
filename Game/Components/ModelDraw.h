@@ -16,6 +16,7 @@ public:
 	void CreateShadow();
 
 	void SetRimLithgColor(DirectX::XMVECTORF32 color);
+	void SetEmissiveColor(DirectX::XMVECTORF32 color);
 
 private:
 	Graphics* m_graphics;
@@ -24,5 +25,6 @@ private:
 	bool m_isTexture;
 	bool m_isRimLight;
 	DirectX::XMVECTORF32 m_rimColor;
+	DirectX::XMVECTORF32 m_emissiveColor;
 };
 

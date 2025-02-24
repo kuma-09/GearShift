@@ -29,6 +29,7 @@ void DropItem::Initialize()
 	GetComponent<Physics>()->Initialize();
 	GetComponent<Collider>()->Initialize(Collider::DropItemB,Collider::Collision, { 2,2,2 });
 	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetModel(Resources::DropItem), true);
+	GetComponent<ModelDraw>()->SetEmissiveColor({ 1,0.5f,0.5f,0.5f });
 
 
 	Matrix world = Matrix::CreateScale(GetScale());

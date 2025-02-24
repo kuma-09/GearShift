@@ -9,7 +9,7 @@ class DeferredRendering
 public:
 	static void Initialize();
 	static void BeginGBuffer();
-	static void DrawGBuffer(bool texture = false,bool rim = false, DirectX::XMVECTORF32 rimColor = DirectX::Colors::White);
+	static void DrawGBuffer(bool texture = false,bool rim = false, DirectX::XMVECTORF32 rimColor = DirectX::Colors::White,DirectX::XMVECTORF32 emissiveColor = {0,0,0,0});
 	static void DeferredLighting();
 
 	static void GBufferShow();
@@ -53,6 +53,7 @@ private:
 	{
 		bool isRim;
 		DirectX::XMVECTOR rimColor;
+		DirectX::XMVECTOR emissiveColor;
 	};
 
 	static Microsoft::WRL::ComPtr<ID3D11Buffer> s_constantBuffer;

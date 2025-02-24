@@ -192,7 +192,7 @@ void Game::Render()
     if (m_sceneMask->IsClose() || m_sceneMask->IsOpen()) m_sceneMask->Render();
 
     // デバッグ用
-    //DeferredRendering::GBufferShow();
+    DeferredRendering::GBufferShow();
     //ShadowMap::ShadowMapShow();
     //Bloom::BloomTextureShow();
     //m_debugString->Render(state);

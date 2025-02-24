@@ -17,6 +17,9 @@
 #include "Game/Object/Wall/BillD.h"
 #include "Game/Object/Bullet/HomingBullet.h"
 #include "Game/Object/Light/Light.h"
+#include "Game/Object/Cloud/Cloud1.h"
+#include "Game/Object/Cloud/Cloud2.h"
+#include "Game/Object/Cloud/Cloud3.h"
 
 #include "Game/Particle/HitParticle.h"
 
@@ -219,6 +222,18 @@ void PlayScene::CreateObject(std::string className, DirectX::SimpleMath::Vector3
     if (className == "Floor2")
     {
         ObjectManager::Add(std::make_shared<Floor2>(this), pos);
+    }
+    if (className == "Cloud1")
+    {
+        ObjectManager::Add(std::make_shared<Cloud1>(), pos);
+    }
+    if (className == "Cloud2")
+    {
+        ObjectManager::Add(std::make_shared<Cloud2>(), pos);
+    }
+    if (className == "Cloud3")
+    {
+        ObjectManager::Add(std::make_shared<Cloud3>(), pos);
     }
     if (className == "BillA")
     {

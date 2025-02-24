@@ -185,7 +185,7 @@ void DeferredRendering::BeginGBuffer()
 	context->PSSetConstantBuffers(1, 1, cbuf);
 }
 
-void DeferredRendering::DrawGBuffer(bool texture,bool rim, DirectX::XMVECTORF32 rimColor)
+void DeferredRendering::DrawGBuffer(bool texture,bool rim, DirectX::XMVECTORF32 rimColor, DirectX::XMVECTORF32 emissiveColor)
 {
 	auto context = s_graphics->GetDeviceResources()->GetD3DDeviceContext();
 	auto state = s_graphics->GetCommonStates();
@@ -198,6 +198,7 @@ void DeferredRendering::DrawGBuffer(bool texture,bool rim, DirectX::XMVECTORF32 
 	ConstBuffer_RimLight* cbRim = static_cast<ConstBuffer_RimLight*>(mappedResource.pData);
 	cbRim->isRim = rim;
 	cbRim->rimColor = rimColor;
+	cbRim->emissiveColor = emissiveColor;
 	// ƒ}ƒbƒv‚ð‰ðœ‚·‚é
 	context->Unmap(s_constantBuffer_rim.Get(), 0);
 	ID3D11Buffer* cbuf[] = { s_constantBuffer_rim.Get() };

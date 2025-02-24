@@ -62,6 +62,9 @@ void Resources::LoadResource(Graphics* graphics)
 	m_umModel[ModelType::Gun]			 = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\gun.sdkmesh", *graphics->GetFX());
 	m_umModel[ModelType::MissileLuncher] = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\MissileLuncher.sdkmesh", *graphics->GetFX());
 	m_umModel[ModelType::Light]			 = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\light.sdkmesh", *graphics->GetFX());
+	m_umModel[ModelType::Cloud1]		 = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\Cloud1.sdkmesh", *graphics->GetFX());
+	m_umModel[ModelType::Cloud2]		 = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\Cloud2.sdkmesh", *graphics->GetFX());
+	m_umModel[ModelType::Cloud3]		 = DirectX::Model::CreateFromSDKMESH(device, L"Resources\\Models\\Cloud3.sdkmesh", *graphics->GetFX());
 
 	// テクスチャをロードする
 	DirectX::CreateWICTextureFromFile(

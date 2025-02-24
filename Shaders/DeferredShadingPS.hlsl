@@ -121,7 +121,9 @@ float4 main(PS_INPUT input) : SV_TARGET
         finalColor += albedo.rgb * diffuse;
     }
 
-    finalColor = lerp(float3(0, 0, 0), finalColor, 1 - LinearizeDepth(depth, 0.1, 200));
+    float3 fogColor = float3(0.5f, 0.5f, 0.85f);
+    
+    finalColor = lerp(fogColor, finalColor, 1 - LinearizeDepth(depth, 0.1, 300));
     
     return float4(finalColor, 1);
 }

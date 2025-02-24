@@ -11,6 +11,7 @@ std::weak_ptr<GameObject> ObjectManager::Add(std::shared_ptr<GameObject> object,
 	s_gameObjects.back()->Initialize();
 	s_gameObjects.back()->SetType(type);
 	s_gameObjects.back()->SetPosition(pos);
+	s_gameObjects.back()->SetWorld(DirectX::SimpleMath::Matrix::CreateTranslation(pos));
 	return std::static_pointer_cast<GameObject>(object);
 }
 
