@@ -14,7 +14,6 @@
 #include "Game/Object/Sword.h"
 #include "Game/Object/Burner/Burner.h"
 #include "Game/Object/Camera/Camera.h"
-
 #include <map>
 
 class Idol;

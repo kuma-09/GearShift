@@ -38,16 +38,16 @@ void ShadowMap::Initialize()
     s_spriteBatch = std::make_unique<DirectX::SpriteBatch>(context);
 
     // ƒ‰ƒCƒg‚ÌˆÊ’u
-    m_lightPosition[0] = Vector3{10, 50, 10};
-    m_lightPosition[1] = Vector3{10, 50, 10};
-    m_lightPosition[2] = Vector3{10, 50, 10};
-    m_lightPosition[3] = Vector3{10, 50, 10};
+    m_lightPosition[0]  = Vector3{ 20, 70, 10};
+    m_lightPosition[1]  = Vector3{ 20, 70, 10};
+    m_lightPosition[2]  = Vector3{ 20, 70, 10};
+    m_lightPosition[3]  = Vector3{ 20, 70, 10};
     m_targetPosition[0] = Vector3::Zero;
     m_targetPosition[1] = Vector3::Zero;
     m_targetPosition[2] = Vector3::Zero;
     m_targetPosition[3] = Vector3::Zero;
 
-    m_lightTheta[0] = 15.f;
+    m_lightTheta[0] = 10.f;
     m_lightTheta[1] = 30.f;
     m_lightTheta[2] = 60.f;
     m_lightTheta[3] =120.f;

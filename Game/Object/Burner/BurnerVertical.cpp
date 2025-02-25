@@ -13,7 +13,7 @@ BurnerVertical::~BurnerVertical()
 
 void BurnerVertical::Initialize()
 {
-	GetComponent<Trail>()->Initialize(L"Resources/Textures/particle.png", 10, DirectX::Colors::CadetBlue);
+	GetComponent<Trail>()->Initialize(L"Resources/Textures/particle.png", 10, DirectX::Colors::CornflowerBlue);
 }
 
 void BurnerVertical::Update(float elapsedTime)

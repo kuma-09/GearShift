@@ -194,7 +194,7 @@ void Game::Render()
     // デバッグ用
     DeferredRendering::GBufferShow();
     ShadowMap::ShadowMapShow();
-    //Bloom::BloomTextureShow();
+    Bloom::BloomTextureShow();
     //m_debugString->Render(state);
 
     m_deviceResources->PIXEndEvent();

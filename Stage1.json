@@ -1,6 +1,7 @@
 {
 	"Object_list": [
 		{"Object_Name": "Player"     ,"position":{"x":  5.0,"y": 20.0,"z": 100.0}},
+		{"Object_Name": "SkyDome"   ,"position":{"x":  0.0,"y":  0.0,"z":   0.0}},
 		{"Object_Name": "Floor2"     ,"position":{"x":150.0,"y":  0.0,"z": 100.0}},
 
 		{"Object_Name": "Cloud1"		,"position":{"x": 20.0,"y": 80.0,"z":  20.0}},

@@ -11,6 +11,7 @@
 #include "Enemy/FixedEnemy.h"
 #include "Enemy/HomingEnemy.h"
 #include "Enemy/BossEnemy.h"
+#include "Game/Object/SkyDome.h"
 #include "Game/Object/Wall/BillA.h"
 #include "Game/Object/Wall/BillB.h"
 #include "Game/Object/Wall/BillC.h"
@@ -76,9 +77,6 @@ void PlayScene::Initialize(Game* game)
     }
 
     CreateMenu();
-
-    m_skyDome = std::make_unique<SkyDome>();
-    m_skyDome->Initialize(Vector3::Zero);
 
     m_targetArea = std::make_unique<TargetArea>();
     m_targetArea->Initialize();
@@ -211,74 +209,24 @@ void PlayScene::CreateHitEffect(DirectX::SimpleMath::Vector3 pos)
 void PlayScene::CreateObject(std::string className, DirectX::SimpleMath::Vector3 pos)
 {
     using namespace DirectX::SimpleMath;
-    if (className == "Player")
-    {
-        m_player = ObjectManager::Add(std::make_shared<Player>(this),pos);
-    }
-    if (className == "Floor")
-    {
-        ObjectManager::Add(std::make_shared<Floor>(this), pos);
-    }
-    if (className == "Floor2")
-    {
-        ObjectManager::Add(std::make_shared<Floor2>(this), pos);
-    }
-    if (className == "Cloud1")
-    {
-        ObjectManager::Add(std::make_shared<Cloud1>(), pos);
-    }
-    if (className == "Cloud2")
-    {
-        ObjectManager::Add(std::make_shared<Cloud2>(), pos);
-    }
-    if (className == "Cloud3")
-    {
-        ObjectManager::Add(std::make_shared<Cloud3>(), pos);
-    }
-    if (className == "BillA")
-    {
-        ObjectManager::Add(std::make_shared<BillA>(this),pos);
-    }
-    if (className == "BillB")
-    {
-        ObjectManager::Add(std::make_shared<BillB>(this),pos);
-    }
-    if (className == "BillC")
-    {
-        ObjectManager::Add(std::make_shared<BillC>(this), pos);
-    }
-    if (className == "BillD")
-    {
-        ObjectManager::Add(std::make_shared<BillD>(this), pos);
-    }
-    if (className == "TrainingEnemy")
-    {
-        ObjectManager::Add(std::make_shared<TrainingEnemy>(this), pos,Type::Enemy);
-    }
-    if (className == "HomingEnemy")
-    {
-        ObjectManager::Add(std::make_shared<HomingEnemy>(this,m_player.lock().get()),pos, Type::Enemy);
-    }
-    if (className == "FixedEnemy")
-    {
-        ObjectManager::Add(std::make_shared<FixedEnemy>(this, m_player.lock().get()),pos, Type::Enemy);
-    }
-    if (className == "BossEnemy")
-    {
-        ObjectManager::Add(std::make_shared<BossEnemy>(this, m_player.lock().get()),pos, Type::Enemy);
-    }
-    if (className == "DropItem")
-    {
-        ObjectManager::Add(std::make_shared<DropItem>(this), pos);
-    }
-    if (className == "DropItemB")
-    {
-        ObjectManager::Add(std::make_shared<DropItemB>(this),pos);
-    }   
-    if (className == "Light")
-    {
-        ObjectManager::Add(std::make_shared<Light>(this), pos);
-    }
+    if (className == "Player")  m_player = ObjectManager::Add(std::make_shared<Player>(this),pos);
+    if (className == "SkyDome")            ObjectManager::Add(std::make_shared<SkyDome>(), pos);
+    if (className == "Floor")              ObjectManager::Add(std::make_shared<Floor>(this), pos);
+    if (className == "Floor2")             ObjectManager::Add(std::make_shared<Floor2>(this), pos);
+    if (className == "Cloud1")             ObjectManager::Add(std::make_shared<Cloud1>(), pos);
+    if (className == "Cloud2")             ObjectManager::Add(std::make_shared<Cloud2>(), pos);
+    if (className == "Cloud3")             ObjectManager::Add(std::make_shared<Cloud3>(), pos);
+    if (className == "BillA")              ObjectManager::Add(std::make_shared<BillA>(this),pos);
+    if (className == "BillB")              ObjectManager::Add(std::make_shared<BillB>(this),pos);
+    if (className == "BillC")              ObjectManager::Add(std::make_shared<BillC>(this), pos);
+    if (className == "BillD")              ObjectManager::Add(std::make_shared<BillD>(this), pos);
+    if (className == "TrainingEnemy")      ObjectManager::Add(std::make_shared<TrainingEnemy>(this), pos,Type::Enemy);
+    if (className == "HomingEnemy")        ObjectManager::Add(std::make_shared<HomingEnemy>(this,m_player.lock().get()),pos, Type::Enemy);
+    if (className == "FixedEnemy")         ObjectManager::Add(std::make_shared<FixedEnemy>(this, m_player.lock().get()),pos, Type::Enemy);
+    if (className == "BossEnemy")          ObjectManager::Add(std::make_shared<BossEnemy>(this, m_player.lock().get()),pos, Type::Enemy);
+    if (className == "DropItem")           ObjectManager::Add(std::make_shared<DropItem>(this), pos);
+    if (className == "DropItemB")          ObjectManager::Add(std::make_shared<DropItemB>(this),pos);
+    if (className == "Light")              ObjectManager::Add(std::make_shared<Light>(this), pos);
 }
 
 void PlayScene::CreateMenu()

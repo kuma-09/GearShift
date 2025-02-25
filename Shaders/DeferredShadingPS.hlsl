@@ -164,6 +164,7 @@ float readShadowMap(float3 worldPos)
     float2 uv2 = (LightPosPS2.xy) * float2(0.5f, -0.5f) + 0.5f;
     float2 uv3 = (LightPosPS3.xy) * float2(0.5f, -0.5f) + 0.5f;
 
+    float distance = length(worldPos - inverse(matView)[3].xyz);
     
     if (uv0.x > 0 && uv0.x < 1 && uv0.y > 0 && uv0.y < 1)
     {
@@ -177,7 +178,7 @@ float readShadowMap(float3 worldPos)
     {
         if (ShadowMap1.Sample(ShadowMapSampler, uv1).r < LightPosPS1.z - CalculateShadowBias(LightPosPS1.z, bias / 100, bias))
         {
-            percentLit = 0.5f;
+            percentLit = 0.6f;
             //percentLit = VSM_Filter(ShadowMap1.Sample(ShadowMapSampler, uv1).rg, LightPosPS1.z);
         }
     }
@@ -185,15 +186,16 @@ float readShadowMap(float3 worldPos)
     {
         if (ShadowMap2.Sample(ShadowMapSampler, uv2).r < LightPosPS2.z - CalculateShadowBias(LightPosPS2.z, bias / 100, bias))
         {
-            percentLit = 0.5f;
+            percentLit = 0.7f;
             //percentLit = VSM_Filter(ShadowMap2.Sample(ShadowMapSampler, uv2).rg, LightPosPS2.z);
         }
     }
     else if (uv3.x > 0 && uv3.x < 1 && uv3.y > 0 && uv3.y < 1)
     {
+        //return 0.0f;
         if (ShadowMap3.Sample(ShadowMapSampler, uv3).r < LightPosPS3.z - CalculateShadowBias(LightPosPS2.z, bias / 100, bias))
         {
-            percentLit = 0.5f;
+            percentLit = 0.8f;
             //percentLit = VSM_Filter(ShadowMap3.Sample(ShadowMapSampler, uv3).rg, LightPosPS3.z);
         }
     }

@@ -16,14 +16,10 @@ SkyDome::~SkyDome()
 
 }
 
-void SkyDome::Initialize(DirectX::SimpleMath::Vector3 pos)
+void SkyDome::Initialize()
 {
 	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetModel(Resources::SkyDome), true);
 	GetComponent<ModelDraw>()->SetEmissiveColor({0.25f,0.25f,0.25f,1.0f});
-
-	auto world = DirectX::SimpleMath::Matrix::CreateScale(1.0f);
-	world *= DirectX::SimpleMath::Matrix::CreateTranslation(pos);
-	SetWorld(world);
 }
 
 void SkyDome::Update(float elapsedTime)

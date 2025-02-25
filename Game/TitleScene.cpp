@@ -30,7 +30,8 @@ void TitleScene::Initialize(Game* game)
     m_titleLogo->Initialize();
 
     m_skydome = std::make_unique<SkyDome>();
-    m_skydome->Initialize({ 0,-20,0 });
+    m_skydome->Initialize();
+    m_skydome->SetWorld(Matrix::CreateTranslation(Vector3(0, 0, 0)));
     
     m_player = std::make_unique<TitlePlayer>(this);
     m_player->SetPosition(Vector3{ 5,2.4,5 });
