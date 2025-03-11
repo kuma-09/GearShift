@@ -6,6 +6,8 @@
 #include "Game/Components/Trail.h"
 #include "Game/Shader/ShadowMap.h"
 
+#include "CollisionManager.h"
+
 Graphics* RenderManager::s_graphics = Graphics::GetInstance();
 std::vector<ModelDraw*> RenderManager::s_modelDraws;
 std::vector<Emitter*> RenderManager::s_emitters;
@@ -45,6 +47,10 @@ void RenderManager::RenderObjects()
 	{
 		modelDraw->Render();
 	}
+
+	// 当たり判定デバッグ用
+	// CollisionManager::Render();
+
 }
 
 void RenderManager::RenderParticle()

@@ -1,9 +1,9 @@
-/*
-	@file	InputManager.h
-	@brief	マウスとキーボードの入力を請け負うクラス
-*/
 #pragma once
 
+/// <summary>
+/// 入力情報を更新/取得するクラス
+/// シングルトン
+/// </summary>
 class InputManager
 {
 public:
@@ -34,14 +34,17 @@ private:
 	InputManager(InputManager&&) = delete;
 
 public:
+	// インスタンスを取得
 	static InputManager* const GetInstance();
 
+	// 初期化処理
 	void Initialize(const HWND& window);
-
+	// 更新処理
 	void Update();
 
 private:
-		
+	
+	// インスタンス
 	static std::unique_ptr<InputManager> s_inputManager;
 
 	// マウス

@@ -82,7 +82,6 @@ void FinishAnimation::Render()
 	XMVECTORF32 color{ 1.0f,1.0f,1.0f, 0.3f };
 	m_spriteBatch->Draw(m_texture.Get(), Vector2{ (-640 + 1280 * m_result) * value, float(windowsize.bottom) / 2.f }, 0, color, 0, Vector2(1280, 240) / 2, Vector2{ 1 * value, 1 * value });
 
-	//m_bar->Render(Vector2{ (-1280 + 1280 * m_result) * value, float(windowsize.bottom) / 2.f },color,DirectX::SimpleMath::Vector2::Zero, Vector2{ 1 * value, 1 * value });
 	m_font->Render(Vector2{ (-640 + 1280 * m_result) * value, float(windowsize.bottom) / 2.f }, DirectX::Colors::White, Vector2(1200, 100) / 2, Vector2{ 1 * value, 1 * value });
 
 	// スプライトバッチの終わり

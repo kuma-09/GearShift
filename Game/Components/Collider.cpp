@@ -23,6 +23,13 @@ Collider::~Collider()
     CollisionManager::Remove(this);
 }
 
+/// <summary>
+/// 初期化処理
+/// </summary>
+/// <param name="id">判別用タグ</param>
+/// <param name="colliderType">当たり判定の種類</param>
+/// <param name="size">大きさ</param>
+/// <param name="initialPos">初期位置</param>
 void Collider::Initialize(TypeID id,ColliderType colliderType, DirectX::SimpleMath::Vector3 size, DirectX::SimpleMath::Vector3 initialPos)
 {
     m_typeID = id;
@@ -48,15 +55,6 @@ void Collider::Render()
 	m_graphics->DrawPrimitivePositionColorEnd();
 }
 
-void Collider::Finalize()
-{
-
-}
-
-void Collider::SetInitalePosition(DirectX::SimpleMath::Vector3 pos)
-{
-    m_initalePosition = pos;
-}
 
 /// <summary>
 /// 当たり判定をとり押し戻す関数

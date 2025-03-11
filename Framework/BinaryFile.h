@@ -1,10 +1,9 @@
-﻿/// <summary>
-/// バイナリファイルを扱うクラス
-/// </summary>
-#pragma once
-
+﻿#pragma once
 #include <memory>
 
+/// <summary>
+/// バイナリファイルを扱うクラス
+/// </summary>
 class BinaryFile
 {
 protected:

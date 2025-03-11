@@ -41,34 +41,21 @@ void Audio::LoadSoundFile()
 	m_audioEngine = std::make_unique<AudioEngine>(eflags);
 
 	// サウンドエフェクトSEをロードする
-	m_rocketLauncherSE = std::make_unique<SoundEffect>(
-		m_audioEngine.get(), L"Resources/Sounds/RocketLauncher.wav");
-
-	m_hitSE = std::make_unique<SoundEffect>(
-		m_audioEngine.get(), L"Resources/Sounds/Hit.wav");
-
-	m_powerUpSE = std::make_unique<SoundEffect>(
-		m_audioEngine.get(), L"Resources/Sounds/PowerUp.wav");
-
-	m_boostSE = std::make_unique<SoundEffect>(
-		m_audioEngine.get(), L"Resources/Sounds/Boost.wav");
-
-	m_slashSE = std::make_unique<SoundEffect>(
-		m_audioEngine.get(), L"Resources/Sounds/Slash2.wav");
-
-	m_explosionSE = std::make_unique<SoundEffect>(
-		m_audioEngine.get(), L"Resources/Sounds/Explosion.wav");
+	m_rocketLauncherSE = std::make_unique<SoundEffect>(m_audioEngine.get(), L"Resources/Sounds/RocketLauncher.wav");
+	m_hitSE = std::make_unique<SoundEffect>(m_audioEngine.get(), L"Resources/Sounds/Hit.wav");
+	m_powerUpSE = std::make_unique<SoundEffect>(m_audioEngine.get(), L"Resources/Sounds/PowerUp.wav");
+	m_boostSE = std::make_unique<SoundEffect>(m_audioEngine.get(), L"Resources/Sounds/Boost.wav");
+	m_slashSE = std::make_unique<SoundEffect>(m_audioEngine.get(), L"Resources/Sounds/Slash2.wav");
+	m_explosionSE = std::make_unique<SoundEffect>(m_audioEngine.get(), L"Resources/Sounds/Explosion.wav");
 
 	// サウンドエフェクトBGMをロードする
-	m_titleBGM = std::make_unique<SoundEffect>(
-		m_audioEngine.get(), L"Resources/Sounds/Observer.wav");
-
-	m_battleBGM = std::make_unique<SoundEffect>(
-		m_audioEngine.get(), L"Resources/Sounds/Fractured_Bonds.wav");
+	m_titleBGM = std::make_unique<SoundEffect>(m_audioEngine.get(), L"Resources/Sounds/Observer.wav");
+	m_battleBGM = std::make_unique<SoundEffect>(m_audioEngine.get(), L"Resources/Sounds/Fractured_Bonds.wav");
 
 	// サウンドエフェクトBGMをインスタンス化する
 	m_soundEffectInstanceBGM = m_titleBGM->CreateInstance();
 
+	// BGMを流す
 	m_soundEffectInstanceBGM->SetVolume(m_bgmVolume);
 	m_soundEffectInstanceBGM->Play(true);
 
@@ -79,7 +66,6 @@ void Audio::Update()
 	// オーディオエンジンを更新する
 	if (!m_audioEngine->Update())
 	{
-		// No audio device is active
 		if (m_audioEngine->IsCriticalError())
 		{
 			OutputDebugString(L"AudioEngine Error!\n");
@@ -117,7 +103,7 @@ void Audio::PlaySoundSE_Explosion()
 	m_explosionSE->Play(m_seVolume, 0.5f, 0.5f);
 }
 
-void Audio::ChageBGM(BGMType type)
+void Audio::PlaySoundBGM(BGMType type)
 {
 	switch (type)
 	{

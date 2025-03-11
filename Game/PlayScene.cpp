@@ -90,7 +90,7 @@ void PlayScene::Initialize(Game* game)
     }
 
 
-    Audio::GetInstance()->ChageBGM(Audio::Battle);
+    Audio::GetInstance()->PlaySoundBGM(Audio::Battle);
 }
 
 /// <summary> XVˆ— </summary>
@@ -172,7 +172,7 @@ void PlayScene::RenderUI()
 /// <summary> I—¹ˆ— </summary>
 void PlayScene::Finalize()
 {
-    Audio::GetInstance()->ChageBGM(Audio::Title);
+    Audio::GetInstance()->PlaySoundBGM(Audio::Title);
     StageDataManager::SetClearTime(m_totalTime);
     ObjectManager::Clear();
     RenderManager::Clear();

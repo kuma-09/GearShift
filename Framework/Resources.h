@@ -1,16 +1,18 @@
 #pragma once
-#ifndef RESOURCES_DEFINED
-#define RESOURCES_DEFINED
 
 #include "Model.h"
 #include "Graphics.h"
 #include <unordered_map>
 
-// Resourcesクラスを定義する
+/// <summary>
+/// モデルデータを管理するクラス
+/// シングルトン
+/// </summary>
 class Resources
 {
 public:
 
+	// モデルの種類
 	enum ModelType
 	{
 		Player,
@@ -64,7 +66,7 @@ public:
 	// Resoucesクラスのインスタンスを取得する
 	static Resources* const GetInstance();
 
-	// リソースをロードする
+	// リソースを読み込む
 	void LoadResource(Graphics* graphics);
 
 private:
@@ -84,5 +86,3 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_Texture;
 
 };
-
-#endif		// RESOURCES_DEFINED

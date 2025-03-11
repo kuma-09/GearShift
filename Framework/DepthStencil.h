@@ -1,5 +1,8 @@
 #pragma once
 
+/// <summary>
+/// MicrosoftのRenderTextureをDepthStencil用に変更したクラス
+/// </summary>
 class DepthStencil
 {
 public:

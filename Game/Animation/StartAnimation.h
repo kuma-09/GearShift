@@ -2,16 +2,23 @@
 
 #include "Game/UI/UI.h"
 
+/// <summary>
+/// ゲーム開始時のアニメーションクラス
+/// </summary>
 class StartAnimation
 {
 public:
+	// コンストラクタ
 	StartAnimation();
+	// デストラクタ
 	~StartAnimation();
+	// 初期化処理
 	void Initialize();
+	// 更新処理
 	bool Update(float elapsedTime);
+	// 描画処理
 	void Render();
 private:
-	int m_targetNumber;
 	// スプライトバッチ
 	std::unique_ptr<DirectX::SpriteBatch> m_spriteBatch;
 
@@ -25,17 +32,11 @@ private:
 	std::unique_ptr<UI> m_bar;
 	std::unique_ptr<UI> m_font;
 
-	std::string m_score;
-	std::string m_mapNum;
-
-	RECT m_size;
-
 	// シーンチェンジフラグ
 	bool m_isChangeScene;
 
 	float m_nowTime;
 	float m_targetTime;
 	float m_result;
-	float m_textResult;
 };
 

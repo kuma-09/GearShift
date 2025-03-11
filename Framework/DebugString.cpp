@@ -1,15 +1,14 @@
-/*
-	@file	DebugString.cpp
-	@brief	デバッグ文字列の描画クラス
-*/
 #include "pch.h"
 #include "DebugString.h"
 #include <cstdarg>
 #include <cassert>
 
-//---------------------------------------------------------
-// コンストラクタ
-//---------------------------------------------------------
+/// <summary>
+/// コンストラクタ
+/// </summary>
+/// <param name="device"></param>
+/// <param name="context"></param>
+/// <param name="fontFilePath">フォントのファイルパス</param>
 DebugString::DebugString(
 	ID3D11Device* device,
 	ID3D11DeviceContext* context,
@@ -28,9 +27,11 @@ DebugString::DebugString(
 	m_color = DirectX::Colors::White;
 }
 
-//---------------------------------------------------------
-// 描画する文字列を登録する
-//---------------------------------------------------------
+/// <summary>
+/// 描画する文字列を追加
+/// </summary>
+/// <param name="format">文字列</param>
+/// <param name=""></param>
 void DebugString::AddString(const char* format, ...)
 {
 	// 可変長引数を扱うためのデータ型：va_list
@@ -54,9 +55,10 @@ void DebugString::AddString(const char* format, ...)
 	m_strings.push_back(appendString);
 }
 
-//---------------------------------------------------------
-// デバッグ文字列を描画する
-//---------------------------------------------------------
+/// <summary>
+/// デバッグ文字を描画する
+/// </summary>
+/// <param name="states"></param>
 void DebugString::Render(DirectX::CommonStates* states)
 {
 	UNREFERENCED_PARAMETER(states);	// Beginのパラメータ設定用

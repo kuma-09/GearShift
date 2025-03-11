@@ -1,5 +1,8 @@
 #pragma once
-// イージング関数
+
+/// <summary>
+/// イージング関数
+/// </summary>
 namespace Easing
 {
 	float Linear(float time, float targetTime);

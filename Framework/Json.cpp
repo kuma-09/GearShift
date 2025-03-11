@@ -6,6 +6,12 @@
 #include <vector>
 #include <map>
 
+/// <summary>
+/// オブジェクトの名前と座標を取得する
+/// </summary>
+/// <param name="fileName">JSONファイルネーム</param>
+/// <param name="object">名前を格納する配列</param>
+/// <param name="pos">座標を格納する配列</param>
 void Json::LoadJsonFile(const std::wstring& fileName, std::vector<std::string>& object, std::vector<DirectX::SimpleMath::Vector3>& pos)
 {
         std::stringstream ss;

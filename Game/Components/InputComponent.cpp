@@ -36,7 +36,7 @@ void InputComponent::Update(float elapsedTime)
         }
         if (kb.S)
         {
-            input.z = 1;
+            input.z =  1;
         }
         if (kb.A)
         {
@@ -44,7 +44,7 @@ void InputComponent::Update(float elapsedTime)
         }
         if (kb.D)
         {
-            input.x = 1;
+            input.x =  1;
         };
     }
 

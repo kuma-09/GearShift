@@ -4,6 +4,11 @@
 
 std::unique_ptr<Resources> Resources::m_resources = nullptr;
 
+/// <summary>
+/// モデルを取得する関数
+/// </summary>
+/// <param name="type">取得するモデルの種類</param>
+/// <returns></returns>
 DirectX::Model* Resources::GetModel(ModelType type)
 {
 	auto it = m_umModel.find(type);
@@ -14,9 +19,11 @@ DirectX::Model* Resources::GetModel(ModelType type)
 	return nullptr;
 }
 
+/// <summary>
+/// デストラクタ
+/// </summary>
 Resources::~Resources()
 {
-
 }
 
 Resources* const Resources::GetInstance()
@@ -28,7 +35,10 @@ Resources* const Resources::GetInstance()
 	return m_resources.get();
 }
 
-// リソースをロードする
+/// <summary>
+/// リソースを読み込む
+/// </summary>
+/// <param name="graphics"></param>
 void Resources::LoadResource(Graphics* graphics)
 {
 	auto device = graphics->GetDeviceResources()->GetD3DDevice();

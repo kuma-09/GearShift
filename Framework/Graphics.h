@@ -1,9 +1,10 @@
 #pragma once
-#ifndef GRAPHICS_DEFINED
-#define GRAPHICS_DEFINED
-
 #include "DeviceResources.h"
 
+/// <summary>
+/// DirectX関連の物を管理するクラス
+/// シングルトン
+/// </summary>
 class Graphics final
 {
 public:
@@ -104,5 +105,3 @@ private:
 	// デバイスコンテキスト
 	ID3D11DeviceContext* m_context;
 };
-#endif		// GRAPHICS_DEFINED
-

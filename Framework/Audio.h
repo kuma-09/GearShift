@@ -1,14 +1,16 @@
 #pragma once
-#ifndef AUDIO_DEFINED
-#define AUDIO_DEFINED
 #include "DeviceResources.h"
 #include <Audio.h>
 
-// Audioクラスを定義する
+/// <summary>
+/// 音声ファイル再生クラス
+/// シングルトン
+/// </summary>
 class Audio
 {
 public:
 
+	// BGMの種類
 	enum BGMType
 	{
 		Title,
@@ -23,8 +25,10 @@ public:
 	// 音声ファイルを読み込み
 	void LoadSoundFile();
 
+	// 更新処理
 	void Update();
 
+	// SE再生用関数
 	void PlaySoundSE_Rocket();
 	void PlaySoundSE_Hit();
 	void PlaySoundSE_PowerUp();
@@ -32,7 +36,8 @@ public:
 	void PlaySoundSE_Slash();
 	void PlaySoundSE_Explosion();
 
-	void ChageBGM(BGMType type);
+	// BGM再生用関数
+	void PlaySoundBGM(BGMType type);
 
 private:
 	// コンストラクタ
@@ -62,8 +67,7 @@ private:
 	std::unique_ptr<DirectX::SoundEffect> m_battleBGM;
 	std::unique_ptr<DirectX::SoundEffectInstance> m_soundEffectInstanceBGM;
 
+	// ボリューム
 	float m_bgmVolume = 0.0f;
 	float m_seVolume  = 0.0f;
 };
-
-#endif

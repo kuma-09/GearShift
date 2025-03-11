@@ -50,6 +50,14 @@ void CollisionManager::Update()
 	}
 }
 
+void CollisionManager::Render()
+{
+	for (auto& collider : s_colliders)
+	{
+		collider->Render();
+	}
+}
+
 void CollisionManager::Remove(Collider* component)
 {
 	s_colliders.erase(std::remove(s_colliders.begin(), s_colliders.end(), component), s_colliders.end());

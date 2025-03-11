@@ -240,7 +240,3 @@ void HPBar::Render(DirectX::SimpleMath::Vector3 position)
     m_primitiveBatch->End();
 
 }
-
-void HPBar::Finalize()
-{
-}

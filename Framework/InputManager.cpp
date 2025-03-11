@@ -1,12 +1,12 @@
-/*
-	@file	InputManager.cpp
-	@brief	マウスとキーボードの入力を請け負うクラス
-*/
 #include "pch.h"
 #include "InputManager.h"
 
 std::unique_ptr<InputManager> InputManager::s_inputManager = nullptr;
 
+/// <summary>
+/// インプットマネージャーのインスタンスを取得
+/// </summary>
+/// <returns></returns>
 InputManager* const InputManager::GetInstance()
 {
 	if (s_inputManager == nullptr)
@@ -16,6 +16,9 @@ InputManager* const InputManager::GetInstance()
 	return s_inputManager.get();
 }
 
+/// <summary>
+/// コンストラクタ
+/// </summary>
 InputManager::InputManager()
 	:
 	m_mouseState{},
@@ -25,9 +28,10 @@ InputManager::InputManager()
 
 }
 
-//---------------------------------------------------------
-// 初期化
-//---------------------------------------------------------
+/// <summary>
+/// 初期化処理
+/// </summary>
+/// <param name="window"></param>
 void InputManager::Initialize(const HWND& window)
 {
 	// マウスを使用できる状態にする
@@ -46,9 +50,9 @@ void InputManager::Initialize(const HWND& window)
 	m_gamepadTracker = std::make_unique<DirectX::GamePad::ButtonStateTracker>();
 }
 
-//---------------------------------------------------------
-// マネージャの持つリソースを更新する
-//---------------------------------------------------------
+/// <summary>
+/// 更新処理
+/// </summary>
 void InputManager::Update()
 {
 	using namespace DirectX;
