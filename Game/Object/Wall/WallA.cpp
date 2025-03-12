@@ -8,7 +8,6 @@ WallA::WallA(IScene* scene)
 	SetScene(scene);
 	AddComponent<Collider>();
 	AddComponent<ModelDraw>();
-
 }
 
 WallA::~WallA()

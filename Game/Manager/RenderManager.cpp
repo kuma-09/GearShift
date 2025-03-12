@@ -49,7 +49,7 @@ void RenderManager::RenderObjects()
 	}
 
 	// 当たり判定デバッグ用
-	// CollisionManager::Render();
+	 CollisionManager::Render();
 
 }
 

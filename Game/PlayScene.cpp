@@ -16,6 +16,7 @@
 #include "Game/Object/Wall/BillB.h"
 #include "Game/Object/Wall/BillC.h"
 #include "Game/Object/Wall/BillD.h"
+#include "Game/Object/Ceiling/Ceiling.h"
 #include "Game/Object/Bullet/HomingBullet.h"
 #include "Game/Object/Light/Light.h"
 #include "Game/Object/Cloud/Cloud1.h"
@@ -75,6 +76,8 @@ void PlayScene::Initialize(Game* game)
     {
         CreateObject(str[i], pos[i]);
     }
+
+    ObjectManager::Add(std::make_shared<Ceiling>(),{0,20,0});
 
     CreateMenu();
 

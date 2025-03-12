@@ -125,6 +125,7 @@ void Collider::CheckHit(GameObject* object1, GameObject* object2)
     // ‰Ÿ‚µ–ß‚·
     object1->SetPosition(object1->GetPosition() + pushBackVec);
     Ray ray{ object1->GetPosition(), Vector3::Down };
+    Ray reverseRay{ object1->GetPosition(),Vector3::Up };
     float distance = 0.0f;
 
     if (ray.Intersects(*b, distance))
@@ -139,4 +140,18 @@ void Collider::CheckHit(GameObject* object1, GameObject* object2)
             if(object1->GetComponent<Physics>()) object1->GetComponent<Physics>()->Reset();
         }
     }
+
+    //if (reverseRay.Intersects(*b, distance))
+    //{
+    //    Vector3 hitPostion = Vector3{ reverseRay.position + reverseRay.direction * distance };
+
+    //    if (object1->GetPosition().y + a->Extents.y < hitPostion.y)
+    //    {
+    //        // ‰Ÿ‚µ–ß‚·
+    //        object1->SetPosition(Vector3(object1->GetPosition().x, hitPostion.y - a->Extents.y, object1->GetPosition().z));
+    //        object1->SetVelocity({ velocity.x,0,velocity.z });
+    //        if (object1->GetComponent<Physics>()) object1->GetComponent<Physics>()->Reset();
+    //    }
+    //}
+
 }
