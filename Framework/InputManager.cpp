@@ -16,6 +16,20 @@ InputManager* const InputManager::GetInstance()
 	return s_inputManager.get();
 }
 
+const void InputManager::ChageMouseMode()
+{
+	if (m_mode == DirectX::Mouse::MODE_RELATIVE)
+	{
+		m_mode = DirectX::Mouse::MODE_ABSOLUTE;
+		m_mouse->SetMode(m_mode);
+	}
+	else if(m_mode == DirectX::Mouse::MODE_ABSOLUTE)
+	{
+		m_mode = DirectX::Mouse::MODE_RELATIVE;
+		m_mouse->SetMode(m_mode);
+	}
+}
+
 /// <summary>
 /// コンストラクタ
 /// </summary>
@@ -25,7 +39,7 @@ InputManager::InputManager()
 	m_keyboardState{},
 	m_gamepadState{}
 {
-
+	m_mode = DirectX::Mouse::MODE_RELATIVE;
 }
 
 /// <summary>
@@ -38,7 +52,8 @@ void InputManager::Initialize(const HWND& window)
 	m_mouse = std::make_unique<DirectX::Mouse>();
 	m_mouse->SetWindow(window);
 	m_mouse->ResetScrollWheelValue();
-	m_mouse->SetMode(DirectX::Mouse::MODE_RELATIVE);
+	ChageMouseMode();
+	m_mouse->SetVisible(true);
 	m_mouseTracker = std::make_unique<DirectX::Mouse::ButtonStateTracker>();
 
 	// キーボードを使用できる状態にする
@@ -61,7 +76,6 @@ void InputManager::Update()
 	m_mouseState = m_mouse->GetState();
 	m_mouseTracker->Update(m_mouseState);
 	
-
 	// キーボードの情報を更新する
 	m_keyboardState = m_keyboard->GetState();
 	m_keyboardTracker->Update(m_keyboardState);
@@ -69,4 +83,9 @@ void InputManager::Update()
 	// ゲームパッドの情報を更新する
 	m_gamepadState = m_gamepad->GetState(0, DirectX::GamePad::DEAD_ZONE_CIRCULAR);
 	m_gamepadTracker->Update(m_gamepadState);
+
+	if (m_keyboardTracker->IsKeyPressed(DirectX::Keyboard::O))
+	{
+		ChageMouseMode();
+	}
 }

@@ -20,6 +20,8 @@ public:
 	const DirectX::GamePad::State& GetGamePadState() const { return m_gamepadState; }
 	// ゲームパッドのステートトラッカーを取得する
 	const std::unique_ptr<DirectX::GamePad::ButtonStateTracker>& GetGamePadTracker() const { return m_gamepadTracker; }
+	// マウス操作の有効化/無効化切り替え
+	const void ChageMouseMode();
 
 private:
 	// コンストラクタ
@@ -51,6 +53,9 @@ private:
 	std::unique_ptr<DirectX::Mouse> m_mouse;
 	std::unique_ptr<DirectX::Mouse::ButtonStateTracker> m_mouseTracker;
 	DirectX::Mouse::State m_mouseState;
+
+	// マウスの状態
+	DirectX::Mouse::Mode m_mode;
 
 	// キーボード
 	std::unique_ptr<DirectX::Keyboard> m_keyboard;

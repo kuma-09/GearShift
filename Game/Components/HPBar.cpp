@@ -4,7 +4,7 @@
 #include "Game/GameObject.h"
 #include "Framework/Easing.h"
 
-
+// コンストラクタ
 HPBar::HPBar()
     :m_vertex{}
 {
@@ -17,11 +17,12 @@ HPBar::HPBar()
     m_texture = Resources::GetInstance()->GetWhiteTexture();
 }
 
+// デストラクタ
 HPBar::~HPBar()
 {
-
 }
 
+// 初期化処理
 void HPBar::Initialize()
 {
     using namespace DirectX;
@@ -49,6 +50,7 @@ void HPBar::Initialize()
     m_backVertex[3] = VertexPositionColorTexture(Vector3(0.0f, 0.05f, 0), Vector4(1, 1, 1, 1), Vector2(1, 1));
 }
 
+// 更新処理
 void HPBar::Update(float elapsedTime)
 {
     using namespace DirectX;
@@ -57,19 +59,24 @@ void HPBar::Update(float elapsedTime)
     UNREFERENCED_PARAMETER(elapsedTime);
     float barSize = 0;
 
+    // HPのサイズを変更
     if (GetOwner()->GetComponent<HP>()->GetHP())
     {
         barSize = (float)GetOwner()->GetComponent<HP>()->GetHP() / (float)m_maxHp;
         barSize *= 4;
     }
 
+    // 緑ゲージ
     m_greenHp = barSize;
-    if (m_greenHp <= m_redHp)
-    {
-        m_redHp -= elapsedTime;
-    }
+
+    // 赤ゲージ
+    if (m_greenHp <= m_redHp){ m_redHp -= elapsedTime;}
 }
 
+/// <summary>
+/// 描画処理(2D
+/// </summary>
+/// <param name="position">座標</param>
 void HPBar::Render(DirectX::SimpleMath::Vector2 position)
 {
     using namespace DirectX;
@@ -152,6 +159,10 @@ void HPBar::Render(DirectX::SimpleMath::Vector2 position)
     m_primitiveBatch->End();
 }
 
+/// <summary>
+/// 描画処理(3D
+/// </summary>
+/// <param name="position">座標</param>
 void HPBar::Render(DirectX::SimpleMath::Vector3 position)
 {
     using namespace DirectX;

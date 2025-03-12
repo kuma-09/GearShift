@@ -12,16 +12,20 @@ const std::vector<D3D11_INPUT_ELEMENT_DESC> Trail::INPUT_LAYOUT =
 	{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT,    0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 };
 
+// コンストラクタ
 Trail::Trail()
 {
+	// レンダーマネージャーにトレイルを追加
+	RenderManager::Add(this);
+
 	auto context = Graphics::GetInstance()->GetDeviceResources()->GetD3DDeviceContext();
 	auto device = Graphics::GetInstance()->GetDeviceResources()->GetD3DDevice();
 
-	RenderManager::Add(this);
-
+	// プリミティブバッチを作成
 	m_batch = std::make_unique<DirectX::PrimitiveBatch<DirectX::VertexPositionTexture>>(context);
 	m_bufferCount = 0;
 
+	// トレイル用のシェーダーを読み込む
 	BinaryFile vs = BinaryFile::LoadFile(L"Resources/Shaders/TrailVS.cso");
 	BinaryFile ps = BinaryFile::LoadFile(L"Resources/Shaders/TrailPS.cso");
 
@@ -32,10 +36,11 @@ Trail::Trail()
 		m_inputLayout.GetAddressOf()
 	);
 
+	// 頂点シェーダーの作成
 	DX::ThrowIfFailed(
 		device->CreateVertexShader(vs.GetData(), vs.GetSize(), nullptr, m_vertexShader.ReleaseAndGetAddressOf())
 	);
-
+	// ピクセルシェーダーの作成
 	DX::ThrowIfFailed(
 		device->CreatePixelShader(ps.GetData(), ps.GetSize(), nullptr, m_pixelShader.ReleaseAndGetAddressOf())
 	);
@@ -50,11 +55,18 @@ Trail::Trail()
 
 }
 
+// デストラクタ
 Trail::~Trail()
 {
 	RenderManager::Remove(this);
 }
 
+/// <summary>
+/// 初期化処理
+/// </summary>
+/// <param name="path">トレイルで使うテクスチャ画像のパス</param>
+/// <param name="bufferSize">トレイルの頂点数</param>
+/// <param name="color">トレイルのカラー</param>
 void Trail::Initialize(const wchar_t* path, int bufferSize, DirectX::XMVECTORF32 color)
 {
 	auto device = Graphics::GetInstance()->GetDeviceResources()->GetD3DDevice();
@@ -72,18 +84,19 @@ void Trail::Initialize(const wchar_t* path, int bufferSize, DirectX::XMVECTORF32
 	);
 }
 
+// 更新処理
 void Trail::Update(float elapsedTime)
 {
 	UNREFERENCED_PARAMETER(elapsedTime);
 }
 
+// 描画処理
 void Trail::Render()
 {
 	using namespace DirectX::SimpleMath;
 	auto device = Graphics::GetInstance()->GetDeviceResources()->GetD3DDevice();
 	auto context = Graphics::GetInstance()->GetDeviceResources()->GetD3DDeviceContext();
 	auto state = Graphics::GetInstance()->GetCommonStates();
-
 	auto view = Graphics::GetInstance()->GetViewMatrix();
 	auto proj = Graphics::GetInstance()->GetProjectionMatrix();
 	
@@ -117,6 +130,8 @@ void Trail::Render()
 	context->VSSetShader(m_vertexShader.Get(), nullptr, 0);
 	context->PSSetShader(m_pixelShader.Get(), nullptr, 0);
 	context->IASetInputLayout(m_inputLayout.Get());
+
+	// トレイルを描画
 	m_batch->Begin();
 	if (m_bufferCount >= 2)
 	{
@@ -138,6 +153,7 @@ void Trail::Render()
 	m_batch->End();
 }
 
+// トレイルを生成する座標を保存
 void Trail::SetPos(DirectX::XMFLOAT3 head, DirectX::XMFLOAT3 tail)
 {
 	PosBuffer tmp;

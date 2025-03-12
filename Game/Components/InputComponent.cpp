@@ -1,19 +1,23 @@
 #include "pch.h"
 #include "InputComponent.h"
 
+// コンストラクタ
 InputComponent::InputComponent()
 {
     m_inputManager = InputManager::GetInstance();
 }
 
+// デストラクタ
 InputComponent::~InputComponent()
 {
 }
 
+// 初期化処理
 void InputComponent::Initialize()
 {
 }
 
+// 更新処理
 void InputComponent::Update(float elapsedTime)
 {
     using namespace DirectX::SimpleMath;
@@ -24,6 +28,7 @@ void InputComponent::Update(float elapsedTime)
     // パッドの入力情報
     Vector3 input = Vector3::Zero;
 
+    // パッドが繋がっているか
     if (gpState.connected)
     {
         input = Vector3{ gpState.thumbSticks.leftX,0, -gpState.thumbSticks.leftY };

@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "DeferredRendering.h"
 #include "Manager/PointLightManager.h"
+#include "Game/GameObject.h"
 #include "Game/Shader/ShadowMap.h"
 #include "Framework/Graphics.h"
 #include "Framework/BinaryFile.h"
@@ -265,7 +266,7 @@ void DeferredRendering::DeferredLighting()
 	cb->lightNum = PointLightManager::GetPointLights().size();
 	for (int i = 0; i < PointLightManager::GetPointLights().size(); i++)
 	{
-		cb->lightPos[i] = PointLightManager::GetPointLights()[i]->GetPosition();
+		cb->lightPos[i] = PointLightManager::GetPointLights()[i]->GetOwner()->GetPosition();
 		cb->lightColor[i] = PointLightManager::GetPointLights()[i]->GetColor();
 	}
 	// ƒ}ƒbƒv‚ğ‰ğœ‚·‚é

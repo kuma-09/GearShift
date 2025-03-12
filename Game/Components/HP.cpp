@@ -1,11 +1,13 @@
 #include "pch.h"
 #include "HP.h"
 
+// コンストラクタ
 HP::HP()
 	:m_hp{}
 {
 }
 
+// デストラクタ
 HP::~HP()
 {
 
