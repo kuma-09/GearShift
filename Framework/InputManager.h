@@ -21,7 +21,7 @@ public:
 	// ゲームパッドのステートトラッカーを取得する
 	const std::unique_ptr<DirectX::GamePad::ButtonStateTracker>& GetGamePadTracker() const { return m_gamepadTracker; }
 	// マウス操作の有効化/無効化切り替え
-	const void ChageMouseMode();
+	const void ChageMouseMode(DirectX::Mouse::Mode mode);
 
 private:
 	// コンストラクタ

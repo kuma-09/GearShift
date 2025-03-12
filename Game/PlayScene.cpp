@@ -43,7 +43,6 @@ PlayScene::PlayScene()
 
 PlayScene::~PlayScene()
 {
-    //Finalize();
 }
 
 /// <summary> 初期化処理 </summary>
@@ -55,6 +54,7 @@ void PlayScene::Initialize(Game* game)
 
     m_graphics = Graphics::GetInstance();
     m_inputManager = InputManager::GetInstance();
+    m_inputManager->ChageMouseMode(DirectX::Mouse::MODE_RELATIVE);
 
     SetGame(game);
 
@@ -104,12 +104,18 @@ void PlayScene::Update(float elapsedTime)
 
     auto& kb = m_inputManager->GetKeyboardTracker();
 
-    if (kb->IsKeyPressed(DirectX::Keyboard::Escape)) m_isMenu = true;
-
     if (m_isMenu)
     {
         UpdateMenu();
         return;
+    }
+    else
+    {
+        if (kb->IsKeyPressed(DirectX::Keyboard::Escape))
+        {
+            m_isMenu = true;
+            m_inputManager->ChageMouseMode(DirectX::Mouse::MODE_ABSOLUTE);
+        }
     }
 
     // 経過時間を計算
@@ -172,6 +178,7 @@ void PlayScene::RenderUI()
 /// <summary> 終了処理 </summary>
 void PlayScene::Finalize()
 {
+    m_inputManager->ChageMouseMode(DirectX::Mouse::MODE_ABSOLUTE);
     Audio::GetInstance()->PlaySoundBGM(Audio::Title);
     StageDataManager::SetClearTime(m_totalTime);
     ObjectManager::Clear();
@@ -229,6 +236,9 @@ void PlayScene::CreateObject(std::string className, DirectX::SimpleMath::Vector3
     if (className == "Light")              ObjectManager::Add(std::make_shared<Light>(this), pos);
 }
 
+/// <summary>
+/// メニューの作成
+/// </summary>
 void PlayScene::CreateMenu()
 {
     // ポーズした時のメニュー
@@ -307,5 +317,6 @@ void PlayScene::UpdateMenu()
         default:
             break;
         }
+        m_inputManager->ChageMouseMode(DirectX::Mouse::MODE_RELATIVE);
     }
 }

@@ -16,18 +16,9 @@ InputManager* const InputManager::GetInstance()
 	return s_inputManager.get();
 }
 
-const void InputManager::ChageMouseMode()
+const void InputManager::ChageMouseMode(DirectX::Mouse::Mode mode)
 {
-	if (m_mode == DirectX::Mouse::MODE_RELATIVE)
-	{
-		m_mode = DirectX::Mouse::MODE_ABSOLUTE;
-		m_mouse->SetMode(m_mode);
-	}
-	else if(m_mode == DirectX::Mouse::MODE_ABSOLUTE)
-	{
-		m_mode = DirectX::Mouse::MODE_RELATIVE;
-		m_mouse->SetMode(m_mode);
-	}
+	m_mouse->SetMode(mode);
 }
 
 /// <summary>
@@ -39,7 +30,6 @@ InputManager::InputManager()
 	m_keyboardState{},
 	m_gamepadState{}
 {
-	m_mode = DirectX::Mouse::MODE_RELATIVE;
 }
 
 /// <summary>
@@ -52,7 +42,7 @@ void InputManager::Initialize(const HWND& window)
 	m_mouse = std::make_unique<DirectX::Mouse>();
 	m_mouse->SetWindow(window);
 	m_mouse->ResetScrollWheelValue();
-	ChageMouseMode();
+	ChageMouseMode(DirectX::Mouse::MODE_ABSOLUTE);
 	m_mouse->SetVisible(true);
 	m_mouseTracker = std::make_unique<DirectX::Mouse::ButtonStateTracker>();
 
@@ -84,8 +74,4 @@ void InputManager::Update()
 	m_gamepadState = m_gamepad->GetState(0, DirectX::GamePad::DEAD_ZONE_CIRCULAR);
 	m_gamepadTracker->Update(m_gamepadState);
 
-	if (m_keyboardTracker->IsKeyPressed(DirectX::Keyboard::O))
-	{
-		ChageMouseMode();
-	}
 }
