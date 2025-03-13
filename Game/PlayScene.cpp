@@ -77,7 +77,8 @@ void PlayScene::Initialize(Game* game)
         CreateObject(str[i], pos[i]);
     }
 
-    ObjectManager::Add(std::make_shared<Ceiling>(),{0,20,0});
+    // “Vˆä‚ğİ’u
+    ObjectManager::Add(std::make_shared<Ceiling>(),{0,100,0});
 
     CreateMenu();
 

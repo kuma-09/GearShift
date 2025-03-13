@@ -7,6 +7,8 @@
 #include "Game/Manager/CollisionManager.h"
 
 #include "Physics.h"
+
+// コンストラクタ
 Collider::Collider()
 {
 	m_graphics = Graphics::GetInstance();
@@ -18,6 +20,7 @@ Collider::Collider()
     SetActive(false);
 }
 
+// デストラクタ
 Collider::~Collider()
 {
     CollisionManager::Remove(this);
@@ -39,12 +42,14 @@ void Collider::Initialize(TypeID id,ColliderType colliderType, DirectX::SimpleMa
     SetActive(true);
 }
 
+// 更新処理
 void Collider::Update(float elapsedTime)
 {
     UNREFERENCED_PARAMETER(elapsedTime);
     m_boudingBox->Center = GetOwner()->GetPosition() + m_initalePosition;
 }
 
+// 描画処理
 void Collider::Render()
 {
 	auto view       = m_graphics->GetViewMatrix();
@@ -128,6 +133,7 @@ void Collider::CheckHit(GameObject* object1, GameObject* object2)
     Ray reverseRay{ object1->GetPosition(),Vector3::Up };
     float distance = 0.0f;
 
+    // 下側に当たり判定があるか
     if (ray.Intersects(*b, distance))
     {
         Vector3 hitPostion = Vector3{ ray.position + ray.direction * distance };
@@ -141,17 +147,17 @@ void Collider::CheckHit(GameObject* object1, GameObject* object2)
         }
     }
 
-    //if (reverseRay.Intersects(*b, distance))
-    //{
-    //    Vector3 hitPostion = Vector3{ reverseRay.position + reverseRay.direction * distance };
+    // 上側に当たり判定があるか
+    if (reverseRay.Intersects(*b, distance))
+    {
+        Vector3 hitPostion = Vector3{ reverseRay.position + reverseRay.direction * distance };
 
-    //    if (object1->GetPosition().y + a->Extents.y < hitPostion.y)
-    //    {
-    //        // 押し戻す
-    //        object1->SetPosition(Vector3(object1->GetPosition().x, hitPostion.y - a->Extents.y, object1->GetPosition().z));
-    //        object1->SetVelocity({ velocity.x,0,velocity.z });
-    //        if (object1->GetComponent<Physics>()) object1->GetComponent<Physics>()->Reset();
-    //    }
-    //}
+        if (object1->GetPosition().y - a->Extents.y < hitPostion.y)
+        {
+            // 押し戻す
+            object1->SetPosition(Vector3(object1->GetPosition().x, hitPostion.y - a->Extents.y, object1->GetPosition().z));
+            object1->SetVelocity({ velocity.x,0,velocity.z });
+        }
+    }
 
 }

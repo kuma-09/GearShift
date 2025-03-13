@@ -13,8 +13,8 @@ Ceiling::~Ceiling()
 
 void Ceiling::Initialize()
 {
-	SetScale({ 50, 5, 50 });
-	GetComponent<Collider>()->Initialize(Collider::Wall, Collider::Fixed,GetScale(),{0,5,0});
+	SetScale({ 300, 1.25f, 300 });
+	GetComponent<Collider>()->Initialize(Collider::Floor, Collider::Fixed,GetScale(),{0,-1,0});
 }
 
 void Ceiling::Update(float elapsedtime)
