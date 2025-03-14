@@ -4,16 +4,19 @@
 #include "Game/Enemy/BossEnemy.h"
 #include "Framework/Easing.h"
 
+// コンストラクタ
 BossTackleState::BossTackleState(Enemy* enemy)
 {
 	m_enemy = enemy;
 }
 
+// 初期化処理
 void BossTackleState::Initialize()
 {
 	m_totalTime = 0;
 }
 
+// 更新処理
 void BossTackleState::Update(float elapsedTime)
 {
 	m_totalTime += elapsedTime;
@@ -25,10 +28,12 @@ void BossTackleState::Update(float elapsedTime)
 	}
 }
 
+// 描画処理
 void BossTackleState::Render()
 {
 }
 
+// 終了処理
 void BossTackleState::Finalize()
 {
 }

@@ -34,10 +34,15 @@ public:
 	GameObject* GetOwner() { return m_owner; }
 	void SetOwner(GameObject* owner) { m_owner = owner; }
 
+	// UŒ‚‚Ì’l
+	void SetAttackPoint(int attackPoint) { m_attackPoint = attackPoint; }
+	int GetAttackPoint() { return m_attackPoint; }
+
 	virtual void Collision(Collider* collider) = 0;
 
 private:
 	BulletState m_state;
 	GameObject* m_target;
 	GameObject* m_owner;
+	int m_attackPoint;
 };

@@ -13,18 +13,13 @@
 
 BossHead::BossHead(GameObject* target)
 {
-	AddComponent<HP>();
 	AddComponent<ModelDraw>();
-	AddComponent<Collider>();
-	AddComponent<Emitter>();
 	AddComponent<Look>();
 	GetComponent<Look>()->SetTarget(this, target);
-	m_isHit = false;
 }
 
 BossHead::~BossHead()
 {
-	Finalize();
 }
 
 void BossHead::Initialize(int hp, IScene* scene)
@@ -32,11 +27,8 @@ void BossHead::Initialize(int hp, IScene* scene)
 	SetScene(scene);
 	float scale = 5.0f;
 	SetScale({ scale,scale,scale });
-	GetComponent<HP>()->SetHP(hp);
-	SetMaxHP(float(hp));
 	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetModel(Resources::BossHead));
 	GetComponent<ModelDraw>()->SetRimLithgColor(DirectX::Colors::IndianRed);
-	GetComponent<Collider>()->Initialize(Collider::Enemy,Collider::Trigger, { 1,1,1 }, { 0,-0.4f,0 });
 }
 
 void BossHead::Update(float elapsedTime)
@@ -52,18 +44,14 @@ void BossHead::Update(float elapsedTime)
 	world = Matrix::CreateScale(GetScale());
 	world *= Matrix::CreateFromQuaternion(Quaternion::CreateFromYawPitchRoll({0,DirectX::XMConvertToRadians(135),0}) * GetQuaternion());
 	world *= Matrix::CreateTranslation(GetPosition());
-
 	SetWorld(world);
 
 	ComponentsUpdate(elapsedTime);
 
-	m_isHit = false;
 }
 
 void BossHead::Render()
 {
-
-	GetComponent<ModelDraw>()->Render();
 }
 
 void BossHead::Finalize()
@@ -72,16 +60,5 @@ void BossHead::Finalize()
 
 void BossHead::Collision(Collider* collider)
 {
-	// ÉpÅ[ÉcÇ∆ÇÃìñÇΩÇËîªíË
-	if (GetComponent<Collider>()->GetBoundingBox()->Intersects(*collider->GetBoundingBox()))
-	{
-		Bullet* bulletObject = static_cast<Bullet*>(collider->GetOwner());
-		if (bulletObject->GetState() == Bullet::FLYING)
-		{
-				GetComponent<HP>()->SetHP(GetComponent<HP>()->GetHP() - 1);
-				bulletObject->Hit();
-				m_isHit = true;
-		}
-	}
 }
 

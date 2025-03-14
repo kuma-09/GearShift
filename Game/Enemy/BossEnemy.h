@@ -1,11 +1,7 @@
 #pragma once
-#include "Framework/Graphics.h"
-#include "Framework/DeviceResources.h"
-#include "Framework/Resources.h"
 #include "Enemy.h"
 #include "Game/Parts/Part.h"
 
-#include "Game/Object/Bullet/LaserBullet.h"
 #include "Game/Object/Bullet/HomingBullet.h"
 #include "Game/Object/Bullet/EnemyBullet.h"
 
@@ -14,30 +10,42 @@
 
 class State;
 
+/// <summary>
+/// ボスエネミー
+/// </summary>
 class BossEnemy : public Enemy
 {
 public:
 
+	// コンストラクタ
 	BossEnemy(IScene* scene, GameObject* target);
+	// デストラクタ
 	~BossEnemy();
 
+	// 初期化処理
 	void Initialize();
+	// 更新処理
 	void Update(float elapsedTime);
-	void CreateShader();
+	// 描画処理
 	void Render();
+	// 終了処理
 	void Finalize();
 
-	void Shot() {};
+	// ガトリングを発射
+	void Shot();
+	// ミサイルを発射
 	void ShotMissile();
-	void ShotGatling();
 
+	// ガトリングをリロード
 	void ReloadGatling();
-
+	// ステートを変更
 	void ChangeState(State* state);
 
+	// ミサイル発射ステートを取得
 	State* GetMissileState() { return m_missileState.get(); }
+	// 突撃ステートを取得
 	State* GetTackleState() { return m_tackleState.get(); }
-
+	// 当たり判定の処理
 	void Collision(Collider* collider);
 
 	// パーツをセット
@@ -60,6 +68,10 @@ public:
 
 private:
 
+	void CreateBullets();
+	void CreateStates();
+	void CheckHP();
+
 	// パーツをまとめて更新
 	void UpdateParts(float elapsedTime) {
 		for (auto& pair : m_pPart)
@@ -68,33 +80,18 @@ private:
 		}
 	}
 
-	// パーツをまとめて描画
-	void RenderParts() {
-		for (auto& pair : m_pPart)
-		{
-			pair.second->Render();
-		}
-	}
-
-	void CreateShadows()
-	{
-		for (auto& pair : m_pPart)
-		{
-			pair.second->CreateShadow();
-		}
-	}
-
 	// パーツ配列
 	std::unordered_map<Part::TypeID, std::unique_ptr<Part>> m_pPart;
 
-	const int MAX_LASER_BULLET = 10;
-	const int MAX_FIXED_BULLET = 10;
+	// 弾の最大数
+	const int MAX_BULLET = 10;
 	const int MAX_HOMING_BULLET = 10;
 
-	std::vector<std::unique_ptr<LaserBullet>>      m_laserBullet;
-	std::vector<std::unique_ptr<EnemyBullet>> m_fixedBullets;
-	std::vector<std::unique_ptr<HomingBullet>>     m_homingBullets;
+	// 弾の配列
+	std::vector<std::unique_ptr<EnemyBullet>>  m_bullets;
+	std::vector<std::unique_ptr<HomingBullet>> m_homingBullets;
 
+	// ステート
 	State* m_state;
 	std::unique_ptr<BossMissileState> m_missileState;
 	std::unique_ptr<BossTackleState> m_tackleState;

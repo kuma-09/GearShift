@@ -22,115 +22,102 @@
 
 #include "Game/Manager/ObjectManager.h"
 
+/// <summary>
+/// コンストラクタ
+/// </summary>
+/// <param name="scene">シーン</param>
+/// <param name="target">ターゲットオブジェクト</param>
 BossEnemy::BossEnemy(IScene* scene,GameObject* target)
 {
 	SetScene(scene);
 	SetTarget(target);
+	SetScale({ 3.0f,3.0f,3.0f });
+
+	// コンポーネントを追加
 	AddComponent<HP>();
 	AddComponent<Physics>();
 	AddComponent<Collider>();
 	AddComponent<HPBar>();
 	AddComponent<Look>();
-	GetComponent<Look>()->Initialize(false, true);
-	GetComponent<Look>()->SetTarget(this, target);
 
-	for (int i = 0; i < MAX_FIXED_BULLET; i++)
-	{
-		m_fixedBullets.push_back(std::make_unique<EnemyBullet>(GetScene(), Collider::TypeID::EnemyBullet));
-	}
-
-	for (int i = 0; i < MAX_HOMING_BULLET; i++)
-	{
-		m_homingBullets.push_back(std::make_unique<HomingBullet>(GetScene(), Collider::TypeID::EnemyBullet));
-	}
-
-	for (size_t i = 0; i < MAX_LASER_BULLET; i++)
-	{
-		m_laserBullet.emplace_back(std::make_unique<LaserBullet>(GetScene(), Collider::TypeID::EnemyBullet));
-	}
-
-	SetEnemyAttack(std::make_unique<BossGatlingState>(this));
-	SetEnemyMove(std::make_unique<BossMoveState>(this));
-	m_missileState = std::make_unique<BossMissileState>(this);
-	m_tackleState = std::make_unique<BossTackleState>(this);
-	SetScale({ 3.0f,3.0f,3.0f });
-
-	m_state = GetMoveState();
+	// 弾を生成
+	CreateBullets();
+	// ステートを作成
+	CreateStates();
 
 }
 
+// デストラクタ
 BossEnemy::~BossEnemy()
 {
 
 }
 
+// 初期化処理
 void BossEnemy::Initialize()
 {
 	using namespace DirectX::SimpleMath;
 
-
-	GetComponent<HP>()->Initialize(25);
-	GetComponent<Physics>()->Initialize();
-	SetTarget(GetTarget());
+	// パーツを生成
 	SetPart(Part::Head, std::make_unique<BossHead>(GetTarget()));
 	SetPart(Part::BodyTop, std::make_unique<BossLeg>());
+
+	// コンポーネントを初期化
+	GetComponent<HP>()->Initialize(25);
+	GetComponent<Physics>()->Initialize();
+	GetComponent<Look>()->Initialize(false, true);
+	GetComponent<Look>()->SetTarget(this, GetTarget());
 	GetComponent<Collider>()->Initialize(Collider::Enemy,Collider::Collision, { 6,5,6 });
 	GetComponent<HPBar>()->Initialize();
-	for (auto& bullet : m_fixedBullets)
+
+	// 弾を初期化
+	for (auto& bullet : m_bullets)
 	{
 		bullet->Initialize(this);
 	}
-
 	for (auto& bullet : m_homingBullets)
 	{
 		bullet->Initialize(this);
 	}
 
-	for (auto& bullet : m_laserBullet)
-	{
-		bullet->Initialize(this);
-	}
+	// ステートを初期化
 	m_state->Initialize();
+
+	// 座標を初期化
 	Matrix world = Matrix::Identity;
 	world = Matrix::CreateScale(GetScale());
 	world *= Matrix::CreateFromQuaternion(GetQuaternion());
 	world *= Matrix::CreateTranslation(GetPosition());
-
 	SetWorld(world);
 }
 
+// 更新処理
 void BossEnemy::Update(float elapsedTime)
 {
 	using namespace DirectX::SimpleMath;
 
+	// ステートを更新
 	m_state->Update(elapsedTime);
 
-	for (auto& bullet : m_fixedBullets)
+	CheckHP();
+
+	// 弾を更新
+	for (auto& bullet : m_bullets)
 	{
 		bullet->Update(elapsedTime);
 	}
-
 	for (auto& bullet : m_homingBullets)
 	{
 		bullet->Update(elapsedTime);
 	}
 	
-	for (auto& bullet : m_laserBullet)
-	{
-		bullet->Update(elapsedTime);
-	}
+	// コンポーネントを更新
 	ComponentsUpdate(elapsedTime);
+	// パーツを更新
 	UpdateParts(elapsedTime);
 
 	// 座標の移動
 	SetPosition(GetPosition() + Vector3::Transform(GetVelocity(), GetQuaternion()));
-
-	if (GetComponent<HP>()->GetHP() <= 0)
-	{
-		ObjectManager::Remove(this);
-		static_cast<PlayScene*>(GetScene())->CreateHitEffect(GetPosition());
-		Audio::GetInstance()->PlaySoundSE_Explosion();
-	}
 
 	Matrix world = Matrix::Identity;
 	world = Matrix::CreateScale(GetScale());
@@ -140,45 +127,34 @@ void BossEnemy::Update(float elapsedTime)
 	SetWorld(world);
 }
 
-void BossEnemy::CreateShader()
-{
-	CreateShadows();
-}
-
+// 描画処理
 void BossEnemy::Render()
 {
-	using namespace DirectX::SimpleMath;
-
-
-
-	for (auto& bullet : m_fixedBullets)
-	{
-		bullet->Render();
-	}
-
-	for (auto& bullet : m_homingBullets)
-	{
-		bullet->Render();
-	}
-
-	for (auto& bullet : m_laserBullet)
-	{
-		bullet->Render();
-	}
-	m_state->Render();
-	RenderParts();
-
-	if (GetComponent<HP>()->GetHP() <= 0) return;
-	GetComponent<HPBar>()->Render(GetPosition() + Vector3{ 0,5.0f,0 });
-	//GetComponent<Collider>()->Render();
 }
 
+// 終了処理
 void BossEnemy::Finalize()
 {
 }
 
+// 弾を発射
+void BossEnemy::Shot()
+{
+	// 使用されていない弾を発射
+	for (auto& bullet : m_bullets)
+	{
+		if (bullet->GetState() == Bullet::BulletState::UNUSED)
+		{
+			bullet->Shot(static_cast<Player*>(GetTarget()));
+			break;
+		}
+	}
+}
+
+// ミサイルを発射
 void BossEnemy::ShotMissile()
 {
+	// 使用されていないミサイルを発射
 	for (auto& bullet : m_homingBullets)
 	{
 		if (bullet->GetState() == Bullet::BulletState::UNUSED)
@@ -189,34 +165,26 @@ void BossEnemy::ShotMissile()
 	}
 }
 
-void BossEnemy::ShotGatling()
-{
-	for (auto& bullet : m_fixedBullets)
-	{
-		if (bullet->GetState() == Bullet::BulletState::UNUSED)
-		{
-			bullet->Shot(static_cast<Player*>(GetTarget()));
-			break;
-		}
-	}
-}
-
+// ガトリングをリロード
 void BossEnemy::ReloadGatling()
 {
-	for (auto& bullet : m_fixedBullets)
+	for (auto& bullet : m_bullets)
 	{
 		bullet->Initialize(this);
 	}
 }
 
+// ステートを変更
 void BossEnemy::ChangeState(State* state)
 {
 	m_state = state;
 	m_state->Initialize();
 }
 
+// 当たり判定の処理
 void BossEnemy::Collision(Collider* collider)
 {
+	// プレイヤーの弾が当たった時の処理
 	if (collider->GetTypeID() == Collider::PlayerBullet)
 	{
 		Bullet* bulletObject = static_cast<Bullet*>(collider->GetOwner());
@@ -227,6 +195,7 @@ void BossEnemy::Collision(Collider* collider)
 			bulletObject->Hit();
 		}
 	}
+	// プレイヤーのブレードが当たった時の処理
 	if (collider->GetTypeID() == Collider::PlayerSword)
 	{
 		Sword* bulletObject = static_cast<Sword*>(collider->GetOwner());
@@ -241,9 +210,48 @@ void BossEnemy::Collision(Collider* collider)
 			bulletObject->Hit();
 		}
 	}
+
+	// 床や壁に当たった時の処理
 	if (collider->GetTypeID() == Collider::Floor ||
 		collider->GetTypeID() == Collider::Wall)
 	{
 		Collider::CheckHit(this, collider->GetOwner());
+	}
+}
+
+
+// 弾を作成
+void BossEnemy::CreateBullets()
+{
+	for (int i = 0; i < MAX_BULLET; i++)
+	{
+		m_bullets.push_back(std::make_unique<EnemyBullet>(GetScene(), Collider::TypeID::EnemyBullet));
+	}
+
+	for (int i = 0; i < MAX_HOMING_BULLET; i++)
+	{
+		m_homingBullets.push_back(std::make_unique<HomingBullet>(GetScene(), Collider::TypeID::EnemyBullet));
+	}
+}
+
+// ステートを作成
+void BossEnemy::CreateStates()
+{
+	SetEnemyAttack(std::make_unique<BossGatlingState>(this));
+	SetEnemyMove(std::make_unique<BossMoveState>(this));
+	m_missileState = std::make_unique<BossMissileState>(this);
+	m_tackleState = std::make_unique<BossTackleState>(this);
+	m_state = GetMoveState();
+}
+
+// HPが残っているかチェック
+void BossEnemy::CheckHP()
+{
+	if (GetComponent<HP>()->GetHP() <= 0)
+	{
+		// HPが無ければオブジェクトを削除
+		ObjectManager::Remove(this);
+		static_cast<PlayScene*>(GetScene())->CreateHitEffect(GetPosition());
+		Audio::GetInstance()->PlaySoundSE_Explosion();
 	}
 }

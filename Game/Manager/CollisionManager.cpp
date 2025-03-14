@@ -52,10 +52,12 @@ void CollisionManager::Update()
 
 void CollisionManager::Render()
 {
+	#ifdef _DEBUG
 	for (auto& collider : s_colliders)
 	{
 		collider->Render();
 	}
+	#endif // _DEBUG
 }
 
 void CollisionManager::Remove(Collider* component)

@@ -191,11 +191,13 @@ void Game::Render()
     // シーン切り替え時のマスク
     if (m_sceneMask->IsClose() || m_sceneMask->IsOpen()) m_sceneMask->Render();
 
+    #ifdef _DEBUG
     // デバッグ用
     DeferredRendering::GBufferShow();
     ShadowMap::ShadowMapShow();
     Bloom::BloomTextureShow();
-    //m_debugString->Render(state);
+    m_debugString->Render(state);
+    #endif // DEBUG
 
     m_deviceResources->PIXEndEvent();
 

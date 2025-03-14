@@ -1,24 +1,27 @@
 #include "pch.h"
 #include "TrainingIdolState.h"
 
+// コンストラクタ
 TrainingIdolState::TrainingIdolState()
 {
-	m_totalTime = 0;
 }
 
+// 初期化処理
 void TrainingIdolState::Initialize()
 {
 }
 
+// 更新処理
 void TrainingIdolState::Update(float elapsedTime)
 {
-	m_totalTime += elapsedTime;
 }
 
+// 描画処理
 void TrainingIdolState::Render()
 {
 }
 
+// 終了処理
 void TrainingIdolState::Finalize()
 {
 }

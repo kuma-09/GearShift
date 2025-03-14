@@ -11,109 +11,90 @@
 #include "Game/Components/Physics.h"
 #include "Game/Object/Sword.h"
 #include "Game/PlayScene.h"
-
-#include "Game/Enemy/State/EnemyAttackState.h"
-#include "Game/Enemy/State/EnemyMoveState.h"
-#include "Game/Enemy/State/FixedAttackState.h"
-
 #include "Game/Manager/ObjectManager.h"
 
+// コンストラクタ
 TrainingEnemy::TrainingEnemy(IScene* scene)
 {
 	SetScene(scene);
+	SetScale({ 3.0f,3.0f,3.0f });
+
+	// コンポーネントを追加
 	AddComponent<HP>();
 	AddComponent<Physics>();
 	AddComponent<ModelDraw>();
 	AddComponent<Collider>();
 	AddComponent<HPBar>();
-	
-	SetEnemyAttack(std::make_unique<FixedAttackState>(this));
-	SetScale({ 3.0f,3.0f,3.0f });
-
-	m_state = GetAttackState();
 }
 
+// デストラクタ
 TrainingEnemy::~TrainingEnemy()
 {
-	//RemoveAllComponents();
 }
 
+// 初期化処理
 void TrainingEnemy::Initialize()
 {
 	using namespace DirectX::SimpleMath;
 
+	// コンポーネントを初期化
 	GetComponent<HP>()->SetHP(10);
 	GetComponent<Physics>()->Initialize();
 	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetModel(Resources::TankBody));
 	GetComponent<ModelDraw>()->SetRimLithgColor(DirectX::Colors::IndianRed);
 	GetComponent<Collider>()->Initialize(Collider::Enemy,Collider::Collision, { 2,0.5f,3 });
 	GetComponent<HPBar>()->Initialize();
-	m_state->Initialize();
+	// 座標を初期化
 	Matrix world = Matrix::Identity;
 	world = Matrix::CreateScale(GetScale());
 	world *= Matrix::CreateFromQuaternion(GetQuaternion());
 	world *= Matrix::CreateTranslation(GetPosition());
-
 	SetWorld(world);
 }
 
+// 更新処理
 void TrainingEnemy::Update(float elapsedTime)
 {
 	using namespace DirectX::SimpleMath;
-
-	m_state->Update(elapsedTime);
+	// コンポーネントを更新
 	ComponentsUpdate(elapsedTime);
 
 	// 座標の移動
 	SetPosition(GetPosition() + GetVelocity());
-
 	Matrix world = Matrix::Identity;
 	world = Matrix::CreateScale(GetScale());
 	world *= Matrix::CreateFromQuaternion(GetQuaternion());
 	world *= Matrix::CreateTranslation(GetPosition());
-
 	SetWorld(world);
 
-	if (GetComponent<HP>()->GetHP() <= 0)
-	{
-		ObjectManager::Remove(this);
-		static_cast<PlayScene*>(GetScene())->CreateHitEffect(GetPosition());
-		Audio::GetInstance()->PlaySoundSE_Explosion();
-	}
+	// HPが残っているかチェック
+	CheckHP();
 }
 
-void TrainingEnemy::CreateShader()
-{
-	GetComponent<ModelDraw>()->CreateShadow();
-}
-
+// 描画処理
 void TrainingEnemy::Render()
 {	
-	using namespace DirectX::SimpleMath;
-
-	m_state->Render();
-
-	if (GetComponent<HP>()->GetHP() <= 0) return;
-	GetComponent<ModelDraw>()->Render();
-	GetComponent<HPBar>()->Render(GetPosition());
 }
 
+// 終了処理
 void TrainingEnemy::Finalize()
 {
 }
 
+// 弾を発射
 void TrainingEnemy::Shot()
 {
 }
 
+// ステートを変更
 void TrainingEnemy::ChangeState(State* state)
 {
-	m_state = state;
-	m_state->Initialize();
 }
 
+// 当たり判定の処理
 void TrainingEnemy::Collision(Collider* collider)
 {
+	// プレイヤーの弾が当たった時の処理
 	if (collider->GetTypeID() == Collider::PlayerBullet)
 	{
 		Bullet* bulletObject = static_cast<Bullet*>(collider->GetOwner());
@@ -124,6 +105,7 @@ void TrainingEnemy::Collision(Collider* collider)
 			bulletObject->Hit();
 		}
 	}
+	// プレイヤーのブレードが当たった時の処理
 	if (collider->GetTypeID() == Collider::PlayerSword)
 	{
 		Sword* bulletObject = static_cast<Sword*>(collider->GetOwner());
@@ -138,9 +120,21 @@ void TrainingEnemy::Collision(Collider* collider)
 			bulletObject->Hit();
 		}
 	}
+	// 床や壁に当たった時の処理
 	if (collider->GetTypeID() == Collider::Floor ||
 		collider->GetTypeID() == Collider::Wall)
 	{
 		Collider::CheckHit(this, collider->GetOwner());
+	}
+}
+
+// HPが残っているかチェック
+void TrainingEnemy::CheckHP()
+{
+	if (GetComponent<HP>()->GetHP() <= 0)
+	{
+		ObjectManager::Remove(this);
+		static_cast<PlayScene*>(GetScene())->CreateHitEffect(GetPosition());
+		Audio::GetInstance()->PlaySoundSE_Explosion();
 	}
 }

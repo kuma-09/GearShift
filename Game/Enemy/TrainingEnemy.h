@@ -1,31 +1,36 @@
 #pragma once
-#include "Framework/Graphics.h"
-#include "Framework/DeviceResources.h"
-#include "Framework/Resources.h"
 #include "Enemy.h"
 
 class State;
 
+/// <summary>
+/// トレーニング用のエネミー
+/// </summary>
 class TrainingEnemy : public Enemy
 {
 public:
-
+	// コンストラクタ
 	TrainingEnemy(IScene* scene);
+	// デストラクタ
 	~TrainingEnemy();
-
+	// 初期化処理
 	void Initialize();
+	// 更新処理
 	void Update(float elapsedTime);
-	void CreateShader();
+	// 描画処理
 	void Render();
+	// 終了処理
 	void Finalize();
 
-
+	// 弾を発射
 	void Shot();
+	// ステートを変更
 	void ChangeState(State* state);
-
+	// 当たり判定の処理
 	void Collision(Collider* collider);
 
 private:
-	State* m_state;
+	// HPが残っているかチェック
+	void CheckHP();
 };
 
