@@ -1,18 +1,26 @@
 #pragma once
 #include <string>
 
+/// <summary>
+/// ステージデータを管理するマネージャー
+/// </summary>
 class StageDataManager
 {
 public :
-	static void SetStageNum(int num);
+	// ステージナンバー
+	static void SetStageNum(int num) { s_nowStageNum = num; }
 	static const int& GetStageNum() { return s_nowStageNum; }
-	static void SetClearTime(int time);
-	static int GetClearTime();
+
+	// クリアタイム
+	static void SetClearTime(int time) { s_clearTime = time; }
+	static int GetClearTime(){ return s_clearTime; }
+
+	// ステージのファイルネームを取得
 	static std::wstring GetStageFileName();
-	static void SetClearTexture(ID3D11ShaderResourceView* );
 private:
+	// ステージナンバー
 	static int s_nowStageNum;
+	// クリアタイム
 	static int s_clearTime;
-	static ID3D11ShaderResourceView* s_clearTexture;
 };
 
