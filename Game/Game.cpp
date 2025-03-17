@@ -94,7 +94,6 @@ void Game::Initialize(HWND window, int width, int height)
     ShadowMap::Initialize();
     Noise::Initialize();
     Bloom::Initialize();
-    CollisionManager::InitializeCollisionMesh(L"testFloor");
     GetTitleScene();
     GetPlayScene();
     GetResultScene();

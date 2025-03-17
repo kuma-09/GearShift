@@ -9,7 +9,7 @@ public:
 	LeftLeg();
 	~LeftLeg();
 
-	void Initialize(int hp,IScene* scene) override;
+	void Initialize() override;
 	void Update(float elapsedTime) override;
 	void Render() override;
 	void Finalize();

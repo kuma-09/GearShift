@@ -19,9 +19,8 @@ BossLeg::~BossLeg()
 {
 }
 
-void BossLeg::Initialize(int hp, IScene* scene)
+void BossLeg::Initialize()
 {
-	SetScene(scene);
 	float scale = 5.0f;
 	SetScale({ scale,scale,scale });
 	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetModel(Resources::BossLeg));

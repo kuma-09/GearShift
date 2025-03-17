@@ -77,6 +77,33 @@ public:
 	// コンポーネントを更新
 	void ComponentsUpdate(float elapsedTime);
 
+	// 子オブジェクトを追加
+	template<typename ObjectType>
+	void SetChild(std::string name)
+	{
+		std::unique_ptr<ObjectType> newObject = std::make_unique<ObjectType>();
+		m_umChildObjects[name] = std::move(newObject);
+		m_umChildObjects[name]->SetOwner(this);
+	}
+
+	// 子オブジェクトを取得
+	template<typename ObjectType>
+	ObjectType* GetChild(std::string name)
+	{
+		auto it = m_umChildObjects.find(name);
+		if (it != m_umChildObjects.end())
+		{
+			return static_cast<ObjectType*>(it->second.get());
+		}
+		return nullptr;
+	}
+
+	// 子オブジェクトを更新
+	void ChildObjectsUpdate(float elapsedTime);
+
+	void SetOwner(GameObject* owner) { m_owner = owner; }
+	GameObject* GetOwner() { return m_owner; }
+
 	void SetScene(IScene* scene) { m_scene = scene; }
 	IScene* GetScene() { return m_scene; }
 
@@ -85,12 +112,13 @@ public:
 	
 public:
 	virtual void Initialize() {};
-	virtual void Update(float elapsedTime) = 0;
+	virtual void Update(float elapsedTime) { UNREFERENCED_PARAMETER(elapsedTime); }
 	virtual void Render() {};
-	virtual void Collision(Collider* collider) { UNREFERENCED_PARAMETER(collider); };
+	virtual void Collision(Collider* collider) { UNREFERENCED_PARAMETER(collider); }
 private:
 	IScene* m_scene = nullptr;
 	Type::TypeID m_typeID;
+	GameObject* m_owner;
 
 	// 座標など
 	DirectX::SimpleMath::Vector3	m_position = DirectX::SimpleMath::Vector3::Zero;
@@ -103,4 +131,5 @@ private:
 	// コンポーネント配列
 	std::unordered_map<std::type_index, std::unique_ptr<IComponent>> m_umComponents;
 
+	std::unordered_map<std::string, std::unique_ptr<GameObject>> m_umChildObjects;
 };

@@ -19,10 +19,8 @@ Head::~Head()
 	Finalize();
 }
 
-void Head::Initialize(int hp,IScene* scene)
+void Head::Initialize()
 {
-	UNREFERENCED_PARAMETER(hp);
-	SetScene(scene);
 	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetModel(Resources::Head));
 	GetComponent<ModelDraw>()->SetRimLithgColor({ 0.75f,0.75f,1,1 });
 }

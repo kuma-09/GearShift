@@ -122,7 +122,7 @@ void Player::Update(float elapsedTime)
 
 	SetVelocity(Vector3::Zero);
 	ComponentsUpdate(elapsedTime);
-	UpdateParts(elapsedTime);
+	ChildObjectsUpdate(elapsedTime);
 	Vector3 velocity = GetComponent<Move>()->GetVelocity();
 	Quaternion quaternion = Quaternion::CreateFromYawPitchRoll(m_camera->GetQuaternion().ToEuler().y, 0, 0);
 	SetVelocity(GetVelocity() + Vector3::Transform(velocity, quaternion));
@@ -273,8 +273,8 @@ void Player::Collision(Collider* collider)
 	if (collider->GetTypeID() == Collider::Floor)
 	{
 		Collider::CheckHit(this, collider->GetOwner());
-		GetPart(Part::LeftLeg)->GetComponent<Emitter>()->SetParticle(GetPart(Part::LeftLeg)->GetPosition() - DirectX::SimpleMath::Vector3{ 0,1.f,0 });
-		GetPart(Part::RightLeg)->GetComponent<Emitter>()->SetParticle(GetPart(Part::RightLeg)->GetPosition() - DirectX::SimpleMath::Vector3{ 0,1.f,0 });
+		GetChild<LeftLeg>("LeftLeg")->GetComponent<Emitter>()->SetParticle(GetChild<LeftLeg>("LeftLeg")->GetPosition() - DirectX::SimpleMath::Vector3{ 0,1.f,0 });
+		GetChild<RightLeg>("RightLeg")->GetComponent<Emitter>()->SetParticle(GetChild<RightLeg>("RightLeg")->GetPosition() - DirectX::SimpleMath::Vector3{ 0,1.f,0 });
 		return;
 	}
 	if (collider->GetTypeID() == Collider::Wall || collider->GetTypeID() == Collider::Enemy)
@@ -297,12 +297,19 @@ void Player::CreateState()
 // デフォルトパーツをセット
 void Player::CreateDefaultParts()
 {
-	SetPart(Part::Head,     std::make_unique<Head>());
-	SetPart(Part::BodyTop,  std::make_unique<BodyTop>());
-	SetPart(Part::LeftArm,  std::make_unique<LeftArm>());
-	SetPart(Part::RightArm, std::make_unique<RightArm>());
-	SetPart(Part::LeftLeg,  std::make_unique<LeftLeg>());
-	SetPart(Part::RightLeg, std::make_unique<RightLeg>());
+	SetChild<Head>("Head");
+	SetChild<BodyTop>("BodyTop");
+	SetChild<LeftArm>("LeftArm");
+	SetChild<RightArm>("RightArm");
+	SetChild<LeftLeg>("LeftLeg");
+	SetChild<RightLeg>("RightLeg");
+
+	GetChild<Head>("Head")->Initialize();
+	GetChild<BodyTop>("BodyTop")->Initialize();
+	GetChild<LeftArm>("LeftArm")->Initialize();
+	GetChild<RightArm>("RightArm")->Initialize();
+	GetChild<LeftLeg>("LeftLeg")->Initialize();
+	GetChild<RightLeg>("RightLeg")->Initialize();
 }
 
 // 初期弾を作成

@@ -19,10 +19,8 @@ RightArm::~RightArm()
 	Finalize();
 }
 
-void RightArm::Initialize(int hp,IScene* scene)
+void RightArm::Initialize()
 {
-	UNREFERENCED_PARAMETER(hp);
-	SetScene(scene);
 	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetModel(Resources::RArm));
 	GetComponent<ModelDraw>()->SetRimLithgColor({ 0.75f,0.75f,1,1 });
 }

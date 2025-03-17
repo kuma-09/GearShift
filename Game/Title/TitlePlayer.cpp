@@ -54,14 +54,6 @@ void TitlePlayer::Update(float elapsedTime)
 	SetWorld(world);
 }
 
-void TitlePlayer::CreateShadow()
-{
-	for (auto& pair : m_pPart)
-	{
-		pair.second->CreateShadow();
-	}
-}
-
 void TitlePlayer::Render()
 {
 	RenderParts();

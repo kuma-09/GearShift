@@ -48,40 +48,11 @@ public:
 	// 当たり判定の処理
 	void Collision(Collider* collider);
 
-	// パーツをセット
-	void SetPart(const Part::TypeID& partType, std::unique_ptr<Part> part)
-	{
-		m_pPart[partType] = std::move(part);
-		m_pPart[partType]->SetOwner(this);
-		m_pPart[partType]->Initialize(10,GetScene());
-	}
-
-	// パーツを取得
-	Part* GetPart(const Part::TypeID& partType)
-	{
-		if (m_pPart.find(partType) != m_pPart.end())
-		{
-			return m_pPart[partType].get();
-		}
-		return nullptr;
-	}
-
 private:
 
 	void CreateBullets();
 	void CreateStates();
 	void CheckHP();
-
-	// パーツをまとめて更新
-	void UpdateParts(float elapsedTime) {
-		for (auto& pair : m_pPart)
-		{
-			pair.second->Update(elapsedTime);
-		}
-	}
-
-	// パーツ配列
-	std::unordered_map<Part::TypeID, std::unique_ptr<Part>> m_pPart;
 
 	// 弾の最大数
 	const int MAX_BULLET = 10;

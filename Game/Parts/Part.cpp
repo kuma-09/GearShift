@@ -3,12 +3,10 @@
 #include "Game/Components/HP.h"
 #include "Game/Components/ModelDraw.h"
 
-void Part::CreateShadow()
+Part::Part()
 {
-	GetComponent<ModelDraw>()->CreateShadow();
 }
 
-void Part::Render()
+Part::~Part()
 {
-	GetComponent<ModelDraw>()->Render();
 }

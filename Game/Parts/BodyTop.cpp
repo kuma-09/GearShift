@@ -16,14 +16,11 @@ BodyTop::BodyTop()
 
 BodyTop::~BodyTop()
 {
-	Finalize();
 }
 
 
-void BodyTop::Initialize(int hp,IScene* scene)
+void BodyTop::Initialize()
 {
-	UNREFERENCED_PARAMETER(hp);
-	SetScene(scene);
 	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetModel(Resources::Body));
 	GetComponent<ModelDraw>()->SetRimLithgColor({0.75f,0.75f,1,1});
 }
@@ -46,17 +43,6 @@ void BodyTop::Update(float elapsedTime)
 	ComponentsUpdate(elapsedTime);
 
 	m_isHit = false;
-}
-
-void BodyTop::Render()
-{
-
-	GetComponent<ModelDraw>()->Render();
-
-}
-
-void BodyTop::Finalize()
-{
 }
 
 void BodyTop::Collision(Collider* collider)

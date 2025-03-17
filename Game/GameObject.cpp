@@ -8,3 +8,11 @@ void GameObject::ComponentsUpdate(float elapsedTime)
 		spComp.second->Update(elapsedTime);
 	}
 }
+
+void GameObject::ChildObjectsUpdate(float elapsedTime)
+{
+	for (auto&& spObje : m_umChildObjects)
+	{
+		spObje.second->Update(elapsedTime);
+	}
+}

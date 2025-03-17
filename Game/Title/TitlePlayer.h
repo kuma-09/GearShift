@@ -27,7 +27,7 @@ public:
 	{
 		m_pPart[partType] = std::move(part);
 		m_pPart[partType]->SetOwner(this);
-		m_pPart[partType]->Initialize(10, GetScene());
+		m_pPart[partType]->Initialize();
 	}
 
 	// ƒp[ƒc‚ğæ“¾

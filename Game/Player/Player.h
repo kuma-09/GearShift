@@ -57,25 +57,6 @@ public:
 	void Shot();
 	void SwordAttack();
 
-	// パーツをセット
-	void SetPart(const Part::TypeID& partType, std::unique_ptr<Part> part)
-	{
-		m_pPart[partType] = std::move(part);
-		m_pPart[partType]->SetOwner(this);
-		m_pPart[partType]->Initialize(10, GetScene());
-	}
-
-	// パーツを取得
-	Part* GetPart(const Part::TypeID& partType)
-	{
-		if (m_pPart.find(partType) != m_pPart.end()) 
-		{
-			return m_pPart[partType].get();
-		}
-		return nullptr;
-	}
-
-
 	void Collision(Collider* collider);
 
 private:
@@ -83,29 +64,6 @@ private:
 	void CreateDefaultParts();
 	void CreateBullets();
 
-	// パーツをまとめて更新
-	void UpdateParts(float elapsedTime) {
-		for (auto& pair : m_pPart)
-		{
-			pair.second->Update(elapsedTime);
-		}
-	}
-
-	// パーツをまとめて描画
-	void RenderParts() {
-		for (auto& pair : m_pPart)
-		{
-			pair.second->Render();
-		}
-	}
-
-	void CreateShadows()
-	{
-		for (auto& pair : m_pPart)
-		{
-			pair.second->CreateShadow();
-		}
-	}
 private:
 
 	InputManager* m_inputManager;

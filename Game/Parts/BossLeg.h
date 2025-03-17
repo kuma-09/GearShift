@@ -8,9 +8,9 @@ public:
 	BossLeg();
 	~BossLeg();
 
-	void Initialize(int hp, IScene* scene) override;
-	void Update(float elapsedTime) override;
-	void Render() override;
+	void Initialize();
+	void Update(float elapsedTime);
+	void Render();
 	void Finalize();
 
 	void Collision(Collider* collider);

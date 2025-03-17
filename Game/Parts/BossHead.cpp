@@ -10,25 +10,26 @@
 #include <Game/Components/HP.h>
 #include "Game/Components/Look.h"
 #include "Game/PlayScene.h"
+#include "Game/Enemy/BossEnemy.h"
 
-BossHead::BossHead(GameObject* target)
+BossHead::BossHead()
 {
 	AddComponent<ModelDraw>();
 	AddComponent<Look>();
-	GetComponent<Look>()->SetTarget(this, target);
+
 }
 
 BossHead::~BossHead()
 {
 }
 
-void BossHead::Initialize(int hp, IScene* scene)
+void BossHead::Initialize(GameObject* target)
 {
-	SetScene(scene);
 	float scale = 5.0f;
 	SetScale({ scale,scale,scale });
 	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetModel(Resources::BossHead));
 	GetComponent<ModelDraw>()->SetRimLithgColor(DirectX::Colors::IndianRed);
+	GetComponent<Look>()->SetTarget(this, target);
 }
 
 void BossHead::Update(float elapsedTime)

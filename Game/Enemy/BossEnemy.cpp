@@ -59,8 +59,11 @@ void BossEnemy::Initialize()
 	using namespace DirectX::SimpleMath;
 
 	// パーツを生成
-	SetPart(Part::Head, std::make_unique<BossHead>(GetTarget()));
-	SetPart(Part::BodyTop, std::make_unique<BossLeg>());
+	SetChild<BossHead>("Head");
+	SetChild<BossLeg>("Leg");
+
+	GetChild<BossHead>("Head")->Initialize(GetTarget());
+	GetChild<BossLeg>("Leg")->Initialize();
 
 	// コンポーネントを初期化
 	GetComponent<HP>()->Initialize(25);
@@ -114,7 +117,7 @@ void BossEnemy::Update(float elapsedTime)
 	// コンポーネントを更新
 	ComponentsUpdate(elapsedTime);
 	// パーツを更新
-	UpdateParts(elapsedTime);
+	ChildObjectsUpdate(elapsedTime);
 
 	// 座標の移動
 	SetPosition(GetPosition() + Vector3::Transform(GetVelocity(), GetQuaternion()));

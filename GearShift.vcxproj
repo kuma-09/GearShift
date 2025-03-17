@@ -241,13 +241,11 @@
     <ClInclude Include="Game\Manager\ObjectManager.h" />
     <ClInclude Include="Game\Manager\PointLightManager.h" />
     <ClInclude Include="Game\Manager\RenderManager.h" />
-    <ClInclude Include="Game\Object\Bullet\LaserBullet.h" />
     <ClInclude Include="Game\Object\Bullet\Bullet.h" />
     <ClInclude Include="Game\Object\Bullet\EnemyBullet.h" />
     <ClInclude Include="Game\Object\Bullet\FixedEnemyBullet.h" />
     <ClInclude Include="Game\Object\Bullet\HomingBullet.h" />
     <ClInclude Include="Game\Object\Bullet\NormalBullet.h" />
-    <ClInclude Include="Game\Object\Bullet\ShotgunBullet.h" />
     <ClInclude Include="Game\Object\Burner\Burner.h" />
     <ClInclude Include="Game\Object\Burner\BurnerHorizon.h" />
     <ClInclude Include="Game\Object\Burner\BurnerVertical.h" />
@@ -377,13 +375,11 @@
     <ClCompile Include="Game\Manager\ObjectManager.cpp" />
     <ClCompile Include="Game\Manager\PointLightManager.cpp" />
     <ClCompile Include="Game\Manager\RenderManager.cpp" />
-    <ClCompile Include="Game\Object\Bullet\LaserBullet.cpp" />
     <ClCompile Include="Game\Object\Bullet\Bullet.cpp" />
     <ClCompile Include="Game\Object\Bullet\EnemyBullet.cpp" />
     <ClCompile Include="Game\Object\Bullet\FixedEnemyBullet.cpp" />
     <ClCompile Include="Game\Object\Bullet\HomingBullet.cpp" />
     <ClCompile Include="Game\Object\Bullet\NormalBullet.cpp" />
-    <ClCompile Include="Game\Object\Bullet\ShotgunBullet.cpp" />
     <ClCompile Include="Game\Object\Burner\Burner.cpp" />
     <ClCompile Include="Game\Object\Burner\BurnerHorizon.cpp" />
     <ClCompile Include="Game\Object\Burner\BurnerVertical.cpp" />
