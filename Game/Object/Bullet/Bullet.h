@@ -1,6 +1,9 @@
 #pragma once
 #include "Game/GameObject.h"
 
+/// <summary>
+/// 弾クラスの基底クラス
+/// </summary>
 class Bullet :public GameObject
 {
 public:
@@ -13,12 +16,17 @@ public:
 		USED,
 	};
 
-
+	// コンストラクタ
 	virtual ~Bullet() = default;
+	// 初期化処理
 	virtual void Initialize(GameObject* object) = 0;
+	// 弾を発射
 	virtual void Shot(GameObject* target) = 0;
+	// 弾が何かに当たった時の処理
 	virtual void Hit() = 0;
+	// 更新処理
 	virtual void Update(float elapsedTime) = 0;
+	// 描画処理
 	virtual void Render() = 0;
 
 	// ゲッターセッター
@@ -38,11 +46,16 @@ public:
 	void SetAttackPoint(int attackPoint) { m_attackPoint = attackPoint; }
 	int GetAttackPoint() { return m_attackPoint; }
 
+	// 当たり判定の処理
 	virtual void Collision(Collider* collider) = 0;
 
 private:
+	// 弾の状態
 	BulletState m_state;
+	// 弾が狙うターゲット
 	GameObject* m_target;
+	// 弾を発射した親
 	GameObject* m_owner;
+	// 攻撃力
 	int m_attackPoint;
 };

@@ -10,6 +10,7 @@
 
 #include "Framework/Audio.h"
 
+// コンストラクタ
 NormalBullet::NormalBullet(IScene* scene, Collider::TypeID id)
 {
 	SetScene(scene);
@@ -22,11 +23,13 @@ NormalBullet::NormalBullet(IScene* scene, Collider::TypeID id)
 	SetScale({ 0.1f,0.1f,0.1f });
 }
 
+// デストラクタ
 NormalBullet::~NormalBullet()
 {
 
 }
 
+// 初期化処理
 void NormalBullet::Initialize(GameObject* object)
 {
 	using namespace DirectX::SimpleMath;
@@ -42,6 +45,7 @@ void NormalBullet::Initialize(GameObject* object)
 	SetState(BulletState::UNUSED);
 }
 
+// 弾を発射
 void NormalBullet::Shot(GameObject* target)
 {
 	using namespace DirectX::SimpleMath;
@@ -55,8 +59,6 @@ void NormalBullet::Shot(GameObject* target)
 
 	velocity *= SPEED;
 
-	//velocity += Vector3::Transform(Vector3::Forward * SPEED, GetOwner()->GetQuaternion());
-
 	m_totalTime = 0;
 
 	SetVelocity(velocity);
@@ -64,13 +66,13 @@ void NormalBullet::Shot(GameObject* target)
 	GetComponent<Collider>()->SetActive(true);
 }
 
+// 弾が何かに当たった時の処理
 void NormalBullet::Hit()
 {
 	using namespace DirectX::SimpleMath;
 
 	if (GetState() == BulletState::FLYING)
 	{
-		//static_cast<PlayScene*>(GetOwner()->GetScene())->CreateHitEffect(GetPosition());
 		Vector3 velocity = Vector3::Zero;
 		SetWorld(Matrix::Identity);
 		SetQuaternion(Quaternion::Identity);
@@ -83,6 +85,7 @@ void NormalBullet::Hit()
 	}
 }
 
+// 更新処理
 void NormalBullet::Update(float elapsedTime)
 {
 	using namespace DirectX::SimpleMath;
@@ -91,9 +94,9 @@ void NormalBullet::Update(float elapsedTime)
 
 	if (GetState() == FLYING)
 	{
-		//Vector3 velocity = GetPosition() - GetTarget()->GetPosition();
-		//velocity.Normalize();
 		m_totalTime += elapsedTime;
+
+		// 生存時間を過ぎたら処理から除外
 		if (m_totalTime >= MAX_TIME)
 		{
 			Hit();
@@ -108,22 +111,16 @@ void NormalBullet::Update(float elapsedTime)
 		SetWorld(world);
 
 		Vector3 pos = { world._41,world._42,world._43 };
-		//if (GetState() == FLYING) GetComponent<Trail>()->SetPos(pos, pos + Vector3(0,1,0));
 		if (GetState() == FLYING) GetComponent<Trail>()->SetPos(GetPosition() - Vector3(0, 0.125f, 0), GetPosition() + Vector3(0, 0.125f, 0));
 	}
-
-
 }
 
+// 描画処理
 void NormalBullet::Render()
 {
-	if (GetState() == FLYING)
-	{
-		GetComponent<ModelDraw>()->Render();
-		GetComponent<Trail>()->Render();
-	}
 }
 
+// 当たり判定の処理
 void NormalBullet::Collision(Collider* collider)
 {
 	if (GetState() == FLYING)

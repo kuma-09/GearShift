@@ -6,6 +6,7 @@
 #include "Game/Components/ModelDraw.h"
 #include <random>
 
+// コンストラクタ
 FixedEnemyBullet::FixedEnemyBullet(IScene* scene, Collider::TypeID id)
 {
 	SetScene(scene);
@@ -16,11 +17,13 @@ FixedEnemyBullet::FixedEnemyBullet(IScene* scene, Collider::TypeID id)
 	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetModel(Resources::Cube));
 }
 
+// デストラクタ
 FixedEnemyBullet::~FixedEnemyBullet()
 {
 
 }
 
+// 初期化処理
 void FixedEnemyBullet::Initialize(GameObject* object)
 {
 	using namespace DirectX::SimpleMath;
@@ -36,6 +39,7 @@ void FixedEnemyBullet::Initialize(GameObject* object)
 	GetComponent<Collider>()->SetActive(false);
 }
 
+// 弾を発射
 void FixedEnemyBullet::Shot(GameObject* target)
 {
 	using namespace DirectX::SimpleMath;
@@ -49,6 +53,7 @@ void FixedEnemyBullet::Shot(GameObject* target)
 	GetComponent<Collider>()->SetActive(true);
 }
 
+// 弾が何かに当たった時の処理
 void FixedEnemyBullet::Hit()
 {
 	using namespace DirectX::SimpleMath;
@@ -60,6 +65,7 @@ void FixedEnemyBullet::Hit()
 	GetComponent<Collider>()->SetActive(false);
 }
 
+// 更新処理
 void FixedEnemyBullet::Update(float elapsedTime)
 {
 	using namespace DirectX::SimpleMath;
@@ -76,12 +82,9 @@ void FixedEnemyBullet::Update(float elapsedTime)
 
 void FixedEnemyBullet::Render()
 {
-	if (GetState() == FLYING)
-	{
-		GetComponent<ModelDraw>()->Render();
-	}
 }
 
+// 当たり判定の処理
 void FixedEnemyBullet::Collision(Collider* collider)
 {
 	if (GetState() == FLYING)

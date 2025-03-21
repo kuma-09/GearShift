@@ -11,24 +11,26 @@
 
 #include "Framework/Audio.h"
 
+// コンストラクタ
 HomingBullet::HomingBullet(IScene* scene, Collider::TypeID id)
 {
 	SetScene(scene);
 	AddComponent<Collider>();
 	AddComponent<ModelDraw>();
 	AddComponent<Emitter>();
-	GetComponent<Collider>()->Initialize(id,Collider::Trigger, { 0.1f,0.1f,0.1f });
+	GetComponent<Collider>()->Initialize(id, Collider::Trigger, { 0.1f,0.1f,0.1f });
 	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetModel(Resources::Cube));
-	GetComponent<Emitter>()->Initialize(L"Resources/Textures/whitePuff00.png",1.0f,0.025f,0.3f);
+	GetComponent<Emitter>()->Initialize(L"Resources/Textures/whitePuff00.png", 1.0f, 0.025f, 0.3f);
 	SetScale({ 0.1f,0.1f,0.1f });
 	SetState(BulletState::UNUSED);
 }
 
+// デストラクタ
 HomingBullet::~HomingBullet()
 {
-
 }
 
+// 初期化処理
 void HomingBullet::Initialize(GameObject* object)
 {
 	using namespace DirectX::SimpleMath;
@@ -43,6 +45,7 @@ void HomingBullet::Initialize(GameObject* object)
 	GetComponent<Collider>()->SetActive(false);
 }
 
+// 弾を発射
 void HomingBullet::Shot(GameObject* object)
 {
 	using namespace DirectX::SimpleMath;
@@ -73,43 +76,13 @@ void HomingBullet::Shot(GameObject* object)
 	GetComponent<Collider>()->SetActive(true);
 }
 
-void HomingBullet::Shot(GameObject* object, float period)
-{
-	using namespace DirectX::SimpleMath;
-
-	std::random_device seed_gen;
-	std::mt19937 mt(seed_gen());
-
-	std::uniform_real_distribution<float> distX(-2, 2);
-	std::uniform_real_distribution<float> distY(0, 2);
-	std::uniform_real_distribution<float> distZ(1, 2);
-
-
-	float resultx = distX(mt);
-	float resulty = distY(mt);
-	float resultz = distZ(mt);
-
-	SetTarget(object);
-	Vector3 velocity = Vector3::Zero;
-	SetPosition(GetOwner()->GetPosition());
-	SetQuaternion(GetOwner()->GetQuaternion());
-	m_position = GetPosition();
-	m_velocity = Vector3::Transform(Vector3(resultx * 10.0f, resulty * 10.0f, resultz * 10.0f), GetQuaternion());
-	m_period = period;
-
-	velocity += Vector3::Transform(Vector3::Forward * SPEED, GetQuaternion());
-	SetVelocity(velocity);
-	SetState(BulletState::FLYING);
-	GetComponent<Collider>()->SetActive(true);
-}
-
+// 弾が何かに当たった時の処理
 void HomingBullet::Hit()
 {
 	using namespace DirectX::SimpleMath;
 
 	if (GetState() == BulletState::FLYING)
 	{
-		//static_cast<PlayScene*>(GetOwner()->GetScene())->CreateHitEffect(GetPosition());
 		Vector3 velocity = Vector3::Zero;
 		SetWorld(Matrix::Identity);
 		SetQuaternion(Quaternion::Identity);
@@ -121,6 +94,7 @@ void HomingBullet::Hit()
 	}
 }
 
+// 更新処理
 void HomingBullet::Update(float elapsedTime)
 {
 	using namespace DirectX::SimpleMath;
@@ -156,10 +130,12 @@ void HomingBullet::Update(float elapsedTime)
 	}
 }
 
+// 描画処理
 void HomingBullet::Render()
 {
 }
 
+// 当たり判定の処理
 void HomingBullet::Collision(Collider* collider)
 {
 	if (GetState() == FLYING)

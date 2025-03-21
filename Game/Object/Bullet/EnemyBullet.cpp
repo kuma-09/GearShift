@@ -7,6 +7,7 @@
 #include "Game/Components/Trail.h"
 #include <random>
 
+// コンストラクタ
 EnemyBullet::EnemyBullet(IScene* scene, Collider::TypeID id)
 {
 	SetScene(scene);
@@ -20,11 +21,13 @@ EnemyBullet::EnemyBullet(IScene* scene, Collider::TypeID id)
 	SetState(BulletState::UNUSED);
 }
 
+// デストラクタ
 EnemyBullet::~EnemyBullet()
 {
 
 }
 
+// 初期化処理
 void EnemyBullet::Initialize(GameObject* object)
 {
 	using namespace DirectX::SimpleMath;
@@ -39,6 +42,7 @@ void EnemyBullet::Initialize(GameObject* object)
 	GetComponent<Collider>()->SetActive(false);
 }
 
+// 弾を発射
 void EnemyBullet::Shot(GameObject* target)
 {
 	using namespace DirectX::SimpleMath;
@@ -70,6 +74,7 @@ void EnemyBullet::Shot(GameObject* target)
 	GetComponent<Collider>()->SetActive(true);
 }
 
+// 弾が何かに当たった時の処理
 void EnemyBullet::Hit()
 {
 	using namespace DirectX::SimpleMath;
@@ -83,6 +88,7 @@ void EnemyBullet::Hit()
 	GetComponent<Collider>()->SetActive(false);
 }
 
+// 更新処理
 void EnemyBullet::Update(float elapsedTime)
 {
 	using namespace DirectX::SimpleMath;
@@ -99,15 +105,12 @@ void EnemyBullet::Update(float elapsedTime)
 	SetWorld(world);
 }
 
+
 void EnemyBullet::Render()
 {
-	if (GetState() == FLYING)
-	{
-		GetComponent<ModelDraw>()->Render();
-		GetComponent<Trail>()->Render();
-	}
 }
 
+// 当たり判定の処理
 void EnemyBullet::Collision(Collider* collider)
 {
 	if (collider->GetTypeID() == Collider::Wall)
@@ -116,6 +119,7 @@ void EnemyBullet::Collision(Collider* collider)
 	}
 }
 
+// プレイヤーの移動方向から射撃座標を計算
 DirectX::SimpleMath::Vector3 EnemyBullet::LinePrediction(Player* target)
 {
 	using namespace DirectX::SimpleMath;
@@ -138,7 +142,7 @@ DirectX::SimpleMath::Vector3 EnemyBullet::LinePrediction(Player* target)
 	if (A == 0 && B == 0)return target->GetPosition();
 	if (A == 0)return target->GetPosition() + targetVel * (-C / B / 2);
 
-	//虚数解はどうせ当たらないので絶対値で無視した
+	//虚数解は当たらないので絶対値で無視
 	float D = std::sqrt(std::abs(B * B - A * C));
 	return target->GetPosition() + targetVel * PlusMin((-B - D) / A, (-B + D) / A);
 
