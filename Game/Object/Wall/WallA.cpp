@@ -2,18 +2,18 @@
 #include "Game/Object/Wall/WallA.h"
 #include "Game/Components/ModelDraw.h"
 #include "Game/Components/Collider.h"
-
+// コンストラクタ
 WallA::WallA(IScene* scene)
 {
 	SetScene(scene);
 	AddComponent<Collider>();
 	AddComponent<ModelDraw>();
 }
-
+// デストラクタ
 WallA::~WallA()
 {
 }
-
+// 初期化処理
 void WallA::Initialize()
 {
 	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetModel(Resources::BillB));
@@ -21,7 +21,7 @@ void WallA::Initialize()
 	GetComponent<Collider>()->Initialize(Collider::Wall,Collider::Fixed, GetScale());
 	GetComponent<Collider>()->GetBoundingBox()->Center = GetPosition();
 }
-
+// 更新処理
 void WallA::Update(float elapsedtime)
 {
 	using namespace DirectX::SimpleMath;
@@ -31,17 +31,4 @@ void WallA::Update(float elapsedtime)
 	SetWorld(world);
 
 	GetComponent<Collider>()->GetBoundingBox()->Center = GetPosition();
-}
-
-void WallA::CreateShadow()
-{
-	GetComponent<ModelDraw>()->CreateShadow();
-}
-
-void WallA::Render()
-{
-	using namespace DirectX::SimpleMath;
-
-	//GetComponent<Collider>()->Render();
-	GetComponent<ModelDraw>()->Render();
 }

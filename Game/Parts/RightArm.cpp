@@ -43,9 +43,6 @@ void RightArm::Update(float elapsedTime)
 	m_isHit = false;
 }
 
-void RightArm::Render()
-{
-}
 
 void RightArm::Finalize()
 {

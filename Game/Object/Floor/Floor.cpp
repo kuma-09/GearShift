@@ -1,30 +1,40 @@
 #include "pch.h"
-#include "Floor2.h"
+#include "Floor.h"
 #include "Game/Components/Collider.h"
 #include "Game/Components/ModelDraw.h"
 
-Floor2::Floor2(IScene* scene)
+// コンストラクタ
+Floor::Floor(Resources::ModelType modelType)
 {
 	using namespace DirectX::SimpleMath;
 
-	SetScene(scene);
+	SetScale({ 1,1,1 });
+
+	// コンポーネントを追加
 	AddComponent<Collider>();
 	AddComponent<ModelDraw>();
-	SetScale({ 1,1,1 });
-	GetComponent<Collider>()->Initialize(Collider::Floor,Collider::Fixed, { 300,1.25f,300 }, { 0,-1,0 });
+	GetComponent<Collider>()->Initialize(Collider::Floor,Collider::Fixed, { 300,1.25f,300 },{0,-1,0});
 	GetComponent<Collider>()->SetActive(true);
-	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetModel(Resources::Floor2));
+	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetModel(modelType));
+
+	// 座標を初期化
 	SetPosition({ 0,1,0 });
 	Matrix world = Matrix::CreateScale(GetScale());
 	world *= Matrix::CreateTranslation(GetPosition());
 	SetWorld(world);
 }
 
-void Floor2::Initialize()
+Floor::~Floor()
 {
 }
 
-void Floor2::Update(float elapsedTime)
+// 初期化処理
+void Floor::Initialize()
+{
+}
+
+// 更新処理
+void Floor::Update(float elapsedTime)
 {
 	using namespace DirectX::SimpleMath;
 
@@ -34,6 +44,7 @@ void Floor2::Update(float elapsedTime)
 	ComponentsUpdate(elapsedTime);
 }
 
-void Floor2::Render()
+// 描画処理
+void Floor::Render()
 {
 }

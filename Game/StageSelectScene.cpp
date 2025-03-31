@@ -74,31 +74,8 @@ void StageSelectScene::Render()
     using namespace DirectX;
     using namespace DirectX::SimpleMath;
 
-    //auto context = m_graphics->GetDeviceResources()->GetD3DDeviceContext();
-    //auto state = m_graphics->GetCommonStates();
     auto view = m_graphics->GetViewMatrix();
     auto proj = m_graphics->GetProjectionMatrix();
-
-
-
-    //Resources::GetInstance()->GetShadow()->BeginDepth();
-    //m_player->CreateShadow();
-    //Resources::GetInstance()->GetShadow()->EndDepth();
-
-    m_skydome->Render();
-    m_player->Render();
-    for (int i = 0; i < 2; i++)
-    {
-        for (int n = 0; n < 2; n++)
-        {
-            //Matrix world = Matrix::CreateTranslation(Vector3{ -50 + float(i) * 100 ,1, -50 + float(n) * 100 } + Vector3::Zero);
-            //Resources::GetInstance()->GetFloorModel()->Draw(context, *state, world, view, proj, false, [&]
-            //    {
-            //        Resources::GetInstance()->GetShadow()->Draw(true);
-            //    }
-            //);
-        }
-    }
 
 
     if (m_isStageSelect)

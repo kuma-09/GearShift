@@ -253,34 +253,16 @@ void Player::Collision(Collider* collider)
 				game->ChangeScene(game->GetGameOverScene());
 			}
 		}
-		return;
 	}
-
-	if (collider->GetTypeID() == Collider::DropItem)
-	{
-		GetComponent<HP>()->SetHP(GetComponent<HP>()->GetHP() + 5);
-		Audio::GetInstance()->PlaySoundSE_PowerUp();
-		return;
-	}
-
-	if (collider->GetTypeID() == Collider::DropItemB)
-	{
-		m_missileLauncher->Reload();
-		Audio::GetInstance()->PlaySoundSE_PowerUp();
-		return;
-	}
-	
 	if (collider->GetTypeID() == Collider::Floor)
 	{
 		Collider::CheckHit(this, collider->GetOwner());
 		GetChild<LeftLeg>("LeftLeg")->GetComponent<Emitter>()->SetParticle(GetChild<LeftLeg>("LeftLeg")->GetPosition() - DirectX::SimpleMath::Vector3{ 0,1.f,0 });
 		GetChild<RightLeg>("RightLeg")->GetComponent<Emitter>()->SetParticle(GetChild<RightLeg>("RightLeg")->GetPosition() - DirectX::SimpleMath::Vector3{ 0,1.f,0 });
-		return;
 	}
 	if (collider->GetTypeID() == Collider::Wall || collider->GetTypeID() == Collider::Enemy)
 	{
 		Collider::CheckHit(this, collider->GetOwner());
-		return;
 	}
 }
 

@@ -46,18 +46,17 @@ void TitleScene::Initialize(Game* game)
     ObjectManager::Add(std::make_shared<BillB>(this), Vector3{20,0,-20});
     ObjectManager::Add(std::make_shared<BillB>(this), Vector3{-20,0,20});
     
-    m_floor = std::make_unique<Floor>(this);
+    m_floor = std::make_unique<Floor>(Resources::Floor);
 
     ShadowMap::SetLightPosition({5,0,5});
 
     m_menu = std::make_unique<Menu>();
     m_menu->AddUI(L"Resources/Textures/Start.png", {0,550}, {0.5f,0.5f});
-    //m_menu->AddUI(L"Resources/Textures/Option.png",{0,550}, {0.5f,0.5f});
     m_menu->AddUI(L"Resources/Textures/Exit.png",  {0,650}, {0.5f,0.5f});
     m_menu->Initialize();
 
     m_stageMenu = std::make_unique<Menu>();
-    m_stageMenu->AddUI(L"Resources/Textures/Stage1.png", { 0, 50 }, { 1.f,1.f });
+    //m_stageMenu->AddUI(L"Resources/Textures/Stage1.png", { 0, 50 }, { 1.f,1.f });
     m_stageMenu->AddUI(L"Resources/Textures/Stage1.png", { 0,150 }, { 1.f,1.f });
     m_stageMenu->AddUI(L"Resources/Textures/Stage2.png", { 0,350 }, { 1.f,1.f });
     m_stageMenu->AddUI(L"Resources/Textures/Stage3.png", { 0,550 }, { 1.f,1.f });
@@ -124,7 +123,7 @@ void TitleScene::Update(float elapsedTime)
     {
         if (m_isStageSelect)
         {
-            StageDataManager::SetStageNum(m_stageMenu->GetActiveUI());
+            StageDataManager::SetStageNum(m_stageMenu->GetActiveUI() + 1);
             GetGame()->ChangeScene(GetGame()->GetPlayScene());
         }
         switch (m_menu->GetActiveUI())
@@ -151,7 +150,6 @@ void TitleScene::Render()
     using namespace DirectX;
     using namespace DirectX::SimpleMath;
 
-    m_skydome->Render();
     RenderManager::RenderObjects();
 }
 

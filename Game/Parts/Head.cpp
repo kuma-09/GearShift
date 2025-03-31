@@ -43,12 +43,6 @@ void Head::Update(float elapsedTime)
 	m_isHit = false;
 }
 
-void Head::Render()
-{
-	GetComponent<ModelDraw>()->Render();
-
-}
-
 void Head::Finalize()
 {
 }

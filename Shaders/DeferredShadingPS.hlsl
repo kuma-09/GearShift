@@ -165,6 +165,7 @@ float readShadowMap(float3 worldPos)
     float2 uv3 = (LightPosPS3.xy) * float2(0.5f, -0.5f) + 0.5f;
 
     float distance = LinearizeDepth(length(worldPos - inverse(matView)[3].xyz), 0.1f, 300.0f);
+    distance = 0.25f;
     
     if (uv0.x > 0 && uv0.x < 1 && uv0.y > 0 && uv0.y < 1)
     {

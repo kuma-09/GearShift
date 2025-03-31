@@ -108,14 +108,14 @@ void TrainingEnemy::Collision(Collider* collider)
 	// プレイヤーのブレードが当たった時の処理
 	if (collider->GetTypeID() == Collider::PlayerSword)
 	{
-		Sword* bulletObject = static_cast<Sword*>(collider->GetOwner());
-		if (bulletObject->GetState() == Sword::USING)
+		Blade* bulletObject = static_cast<Blade*>(collider->GetOwner());
+		if (bulletObject->GetState() == Blade::USING)
 		{
 			GetComponent<HP>()->SetHP(GetComponent<HP>()->GetHP() - 5);
 			static_cast<PlayScene*>(GetScene())->CreateHitParticle(GetPosition());
 			bulletObject->Hit();
 		}
-		else if (bulletObject->GetState() == Sword::USED)
+		else if (bulletObject->GetState() == Blade::USED)
 		{
 			bulletObject->Hit();
 		}

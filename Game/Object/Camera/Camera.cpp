@@ -2,7 +2,7 @@
 #include "Camera.h"
 #include "Framework/Graphics.h"
 #include "Framework/InputManager.h"
-
+// コンストラクタ
 Camera::Camera()
 {
 	m_graphics = Graphics::GetInstance();
@@ -12,15 +12,15 @@ Camera::Camera()
 	m_target = nullptr;
 	m_targetPosition = DirectX::SimpleMath::Vector3::One;
 }
-
+// デストラクタ
 Camera::~Camera()
 {
 }
-
+// 初期化処理
 void Camera::Initialize()
 {
 }
-
+// 更新処理
 void Camera::Update(float elapsedTime)
 {
     using namespace DirectX::SimpleMath;
@@ -36,6 +36,7 @@ void Camera::Update(float elapsedTime)
     m_rotateX -= input.x * 2;
     m_rotateY -= input.y * 2;
 
+    // カメラの上下回転をクランプ
     if (m_rotateY >= 1.f)
     {
         m_rotateY = 1.f;
@@ -44,6 +45,7 @@ void Camera::Update(float elapsedTime)
     {
         m_rotateY = -1.f;
     }
+
 
     if (m_target)
     {
@@ -75,13 +77,13 @@ void Camera::Update(float elapsedTime)
     m_graphics->SetViewMatrix(view);
     
 }
-
+// ターゲットをセット
 void Camera::SetTarget(GameObject* player, GameObject* target)
 {
     m_player = player;
     //m_target = target;
 }
-
+// 画面を揺らす
 void Camera::shake()
 {
     using namespace DirectX::SimpleMath;

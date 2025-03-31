@@ -1,34 +1,32 @@
 #include "pch.h"
 #include "Sword.h"
 #include "Game/Components/Collider.h"
-#include "Game/Components/ModelDraw.h"
 #include "Game/Components/Trail.h"
-#include "Game/Components/PointLight.h"
 #include "Game/PlayScene.h"
 #include "Framework/Audio.h"
 
 #include "Game/System/HitStop.h"
 #include "Framework/Easing.h"
 
-Sword::Sword(IScene* scene, Collider::TypeID id)
+// コンストラクタ
+Blade::Blade(IScene* scene, Collider::TypeID id)
 {
 	SetScene(scene);
 	AddComponent<Collider>();
-	//AddComponent<ModelDraw>();
 	AddComponent<Trail>();
-	AddComponent<PointLight>();
 	GetComponent<Collider>()->Initialize(id,Collider::Fixed, { 0.5f,0.5f,0.5f});
 	GetComponent<Trail>()->Initialize(L"Resources/Textures/white.png", 10,DirectX::Colors::CadetBlue);
-	SetScale({1.2f, 1.2f, 1.2f});
-	SetState(SwordState::UNUSED);
+	SetScale(SIZE);
+	SetState(BladeState::UNUSED);
 }
 
-Sword::~Sword()
+// デストラクタ
+Blade::~Blade()
 {
-
 }
 
-void Sword::Initalize(GameObject* object)
+// 初期化処理
+void Blade::Initalize(GameObject* object)
 {
 	using namespace DirectX::SimpleMath;
 
@@ -36,18 +34,16 @@ void Sword::Initalize(GameObject* object)
 	Vector3 velocity = Vector3::Zero;
 	SetPosition(m_owner->GetPosition());
 	SetQuaternion(m_owner->GetQuaternion());
-	//GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetSwordModel(),true);
-	//GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetrArmModel());
 	GetComponent<Trail>()->ClearBuffer();
 	SetVelocity(Vector3::Zero);
-	SetState(SwordState::USING);
+	SetState(BladeState::USING);
 	m_rotate = 0;
 	m_isHit = false;
 	GetComponent<Collider>()->SetActive(true);	
-	GetComponent<PointLight>()->Initialize(GetPosition(), { 0.2f, 0.29f, 0.46f });
 }
 
-void Sword::Shot(GameObject* object)
+// 弾を発射
+void Blade::Shot(GameObject* object)
 {
 	using namespace DirectX::SimpleMath;
 
@@ -58,12 +54,11 @@ void Sword::Shot(GameObject* object)
 	velocity += Vector3::Transform(Vector3::Forward, GetQuaternion());
 
 	SetVelocity(velocity);
-	SetState(SwordState::USING);
-
-
+	SetState(BladeState::USING);
 }
 
-void Sword::Hit()
+// 何かに当たった時の処理
+void Blade::Hit()
 {
 	using namespace DirectX::SimpleMath;
 
@@ -76,20 +71,22 @@ void Sword::Hit()
 	}
 }
 
-void Sword::Update(float elapsedTime)
+// 更新処理
+void Blade::Update(float elapsedTime)
 {
 	using namespace DirectX;
 	using namespace DirectX::SimpleMath;
 
 
 	float rotate = Easing::InQuart(m_rotate, 0.25f);
+
+	// 
 	if (GetState() == USED)
 	{
 		m_rotate += elapsedTime;
 		if (rotate >= 1)
 		{
 			GetComponent<Trail>()->ClearBuffer();
-			GetComponent<PointLight>()->ClearColor();
 			m_isHit = true;
 		}
 	}
@@ -100,6 +97,7 @@ void Sword::Update(float elapsedTime)
 	SetQuaternion(m_owner->GetQuaternion());
 
 	Matrix world = Matrix::Identity;
+	// ５頂点トレイルを生成
 	for (int i = 3; i < 5; i++)
 	{
 		world = Matrix::CreateScale(GetScale());
@@ -112,30 +110,12 @@ void Sword::Update(float elapsedTime)
 		world *= Matrix::CreateFromQuaternion(GetQuaternion());
 		world *= Matrix::CreateTranslation(GetPosition());
 	}
-	//if (!m_isHit)
-	{
-		GetComponent<Collider>()->GetBoundingBox()->Center = { world._41, world._42, world._43 };
-		GetComponent<Trail>()->SetPos(GetPosition(), { world._41, world._42, world._43 });
-	}
-
-	world = Matrix::CreateScale(GetScale());
-	if (GetState() == USED)
-	{
-		world *= Matrix::CreateFromQuaternion(Quaternion::CreateFromYawPitchRoll(0, XMConvertToRadians(-90), 0));
-		world *= Matrix::CreateRotationY(XMConvertToRadians(100 - rotate * 200));
-		world *= Matrix::CreateRotationZ(XMConvertToRadians(-45));
-	}
-	world *= Matrix::CreateFromQuaternion(GetQuaternion());
-	world *= Matrix::CreateTranslation(GetPosition());
-	SetWorld(world);
+	GetComponent<Collider>()->GetBoundingBox()->Center = { world._41, world._42, world._43 };
+	GetComponent<Trail>()->SetPos(GetPosition(), { world._41, world._42, world._43 });
 
 }
 
-void Sword::Render()
-{	
-}
-
-void Sword::Collision(Collider* collider)
+// 当たり判定の処理
+void Blade::Collision(Collider* collider)
 {
-	UNREFERENCED_PARAMETER(collider);
 }

@@ -66,11 +66,6 @@ void RightLeg::Update(float elapsedTime)
 	m_isHit = false;
 }
 
-
-void RightLeg::Render()
-{
-}
-
 void RightLeg::Finalize()
 {
 }

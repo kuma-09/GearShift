@@ -37,7 +37,7 @@ private:
 	// のこりのブースト時間
 	float m_totalTime;
 
-	std::unique_ptr<Sword> m_sword;
+	std::unique_ptr<Blade> m_sword;
 
 	DirectX::SimpleMath::Matrix m_world;
 };

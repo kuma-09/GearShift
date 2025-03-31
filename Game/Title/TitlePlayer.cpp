@@ -54,15 +54,9 @@ void TitlePlayer::Update(float elapsedTime)
 	SetWorld(world);
 }
 
-void TitlePlayer::Render()
-{
-	RenderParts();
-}
-
 void TitlePlayer::Finalize()
 {
 }
-
 
 void TitlePlayer::Collision(Collider* collider)
 {

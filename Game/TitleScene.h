@@ -6,7 +6,7 @@
 #include "Game/Object/SkyDome.h"
 #include "Game/Title/TitlePlayer.h"
 #include "Game/Title/TitleCamera.h"
-#include "Game/Object/Floor.h"
+#include "Game/Object/Floor/Floor.h"
 #include "UI/UI.h"
 #include "Framework/RenderTexture.h"
 #include "Framework/DepthStencil.h"

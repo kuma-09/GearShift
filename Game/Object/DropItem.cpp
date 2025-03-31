@@ -1,28 +1,25 @@
 #include "pch.h"
 #include "DropItem.h"
+#include "Framework/Audio.h"
 #include "Game/Components/Physics.h"
 #include "Game/Components/ModelDraw.h"
 #include "Game/Components/Collider.h"
 #include "Game/Components/HP.h"
 #include "Game/Manager/ObjectManager.h"
-
+// コンストラクタ
 DropItem::DropItem(IScene* scene)
 {
 	SetScene(scene);
+	SetScale({ MODEL_SIZE,MODEL_SIZE,MODEL_SIZE });
 	AddComponent<Physics>();
 	AddComponent<Collider>();
 	AddComponent<ModelDraw>();
-
-	using namespace DirectX;
-
-	SetScale({ m_dropItemModelSize,m_dropItemModelSize,m_dropItemModelSize });
 }
-
+// デストラクタ
 DropItem::~DropItem()
 {
-	Finalize();
 }
-
+// 初期化処理
 void DropItem::Initialize()
 {
 	using namespace DirectX::SimpleMath;
@@ -31,13 +28,12 @@ void DropItem::Initialize()
 	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetModel(Resources::DropItem), true);
 	GetComponent<ModelDraw>()->SetEmissiveColor({ 1,0.5f,0.5f,0.5f });
 
-
 	Matrix world = Matrix::CreateScale(GetScale());
 	world *= Matrix::CreateFromQuaternion(GetQuaternion());
 	world *= Matrix::CreateTranslation(GetPosition());
 	SetWorld(world);
 }
-
+// 更新処理
 void DropItem::Update(float elapsedTime)
 {
 	using namespace DirectX::SimpleMath;
@@ -52,25 +48,7 @@ void DropItem::Update(float elapsedTime)
 	world *= Matrix::CreateTranslation(GetPosition());
 	SetWorld(world);
 }
-
-void DropItem::CreateShadow()
-{
-	GetComponent<ModelDraw>()->CreateShadow();
-}
-
-void DropItem::Render()
-{
-	GetComponent<ModelDraw>()->Render();
-	if (m_isHit)
-	{
-		//m_menu->Render();
-	}
-}
-
-void DropItem::Finalize()
-{
-}
-
+// 当たり判定の処理
 void DropItem::Collision(Collider* collider)
 {
 	if (collider->GetTypeID() == Collider::Floor ||
@@ -80,7 +58,9 @@ void DropItem::Collision(Collider* collider)
 	}
 	if (collider->GetTypeID() == Collider::Player)
 	{
-		collider->GetOwner()->GetComponent<HP>()->SetHP(collider->GetOwner()->GetComponent<HP>()->GetHP() + 5);
+		// プレイヤーのHPを回復
+		collider->GetOwner()->GetComponent<HP>()->SetHP(collider->GetOwner()->GetComponent<HP>()->GetHP() + RECOVERY_HP_POINT);
+		Audio::GetInstance()->PlaySoundSE_PowerUp();
 		ObjectManager::Remove(this);
 	}
 }

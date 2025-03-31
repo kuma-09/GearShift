@@ -14,7 +14,7 @@ Attack::Attack(Player* player)
 {
 	m_player = player;
 	m_totalTime = m_boostTime;
-	m_sword = std::make_unique<Sword>(m_player->GetScene(), Collider::PlayerSword);
+	m_sword = std::make_unique<Blade>(m_player->GetScene(), Collider::PlayerSword);
 	m_shader = std::make_unique<Shader>();
 	m_shader->CreateShader();
 }
@@ -50,7 +50,7 @@ void Attack::Update(float elapsedTime)
 	m_velocity = Vector3::Transform(Vector3::Forward, m_quaternion);
 	float boostSpeed = std::min(m_boostPower * m_totalTime, 1.0f);
 	m_player->SetTrailPosition(m_player->GetPosition());
-	if (m_sword->GetState() == Sword::USED)
+	if (m_sword->GetState() == Blade::USED)
 	{
 		m_player->SetVelocity(Vector3::Lerp(m_player->GetVelocity(), {0,0 ,0}, 0.75f));
 	}
@@ -62,7 +62,7 @@ void Attack::Update(float elapsedTime)
 
 	if (m_totalTime >= m_boostTime)
 	{
-		m_sword->SetState(Sword::USED);
+		m_sword->SetState(Blade::USED);
 	}
 
 	m_player->GetEnergyGage()->UseEnergyPoint(0.5f);

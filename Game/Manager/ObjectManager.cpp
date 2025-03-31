@@ -5,7 +5,7 @@ std::vector<std::shared_ptr<GameObject>> ObjectManager::s_gameObjects;
 std::vector<GameObject*> ObjectManager::s_deleteObjects;
 
 // ゲームオブジェクトをマネージャーに追加する
-std::weak_ptr<GameObject> ObjectManager::Add(std::shared_ptr<GameObject> object, DirectX::SimpleMath::Vector3 pos, Type::TypeID type)
+std::weak_ptr<GameObject> ObjectManager::Add(std::shared_ptr<GameObject> object, DirectX::SimpleMath::Vector3 pos, ObjectType::TypeID type)
 {
 	s_gameObjects.emplace_back(object);
 	s_gameObjects.back()->Initialize();
@@ -57,7 +57,7 @@ void ObjectManager::Clear()
 }
 
 // タイプごとにオブジェクトを取得
-std::vector<std::weak_ptr<GameObject>> ObjectManager::GetTypeObjects(Type::TypeID type)
+std::vector<std::weak_ptr<GameObject>> ObjectManager::GetTypeObjects(ObjectType::TypeID type)
 {
 	std::vector<std::weak_ptr<GameObject>> results;
 

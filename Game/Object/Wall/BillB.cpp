@@ -2,7 +2,7 @@
 #include "Game/Object/Wall/BillB.h"
 #include "Game/Components/ModelDraw.h"
 #include "Game/Components/Collider.h"
-
+// コンストラクタ
 BillB::BillB(IScene* scene)
 {
 	SetScene(scene);
@@ -10,11 +10,11 @@ BillB::BillB(IScene* scene)
 	AddComponent<ModelDraw>();
 
 }
-
+// デストラクタ
 BillB::~BillB()
 {
 }
-
+// 初期化処理
 void BillB::Initialize()
 {
 	GetComponent<ModelDraw>()->Initialize(Resources::GetInstance()->GetModel(Resources::BillB));
@@ -22,7 +22,7 @@ void BillB::Initialize()
 	GetComponent<Collider>()->Initialize(Collider::Wall,Collider::Fixed, GetScale());
 	GetComponent<Collider>()->GetBoundingBox()->Center = GetPosition();
 }
-
+// 更新処理
 void BillB::Update(float elapsedtime)
 {
 	using namespace DirectX::SimpleMath;
@@ -32,17 +32,4 @@ void BillB::Update(float elapsedtime)
 	SetWorld(world);
 
 	GetComponent<Collider>()->GetBoundingBox()->Center = GetPosition();
-}
-
-void BillB::CreateShadow()
-{
-	GetComponent<ModelDraw>()->CreateShadow();
-}
-
-void BillB::Render()
-{
-	using namespace DirectX::SimpleMath;
-
-	//GetComponent<Collider>()->Render();
-	GetComponent<ModelDraw>()->Render();
 }

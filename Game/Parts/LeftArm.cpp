@@ -47,13 +47,6 @@ void LeftArm::Update(float elapsedTime)
 	m_isHit = false;
 }
 
-void LeftArm::Render()
-{
-
-	GetComponent<ModelDraw>()->Render();
-
-}
-
 void LeftArm::Finalize()
 {
 }

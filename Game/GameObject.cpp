@@ -1,6 +1,13 @@
 #include "pch.h"	
 #include "GameObject.h"
 
+GameObject::GameObject()
+	:
+	m_owner{},
+	m_typeID{}
+{
+}
+
 void GameObject::ComponentsUpdate(float elapsedTime)
 {
 	for (auto&& spComp : m_umComponents)

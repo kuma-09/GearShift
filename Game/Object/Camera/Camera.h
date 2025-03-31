@@ -5,18 +5,25 @@
 class Graphics;
 class InputManager;
 
+/// <summary>
+/// カメラオブジェクト
+/// </summary>
 class Camera :public GameObject
 {
 public:
+	// コンストラクタ
 	Camera();
+	// デストラクタ
 	~Camera();
-
+	// 初期化処理
 	void Initialize();
+	// 更新処理
 	void Update(float elapsedTime);
+	// ターゲットをセット
 	void SetTarget(GameObject* player, GameObject* target);
-
+	// カメラを揺らす
 	void shake();
-
+	// カメラの状態
 	enum CameraState
 	{
 		Follow,

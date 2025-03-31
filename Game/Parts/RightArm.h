@@ -9,9 +9,8 @@ public:
 	RightArm();
 	~RightArm();
 
-	void Initialize() override;
-	void Update(float elapsedTime) override;
-	void Render() override;
+	void Initialize();
+	void Update(float elapsedTime);
 	void Finalize();
 
 	void Collision(Collider* collider);

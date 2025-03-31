@@ -1,34 +1,24 @@
 #pragma once
 #include "Game/GameObject.h"
-#include "Game/UI/UI.h"
-#include "Game/Parts/Part.h"
-#include "Game/Object/Bullet/Bullet.h"
-
+/// <summary>
+/// ドロップアイテムクラス
+/// </summary>
 class DropItem :public GameObject
 {
-private:
-
-
 public:
+	// コンストラクタ
 	DropItem(IScene* scene);
-	DropItem(IScene* scene, std::unique_ptr<Part> part);
-	DropItem(IScene* scene, std::unique_ptr<Bullet> bullet);
+	// デストラクタ
 	~DropItem();
-	
+	// 初期化処理
 	void Initialize();
+	// 更新処理
 	void Update(float elapsedTime);
-	void CreateShadow();
-	void Render();
-	void Finalize();
-
-	Part::TypeID GetPartType() { return m_part->GetTypeID(); }
-	std::unique_ptr<Part> GetPart() { return std::move(m_part); }
-	void SetHit(bool isHit) { m_isHit = isHit; }
-
+	// 当たり判定の処理
 	void Collision(Collider* collider);
-
 private:
-	std::unique_ptr<Part> m_part;
-	const float m_dropItemModelSize = 0.1f;
-	bool m_isHit;
+	// モデルのサイズ
+	const float MODEL_SIZE = 0.1f;
+	// プレイヤーのHPを回復する値
+	const int   RECOVERY_HP_POINT = 5;
 };

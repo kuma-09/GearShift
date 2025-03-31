@@ -19,9 +19,7 @@
 #include "Game/Object/Ceiling/Ceiling.h"
 #include "Game/Object/Bullet/HomingBullet.h"
 #include "Game/Object/Light/Light.h"
-#include "Game/Object/Cloud/Cloud1.h"
-#include "Game/Object/Cloud/Cloud2.h"
-#include "Game/Object/Cloud/Cloud3.h"
+#include "Game/Object/Cloud/Cloud.h"
 
 #include "Game/Particle/HitParticle.h"
 
@@ -222,21 +220,20 @@ void PlayScene::CreateObject(std::string className, DirectX::SimpleMath::Vector3
     using namespace DirectX::SimpleMath;
     if (className == "Player")  m_player = ObjectManager::Add(std::make_shared<Player>(this),pos);
     if (className == "SkyDome")            ObjectManager::Add(std::make_shared<SkyDome>(), pos);
-    if (className == "Floor")              ObjectManager::Add(std::make_shared<Floor>(this), pos);
-    if (className == "Floor2")             ObjectManager::Add(std::make_shared<Floor2>(this), pos);
-    if (className == "Cloud1")             ObjectManager::Add(std::make_shared<Cloud1>(), pos);
-    if (className == "Cloud2")             ObjectManager::Add(std::make_shared<Cloud2>(), pos);
-    if (className == "Cloud3")             ObjectManager::Add(std::make_shared<Cloud3>(), pos);
+    if (className == "Floor")              ObjectManager::Add(std::make_shared<Floor>(Resources::Floor), pos);
+    if (className == "Floor2")             ObjectManager::Add(std::make_shared<Floor>(Resources::Floor2), pos);
+    if (className == "Cloud1")             ObjectManager::Add(std::make_shared<Cloud>(Resources::Cloud1), pos);
+    if (className == "Cloud2")             ObjectManager::Add(std::make_shared<Cloud>(Resources::Cloud2), pos);
+    if (className == "Cloud3")             ObjectManager::Add(std::make_shared<Cloud>(Resources::Cloud3), pos);
     if (className == "BillA")              ObjectManager::Add(std::make_shared<BillA>(this),pos);
     if (className == "BillB")              ObjectManager::Add(std::make_shared<BillB>(this),pos);
     if (className == "BillC")              ObjectManager::Add(std::make_shared<BillC>(this), pos);
     if (className == "BillD")              ObjectManager::Add(std::make_shared<BillD>(this), pos);
-    if (className == "TrainingEnemy")      ObjectManager::Add(std::make_shared<TrainingEnemy>(this), pos,Type::Enemy);
-    if (className == "HomingEnemy")        ObjectManager::Add(std::make_shared<HomingEnemy>(this,m_player.lock().get()),pos, Type::Enemy);
-    if (className == "FixedEnemy")         ObjectManager::Add(std::make_shared<FixedEnemy>(this, m_player.lock().get()),pos, Type::Enemy);
-    if (className == "BossEnemy")          ObjectManager::Add(std::make_shared<BossEnemy>(this, m_player.lock().get()),pos, Type::Enemy);
+    if (className == "TrainingEnemy")      ObjectManager::Add(std::make_shared<TrainingEnemy>(this), pos,ObjectType::Enemy);
+    if (className == "HomingEnemy")        ObjectManager::Add(std::make_shared<HomingEnemy>(this,m_player.lock().get()),pos, ObjectType::Enemy);
+    if (className == "FixedEnemy")         ObjectManager::Add(std::make_shared<FixedEnemy>(this, m_player.lock().get()),pos, ObjectType::Enemy);
+    if (className == "BossEnemy")          ObjectManager::Add(std::make_shared<BossEnemy>(this, m_player.lock().get()),pos,  ObjectType::Enemy);
     if (className == "DropItem")           ObjectManager::Add(std::make_shared<DropItem>(this), pos);
-    if (className == "DropItemB")          ObjectManager::Add(std::make_shared<DropItemB>(this),pos);
     if (className == "Light")              ObjectManager::Add(std::make_shared<Light>(this), pos);
 }
 
@@ -265,7 +262,7 @@ void PlayScene::CreateMenu()
     m_tutorial->Initialize(StageDataManager::GetStageNum());
 
     // écÇËÇÃìGÇÃêîUI
-    auto enemys = ObjectManager::GetTypeObjects(Type::Enemy);
+    auto enemys = ObjectManager::GetTypeObjects(ObjectType::Enemy);
     m_remainingEnemyUI = std::make_unique<RemainingEnemyUI>();
     m_remainingEnemyUI->Initialize({ 1150,30 }, enemys.size());
 }
@@ -274,7 +271,7 @@ void PlayScene::CreateMenu()
 void PlayScene::UpdateTargetArea()
 {
     m_targetArea->ClearTarget();
-    auto enemys = ObjectManager::GetTypeObjects(Type::Enemy);
+    auto enemys = ObjectManager::GetTypeObjects(ObjectType::Enemy);
     if (enemys.empty())
     {
         m_finishAnimation->Initialize();

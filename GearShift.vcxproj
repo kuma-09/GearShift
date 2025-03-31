@@ -191,10 +191,7 @@
     <ClInclude Include="Game\Enemy\State\TrainingIdolState.h" />
     <ClInclude Include="Game\Enemy\TrainingEnemy.h" />
     <ClInclude Include="Game\Object\Ceiling\Ceiling.h" />
-    <ClInclude Include="Game\Object\Cloud\Cloud1.h" />
-    <ClInclude Include="Game\Object\Cloud\Cloud2.h" />
-    <ClInclude Include="Game\Object\Cloud\Cloud3.h" />
-    <ClInclude Include="Game\Object\Floor\Floor2.h" />
+    <ClInclude Include="Game\Object\Cloud\Cloud.h" />
     <ClInclude Include="Framework\Audio.h" />
     <ClInclude Include="Framework\BinaryFile.h" />
     <ClInclude Include="Framework\DebugString.h" />
@@ -251,8 +248,7 @@
     <ClInclude Include="Game\Object\Burner\BurnerVertical.h" />
     <ClInclude Include="Game\Object\Camera\Camera.h" />
     <ClInclude Include="Game\Object\DropItem.h" />
-    <ClInclude Include="Game\Object\DropItemB.h" />
-    <ClInclude Include="Game\Object\Floor.h" />
+    <ClInclude Include="Game\Object\Floor\Floor.h" />
     <ClInclude Include="Game\Object\Floor\CollisionMesh.h" />
     <ClInclude Include="Game\Object\Light\Light.h" />
     <ClInclude Include="Game\Object\SkyDome.h" />
@@ -328,10 +324,7 @@
     <ClCompile Include="Game\Enemy\State\TrainingIdolState.cpp" />
     <ClCompile Include="Game\Enemy\TrainingEnemy.cpp" />
     <ClCompile Include="Game\Object\Ceiling\Ceiling.cpp" />
-    <ClCompile Include="Game\Object\Cloud\Cloud1.cpp" />
-    <ClCompile Include="Game\Object\Cloud\Cloud2.cpp" />
-    <ClCompile Include="Game\Object\Cloud\Cloud3.cpp" />
-    <ClCompile Include="Game\Object\Floor\Floor2.cpp" />
+    <ClCompile Include="Game\Object\Cloud\Cloud.cpp" />
     <ClCompile Include="Framework\Audio.cpp" />
     <ClCompile Include="Framework\BinaryFile.cpp" />
     <ClCompile Include="Framework\DebugString.cpp" />
@@ -385,8 +378,7 @@
     <ClCompile Include="Game\Object\Burner\BurnerVertical.cpp" />
     <ClCompile Include="Game\Object\Camera\Camera.cpp" />
     <ClCompile Include="Game\Object\DropItem.cpp" />
-    <ClCompile Include="Game\Object\DropItemB.cpp" />
-    <ClCompile Include="Game\Object\Floor.cpp" />
+    <ClCompile Include="Game\Object\Floor\Floor.cpp" />
     <ClCompile Include="Game\Object\Floor\CollisionMesh.cpp" />
     <ClCompile Include="Game\Object\Light\Light.cpp" />
     <ClCompile Include="Game\Object\SkyDome.cpp" />

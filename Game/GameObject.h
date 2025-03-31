@@ -7,7 +7,7 @@
 #include "Components/IComponent.h"
 #include "IScene.h"
 
-namespace Type
+namespace ObjectType
 {
 	enum TypeID
 	{
@@ -26,8 +26,8 @@ namespace Type
 class GameObject
 {
 public:
-	GameObject() {};
-	virtual ~GameObject() = default;
+	GameObject();
+	~GameObject() = default;
 
 	// 座標
 	void SetPosition(DirectX::SimpleMath::Vector3 pos) { m_position = pos; }
@@ -61,7 +61,6 @@ public:
 		m_umComponents[typeid(CompType)] = std::move(newComp);
 		m_umComponents[typeid(CompType)]->SetOwner(this);
 	}
-
 	// コンポーネントを取得
 	template<typename CompType>
 	CompType* GetComponent()
@@ -74,9 +73,6 @@ public:
 		return nullptr;
 	}
 
-	// コンポーネントを更新
-	void ComponentsUpdate(float elapsedTime);
-
 	// 子オブジェクトを追加
 	template<typename ObjectType>
 	void SetChild(std::string name)
@@ -85,7 +81,6 @@ public:
 		m_umChildObjects[name] = std::move(newObject);
 		m_umChildObjects[name]->SetOwner(this);
 	}
-
 	// 子オブジェクトを取得
 	template<typename ObjectType>
 	ObjectType* GetChild(std::string name)
@@ -98,6 +93,9 @@ public:
 		return nullptr;
 	}
 
+
+	// コンポーネントを更新
+	void ComponentsUpdate(float elapsedTime);
 	// 子オブジェクトを更新
 	void ChildObjectsUpdate(float elapsedTime);
 
@@ -107,17 +105,16 @@ public:
 	void SetScene(IScene* scene) { m_scene = scene; }
 	IScene* GetScene() { return m_scene; }
 
-	void SetType(Type::TypeID type) { m_typeID = type; }
-	const Type::TypeID GetType() { return m_typeID; }
+	void SetType(ObjectType::TypeID type) { m_typeID = type; }
+	const ObjectType::TypeID GetType() { return m_typeID; }
 	
 public:
 	virtual void Initialize() {};
 	virtual void Update(float elapsedTime) { UNREFERENCED_PARAMETER(elapsedTime); }
-	virtual void Render() {};
 	virtual void Collision(Collider* collider) { UNREFERENCED_PARAMETER(collider); }
 private:
 	IScene* m_scene = nullptr;
-	Type::TypeID m_typeID;
+	ObjectType::TypeID m_typeID;
 	GameObject* m_owner;
 
 	// 座標など

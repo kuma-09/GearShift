@@ -1,24 +1,19 @@
 #pragma once
-
 #include "Game/GameObject.h"
-
+#include "Framework/Resources.h"
 /// <summary>
-/// ポイントライトオブジェクト
+/// 床クラス
 /// </summary>
-class Light : public GameObject
+class Floor : public GameObject
 {
 public:
 	// コンストラクタ
-	Light(IScene* scene);
-	// デストラクタ
-	~Light();
+	Floor(Resources::ModelType modelType);
+	~Floor();
 	// 初期化処理
 	void Initialize();
 	// 更新処理
-	void Update(float elapsedtime);
+	void Update(float elapsedTime);
 	// 描画処理
 	void Render();
-
-private:
-
 };
