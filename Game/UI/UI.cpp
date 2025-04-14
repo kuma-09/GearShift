@@ -45,8 +45,6 @@ void UI::Render(DirectX::SimpleMath::Vector2 pos, DirectX::XMVECTORF32 color, Di
 	Graphics::GetInstance()->GetScreenSize(x, y);
 	float value = float(windowsize.right) / x;
 	
-
-	auto context = m_graphics->GetDeviceResources()->GetD3DDeviceContext();
 	auto state = m_graphics->GetCommonStates();
 
 

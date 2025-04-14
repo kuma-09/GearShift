@@ -12,7 +12,7 @@ public:
 	// デストラクタ
 	~PointLight();
 	// 初期化処理
-	void Initialize(DirectX::SimpleMath::Vector3 position,DirectX::SimpleMath::Vector3 = {1,1,1});
+	void Initialize(DirectX::SimpleMath::Vector3 = {1,1,1});
 	// 更新処理
 	void Update(float elapsedTime);
 	// カラーをリセット

@@ -20,7 +20,6 @@ void BossTackleState::Initialize()
 void BossTackleState::Update(float elapsedTime)
 {
 	m_totalTime += elapsedTime;
-	float dis = (m_enemy->GetPosition() - m_enemy->GetTarget()->GetPosition()).Length();
 	m_enemy->SetVelocity(DirectX::SimpleMath::Vector3{ 0,0, Easing::InCubic(m_totalTime,STATE_INTERVAL) * -SPEED});
 	if (m_totalTime >= STATE_INTERVAL)
 	{

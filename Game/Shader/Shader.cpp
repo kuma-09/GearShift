@@ -50,8 +50,6 @@ void Shader::CreateShader()
 	
 
 	auto device  = Graphics::GetInstance()->GetDeviceResources()->GetD3DDevice();
-	auto context = Graphics::GetInstance()->GetDeviceResources()->GetD3DDeviceContext();
-	auto states = Graphics::GetInstance()->GetCommonStates();
 	//	コンパイルされたシェーダファイルを読み込み
 	BinaryFile VSData = BinaryFile::LoadFile(L"Resources/Shaders/BurnerVS.cso");
 	BinaryFile PSData = BinaryFile::LoadFile(L"Resources/Shaders/BurnerPS.cso");

@@ -182,7 +182,7 @@ void PlayScene::Finalize()
 {
     m_inputManager->ChageMouseMode(DirectX::Mouse::MODE_ABSOLUTE);
     Audio::GetInstance()->PlaySoundBGM(Audio::Title);
-    StageDataManager::SetClearTime(m_totalTime);
+    StageDataManager::SetClearTime(static_cast<int>(m_totalTime));
     ObjectManager::Clear();
     RenderManager::Clear();
 }
@@ -264,7 +264,7 @@ void PlayScene::CreateMenu()
     // 残りの敵の数UI
     auto enemys = ObjectManager::GetTypeObjects(ObjectType::Enemy);
     m_remainingEnemyUI = std::make_unique<RemainingEnemyUI>();
-    m_remainingEnemyUI->Initialize({ 1150,30 }, enemys.size());
+    m_remainingEnemyUI->Initialize({ 1150,30 }, static_cast<int>(enemys.size()));
 }
 
 // ターゲットエリアの更新
@@ -276,7 +276,7 @@ void PlayScene::UpdateTargetArea()
     {
         m_finishAnimation->Initialize();
     }
-    m_remainingEnemyUI->Update(enemys.size());
+    m_remainingEnemyUI->Update(static_cast<int>(enemys.size()));
     auto player = static_cast<Player*>(m_player.lock().get());
 
     for (auto& enemy : enemys)

@@ -8,7 +8,7 @@ public:
 	~Part();
 
 	void Initialize() {};
-	void Update(float elapsedTime) {};
+	void Update(float elapsedTime) { UNREFERENCED_PARAMETER(elapsedTime); };
 
 	enum TypeID
 	{

@@ -39,7 +39,7 @@ void Emitter::Initialize(const wchar_t* path, float size,float interval, float l
         m_texture.ReleaseAndGetAddressOf()		// シェーダリソースビュー(表示用)
     );
 
-    int ParticleSize = (lifeTime / interval) * 2;
+    int ParticleSize = static_cast<int>((lifeTime / interval)) * 2;
 
     for (int i = 0; i < ParticleSize; i++)
     {
@@ -108,7 +108,7 @@ void Emitter::SetParticle(DirectX::SimpleMath::Vector3 pos)
             float rotate = 0;
             if (m_isRotate)
             {
-                rotate = DirectX::XMConvertToRadians(rand() % 360);
+                rotate = DirectX::XMConvertToRadians(static_cast<float>(rand() % 360));
             }
             m_particles[i]->Initialize(pos, m_lifeTime, rotate);
             return;

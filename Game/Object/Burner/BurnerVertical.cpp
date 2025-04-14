@@ -20,5 +20,6 @@ void BurnerVertical::Initialize()
 void BurnerVertical::Update(float elapsedTime)
 {
 	using namespace DirectX::SimpleMath;
+	UNREFERENCED_PARAMETER(elapsedTime);
 	GetComponent<Trail>()->SetPos(GetPosition() - Vector3::Transform(Vector3(0.5f,0, 0),GetQuaternion()), GetPosition() + Vector3::Transform(Vector3(0.5f,0, 0), GetQuaternion()));
 }

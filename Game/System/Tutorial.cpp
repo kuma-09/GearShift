@@ -4,11 +4,6 @@
 
 Tutorial::Tutorial()
 {
-//	for (int i = 0; i < 4; i++)
-//	{
-//		m_ui[i] = std::make_unique<UI>(L"Resources/Textures/Tutorial" + std::to_wstring(i+1) + L".png");
-//		m_ui[i]->Initialize();
-//	}
 	m_totalTime = 0;
 	m_tutorialNum = 1;
 	m_posX = 0;

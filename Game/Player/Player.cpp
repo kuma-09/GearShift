@@ -99,13 +99,11 @@ void Player::Initialize()
 void Player::Update(float elapsedTime)
 {
 	using namespace DirectX::SimpleMath;
-	auto& gp = m_inputManager->GetGamePadTracker();
 	auto& mouseState = m_inputManager->GetMouseState();
-	auto& mouseTracker = m_inputManager->GetMouseTracker();
 	auto& kb = m_inputManager->GetKeyboardTracker();
 
-	m_bulletMagazine->Update(elapsedTime,m_gun->GetMagazineSize());
-	m_exBulletMagazine->Update(elapsedTime, m_missileLauncher->GetMagazineSize());
+	m_bulletMagazine->Update(elapsedTime, static_cast<int>(m_gun->GetMagazineSize()));
+	m_exBulletMagazine->Update(elapsedTime, static_cast<int>(m_missileLauncher->GetMagazineSize()));
 	m_energyGage->Update(elapsedTime);
 	m_reload->Update(elapsedTime);
 	m_camera->Update(elapsedTime);
@@ -209,11 +207,11 @@ void Player::Shot()
 	{
 	case 0:
 		m_gun->Shot(m_target);
-		m_bulletMagazine->Initialize(m_gun->GetMagazineSize());
+		m_bulletMagazine->Initialize(static_cast<int>(m_gun->GetMagazineSize()));
 		break;
 	case 1:
 		m_missileLauncher->Shot(m_target);
-		m_exBulletMagazine->Initialize(m_missileLauncher->GetMagazineSize());
+		m_exBulletMagazine->Initialize(static_cast<int>(m_missileLauncher->GetMagazineSize()));
 		break;
 	default:
 		break;
@@ -302,11 +300,11 @@ void Player::CreateBullets()
 	m_gun->Initialize();
 	// 残弾数表示用UIの初期化
 	m_bulletMagazine = std::make_unique<BulletMagazine>();
-	m_bulletMagazine->Initialize(m_gun->GetMagazineSize());
+	m_bulletMagazine->Initialize(static_cast<int>(m_gun->GetMagazineSize()));
 	// ミサイルランチャーの初期化
 	m_missileLauncher = std::make_unique<MissileLauncher>(this);
 	m_missileLauncher->Initialize();
 	// 残弾数表示用UIの初期化
 	m_exBulletMagazine = std::make_unique<ExBulletMagazine>();
-	m_exBulletMagazine->Initialize(m_missileLauncher->GetMagazineSize());
+	m_exBulletMagazine->Initialize(static_cast<int>(m_missileLauncher->GetMagazineSize()));
 }

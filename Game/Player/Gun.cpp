@@ -74,7 +74,6 @@ void Gun::Shot(GameObject* target)
 	if (!target)					 return;
 	if (m_isReload)					 return;
 
-	int usedCount = 0;
 	m_bulletInterval = 0;
 	for (auto& bullet : m_defaultBullet)
 	{

@@ -45,15 +45,17 @@ private:
 		DirectX::XMMATRIX lightView[4];
 		DirectX::XMMATRIX lightProj[4];
 		int               lightNum;
-		DirectX::XMVECTOR lightPos[128];
-		DirectX::XMVECTOR lightColor[128];
+		int				  pading[3];
+		DirectX::XMVECTOR lightPos[64];
+		DirectX::XMVECTOR lightColor[64];
 	};
 
 	struct ConstBuffer_RimLight
 	{
-		bool isRim;
 		DirectX::XMVECTOR rimColor;
 		DirectX::XMVECTOR emissiveColor;
+		bool isRim;
+		bool pading[7];
 	};
 
 	static Microsoft::WRL::ComPtr<ID3D11Buffer> s_constantBuffer;

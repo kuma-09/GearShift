@@ -61,5 +61,6 @@ void BossHead::Finalize()
 
 void BossHead::Collision(Collider* collider)
 {
+	UNREFERENCED_PARAMETER(collider);
 }
 

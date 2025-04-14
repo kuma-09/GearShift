@@ -13,6 +13,6 @@
 		{"Object_Name": "Cloud2"		,"position":{"x": 10.0,"y": 80.0,"z": -50.0}},
 		{"Object_Name": "Cloud2"		,"position":{"x":-30.0,"y":100.0,"z": -10.0}},
 
-		{"Object_Name": "TrainingEnemy" ,"position":{"x":  0.0,"y":  5.0,"z":   0.0}},
+		{"Object_Name": "TrainingEnemy" ,"position":{"x":  0.0,"y":  5.0,"z":   0.0}}
 	]
 }

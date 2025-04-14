@@ -152,7 +152,6 @@ void DeferredRendering::BeginGBuffer()
 	s_finalRT->SetWindow(rect);
 
 	auto context = s_graphics->GetDeviceResources()->GetD3DDeviceContext();
-	auto states  = s_graphics->GetCommonStates();
 	auto depthStencil = s_graphics->GetDeviceResources()->GetDepthStencilView();
 	auto albedoRTV = s_albedoRT->GetRenderTargetView();
 	auto normalRTV = s_normalRT->GetRenderTargetView();
@@ -189,7 +188,6 @@ void DeferredRendering::BeginGBuffer()
 void DeferredRendering::DrawGBuffer(bool texture,bool rim, DirectX::XMVECTORF32 rimColor, DirectX::XMVECTORF32 emissiveColor)
 {
 	auto context = s_graphics->GetDeviceResources()->GetD3DDeviceContext();
-	auto state = s_graphics->GetCommonStates();
 	auto view = s_graphics->GetViewMatrix();
 	auto projection = s_graphics->GetProjectionMatrix();
 
@@ -221,7 +219,6 @@ void DeferredRendering::DrawGBuffer(bool texture,bool rim, DirectX::XMVECTORF32 
 void DeferredRendering::DeferredLighting()
 {
 	auto context = s_graphics->GetDeviceResources()->GetD3DDeviceContext();
-	auto device = s_graphics->GetDeviceResources()->GetD3DDevice();
 	auto renderTarget = s_finalRT->GetRenderTargetView();
 	auto depthStencil = s_graphics->GetDeviceResources()->GetDepthStencilView();
 	auto view = s_graphics->GetViewMatrix();
@@ -263,7 +260,7 @@ void DeferredRendering::DeferredLighting()
 	cb->lightProj[1] = ShadowMap::GetLightProj(1).Transpose();
 	cb->lightProj[2] = ShadowMap::GetLightProj(2).Transpose();
 	cb->lightProj[3] = ShadowMap::GetLightProj(3).Transpose();
-	cb->lightNum = PointLightManager::GetPointLights().size();
+	cb->lightNum = static_cast<int>(PointLightManager::GetPointLights().size());
 	for (int i = 0; i < PointLightManager::GetPointLights().size(); i++)
 	{
 		cb->lightPos[i] = PointLightManager::GetPointLights()[i]->GetOwner()->GetPosition();

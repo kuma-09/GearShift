@@ -21,7 +21,7 @@ void InputComponent::Initialize()
 void InputComponent::Update(float elapsedTime)
 {
     using namespace DirectX::SimpleMath;
-
+    UNREFERENCED_PARAMETER(elapsedTime);
     const auto& kb = m_inputManager->GetKeyboardState();
     const auto& gpState = m_inputManager->GetGamePadState();
 

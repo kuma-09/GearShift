@@ -20,5 +20,6 @@ void BurnerHorizon::Initialize()
 void BurnerHorizon::Update(float elapsedTime)
 {
 	using namespace DirectX::SimpleMath;
+	UNREFERENCED_PARAMETER(elapsedTime);
 	GetComponent<Trail>()->SetPos(GetPosition() - Vector3(0,0.5f, 0), GetPosition() + Vector3(0,0.5f, 0));
 }

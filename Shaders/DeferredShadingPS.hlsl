@@ -1,8 +1,10 @@
 #include "Common.hlsli"
 
+// GBufferに書き込んだ情報
 Texture2D<float4> AlbedoMap : register(t1);
 Texture2D<float4> NormalMap : register(t2);
 Texture2D<float4> DepthMap  : register(t3);
+// シャドウマップ
 Texture2D<float4> ShadowMap0 : register(t4);
 Texture2D<float4> ShadowMap1 : register(t5);
 Texture2D<float4> ShadowMap2 : register(t6);
@@ -23,8 +25,8 @@ cbuffer Parameters : register(b1)
     matrix lightView[4];
     matrix lightProj[4];
     int lightNum;
-    float3 lightPos[128];
-    float3 lightColor[128];
+    float3 lightPos[64];
+    float3 lightColor[64];
 }
 
 struct PS_INPUT
@@ -64,38 +66,17 @@ float4 main(PS_INPUT input) : SV_TARGET
 	float3 Position = ReconstructWorldPositionFromDepth(input.Texture, depth);
     // -------------------------------------
     
-    //float3x3 rotation = float3x3(matView[0].xyz, matView[1].xyz, matView[2].xyz);
-    //float3 translation = matView[3];
-    //float3 eyePosition = mul(translation, transpose(rotation));
-    //float3 eyePosition = inverse(matView)[3].xyz;
-    
 	// 拡散反射光------------------------------
     float3 toLight = normalize(-LightDirection[0]);
     float intensity1 = max(dot(normal, toLight), 0.0f);
     float3 diffuse = albedo.rgb * toLight * intensity1 + 0.5f;
 	// -------------------------------------
-    
-	//// 鏡面反射-----------------------------
-    //   float toEye = normalize(eyePosition - Position.xyz);
-    //   float3 halfVector = normalize(toLight + toEye);
-    //   float intensity2 = max(dot(normal, halfVector), 0.0f);
-    //   float3 specular = pow(intensity2, SpecularPower) * SpecularColor;
-	//// -------------------------------------
 
     //// shadow-------------------------------
-    //float shadow = VSM_Filter(depth, input.Texture, depth.r);
-    //shadow = readShadowMap(shadow,Position);
     float shadow = readShadowMap(Position);
     //// -------------------------------------
 
-    //// リムライト----------------------------
-    //float3 toEye = normalize(EyePosition - Position.xyz);
-    //half rim = 1.0 - saturate(dot(normalize(normal), normalize(toEye)));
-    //rim = step(0.5f, rim);
-    // ---------------------------------------
     float3 finalColor = albedo.rgb * diffuse * shadow;
-    //finalColor += rim * float3(1, 1, 1);
-    //finalColor = lerp(finalColor, float3(1, 0, 0), rim);
     
     for (int i = 0; i < lightNum; i++)
     {
@@ -105,29 +86,23 @@ float4 main(PS_INPUT input) : SV_TARGET
         float lightDistance = length(lightDirection);
         float intensity1 = max(dot(normal, toLight), 0.0f);
         float3 diffuse = albedo.rgb * lightColor[i] * intensity1;
-        //// 鏡面反射
-        //float toEye = normalize(EyePosition - Position.xyz);
-        //float3 halfVector = normalize(toLight + toEye);
-        //float intensity2 = max(dot(normal, halfVector), 0.0f);
-        //float3 specular = pow(intensity2, SpecularPower) * SpecularColor;
-    
-
         
         // 光の減衰
         float attenuation = 1.0f / (att0 + att1 * lightDistance + att2 * lightDistance * lightDistance);
         diffuse *= attenuation;
-        //specular *= attenuation;
     
+        // ライトのカラーを加算
         finalColor += albedo.rgb * diffuse;
     }
 
+    // フォグを適用
     float3 fogColor = float3(0.5f, 0.5f, 0.85f);
-    
     finalColor = lerp(fogColor, finalColor, 1 - LinearizeDepth(depth, 0.1, 300));
     
     return float4(finalColor, 1);
 }
 
+// 深度値からワールド座標を計算
 float3 ReconstructWorldPositionFromDepth(float2 uv, float depth)
 {
     float4 worldPos = float4((uv.x - 0.5f) * 2, ((uv.y * -1) + 0.5f) * 2, depth, 1.0);
@@ -136,11 +111,13 @@ float3 ReconstructWorldPositionFromDepth(float2 uv, float depth)
     return worldPos.xyz / worldPos.w;
 }
 
+// 深度値をカメラのnear,farを参照して0~1に調整
 float LinearizeDepth(float depth, float near, float far)
 {
     return (2.0 * near) / (far + near - depth * (far - near));
 }
 
+// シャドウマップから影になるか計算する
 float readShadowMap(float3 worldPos)
 {
     float bias = 0.000005f;
@@ -199,37 +176,34 @@ float readShadowMap(float3 worldPos)
     return min(max(percentLit, 0), 1);
 }
 
+// ライトからの距離によってバイアス値を決める
 float CalculateShadowBias(float lightViewDepth, float slopeScale, float constantBias)
 {
     float depthSlope = abs(ddx(lightViewDepth)) + abs(ddy(lightViewDepth));
     return slopeScale * depthSlope + constantBias;
 }
 
+// ライトからの投影空間にする
 float3 conputeLightPosition(float4x4 viewProj, float3 worldPos)
 {
-    // ライトからの投影空間にする
     float4 LightPosPS = mul(float4(worldPos, 1), viewProj);
     LightPosPS.xyz /= LightPosPS.w;
-    return LightPosPS;
+    return LightPosPS.xyz;
 }
 
+// 分散シャドウマップ用
 float VSM_Filter(float2 depth, float fragDepth)
 {
-    
     float lit = 1.0f;
-    int shadowHardness = 4;
-    
-    //if(fragDepth > depth.r)
-    {
-        float depth_sq = depth.x * depth.x;
-        float variance = depth.y - depth_sq;
-        variance = max(depth.y - depth_sq, 0.0000005f);
-        float md = fragDepth - depth.x;
-        float p = variance / (variance + (md * md));
-        lit = max(p, 0.0f);
-        lit = pow(lit, shadowHardness);
-    }
+    int shadowHardness = 4;    
+
+    float depth_sq = depth.x * depth.x;
+    float variance = depth.y - depth_sq;
+    variance = max(depth.y - depth_sq, 0.0000005f);
+    float md = fragDepth - depth.x;
+    float p = variance / (variance + (md * md));
+    lit = max(p, 0.0f);
+    lit = pow(lit, shadowHardness);
     
     return lit;
-    //return saturate(max( lit, depth.r < fragDepth ));	
 }

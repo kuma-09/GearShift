@@ -62,6 +62,7 @@ void Bloom::Initialize()
 
 void Bloom::Update(float elapsedTime)
 {
+    UNREFERENCED_PARAMETER(elapsedTime);
 }
 
 void Bloom::BeginBloom()
@@ -100,9 +101,7 @@ void Bloom::EndBloom(ID3D11ShaderResourceView* srv)
 
     auto context = m_graphics->GetDeviceResources()->GetD3DDeviceContext();
 
-    auto renderTarget = m_graphics->GetDeviceResources()->GetRenderTargetView();
     auto depthStencil = m_graphics->GetDeviceResources()->GetDepthStencilView();
-    auto offscreenRTV_Bloom = m_offscreenRT_Bloom->GetRenderTargetView();
     auto offscreenSRV_Bloom = m_offscreenRT_Bloom->GetShaderResourceView();
     auto finalRTV = m_finalRenderTexture->GetRenderTargetView();
 

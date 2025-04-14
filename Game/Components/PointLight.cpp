@@ -23,7 +23,7 @@ PointLight::~PointLight()
 /// </summary>
 /// <param name="position">ç¿ïW</param>
 /// <param name="color">ÉJÉâÅ[</param>
-void PointLight::Initialize(DirectX::SimpleMath::Vector3 position, DirectX::SimpleMath::Vector3 color)
+void PointLight::Initialize( DirectX::SimpleMath::Vector3 color)
 {
 	PointLightManager::Add(this);
 	m_nowColor = { 0,0,0 };

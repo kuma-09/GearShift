@@ -62,7 +62,7 @@ void Json::LoadJsonFile(const std::wstring& fileName, std::vector<std::string>& 
             std::string objectName;
             float x = 0.0f, y = 0.0f, z = 0.0f;
             // 書式：vertex_number:0,position:x:-40,y:0,z:60
-            std::stringstream ss(m_graphData[index].c_str());
+            std::stringstream strS(m_graphData[index].c_str());
             // 頂点番号の文字列を検索する
             position = (int)m_graphData[index].find("Object_Name:");
             // 文字列が見つからない場合
@@ -82,10 +82,10 @@ void Json::LoadJsonFile(const std::wstring& fileName, std::vector<std::string>& 
             position = (int)m_graphData[index].find(",z:");
             // ",z:"を空文字に置き換える
             m_graphData[index].replace(position, strlen(",z:"), " ");
-            ss.clear();
-            ss.str(m_graphData[index]);
+            strS.clear();
+            strS.str(m_graphData[index]);
             // 頂点の座標を取得する
-            ss >> objectName >> x >> y >> z;
+            strS >> objectName >> x >> y >> z;
             object.emplace_back(objectName);
             pos.emplace_back(DirectX::SimpleMath::Vector3{ x,y,z });
         }

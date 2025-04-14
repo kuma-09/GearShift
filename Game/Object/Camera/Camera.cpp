@@ -81,6 +81,7 @@ void Camera::Update(float elapsedTime)
 void Camera::SetTarget(GameObject* player, GameObject* target)
 {
     m_player = player;
+    UNREFERENCED_PARAMETER(target);
     //m_target = target;
 }
 // ‰æ–Ê‚ð—h‚ç‚·

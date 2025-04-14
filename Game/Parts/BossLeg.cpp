@@ -58,6 +58,7 @@ void BossLeg::Finalize()
 
 void BossLeg::Collision(Collider* collider)
 {
+	UNREFERENCED_PARAMETER(collider);
 }
 
 void BossLeg::Action()

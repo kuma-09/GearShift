@@ -33,7 +33,7 @@ void Boost::Initialize()
 	m_player->ClearTrail();
 	m_player->SetTrailPosition(m_player->GetPosition());
 	m_player->GetEnergyGage()->UseEnergyPoint(1);
-	m_player->GetComponent<PointLight>()->Initialize(m_player->GetPosition(),{ 0.2f, 0.29f, 0.46f });
+	m_player->GetComponent<PointLight>()->Initialize({ 0.2f, 0.29f, 0.46f });
 	static_cast<Camera*>(m_player->GetCamera())->shake();
 	Audio::GetInstance()->PlaySoundSE_Boost();
 	Noise::SetNoise(true);

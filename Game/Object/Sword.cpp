@@ -118,4 +118,5 @@ void Blade::Update(float elapsedTime)
 // “–‚½‚è”»’è‚Ìˆ—
 void Blade::Collision(Collider* collider)
 {
+	UNREFERENCED_PARAMETER(collider);
 }

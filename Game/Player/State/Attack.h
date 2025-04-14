@@ -1,4 +1,4 @@
-#pragma once 
+#pragma once
 #include "Game/State.h"
 #include "Game/Parts/Part.h"
 #include "Framework/InputManager.h"
@@ -16,7 +16,6 @@ public:
 	void Update(float elapsedTime);
 	void Render();
 	void Finalize();
-
 
 private:
 	Player* m_player;

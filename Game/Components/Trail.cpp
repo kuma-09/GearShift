@@ -94,7 +94,6 @@ void Trail::Update(float elapsedTime)
 void Trail::Render()
 {
 	using namespace DirectX::SimpleMath;
-	auto device = Graphics::GetInstance()->GetDeviceResources()->GetD3DDevice();
 	auto context = Graphics::GetInstance()->GetDeviceResources()->GetD3DDeviceContext();
 	auto state = Graphics::GetInstance()->GetCommonStates();
 	auto view = Graphics::GetInstance()->GetViewMatrix();

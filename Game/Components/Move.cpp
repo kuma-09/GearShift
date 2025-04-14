@@ -23,10 +23,7 @@ void Move::Update(float elapsedTime)
 {
     using namespace DirectX::SimpleMath;
 
-    const auto& kb = m_inputManager->GetKeyboardState();
-    const auto& gpState = m_inputManager->GetGamePadState();
-
-
+    UNREFERENCED_PARAMETER(elapsedTime);
 
     // ƒpƒbƒh‚Ì“ü—Íî•ñ
     Vector3 input = GetOwner()->GetComponent<InputComponent>()->GetVelocity();

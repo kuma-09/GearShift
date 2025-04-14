@@ -62,7 +62,6 @@ void MissileLauncher::Shot(GameObject* target)
 	{
 		return;
 	}
-	int usedCount = 0;
 	m_missileInterval = 0;
 	for (auto& bullet : m_bullet)
 	{

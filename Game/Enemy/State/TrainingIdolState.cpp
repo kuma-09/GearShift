@@ -14,6 +14,7 @@ void TrainingIdolState::Initialize()
 // XVˆ—
 void TrainingIdolState::Update(float elapsedTime)
 {
+	UNREFERENCED_PARAMETER(elapsedTime);
 }
 
 // •`‰æˆ—

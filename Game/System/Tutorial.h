@@ -13,7 +13,7 @@ public:
 private:
 	std::unique_ptr<UI> m_ui;
 	int   m_tutorialNum;
-	const int   MAX_TUTORIAL_NUM = 3;
+	const int   MAX_TUTORIAL_NUM = 4;
 	float m_totalTime;
 
 	// •\Ž¦‚³‚ê‚é‚Ü‚Å‚ÌŽžŠÔ

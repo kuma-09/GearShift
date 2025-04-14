@@ -171,8 +171,6 @@ void Game::Render()
 {
     using namespace DirectX::SimpleMath;
 
-    auto state = m_graphics->GetCommonStates();
-
     // Don't try to render anything before the first Update.
     if (m_timer.GetFrameCount() == 0)
     {

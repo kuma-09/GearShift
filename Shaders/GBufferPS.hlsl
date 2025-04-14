@@ -8,15 +8,15 @@ cbuffer Parameters : register(b1)
     matrix lightView[4];
     matrix lightProj[4];
     int lightNum;
-    float3 lightPos[128];
-    float3 lightColor[128];
+    float3 lightPos[64];
+    float3 lightColor[64];
 }
 
 cbuffer Parameters : register(b2)
 {
-    bool isRim;
     float4 rimColor;
     float4 emissiveColor;
+    bool isRim;
 }
 
 struct PS_INPUT

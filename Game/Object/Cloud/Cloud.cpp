@@ -18,4 +18,5 @@ void Cloud::Initialize()
 // XVˆ—
 void Cloud::Update(float elapsedTime)
 {
+	UNREFERENCED_PARAMETER(elapsedTime);
 }

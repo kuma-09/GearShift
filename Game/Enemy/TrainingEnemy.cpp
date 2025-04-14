@@ -89,6 +89,7 @@ void TrainingEnemy::Shot()
 // ステートを変更
 void TrainingEnemy::ChangeState(State* state)
 {
+	UNREFERENCED_PARAMETER(state);
 }
 
 // 当たり判定の処理

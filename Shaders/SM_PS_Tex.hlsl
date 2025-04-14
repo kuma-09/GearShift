@@ -45,7 +45,7 @@ float4 main(Input pin) : SV_TARGET0
     float3 dotL = saturate(dot(-lightDir, worldNormal));
 
     // ライトによる明るさを求める
-    float3 lightAmount = percentLit * (1.0f - (0.3f, 0.3f, 0.3f)) + (0.3f, 0.3f, 0.3f);
+    float3 lightAmount = percentLit * (1 - float3(0.3f, 0.3f, 0.3f)) + float3(0.3f, 0.3f, 0.3f);
 
     // ディフューズ色を求める 
     diffuse = float4(DiffuseColor.rgb * lightAmount, DiffuseColor.a);
