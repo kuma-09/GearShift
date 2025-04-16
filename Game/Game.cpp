@@ -171,6 +171,7 @@ void Game::Render()
 {
     using namespace DirectX::SimpleMath;
 
+    auto state = m_graphics->GetCommonStates();
     // Don't try to render anything before the first Update.
     if (m_timer.GetFrameCount() == 0)
     {
@@ -230,7 +231,8 @@ void Game::DeferredRendering()
     m_deviceResources->PIXBeginEvent(L"DeferredRendering");
     // DeferredRendering
     DeferredRendering::BeginGBuffer();
-    m_scene->Render();
+    //m_scene->Render();
+    RenderManager::RenderObjects();
     // GBuffer‚ðŒ³‚ÉŒvŽZ‚µ‚Ä•`‰æ
     m_deviceResources->PIXEndEvent();
     m_deviceResources->PIXBeginEvent(L"DeferredLighting");

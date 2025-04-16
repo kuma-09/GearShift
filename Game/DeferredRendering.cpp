@@ -6,6 +6,8 @@
 #include "Framework/Graphics.h"
 #include "Framework/BinaryFile.h"
 
+
+// インプットレイアウト
 const std::vector<D3D11_INPUT_ELEMENT_DESC> DeferredRendering::INPUT_LAYOUT_G =
 {
 	{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0,  D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
@@ -218,6 +220,7 @@ void DeferredRendering::DrawGBuffer(bool texture,bool rim, DirectX::XMVECTORF32 
 
 void DeferredRendering::DeferredLighting()
 {
+
 	auto context = s_graphics->GetDeviceResources()->GetD3DDeviceContext();
 	auto renderTarget = s_finalRT->GetRenderTargetView();
 	auto depthStencil = s_graphics->GetDeviceResources()->GetDepthStencilView();
@@ -292,8 +295,8 @@ void DeferredRendering::DeferredLighting()
 	s_batch->End();
 
 	// リソースを使用する前にシェーダーリソーススロットを解除
-	ID3D11ShaderResourceView* nullSRV[4] = { nullptr,nullptr,nullptr,nullptr };
-	context->PSSetShaderResources(1, 4, nullSRV);
+	ID3D11ShaderResourceView* nullSRV[7] = { nullptr,nullptr,nullptr,nullptr,nullptr,nullptr,nullptr };
+	context->PSSetShaderResources(1, 7, nullSRV);
 	context->OMSetRenderTargets(1, &renderTarget, depthStencil);
 }
 
