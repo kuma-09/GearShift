@@ -229,7 +229,6 @@
     <ClInclude Include="Game\Enemy\State\EnemyAttackState.h" />
     <ClInclude Include="Game\Enemy\State\EnemyMoveState.h" />
     <ClInclude Include="Game\Enemy\State\FixedAttackState.h" />
-    <ClInclude Include="Game\ForwardRendering.h" />
     <ClInclude Include="Game\Game.h" />
     <ClInclude Include="Game\GameObject.h" />
     <ClInclude Include="Game\GameOverScene.h" />
@@ -360,7 +359,6 @@
     <ClCompile Include="Game\Enemy\State\EnemyAttackState.cpp" />
     <ClCompile Include="Game\Enemy\State\EnemyMoveState.cpp" />
     <ClCompile Include="Game\Enemy\State\FixedAttackState.cpp" />
-    <ClCompile Include="Game\ForwardRendering.cpp" />
     <ClCompile Include="Game\Game.cpp" />
     <ClCompile Include="Game\GameObject.cpp" />
     <ClCompile Include="Game\GameOverScene.cpp" />

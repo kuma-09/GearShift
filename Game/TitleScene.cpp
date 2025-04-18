@@ -56,7 +56,6 @@ void TitleScene::Initialize(Game* game)
     m_menu->Initialize();
 
     m_stageMenu = std::make_unique<Menu>();
-    //m_stageMenu->AddUI(L"Resources/Textures/Stage1.png", { 0, 50 }, { 1.f,1.f });
     m_stageMenu->AddUI(L"Resources/Textures/Stage1.png", { 0,150 }, { 1.f,1.f });
     m_stageMenu->AddUI(L"Resources/Textures/Stage2.png", { 0,350 }, { 1.f,1.f });
     m_stageMenu->AddUI(L"Resources/Textures/Stage3.png", { 0,550 }, { 1.f,1.f });

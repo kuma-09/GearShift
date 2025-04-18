@@ -9,6 +9,8 @@
 
 namespace ObjectType
 {
+
+	// オブジェクトのタイプ識別用タグ
 	enum TypeID
 	{
 		None,
@@ -99,12 +101,15 @@ public:
 	// 子オブジェクトを更新
 	void ChildObjectsUpdate(float elapsedTime);
 
+	// 親オブジェクト
 	void SetOwner(GameObject* owner) { m_owner = owner; }
 	GameObject* GetOwner() { return m_owner; }
 
+	// 生成したシーンクラス
 	void SetScene(IScene* scene) { m_scene = scene; }
 	IScene* GetScene() { return m_scene; }
 
+	// オブジェクトのタイプ
 	void SetType(ObjectType::TypeID type) { m_typeID = type; }
 	const ObjectType::TypeID GetType() { return m_typeID; }
 	

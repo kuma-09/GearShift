@@ -11,7 +11,6 @@
 #include "Game/PlayScene.h"
 #include "Game/TitleScene.h"
 #include "Game/DeferredRendering.h"
-#include "Game/ForwardRendering.h"
 #include "Game/Manager/RenderManager.h"
 #include "Game/Shader/PostProcess/Noise.h"
 #include "Game/Shader/ShadowMap.h"
@@ -88,9 +87,7 @@ void Game::Initialize(HWND window, int width, int height)
 
     m_spriteBatch = std::make_unique<SpriteBatch>(m_deviceResources->GetD3DDeviceContext());
 
-    //ChangeScene(GetTitleScene());
     DeferredRendering::Initialize();
-    ForwardRendering::Initialize();
     ShadowMap::Initialize();
     Noise::Initialize();
     Bloom::Initialize();
@@ -232,7 +229,7 @@ void Game::DeferredRendering()
     // DeferredRendering
     DeferredRendering::BeginGBuffer();
     //m_scene->Render();
-    RenderManager::RenderObjects();
+    m_scene->Render();
     // GBuffer‚ðŒ³‚ÉŒvŽZ‚µ‚Ä•`‰æ
     m_deviceResources->PIXEndEvent();
     m_deviceResources->PIXBeginEvent(L"DeferredLighting");

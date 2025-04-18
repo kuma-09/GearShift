@@ -12,17 +12,21 @@
 #include "Framework/DepthStencil.h"
 #include "Game/UI/Menu.h"
 
+/// <summary>
+/// タイトルシーンクラス
+/// </summary>
 class TitleScene final: public IScene
 {
 public:
-
+	// 初期化処理
 	void Initialize(Game* game) override;
-	
+	// 更新処理
 	void Update(float elapsedTime) override;
-	
+	// 描画処理
 	void Render() override;
+	// UI描画処理
 	void RenderUI();
-	
+	// 終了処理
 	void Finalize() override;
 private:
 	Graphics* m_graphics;
