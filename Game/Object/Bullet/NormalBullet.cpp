@@ -11,7 +11,7 @@
 #include "Framework/Audio.h"
 
 // コンストラクタ
-NormalBullet::NormalBullet(IScene* scene, Collider::TypeID id)
+NormalBullet::NormalBullet(Scene* scene, Collider::TypeID id)
 {
 	SetScene(scene);
 	AddComponent<Collider>();

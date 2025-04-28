@@ -210,7 +210,7 @@
     <ClInclude Include="Game\Components\Physics.h" />
     <ClInclude Include="Game\Components\HP.h" />
     <ClInclude Include="Game\Components\HPBar.h" />
-    <ClInclude Include="Game\Components\IComponent.h" />
+    <ClInclude Include="Game\Components\Component.h" />
     <ClInclude Include="Game\Components\InputComponent.h" />
     <ClInclude Include="Game\Components\Look.h" />
     <ClInclude Include="Game\Components\ModelDraw.h" />
@@ -232,7 +232,7 @@
     <ClInclude Include="Game\Game.h" />
     <ClInclude Include="Game\GameObject.h" />
     <ClInclude Include="Game\GameOverScene.h" />
-    <ClInclude Include="Game\IScene.h" />
+    <ClInclude Include="Game\Scene.h" />
     <ClInclude Include="Game\Manager\CollisionManager.h" />
     <ClInclude Include="Game\Manager\ObjectManager.h" />
     <ClInclude Include="Game\Manager\PointLightManager.h" />
@@ -296,7 +296,7 @@
     <ClInclude Include="Game\Shader\Shader.h" />
     <ClInclude Include="Game\Shader\ShadowMap.h" />
     <ClInclude Include="Game\StageSelectScene.h" />
-    <ClInclude Include="Game\State.h" />
+    <ClInclude Include="Game\IState.h" />
     <ClInclude Include="Game\PlayScene.h" />
     <ClInclude Include="Game\ResultScene.h" />
     <ClInclude Include="Game\System\HitStop.h" />

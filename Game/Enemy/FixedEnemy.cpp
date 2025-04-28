@@ -20,7 +20,7 @@
 /// </summary>
 /// <param name="scene">シーン</param>
 /// <param name="target">ターゲットオブジェクト</param>
-FixedEnemy::FixedEnemy(IScene* scene,GameObject* target)
+FixedEnemy::FixedEnemy(Scene* scene,GameObject* target)
 {
 
 	SetScene(scene);
@@ -114,7 +114,7 @@ void FixedEnemy::Shot()
 }
 
 // ステートを変更
-void FixedEnemy::ChangeState(State* state)
+void FixedEnemy::ChangeState(IState* state)
 {
 	m_state = state;
 	m_state->Initialize();

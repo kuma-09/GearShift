@@ -27,7 +27,7 @@
 /// </summary>
 /// <param name="scene">シーン</param>
 /// <param name="target">ターゲットオブジェクト</param>
-BossEnemy::BossEnemy(IScene* scene,GameObject* target)
+BossEnemy::BossEnemy(Scene* scene,GameObject* target)
 {
 	SetScene(scene);
 	SetTarget(target);
@@ -178,7 +178,7 @@ void BossEnemy::ReloadGatling()
 }
 
 // ステートを変更
-void BossEnemy::ChangeState(State* state)
+void BossEnemy::ChangeState(IState* state)
 {
 	m_state = state;
 	m_state->Initialize();

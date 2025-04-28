@@ -14,7 +14,7 @@
 #include "Game/Manager/ObjectManager.h"
 
 // コンストラクタ
-TrainingEnemy::TrainingEnemy(IScene* scene)
+TrainingEnemy::TrainingEnemy(Scene* scene)
 {
 	SetScene(scene);
 	SetScale({ 3.0f,3.0f,3.0f });
@@ -87,7 +87,7 @@ void TrainingEnemy::Shot()
 }
 
 // ステートを変更
-void TrainingEnemy::ChangeState(State* state)
+void TrainingEnemy::ChangeState(IState* state)
 {
 	UNREFERENCED_PARAMETER(state);
 }

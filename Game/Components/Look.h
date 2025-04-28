@@ -1,10 +1,10 @@
 #pragma once
-#include "Game/Components/IComponent.h"
+#include "Game/Components/Component.h"
 #include "Framework/Graphics.h"
 #include "Framework/InputManager.h"
 #include "Game/GameObject.h"
 
-class Look : public IComponent
+class Look : public Component
 {
 public:
 	Look();

@@ -38,7 +38,7 @@
 #include "Game/Shader/ShadowMap.h"
 
 
-Player::Player(IScene* scene)
+Player::Player(Scene* scene)
 	:m_target{}
 {
 	SetScene(scene);
@@ -193,7 +193,7 @@ void Player::ClearTrail()
 }
 
 // ステートを変更
-void Player::ChangeState(State* state)
+void Player::ChangeState(IState* state)
 {
 	m_state->Finalize();
 	m_state = state;

@@ -7,7 +7,7 @@
 #include <random>
 
 // コンストラクタ
-FixedEnemyBullet::FixedEnemyBullet(IScene* scene, Collider::TypeID id)
+FixedEnemyBullet::FixedEnemyBullet(Scene* scene, Collider::TypeID id)
 {
 	SetScene(scene);
 	SetScale({ 0.5f,0.5f,0.5f });

@@ -2,7 +2,7 @@
 #include "Game/GameObject.h"
 #include "Game/Parts/Part.h"
 #include "Framework/InputManager.h"
-#include "Game/State.h"
+#include "Game/IState.h"
 #include "Framework/DebugString.h"
 #include "Game/Player/BoostGage.h"
 
@@ -13,7 +13,7 @@
 class TitlePlayer : public GameObject
 {
 public:
-	TitlePlayer(IScene* scene);
+	TitlePlayer(Scene* scene);
 	~TitlePlayer();
 
 	void Initialize();

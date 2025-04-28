@@ -1,7 +1,7 @@
 #pragma once
 #include "Enemy.h"
 
-class State;
+class IState;
 
 /// <summary>
 /// トレーニング用のエネミー
@@ -10,7 +10,7 @@ class TrainingEnemy : public Enemy
 {
 public:
 	// コンストラクタ
-	TrainingEnemy(IScene* scene);
+	TrainingEnemy(Scene* scene);
 	// デストラクタ
 	~TrainingEnemy();
 	// 初期化処理
@@ -25,7 +25,7 @@ public:
 	// 弾を発射
 	void Shot();
 	// ステートを変更
-	void ChangeState(State* state);
+	void ChangeState(IState* state);
 	// 当たり判定の処理
 	void Collision(Collider* collider);
 

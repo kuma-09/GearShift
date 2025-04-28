@@ -12,7 +12,7 @@
 #include "Framework/Audio.h"
 
 // コンストラクタ
-HomingBullet::HomingBullet(IScene* scene, Collider::TypeID id)
+HomingBullet::HomingBullet(Scene* scene, Collider::TypeID id)
 {
 	SetScene(scene);
 	AddComponent<Collider>();

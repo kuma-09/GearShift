@@ -7,7 +7,7 @@
 #include "Game/Components/HP.h"
 #include "Game/Manager/ObjectManager.h"
 // コンストラクタ
-DropItem::DropItem(IScene* scene)
+DropItem::DropItem(Scene* scene)
 {
 	SetScene(scene);
 	SetScale({ MODEL_SIZE,MODEL_SIZE,MODEL_SIZE });

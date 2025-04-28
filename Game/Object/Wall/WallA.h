@@ -8,7 +8,7 @@ class WallA :public Wall
 {
 public:
 	// コンストラクタ
-	WallA(IScene* scene);
+	WallA(Scene* scene);
 	// デストラクタ
 	~WallA();
 	// 初期化処理

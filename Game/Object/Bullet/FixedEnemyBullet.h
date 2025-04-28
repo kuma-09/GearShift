@@ -11,7 +11,7 @@ class FixedEnemyBullet :public Bullet
 public:
 
 	// コンストラクタ
-	FixedEnemyBullet(IScene* scene, Collider::TypeID id);
+	FixedEnemyBullet(Scene* scene, Collider::TypeID id);
 	// デストラクタ
 	~FixedEnemyBullet();
 	// 初期化処理

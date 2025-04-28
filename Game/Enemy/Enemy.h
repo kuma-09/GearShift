@@ -7,7 +7,7 @@
 #include "State/EnemyAttackState.h"
 #include "State/EnemyMoveState.h"
 
-class State;
+class IState;
 class EnemyBullet;
 
 /// <summary>
@@ -25,11 +25,11 @@ public:
 	virtual void Finalize() = 0;
 
 	// 攻撃ステート
-	void SetEnemyAttack(std::unique_ptr<State> state) { m_attack = std::move(state); }
-	State* GetAttackState() { return m_attack.get(); }
+	void SetEnemyAttack(std::unique_ptr<IState> state) { m_attack = std::move(state); }
+	IState* GetAttackState() { return m_attack.get(); }
 	// 移動ステート
-	void SetEnemyMove(std::unique_ptr<State> state) { m_move = std::move(state); }
-	State* GetMoveState() { return m_move.get(); }
+	void SetEnemyMove(std::unique_ptr<IState> state) { m_move = std::move(state); }
+	IState* GetMoveState() { return m_move.get(); }
 	// ターゲット
 	void SetTarget(GameObject* target) { m_target = target; }
 	GameObject* GetTarget() { return m_target; }
@@ -37,13 +37,13 @@ public:
 	// 弾発射関数
 	virtual void Shot() = 0;
 	// ステートの変更
-	virtual void ChangeState(State* state) = 0;
+	virtual void ChangeState(IState* state) = 0;
 	// 当たり判定の処理
 	virtual void Collision(Collider* collider) = 0;
 
 private:
 	GameObject* m_target;
-	std::unique_ptr<State> m_attack;
-	std::unique_ptr<State>   m_move;
+	std::unique_ptr<IState> m_attack;
+	std::unique_ptr<IState>   m_move;
 };
 

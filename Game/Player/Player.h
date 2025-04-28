@@ -2,7 +2,7 @@
 #include "Game/GameObject.h"
 #include "Game/Parts/Part.h"
 #include "Framework/InputManager.h"
-#include "Game/State.h"
+#include "Game/IState.h"
 #include "Framework/DebugString.h"
 #include "Game/Player/BoostGage.h"
 #include "Game/UI/ReloadUI.h"
@@ -28,7 +28,7 @@ class EnergyGage;
 class Player : public GameObject
 {
 public:
-	Player(IScene* scene);
+	Player(Scene* scene);
 	~Player();
 
 	void Initialize();
@@ -53,7 +53,7 @@ public:
 
 	void SetTrailPosition(DirectX::SimpleMath::Vector3 pos);
 	void ClearTrail();
-	void ChangeState(State* state);
+	void ChangeState(IState* state);
 	void Shot();
 	void SwordAttack();
 
@@ -83,7 +83,7 @@ private:
 	DirectX::SimpleMath::Vector3 m_prePosition;
 
 	// ステート
-	State* m_state;
+	IState* m_state;
 	std::unique_ptr<Idol> m_idol;
 	std::unique_ptr<Jump> m_jump;
 	std::unique_ptr<Boost> m_boost;

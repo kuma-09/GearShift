@@ -1,5 +1,5 @@
 #pragma once
-#include "IScene.h"
+#include "Scene.h"
 #include "Framework/Graphics.h"
 #include "Framework/InputManager.h"
 #include "Framework/DeviceResources.h"
@@ -15,7 +15,7 @@
 /// <summary>
 /// タイトルシーンクラス
 /// </summary>
-class TitleScene final: public IScene
+class TitleScene final: public Scene
 {
 public:
 	// 初期化処理

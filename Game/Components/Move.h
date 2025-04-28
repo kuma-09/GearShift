@@ -1,11 +1,11 @@
 #pragma once
-#include "IComponent.h"
+#include "Component.h"
 #include "Framework/InputManager.h"
 
 /// <summary>
 /// 移動を反映させるコンポーネントクラス
 /// </summary>
-class Move : public IComponent
+class Move : public Component
 {
 public:
 	// コンストラクタ
@@ -22,11 +22,14 @@ public:
 	bool GetIsMove() { return m_isMove; }
 
 private:
+	const float MAX_SPEED = 0.95f;
+
+private:
 	InputManager* m_inputManager;
 	DirectX::SimpleMath::Vector3 m_velocity;
 	// 移動入力の有無
 	bool m_isMove;
 
-	const float MAX_SPEED = 0.95f;
+
 };
 

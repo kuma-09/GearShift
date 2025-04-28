@@ -1,12 +1,12 @@
 #pragma once
-#include "Game/State.h"
+#include "Game/IState.h"
 #include "Game/Parts/Part.h"
 #include "Framework/InputManager.h"
 #include "Game/Player/Player.h"
 #include "Game/Object/Sword.h"
 #include "Game/Shader/Shader.h"
 
-class Attack : public State
+class Attack : public IState
 {
 public:
 	Attack(Player* player);

@@ -5,7 +5,7 @@
 #pragma once
 #include "Framework/DeviceResources.h"
 #include "Framework/StepTimer.h"
-#include "Game/IScene.h"
+#include "Game/Scene.h"
 #include "Game/PlayScene.h"
 #include "Game/TitleScene.h"
 #include "Game/ResultScene.h"
@@ -59,7 +59,7 @@ public:
     // Properties
     void GetDefaultSize( int& width, int& height ) const noexcept;
 
-    void ChangeScene(IScene* scene);
+    void ChangeScene(Scene* scene);
 
     TitleScene* GetTitleScene()
     {
@@ -157,8 +157,8 @@ private:
     Audio* m_audio;
 
 
-    IScene* m_scene;
-    IScene* m_tmpScene;
+    Scene* m_scene;
+    Scene* m_tmpScene;
     std::unique_ptr<PlayScene> m_playScene;
     std::unique_ptr<TitleScene> m_titleScene;
     std::unique_ptr<ResultScene> m_resultScene;

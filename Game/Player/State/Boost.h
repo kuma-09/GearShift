@@ -1,11 +1,11 @@
 #pragma once 
-#include "Game/State.h"
+#include "Game/IState.h"
 #include "Game/Parts/Part.h"
 #include "Framework/InputManager.h"
 #include "Game/Player/Player.h"
 #include "Game/Shader/Shader.h"
 
-class Boost : public State
+class Boost : public IState
 {
 public:
 	Boost(Player* player);

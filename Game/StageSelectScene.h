@@ -1,5 +1,5 @@
 #pragma once
-#include "IScene.h"
+#include "Scene.h"
 #include "Framework/Graphics.h"
 #include "Framework/InputManager.h"
 #include "Framework/DeviceResources.h"
@@ -11,7 +11,7 @@
 #include "Framework/DepthStencil.h"
 #include "Game/UI/Menu.h"
 
-class StageSelectScene final : public IScene
+class StageSelectScene final : public Scene
 {
 public:
 

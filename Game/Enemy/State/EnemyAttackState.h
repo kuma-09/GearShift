@@ -1,12 +1,12 @@
 #pragma once
-#include "Game/State.h"
+#include "Game/IState.h"
 
 class Enemy;
 
 /// <summary>
 /// 敵の攻撃ステート
 /// </summary>
-class EnemyAttackState : public State
+class EnemyAttackState : public IState
 {
 public:
 	// コンストラクタ

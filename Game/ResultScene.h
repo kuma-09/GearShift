@@ -1,5 +1,5 @@
 #pragma once
-#include "IScene.h"
+#include "Scene.h"
 #include "Framework/Graphics.h"
 #include "Framework/InputManager.h"
 #include "Framework/DeviceResources.h"
@@ -8,7 +8,7 @@
 
 class Camera;
 
-class ResultScene final: public IScene
+class ResultScene final: public Scene
 {
 public:
 	ResultScene();

@@ -17,7 +17,7 @@ public:
 	};
 
 	// コンストラクタ
-	Blade(IScene* scene, Collider::TypeID id);
+	Blade(Scene* scene, Collider::TypeID id);
 	// デストラクタ
 	~Blade();
 	// 初期化処理

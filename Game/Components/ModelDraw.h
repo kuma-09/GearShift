@@ -1,12 +1,12 @@
 #pragma once
-#include "IComponent.h"
+#include "Component.h"
 #include "Framework/Graphics.h"
 #include "Framework/Resources.h"
 
 /// <summary>
 /// モデル描画コンポーネントクラス
 /// </summary>
-class ModelDraw : public IComponent
+class ModelDraw : public Component
 {
 public:
 	// コンストラクタ

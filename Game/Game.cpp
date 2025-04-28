@@ -404,7 +404,7 @@ void Game::OnDeviceRestored()
     CreateWindowSizeDependentResources();
 }
 
-void Game::ChangeScene(IScene* scene)
+void Game::ChangeScene(Scene* scene)
 {
     if (!m_sceneMask->IsClose() && !m_sceneMask->IsOpen())
     {

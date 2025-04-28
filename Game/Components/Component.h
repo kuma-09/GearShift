@@ -5,13 +5,13 @@ class GameObject;
 /// <summary>
 /// GameObjectクラスに追加するコンポーネントの基底クラス
 /// </summary>
-class IComponent
+class Component
 {
 public:
 	// コンストラクタ
-	IComponent() {};
+	Component() {};
 	// デストラクタ
-	virtual ~IComponent() = default;
+	virtual ~Component() = default;
 
 	// 更新処理
 	virtual void Update(float elapsedTime) = 0;

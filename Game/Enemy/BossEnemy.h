@@ -8,7 +8,7 @@
 #include "Game/Enemy/BossState/BossMissileState.h"
 #include "Game/Enemy/BossState/BossTackleState.h"
 
-class State;
+class IState;
 
 /// <summary>
 /// ボスエネミー
@@ -18,7 +18,7 @@ class BossEnemy : public Enemy
 public:
 
 	// コンストラクタ
-	BossEnemy(IScene* scene, GameObject* target);
+	BossEnemy(Scene* scene, GameObject* target);
 	// デストラクタ
 	~BossEnemy();
 
@@ -39,12 +39,12 @@ public:
 	// ガトリングをリロード
 	void ReloadGatling();
 	// ステートを変更
-	void ChangeState(State* state);
+	void ChangeState(IState* state);
 
 	// ミサイル発射ステートを取得
-	State* GetMissileState() { return m_missileState.get(); }
+	IState* GetMissileState() { return m_missileState.get(); }
 	// 突撃ステートを取得
-	State* GetTackleState() { return m_tackleState.get(); }
+	IState* GetTackleState() { return m_tackleState.get(); }
 	// 当たり判定の処理
 	void Collision(Collider* collider);
 
@@ -63,7 +63,7 @@ private:
 	std::vector<std::unique_ptr<HomingBullet>> m_homingBullets;
 
 	// ステート
-	State* m_state;
+	IState* m_state;
 	std::unique_ptr<BossMissileState> m_missileState;
 	std::unique_ptr<BossTackleState> m_tackleState;
 };

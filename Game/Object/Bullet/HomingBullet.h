@@ -8,7 +8,7 @@ class HomingBullet :public Bullet
 {
 public:
 	// コンストラクタ
-	HomingBullet(IScene* scene, Collider::TypeID id);
+	HomingBullet(Scene* scene, Collider::TypeID id);
 	// デストラクタ
 	~HomingBullet();	// 初期化処理
 	void Initialize(GameObject* object);

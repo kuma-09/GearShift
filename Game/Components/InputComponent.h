@@ -1,11 +1,11 @@
 #pragma once
-#include "IComponent.h"
+#include "Component.h"
 #include "Framework/InputManager.h"
 
 /// <summary>
 /// 入力コンポーネントクラス
 /// </summary>
-class InputComponent : public IComponent
+class InputComponent : public Component
 {
 public:
 	// コンストラクタ

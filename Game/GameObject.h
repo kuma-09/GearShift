@@ -4,8 +4,8 @@
 #include <unordered_map>
 #include <typeindex>
 #include <array>
-#include "Components/IComponent.h"
-#include "IScene.h"
+#include "Components/Component.h"
+#include "Scene.h"
 
 namespace ObjectType
 {
@@ -106,8 +106,8 @@ public:
 	GameObject* GetOwner() { return m_owner; }
 
 	// 生成したシーンクラス
-	void SetScene(IScene* scene) { m_scene = scene; }
-	IScene* GetScene() { return m_scene; }
+	void SetScene(Scene* scene) { m_scene = scene; }
+	Scene* GetScene() { return m_scene; }
 
 	// オブジェクトのタイプ
 	void SetType(ObjectType::TypeID type) { m_typeID = type; }
@@ -118,7 +118,7 @@ public:
 	virtual void Update(float elapsedTime) { UNREFERENCED_PARAMETER(elapsedTime); }
 	virtual void Collision(Collider* collider) { UNREFERENCED_PARAMETER(collider); }
 private:
-	IScene* m_scene = nullptr;
+	Scene* m_scene = nullptr;
 	ObjectType::TypeID m_typeID;
 	GameObject* m_owner;
 
@@ -131,7 +131,7 @@ private:
 	DirectX::SimpleMath::Matrix     m_world = DirectX::SimpleMath::Matrix::Identity;
 
 	// コンポーネント配列
-	std::unordered_map<std::type_index, std::unique_ptr<IComponent>> m_umComponents;
+	std::unordered_map<std::type_index, std::unique_ptr<Component>> m_umComponents;
 
 	std::unordered_map<std::string, std::unique_ptr<GameObject>> m_umChildObjects;
 };

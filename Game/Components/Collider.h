@@ -1,12 +1,12 @@
 #pragma once
-#include "IComponent.h"
+#include "Component.h"
 #include "Framework/Graphics.h"
 #include "Game/Manager/CollisionManager.h"
 
 /// <summary>
 /// 当たり判定コンポーネントクラス
 /// </summary>
-class Collider : public IComponent
+class Collider : public Component
 {
 public:
 

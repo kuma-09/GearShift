@@ -1,5 +1,5 @@
 #pragma once
-#include "IScene.h"
+#include "Scene.h"
 #include "Framework/Graphics.h"
 #include "Framework/Resources.h"
 #include "Framework/InputManager.h"
@@ -7,7 +7,7 @@
 #include "Particle/ExplosionEffect.h"
 #include "UI/CircleGage.h"
 
-class TestScene final : public IScene
+class TestScene final : public Scene
 {
 public:
 	TestScene();

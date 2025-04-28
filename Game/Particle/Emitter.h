@@ -2,11 +2,11 @@
 #include "Framework/InputManager.h"
 #include "Framework/DeviceResources.h"
 #include "Framework/Resources.h"
-#include "Game/Components/IComponent.h"
+#include "Game/Components/Component.h"
 #include "Particle.h"
 
 
-class Emitter: public IComponent
+class Emitter: public Component
 {
 public:
 

@@ -1,10 +1,10 @@
 #pragma once
-#include "IComponent.h"
+#include "Component.h"
 
 /// <summary>
 /// HPコンポーネントクラス
 /// </summary>
-class HP : public IComponent
+class HP : public Component
 {
 public:
 	// コンストラクタ

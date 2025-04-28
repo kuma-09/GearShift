@@ -1,11 +1,11 @@
 #pragma once
 #include "Game/GameObject.h"
 
-class State 
+class IState 
 {
 public:
 
-	virtual ~State() = default;
+	virtual ~IState() = default;
 
 	virtual void Initialize() = 0;
 

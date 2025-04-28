@@ -1,7 +1,7 @@
 #pragma once
 #include "Enemy.h"
 
-class State;
+class IState;
 class FixedEnemyBullet;
 
 /// <summary>
@@ -11,7 +11,7 @@ class FixedEnemy : public Enemy
 {
 public:
 	// コンストラクタ
-	FixedEnemy(IScene* scene, GameObject* target);
+	FixedEnemy(Scene* scene, GameObject* target);
 	// デストラクタ
 	~FixedEnemy();
 	// 初期化処理
@@ -26,7 +26,7 @@ public:
 	// 弾を発射
 	void Shot();
 	// ステートを変更
-	void ChangeState(State* state);
+	void ChangeState(IState* state);
 	// 当たり判定の処理
 	void Collision(Collider* collider);
 
@@ -36,6 +36,6 @@ private:
 	// 弾配列
 	std::unique_ptr<FixedEnemyBullet> m_bullet;
 	// ステート
-	State* m_state;
+	IState* m_state;
 };
 

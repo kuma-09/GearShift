@@ -1,10 +1,10 @@
 #pragma once
-#include "IComponent.h"
+#include "Component.h"
 
 /// <summary>
 /// ポイントライトコンポーネントクラス
 /// </summary>
-class PointLight : public IComponent
+class PointLight : public Component
 {
 public:
 	// コンストラクタ

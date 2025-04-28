@@ -1,5 +1,5 @@
 #pragma once
-#include "IScene.h"
+#include "Scene.h"
 #include "Framework/Graphics.h"
 #include "Framework/InputManager.h"
 #include "Framework/DeviceResources.h"
@@ -29,7 +29,7 @@ class BulletMagazine;
 class ExBulletMagazine;
 
 
-class PlayScene final: public IScene
+class PlayScene final: public Scene
 {
 public:
 	PlayScene();

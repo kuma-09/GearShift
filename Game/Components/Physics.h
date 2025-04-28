@@ -1,12 +1,12 @@
 #pragma once
-#include "IComponent.h"
+#include "Component.h"
 
 class Collider;
 
 /// <summary>
 /// 重力コンポーネントクラス
 /// </summary>
-class Physics : public IComponent
+class Physics : public Component
 {
 public:
 

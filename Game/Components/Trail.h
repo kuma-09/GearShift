@@ -1,11 +1,11 @@
 #pragma once
 #include "Framework/Graphics.h"
-#include "IComponent.h"
+#include "Component.h"
 
 /// <summary>
 /// トレイルを生成するコンポーネントクラス
 /// </summary>
-class Trail : public IComponent
+class Trail : public Component
 {
 public:
 	// コンストラクタ

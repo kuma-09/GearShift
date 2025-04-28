@@ -10,7 +10,7 @@ class NormalBullet :public Bullet
 {
 public:
 	// コンストラクタ
-	NormalBullet(IScene* scene, Collider::TypeID id);
+	NormalBullet(Scene* scene, Collider::TypeID id);
 	// デストラクタ
 	~NormalBullet();
 	// 初期化処理

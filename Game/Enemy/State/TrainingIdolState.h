@@ -1,10 +1,10 @@
 #pragma once
-#include "Game/State.h"
+#include "Game/IState.h"
 
 /// <summary>
 /// トレーニング用の敵ステート
 /// </summary>
-class TrainingIdolState : public State
+class TrainingIdolState : public IState
 {
 public:
 	// コンストラクタ

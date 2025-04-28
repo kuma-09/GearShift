@@ -9,7 +9,7 @@ class Light : public GameObject
 {
 public:
 	// コンストラクタ
-	Light(IScene* scene);
+	Light(Scene* scene);
 	// デストラクタ
 	~Light();
 	// 初期化処理

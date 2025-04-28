@@ -3,7 +3,7 @@
 #include "Game/Components/ModelDraw.h"
 #include "Game/Components/Collider.h"
 // コンストラクタ
-BillC::BillC(IScene* scene)
+BillC::BillC(Scene* scene)
 {
 	SetScene(scene);
 	AddComponent<Collider>();

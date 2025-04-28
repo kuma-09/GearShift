@@ -10,7 +10,7 @@ class EnemyBullet :public Bullet
 {
 public:
 	// コンストラクタ
-	EnemyBullet(IScene* scene, Collider::TypeID id);
+	EnemyBullet(Scene* scene, Collider::TypeID id);
 	// デストラクタ
 	~EnemyBullet();
 	// 初期化処理

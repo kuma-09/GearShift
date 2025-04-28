@@ -9,7 +9,7 @@
 #include "Framework/Easing.h"
 
 // コンストラクタ
-Blade::Blade(IScene* scene, Collider::TypeID id)
+Blade::Blade(Scene* scene, Collider::TypeID id)
 {
 	SetScene(scene);
 	AddComponent<Collider>();

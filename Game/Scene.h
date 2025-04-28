@@ -1,5 +1,5 @@
 /*
-	@file	IScene.h
+	@file	Scene.h
 	@brief	シーンのインターフェイスクラス
 */
 #pragma once
@@ -7,11 +7,11 @@
 
 class Game;
 
-class IScene
+class Scene
 {
 
 public:
-	virtual ~IScene() = default;
+	virtual ~Scene() = default;
 
 	virtual void Initialize(Game* game) = 0;
 

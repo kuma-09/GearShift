@@ -1,10 +1,10 @@
 #pragma once 
-#include "Game/State.h"
+#include "Game/IState.h"
 #include "Game/Parts/Part.h"
 #include "Framework/InputManager.h"
 #include "Game/Player/Player.h"
 
-class Idol : public State
+class Idol : public IState
 {
 public:
 	Idol(Player* player);

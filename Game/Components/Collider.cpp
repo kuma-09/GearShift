@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "Collider.h"
-#include "Game/IScene.h"
+#include "Game/Scene.h"
 #include "Game/GameObject.h"
 #include "Framework/Microsoft/DebugDraw.h"
 #include "Game/PlayScene.h"

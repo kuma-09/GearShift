@@ -17,7 +17,7 @@
 #include "Game/Manager/ObjectManager.h"
 
 // コンストラクタ
-HomingEnemy::HomingEnemy(IScene* scene,GameObject* target)
+HomingEnemy::HomingEnemy(Scene* scene,GameObject* target)
 {
 	SetScene(scene);
 	SetTarget(target);
@@ -126,7 +126,7 @@ void HomingEnemy::Shot()
 }
 
 // ステートを変更
-void HomingEnemy::ChangeState(State* state)
+void HomingEnemy::ChangeState(IState* state)
 {
 	m_state = state;
 	m_state->Initialize();

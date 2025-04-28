@@ -8,7 +8,7 @@
 #include <random>
 
 // コンストラクタ
-EnemyBullet::EnemyBullet(IScene* scene, Collider::TypeID id)
+EnemyBullet::EnemyBullet(Scene* scene, Collider::TypeID id)
 {
 	SetScene(scene);
 	AddComponent<Collider>();

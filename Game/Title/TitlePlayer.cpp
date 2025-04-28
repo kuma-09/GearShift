@@ -17,7 +17,7 @@
 
 #include "Game/Shader/ShadowMap.h"
 
-TitlePlayer::TitlePlayer(IScene* scene)
+TitlePlayer::TitlePlayer(Scene* scene)
 {
 	SetScene(scene);
 	SetPart(Part::Head, std::make_unique<Head>());

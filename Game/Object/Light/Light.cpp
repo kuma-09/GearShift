@@ -4,7 +4,7 @@
 #include "Game/Components/ModelDraw.h"
 #include "Game/Components/PointLight.h"
 // コンストラクタ
-Light::Light(IScene* scene)
+Light::Light(Scene* scene)
 {
 	SetScene(scene);
 	AddComponent<ModelDraw>();

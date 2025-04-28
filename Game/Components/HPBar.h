@@ -1,12 +1,12 @@
 #pragma once
-#include "IComponent.h"
+#include "Component.h"
 #include "Framework/Graphics.h"
 #include "Framework/Resources.h"
 
 /// <summary>
 /// HPを描画するコンポーネントクラス
 /// </summary>
-class HPBar : public IComponent
+class HPBar : public Component
 {
 public:
 	// コンストラクタ

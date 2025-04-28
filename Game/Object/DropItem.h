@@ -7,7 +7,7 @@ class DropItem :public GameObject
 {
 public:
 	// コンストラクタ
-	DropItem(IScene* scene);
+	DropItem(Scene* scene);
 	// デストラクタ
 	~DropItem();
 	// 初期化処理

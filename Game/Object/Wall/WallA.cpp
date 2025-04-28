@@ -3,7 +3,7 @@
 #include "Game/Components/ModelDraw.h"
 #include "Game/Components/Collider.h"
 // コンストラクタ
-WallA::WallA(IScene* scene)
+WallA::WallA(Scene* scene)
 {
 	SetScene(scene);
 	AddComponent<Collider>();
